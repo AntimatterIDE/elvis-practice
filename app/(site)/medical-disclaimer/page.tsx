@@ -1,0 +1,34 @@
+import type { Metadata } from "next";
+import { PageIntro } from "@/components/site/page-intro";
+import { emergencyNote } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Medical disclaimer",
+  description: "The Alignment Clinic website is general information, not personal medical advice.",
+  alternates: { canonical: "/medical-disclaimer" },
+};
+
+export default function DisclaimerPage() {
+  return (
+    <article className="mx-auto max-w-3xl px-5 py-16 md:px-8">
+      <PageIntro
+        kicker="Disclaimer"
+        title="General information, not personal advice."
+        lede="Reading this site does not create a physician-patient relationship."
+      />
+      <div className="mt-10 space-y-6 text-lg leading-relaxed text-muted">
+        <p>
+          Articles describe conditions and procedures in plain language so you can prepare for a
+          conversation. They do not tell you whether you need surgery, medication, or any other
+          treatment.
+        </p>
+        <p>
+          Outcomes vary. This site does not quote success rates, and it does not use patient
+          stories. Credentials and hospital affiliations appear only after the practice approves
+          the wording.
+        </p>
+        <p>{emergencyNote}</p>
+      </div>
+    </article>
+  );
+}
