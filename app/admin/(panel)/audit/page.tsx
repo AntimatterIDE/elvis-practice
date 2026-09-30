@@ -1,3 +1,4 @@
+import { isSupabaseConfigured } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getStaffSession } from "@/lib/supabase/session";
 
@@ -12,12 +13,14 @@ export default async function AuditPage() {
     );
   }
 
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("audit_log")
-    .select("id, action, entity_table, entity_id, summary, created_at")
-    .order("created_at", { ascending: false })
-    .limit(50);
+  const loaded = isSupabaseConfigured()
+    ? await (await createSupabaseServerClient())
+        .from("audit_log")
+        .select("id, action, entity_table, entity_id, summary, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50)
+    : { data: [], error: null };
+  const { data, error } = loaded;
 
   return (
     <main>

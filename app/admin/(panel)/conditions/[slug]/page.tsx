@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { ClinicalEditor } from "@/components/admin/clinical-editor";
 import { getCondition } from "@/lib/content";
+import { isSupabaseConfigured } from "@/lib/env";
 import { clinicalRowToDocument } from "@/lib/supabase/map-clinical";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getStaffSession } from "@/lib/supabase/session";
@@ -9,8 +10,9 @@ export default async function EditConditionPage({ params }: { params: Promise<{ 
   const { slug } = await params;
   const staff = await getStaffSession();
   if (!staff) notFound();
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.from("conditions").select("*").eq("slug", slug).maybeSingle();
+  const data = isSupabaseConfigured()
+    ? (await (await createSupabaseServerClient()).from("conditions").select("*").eq("slug", slug).maybeSingle()).data
+    : null;
   const document = data ? clinicalRowToDocument(data, "condition") : getCondition(slug);
   if (!document) notFound();
 

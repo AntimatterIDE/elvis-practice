@@ -12,8 +12,13 @@ export default async function AdminHomePage() {
       <h1 className="font-display text-4xl">Content desk</h1>
       <p className="mt-4 max-w-xl text-muted">
         The public site is reading <strong>{env.CONTENT_SOURCE}</strong> content. Draft clinical pages
-        stay off the public indexes until they are offered, approved, and published. Do not store
-        patient information here.
+        stay off the public indexes until they are offered, approved, and published. The practice desk
+        uses separate demo records and does not publish them on the site.
+      </p>
+      <p className="mt-4">
+        <a href="/admin/operations" className="text-sm underline underline-offset-4">
+          Open the practice desk
+        </a>
       </p>
       <dl className="mt-8 grid gap-4 text-sm md:grid-cols-3">
         <div className="border border-line p-4">
