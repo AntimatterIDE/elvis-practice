@@ -24,16 +24,16 @@ export default function ContactPage() {
         title="Call or write when the practice publishes a channel."
         lede="Until then, this page is honest about what is missing. Messages are not a way to send medical information."
       />
-      <dl className="mt-10 grid gap-6 border-y border-line py-8 sm:grid-cols-2 lg:grid-cols-4">
+      <dl className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {facts.map((fact) => (
-          <div key={fact.label}>
-            <dt className="text-xs uppercase tracking-[0.18em] text-oxide">{fact.label}</dt>
-            <dd className="mt-2 text-lg">{fact.value}</dd>
+          <div key={fact.label} className="rounded-2xl border border-line bg-card p-5 shadow-sm">
+            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-oxide">{fact.label}</dt>
+            <dd className="mt-2 text-lg font-medium">{fact.value}</dd>
           </div>
         ))}
       </dl>
-      <div className="mt-12 max-w-3xl">
-        <h2 className="font-display text-3xl">Administrative inquiry</h2>
+      <div className="mt-12 max-w-3xl rounded-[1.5rem] border border-line bg-card p-6 shadow-sm md:p-8">
+        <h2 className="font-display text-3xl font-semibold tracking-tight">Administrative inquiry</h2>
         <div className="mt-6">
           <ContactForm />
         </div>

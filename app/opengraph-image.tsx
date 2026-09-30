@@ -13,13 +13,13 @@ export default function OpenGraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#F4EFE6",
-          color: "#1C1915",
+          background: "#071E36",
+          color: "#F3F7FB",
           padding: "72px",
         }}
       >
-        <div style={{ color: "#7C2F2A", fontSize: 22, letterSpacing: 4 }}>THE ALIGNMENT CLINIC</div>
-        <div style={{ fontSize: 76, lineHeight: 1, maxWidth: 860 }}>Spine care, carefully aligned.</div>
+        <div style={{ color: "#9FE3D8", fontSize: 22, letterSpacing: 3, fontWeight: 650 }}>THE ALIGNMENT CLINIC</div>
+        <div style={{ fontSize: 72, lineHeight: 1.05, maxWidth: 860, fontWeight: 650 }}>Spine care, carefully aligned.</div>
       </div>
     ),
     { ...size },

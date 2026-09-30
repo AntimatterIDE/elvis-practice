@@ -1,29 +1,51 @@
-import { emergencyNote, practice } from "@/lib/site";
+import { emergencyNote, practice, publicNav } from "@/lib/site";
+import { Mark } from "@/components/site/mark";
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-line">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 md:grid-cols-[1.4fr_1fr] md:px-8">
+    <footer className="mt-auto bg-pine text-paper">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.4fr_0.8fr_0.8fr] md:px-8">
         <div>
-          <p className="font-display text-3xl">{practice.name}</p>
-          <p className="mt-3 max-w-md text-muted">
+          <div className="flex items-center gap-3">
+            <Mark className="bg-white/10 text-foam shadow-none" />
+            <p className="font-display text-xl font-semibold tracking-tight">{practice.name}</p>
+          </div>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-paper/75">
             A spine practice led by {practice.physicianName}. Address, phone, and hours will be
             published when the practice confirms them.
           </p>
         </div>
-        <nav aria-label="Footer" className="grid grid-cols-2 gap-3 text-sm">
-          <a href="/about">About</a>
-          <a href={practice.physicianPath}>{practice.physicianName}</a>
-          <a href="/visit">Your visit</a>
-          <a href="/contact">Contact</a>
-          <a href="/questions">Questions</a>
-          <a href="/privacy">Privacy</a>
-          <a href="/terms">Terms</a>
-          <a href="/medical-disclaimer">Medical disclaimer</a>
+        <nav aria-label="Footer" className="grid content-start gap-3 text-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-foam">Visit</p>
+          {publicNav.map((item) => (
+            <a key={item.href} href={item.href} className="text-paper/85 hover:text-foam">
+              {item.label}
+            </a>
+          ))}
+        </nav>
+        <nav aria-label="Practice information" className="grid content-start gap-3 text-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-foam">Practice</p>
+          <a href={practice.physicianPath} className="text-paper/85 hover:text-foam">
+            {practice.physicianName}
+          </a>
+          <a href="/about" className="text-paper/85 hover:text-foam">
+            About
+          </a>
+          <a href="/privacy" className="text-paper/85 hover:text-foam">
+            Privacy
+          </a>
+          <a href="/terms" className="text-paper/85 hover:text-foam">
+            Terms
+          </a>
+          <a href="/medical-disclaimer" className="text-paper/85 hover:text-foam">
+            Medical disclaimer
+          </a>
         </nav>
       </div>
-      <div className="border-t border-line bg-pine text-paper">
-        <p className="mx-auto max-w-6xl px-5 py-5 text-sm leading-relaxed md:px-8">{emergencyNote}</p>
+      <div className="border-t border-white/10">
+        <p className="mx-auto max-w-6xl px-5 py-5 text-sm leading-relaxed text-paper/75 md:px-8">
+          {emergencyNote}
+        </p>
       </div>
     </footer>
   );

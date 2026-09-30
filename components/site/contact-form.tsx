@@ -13,7 +13,7 @@ export function ContactForm() {
 
   return (
     <form action={formAction} className="grid gap-5" noValidate>
-      <p className="border border-line bg-card px-4 py-3 text-sm leading-relaxed text-pine">
+      <p className="rounded-2xl border border-oxide/20 bg-mint px-4 py-3 text-sm leading-relaxed text-ink">
         Do not include medical information. That means no symptoms, history, images, medicines, or
         insurance numbers. This form is an administrative inquiry only.
       </p>
@@ -33,7 +33,7 @@ export function ContactForm() {
             id="reason"
             name="reason"
             defaultValue="appointment"
-            className="w-full border border-line bg-card px-3 py-3 text-base"
+            className="w-full rounded-xl border border-line bg-card px-3 py-3 text-base shadow-sm"
           >
             <option value="appointment">Request a call about scheduling</option>
             <option value="general">General question</option>
@@ -76,7 +76,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={pending}
-        className="justify-self-start bg-oxide px-5 py-3 text-sm text-paper disabled:opacity-60"
+        className="justify-self-start rounded-full bg-oxide px-5 py-3 text-sm font-semibold text-paper shadow-[0_10px_24px_-16px_rgb(14_143_132_/_1)] transition hover:-translate-y-0.5 hover:bg-oxide-deep disabled:opacity-60"
       >
         {pending ? "Checking…" : "Submit inquiry"}
       </button>

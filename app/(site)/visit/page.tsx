@@ -39,11 +39,12 @@ export default function VisitPage() {
         title="What to expect before the first appointment."
         lede="These notes describe the shape of a visit. They are not personal instructions, and they leave out anything the practice has not confirmed."
       />
-      <div className="mt-12 grid gap-10">
-        {sections.map((section) => (
-          <section key={section.heading} className="grid gap-3 border-t border-line pt-8 md:grid-cols-[14rem_1fr]">
-            <h2 className="font-display text-3xl">{section.heading}</h2>
-            <p className="max-w-2xl text-lg leading-relaxed text-muted">{section.body}</p>
+      <div className="mt-10 grid gap-4">
+        {sections.map((section, index) => (
+          <section key={section.heading} className="rounded-2xl border border-line bg-card p-6 shadow-sm md:p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-oxide">0{index + 1}</p>
+            <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight">{section.heading}</h2>
+            <p className="mt-3 max-w-2xl text-lg leading-relaxed text-muted">{section.body}</p>
           </section>
         ))}
       </div>
