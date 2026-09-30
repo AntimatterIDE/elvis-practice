@@ -15,17 +15,21 @@ const siteLinks = [
 ] as const;
 
 const practiceLinks = [
-  ["/admin/operations", "Workbench"],
+  ["/admin/operations", "Today"],
   ["/admin/operations/patients", "Patients"],
+  ["/admin/operations/scheduling", "Schedule"],
+  ["/admin/operations/tasks", "Tasks"],
+  ["/admin/operations/practice", "Practice"],
+] as const;
+
+const billingLinks = [
   ["/admin/operations/claims", "Claims"],
-  ["/admin/operations/claims/drafts", "Agent drafts"],
-  ["/admin/operations/scheduling", "Scheduling"],
-  ["/admin/operations/denials", "Denials"],
   ["/admin/operations/eligibility", "Eligibility"],
+  ["/admin/operations/denials", "Denials"],
+  ["/admin/operations/claims/drafts", "Drafts"],
   ["/admin/operations/upload", "Upload"],
   ["/admin/operations/analytics", "Analytics"],
   ["/admin/operations/tools", "Tools"],
-  ["/admin/operations/practice", "Practice"],
 ] as const;
 
 function isActive(pathname: string, href: string) {
@@ -71,8 +75,9 @@ export function AdminNav() {
   const pathname = usePathname();
   return (
     <nav aria-label="Admin">
-      <Group label="Site" links={siteLinks} pathname={pathname} />
       <Group label="Practice" links={practiceLinks} pathname={pathname} />
+      <Group label="Billing" links={billingLinks} pathname={pathname} />
+      <Group label="Site" links={siteLinks} pathname={pathname} />
     </nav>
   );
 }
