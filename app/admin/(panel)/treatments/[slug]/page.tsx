@@ -1,0 +1,27 @@
+import { notFound } from "next/navigation";
+import { ClinicalEditor } from "@/components/admin/clinical-editor";
+import { getTreatment } from "@/lib/content";
+import { clinicalRowToDocument } from "@/lib/supabase/map-clinical";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getStaffSession } from "@/lib/supabase/session";
+
+export default async function EditTreatmentPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const staff = await getStaffSession();
+  if (!staff) notFound();
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase.from("treatments").select("*").eq("slug", slug).maybeSingle();
+  const document = data ? clinicalRowToDocument(data, "treatment") : getTreatment(slug);
+  if (!document) notFound();
+
+  return (
+    <main>
+      <p className="text-xs uppercase tracking-[0.18em] text-oxide">Treatment draft</p>
+      <h1 className="mt-3 font-display text-4xl">{document.title}</h1>
+      <p className="mt-3 text-sm text-muted">
+        Public preview, not indexed: <a href={`/preview/treatments/${document.slug}`}>/preview/treatments/{document.slug}</a>
+      </p>
+      <ClinicalEditor document={document} role={staff.role} />
+    </main>
+  );
+}
