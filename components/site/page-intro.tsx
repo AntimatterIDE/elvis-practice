@@ -8,12 +8,14 @@ export function PageIntro({
   lede: string;
 }) {
   return (
-    <header className="grid gap-6 border-b border-line pb-10 md:grid-cols-[9rem_1fr] md:gap-16">
-      <p className="text-xs uppercase tracking-[0.18em] text-oxide">{kicker}</p>
-      <div>
-        <h1 className="max-w-3xl font-display text-5xl leading-[1.02] text-ink md:text-6xl">{title}</h1>
-        <p className="mt-6 max-w-2xl text-xl leading-relaxed text-muted">{lede}</p>
-      </div>
+    <header className="border-b border-line pb-10">
+      <p className="inline-flex rounded-full bg-mint px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-oxide-deep">
+        {kicker}
+      </p>
+      <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.1] tracking-tight text-ink md:text-5xl">
+        {title}
+      </h1>
+      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">{lede}</p>
     </header>
   );
 }

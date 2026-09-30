@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Fraunces, Source_Sans_3 } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { canonicalOrigin, isIndexingEnabled, practice } from "@/lib/site";
 import "./globals.css";
 
-const fraunces = Fraunces({
+const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-});
-
-const sourceSans = Source_Sans_3({
-  subsets: ["latin"],
-  variable: "--font-source-sans",
+  variable: "--font-sans-family",
   display: "swap",
 });
 
@@ -37,7 +31,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${sourceSans.variable} h-full antialiased`}>
+    <html lang="en" className={`${sans.variable} h-full antialiased`}>
       <body className="min-h-full bg-paper font-sans text-ink">{children}</body>
     </html>
   );

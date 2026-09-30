@@ -13,15 +13,12 @@ export const metadata: Metadata = {
 export default function PhysicianPage() {
   return (
     <article className="mx-auto max-w-6xl px-5 py-16 md:px-8">
-      <div className="grid gap-10 md:grid-cols-[auto_1fr] md:gap-12">
-        <div className="hidden w-px bg-oxide md:block" aria-hidden />
-        <PageIntro
-          kicker="Physician"
-          title={practice.physicianName}
-          lede="The physician at The Alignment Clinic. This profile will grow as biography, training, and philosophy are approved for this site."
-        />
-      </div>
-      <div className="mt-12 grid gap-12 md:grid-cols-[16rem_1fr_14rem]">
+      <PageIntro
+        kicker="Physician"
+        title={practice.physicianName}
+        lede="The physician at The Alignment Clinic. This profile will grow as biography, training, and philosophy are approved for this site."
+      />
+      <div className="mt-12 grid gap-8 md:grid-cols-[16rem_1fr_16rem] md:items-start">
         <PhotoPlaceholder label="Portrait pending" className="min-h-80" />
         <div className="max-w-xl space-y-6 text-lg leading-relaxed text-muted">
           <p>
@@ -39,8 +36,8 @@ export default function PhysicianPage() {
             other websites.
           </p>
         </div>
-        <aside className="border-t border-line pt-6 md:border-t-0 md:border-l md:pt-0 md:pl-6">
-          <p className="text-xs uppercase tracking-[0.18em] text-oxide">Credentials</p>
+        <aside className="rounded-2xl border border-line bg-mist p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-oxide">Credentials</p>
           <p className="mt-4 text-sm leading-relaxed text-muted">
             Training, certification, and hospital appointments are hidden until the practice confirms
             the exact wording. Empty lines are not filled with guesses.

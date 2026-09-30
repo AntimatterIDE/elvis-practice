@@ -1,15 +1,4 @@
-export function SagittalMotif({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 80 240" className={className} aria-hidden>
-      <path
-        d="M40 10 C58 42 22 72 40 104 C60 138 20 168 40 202 C48 220 40 230 40 232"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.4"
-      />
-    </svg>
-  );
-}
+import { SpineArt } from "@/components/site/spine-art";
 
 export function PhotoPlaceholder({
   label = "Photograph pending",
@@ -19,9 +8,13 @@ export function PhotoPlaceholder({
   className?: string;
 }) {
   return (
-    <figure className={`relative flex min-h-72 flex-col justify-between border border-line bg-card p-6 text-oxide ${className}`}>
-      <SagittalMotif className="h-48 w-16" />
-      <figcaption className="text-xs uppercase tracking-[0.16em] text-muted">{label}</figcaption>
+    <figure
+      className={`hero-panel relative flex min-h-72 flex-col justify-between overflow-hidden rounded-[1.5rem] p-6 text-paper shadow-[0_24px_50px_-32px_rgb(7_30_54_/_0.8)] ${className}`}
+    >
+      <SpineArt className="pointer-events-none absolute -right-8 top-0 h-full w-auto opacity-80" />
+      <figcaption className="relative mt-auto w-fit rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium tracking-wide text-paper/90 backdrop-blur">
+        {label}
+      </figcaption>
     </figure>
   );
 }
