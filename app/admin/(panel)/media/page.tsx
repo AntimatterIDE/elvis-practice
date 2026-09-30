@@ -1,12 +1,19 @@
 import { saveMedia } from "@/app/admin/actions";
 import { AdminStateForm } from "@/components/admin/state-form";
+import { isSupabaseConfigured } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getStaffSession } from "@/lib/supabase/session";
 
 export default async function AdminMediaPage() {
   const staff = await getStaffSession();
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.from("media_assets").select("id, storage_path, alt, rights_status").order("updated_at", { ascending: false });
+  const data = isSupabaseConfigured()
+    ? (
+        await (await createSupabaseServerClient())
+          .from("media_assets")
+          .select("id, storage_path, alt, rights_status")
+          .order("updated_at", { ascending: false })
+      ).data
+    : [];
 
   return (
     <main>

@@ -9,6 +9,7 @@ const redirectHosts = (
   .filter(Boolean);
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["127.0.0.1"],
   async redirects() {
     return redirectHosts.flatMap((host) => [
       {

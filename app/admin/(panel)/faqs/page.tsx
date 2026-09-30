@@ -1,13 +1,15 @@
 import { saveFaq } from "@/app/admin/actions";
 import { AdminStateForm } from "@/components/admin/state-form";
 import { faqs } from "@/lib/content/faqs";
+import { isSupabaseConfigured } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getStaffSession } from "@/lib/supabase/session";
 
 export default async function AdminFaqsPage() {
   const staff = await getStaffSession();
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.from("faqs").select("id, question, answer, review_status, published_at").order("sort_order");
+  const data = isSupabaseConfigured()
+    ? (await (await createSupabaseServerClient()).from("faqs").select("id, question, answer, review_status, published_at").order("sort_order")).data
+    : [];
   const rows = data ?? [];
 
   return (

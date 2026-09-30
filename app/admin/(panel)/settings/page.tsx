@@ -1,12 +1,20 @@
 import { saveSettings } from "@/app/admin/actions";
 import { AdminStateForm } from "@/components/admin/state-form";
+import { isSupabaseConfigured } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getStaffSession } from "@/lib/supabase/session";
 
 export default async function AdminSettingsPage() {
   const staff = await getStaffSession();
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.from("site_settings").select("phone, address, hours, booking_url, announcement").eq("id", 1).maybeSingle();
+  const data = isSupabaseConfigured()
+    ? (
+        await (await createSupabaseServerClient())
+          .from("site_settings")
+          .select("phone, address, hours, booking_url, announcement")
+          .eq("id", 1)
+          .maybeSingle()
+      ).data
+    : null;
 
   return (
     <main>

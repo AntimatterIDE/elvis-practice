@@ -1,8 +1,17 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { canPublish } from "@/lib/content/publish";
 import { clinicalDocumentSchema, type ClinicalDocument } from "@/lib/content/schema";
+import {
+  DEMO_ADMIN_COOKIE,
+  DEMO_ADMIN_COOKIE_VALUE,
+  DEMO_ADMIN_EMAIL,
+  DEMO_ADMIN_PASSWORD,
+  isDemoAdminEnabled,
+} from "@/lib/demo-admin";
+import { isSupabaseConfigured } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getStaffSession, type StaffRole } from "@/lib/supabase/session";
 
@@ -12,9 +21,29 @@ function productionMfaBlocked(aal: "aal1" | "aal2") {
   return process.env.VERCEL_ENV === "production" && aal !== "aal2";
 }
 
+const demoCookie = {
+  httpOnly: true,
+  sameSite: "lax" as const,
+  path: "/",
+  secure: process.env.NODE_ENV === "production",
+};
+
+function demoSaveBlocked(): AdminFormState | null {
+  if (isSupabaseConfigured()) return null;
+  return { error: "Site content saves after Supabase is connected. Practice desk changes stay in this browser." };
+}
+
 export async function signIn(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
+  if (isDemoAdminEnabled()) {
+    if (email.toLowerCase() !== DEMO_ADMIN_EMAIL || password !== DEMO_ADMIN_PASSWORD) {
+      return { error: "Those credentials were not accepted." };
+    }
+    const cookieStore = await cookies();
+    cookieStore.set(DEMO_ADMIN_COOKIE, DEMO_ADMIN_COOKIE_VALUE, demoCookie);
+    redirect("/admin/operations");
+  }
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return { error: "Those credentials were not accepted." };
@@ -27,8 +56,12 @@ export async function signIn(_previous: AdminFormState, formData: FormData): Pro
 }
 
 export async function signOut() {
-  const supabase = await createSupabaseServerClient();
-  await supabase.auth.signOut();
+  const cookieStore = await cookies();
+  cookieStore.set(DEMO_ADMIN_COOKIE, "", { ...demoCookie, maxAge: 0 });
+  if (isSupabaseConfigured()) {
+    const supabase = await createSupabaseServerClient();
+    await supabase.auth.signOut();
+  }
   redirect("/admin/login");
 }
 
@@ -96,6 +129,8 @@ export async function saveClinical(_previous: AdminFormState, formData: FormData
   const staff = await getStaffSession();
   if (!staff) return { error: "Sign in required." };
   if (productionMfaBlocked(staff.aal)) return { error: "Multi-factor authentication is required before production changes." };
+  const blocked = demoSaveBlocked();
+  if (blocked) return blocked;
 
   const kind: ClinicalDocument["kind"] =
     formData.get("kind") === "treatment" ? "treatment" : "condition";
@@ -183,6 +218,8 @@ export async function saveFaq(_previous: AdminFormState, formData: FormData): Pr
   const staff = await getStaffSession();
   if (!staff) return { error: "Sign in required." };
   if (productionMfaBlocked(staff.aal)) return { error: "Multi-factor authentication is required before production changes." };
+  const blocked = demoSaveBlocked();
+  if (blocked) return blocked;
 
   const intent = String(formData.get("intent") ?? "save");
   if (intent === "publish" && staff.role === "editor") return { error: "Editors cannot publish." };
@@ -221,6 +258,8 @@ export async function saveMedia(_previous: AdminFormState, formData: FormData): 
   if (staff.role === "editor" && formData.get("rightsStatus") === "approved") {
     return { error: "Editors cannot approve media rights." };
   }
+  const blocked = demoSaveBlocked();
+  if (blocked) return blocked;
 
   const supabase = await createSupabaseServerClient();
   const saved = await supabase.from("media_assets").insert({
@@ -238,6 +277,8 @@ export async function saveSettings(_previous: AdminFormState, formData: FormData
   if (!staff) return { error: "Sign in required." };
   if (staff.role !== "owner") return { error: "Only an owner can change site settings." };
   if (productionMfaBlocked(staff.aal)) return { error: "Multi-factor authentication is required before production changes." };
+  const blocked = demoSaveBlocked();
+  if (blocked) return blocked;
 
   const supabase = await createSupabaseServerClient();
   const saved = await supabase
@@ -270,6 +311,8 @@ export async function inviteEditor(_previous: AdminFormState, formData: FormData
   const role = String(formData.get("role") ?? "editor");
   if (staff.role === "admin" && role !== "editor") return { error: "Admins can invite editors only." };
   if (!["owner", "admin", "editor"].includes(role)) return { error: "Unknown role." };
+  const blocked = demoSaveBlocked();
+  if (blocked) return blocked;
 
   const supabase = await createSupabaseServerClient();
   const saved = await supabase.from("invitations").insert({

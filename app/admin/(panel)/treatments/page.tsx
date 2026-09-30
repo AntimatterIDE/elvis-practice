@@ -1,12 +1,15 @@
 import { treatments } from "@/lib/content/treatments";
+import { isSupabaseConfigured } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export default async function AdminTreatmentsPage() {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("treatments")
-    .select("slug, title, review_status, offering_status, published_at")
-    .order("title");
+  const loaded = isSupabaseConfigured()
+    ? await (await createSupabaseServerClient())
+        .from("treatments")
+        .select("slug, title, review_status, offering_status, published_at")
+        .order("title")
+    : { data: [], error: null };
+  const { data, error } = loaded;
   const rows = data ?? [];
   const missing = treatments.filter((document) => !rows.some((row) => row.slug === document.slug));
 
