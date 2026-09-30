@@ -1,3 +1,7 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
+import { DEMO_CLINIC_DAY, localIsoDay } from "@/lib/rcm/chart";
 import { cn } from "@/lib/utils";
 import type { ClaimStatus } from "@/lib/rcm/types";
 
@@ -54,12 +58,39 @@ const statusTone: Record<ClaimStatus, string> = {
   rejected: "bg-red-50 text-emergency",
 };
 
-export function StatusPill({ status }: { status: string }) {
+export function StatusPill({ status, label }: { status: string; label?: string }) {
   const tone = statusTone[status as ClaimStatus] ?? "bg-mist text-ink";
   return (
     <span className={cn("inline-flex rounded-full px-2.5 py-1 text-xs uppercase tracking-[0.12em]", tone)}>
-      {status.replaceAll("_", " ")}
+      {label ?? status.replaceAll("_", " ")}
     </span>
+  );
+}
+
+const visitStatusLabel: Record<string, string> = {
+  scheduled: "Scheduled",
+  arrived: "Arrived",
+  in_progress: "In room",
+  completed: "Completed",
+  cancelled: "Cancelled",
+  no_show: "No-show",
+  confirmed: "Confirmed",
+  unconfirmed: "Unconfirmed",
+  left_message: "Left message",
+};
+
+export function visitLabel(status: string) {
+  return visitStatusLabel[status] ?? status.replaceAll("_", " ");
+}
+
+export function useClinicToday() {
+  return useSyncExternalStore(
+    (listener) => {
+      const id = window.setInterval(listener, 60_000);
+      return () => window.clearInterval(id);
+    },
+    localIsoDay,
+    () => DEMO_CLINIC_DAY,
   );
 }
 

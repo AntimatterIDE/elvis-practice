@@ -4,9 +4,10 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { formatDay, patientName } from "@/lib/rcm/format";
+import { ageFromDob, chartGaps } from "@/lib/rcm/chart";
+import { formatDay, formatTime, patientName } from "@/lib/rcm/format";
 import type { PatientInput, Sex } from "@/lib/rcm/types";
-import { Field, LoadingDesk, PageHeader, fieldClass } from "@/components/admin/rcm/ui";
+import { Field, LoadingDesk, PageHeader, fieldClass, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
 const emptyForm: PatientInput = {
@@ -26,7 +27,8 @@ const emptyForm: PatientInput = {
 
 export function PatientsDesk() {
   const router = useRouter();
-  const { ready, patients, claims, addPatient } = useRcm();
+  const { ready, patients, appointments, addPatient } = useRcm();
+  const today = useClinicToday();
   const [query, setQuery] = useState("");
   const [form, setForm] = useState<PatientInput>(emptyForm);
   const [error, setError] = useState("");
@@ -35,7 +37,7 @@ export function PatientsDesk() {
     const term = query.trim().toLowerCase();
     return patients.filter((patient) => {
       if (!term) return true;
-      return [patientName(patient), patient.memberId, patient.payerName, patient.email]
+      return [patientName(patient), patient.preferredName, patient.mrn, patient.phone, patient.memberId, patient.payerName, patient.email]
         .join(" ")
         .toLowerCase()
         .includes(term);
@@ -70,32 +72,44 @@ export function PatientsDesk() {
       <PageHeader
         kicker="Practice"
         title="Patients"
-        lede="Demo roster. Adding a patient keeps the record in this browser."
+        lede="Find a chart by name, date of birth, phone, or MRN. New patients open straight into the chart."
       />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_20rem]">
         <section>
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search name, member id, or payer"
+            placeholder="Search name, date of birth, phone, or MRN"
             className={fieldClass}
             aria-label="Search patients"
           />
           <ul className="mt-4 divide-y divide-line border-y border-line">
             {rows.length === 0 ? <li className="py-4 text-sm text-muted">No patients match.</li> : null}
             {rows.map((patient) => {
-              const count = claims.filter((claim) => claim.patientId === patient.id).length;
+              const upcoming = appointments
+                .filter(
+                  (appointment) =>
+                    appointment.patientId === patient.id &&
+                    appointment.status !== "cancelled" &&
+                    appointment.start.slice(0, 10) >= today,
+                )
+                .sort((a, b) => a.start.localeCompare(b.start))[0];
+              const gaps = chartGaps(patient);
+              const age = ageFromDob(patient.dateOfBirth, today);
               return (
                 <li key={patient.id}>
                   <Link href={`/admin/operations/patients/${patient.id}`} className="flex items-center justify-between gap-4 py-4">
                     <span>
-                      <span className="block">{patientName(patient)}</span>
+                      <span className="block font-semibold">{patientName(patient)}</span>
                       <span className="text-sm text-muted">
-                        {patient.payerName}
-                        {patient.memberId ? ` · ${patient.memberId}` : ""} · DOB {formatDay(patient.dateOfBirth)}
+                        DOB {formatDay(patient.dateOfBirth)}
+                        {age !== null ? ` · ${age}` : ""} · MRN {patient.mrn || "new"} · {patient.phone || "No phone"}
                       </span>
                     </span>
-                    <span className="text-sm text-muted">{count} claims</span>
+                    <span className="text-right text-sm text-muted">
+                      <span className="block">{upcoming ? `${formatDay(upcoming.start)} ${formatTime(upcoming.start)}` : "No upcoming visit"}</span>
+                      <span className="block">{gaps.length ? `${gaps.length} chart items open` : patient.payerName}</span>
+                    </span>
                   </Link>
                 </li>
               );

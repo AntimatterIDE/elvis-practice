@@ -2,119 +2,123 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { claimTotal, formatDay, money, patientName } from "@/lib/rcm/format";
-import { summarizeClaims } from "@/lib/rcm/metrics";
-import { LoadingDesk, PageHeader, Stat, StatusPill } from "@/components/admin/rcm/ui";
+import { chartGaps, focusClinicDay, visitTypeLabel } from "@/lib/rcm/chart";
+import { formatClinicDay, formatTime, patientName } from "@/lib/rcm/format";
+import { LoadingDesk, PageHeader, Stat, StatusPill, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
-const actions = [
-  ["/admin/operations/claims/drafts", "Agent drafts", "Review claims prepared in the demo"],
-  ["/admin/operations/eligibility", "Eligibility", "Check coverage with sample benefits"],
-  ["/admin/operations/claims/new", "New claim", "Create a draft claim for a patient"],
-  ["/admin/operations/upload", "Upload", "Import a CSV of demo encounters"],
-  ["/admin/operations/denials", "Denials", "Draft an appeal or mark a resubmit"],
-  ["/admin/operations/analytics", "Analytics", "See billed dollars and first-pass rate"],
-] as const;
-
 export function Workbench() {
-  const { ready, patients, claims, appointments, resetDemo } = useRcm();
+  const { ready, patients, appointments, tasks, resetDemo } = useRcm();
+  const today = useClinicToday();
   if (!ready) return <LoadingDesk />;
 
-  const summary = summarizeClaims(claims);
   const names = new Map(patients.map((patient) => [patient.id, patientName(patient)]));
-  const recent = [...claims].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 6);
-  const attention = claims.filter((claim) => claim.status === "denied" || claim.status === "rejected");
-  const upcoming = [...appointments]
-    .filter((appointment) => appointment.status === "scheduled")
-    .sort((a, b) => a.start.localeCompare(b.start))
+  const focus = focusClinicDay(
+    appointments.map((appointment) => appointment.start.slice(0, 10)),
+    today,
+  );
+  const dayVisits = appointments
+    .filter((appointment) => appointment.start.startsWith(focus))
+    .sort((a, b) => a.start.localeCompare(b.start));
+  const openTasks = tasks.filter((task) => task.status === "open" && task.due <= focus);
+  const toConfirm = dayVisits.filter((appointment) => appointment.confirmation !== "confirmed" && appointment.status === "scheduled");
+  const inOffice = dayVisits.filter((appointment) => appointment.status === "arrived" || appointment.status === "in_progress");
+  const gaps = patients
+    .map((patient) => ({ patient, gaps: chartGaps(patient) }))
+    .filter((item) => item.gaps.length > 0)
     .slice(0, 4);
 
   return (
     <main>
       <PageHeader
         kicker="Practice"
-        title="Claims desk"
-        lede="Demo patients, claims, visits, and denials for The Alignment Clinic. Records stay in this browser."
+        title={focus === today ? "Today" : "Clinic day"}
+        lede={`${formatClinicDay(focus)} with ${dayVisits[0]?.providerName ?? "the practice"}. The front desk runs the day from here. Claims are filed by the billing team.`}
         action={
           <div className="flex flex-wrap gap-3">
             <Button variant="secondary" type="button" onClick={resetDemo}>
               Reset demo
             </Button>
             <Button asChild>
-              <Link href="/admin/operations/claims/new">New claim</Link>
+              <Link href="/admin/operations/scheduling">Schedule a visit</Link>
             </Button>
           </div>
         }
       />
       <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Stat label="Billed" value={money(summary.billed)} detail="All demo claims" />
-        <Stat label="Accepted" value={money(summary.accepted)} detail="Accepted and paid" />
-        <Stat label="In process" value={String(summary.processing)} detail="Submitted or processing" />
-        <Stat
-          label="First-pass"
-          value={`${Math.round(summary.firstPass * 100)}%`}
-          detail="Clean claims among decided ones"
-        />
+        <Stat label="On the schedule" value={String(dayVisits.length)} detail={formatClinicDay(focus)} />
+        <Stat label="Still to confirm" value={String(toConfirm.length)} detail="Calls the front desk still owes" />
+        <Stat label="In the office" value={String(inOffice.length)} detail="Arrived or in a room" />
+        <Stat label="Open tasks" value={String(openTasks.length)} detail="Due today or overdue" />
       </div>
-      <div className="mt-10 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {actions.map(([href, title, detail]) => (
-          <Link key={href} href={href} className="border border-line bg-card p-4 hover:border-oxide">
-            <span className="block font-semibold">{title}</span>
-            <span className="mt-1 block text-sm text-muted">{detail}</span>
-          </Link>
-        ))}
-      </div>
-      <div className="mt-10 grid gap-8 lg:grid-cols-[1.4fr_0.8fr]">
+      <div className="mt-10 grid gap-8 lg:grid-cols-[1.5fr_0.8fr]">
         <section>
-          <h2 className="font-display text-2xl">Recent claims</h2>
+          <div className="flex items-end justify-between gap-3">
+            <h2 className="font-display text-2xl">Schedule</h2>
+            <Link href="/admin/operations/scheduling" className="text-sm underline">
+              Full schedule
+            </Link>
+          </div>
           <ul className="mt-4 divide-y divide-line border-y border-line">
-            {recent.map((claim) => (
-              <li key={claim.id}>
-                <Link href={`/admin/operations/claims/${claim.id}`} className="flex items-center justify-between gap-4 py-4">
-                  <span>
-                    <span className="block">{names.get(claim.patientId) ?? "Unknown patient"}</span>
-                    <span className="text-sm text-muted">
-                      {claim.payerName} · {formatDay(claim.dateOfService)} · {claim.controlNumber}
-                    </span>
-                  </span>
-                  <span className="flex items-center gap-3">
-                    <StatusPill status={claim.status} />
-                    <span className="text-sm">{money(claimTotal(claim))}</span>
-                  </span>
-                </Link>
+            {dayVisits.length === 0 ? <li className="py-4 text-sm text-muted">No visits on this day.</li> : null}
+            {dayVisits.map((appointment) => (
+              <li key={appointment.id} className="grid gap-3 py-4 sm:grid-cols-[5.5rem_1fr_auto] sm:items-center">
+                <div>
+                  <p className="font-semibold">{formatTime(appointment.start)}</p>
+                  <p className="text-xs text-muted">{appointment.durationMinutes} min</p>
+                </div>
+                <div>
+                  <Link href={`/admin/operations/patients/${appointment.patientId}`} className="font-semibold hover:text-oxide">
+                    {names.get(appointment.patientId) ?? "Unknown patient"}
+                  </Link>
+                  <p className="text-sm text-muted">
+                    {visitTypeLabel[appointment.visitType] ?? appointment.visitType} · {appointment.reason} · {appointment.room}
+                  </p>
+                  {appointment.notes ? <p className="mt-1 text-sm">{appointment.notes}</p> : null}
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <StatusPill status={appointment.confirmation} label={visitLabel(appointment.confirmation)} />
+                  <StatusPill status={appointment.status} label={visitLabel(appointment.status)} />
+                </div>
               </li>
             ))}
           </ul>
         </section>
-        <section className="grid gap-8">
-          <div>
-            <h2 className="font-display text-2xl">Needs attention</h2>
+        <div className="grid content-start gap-8">
+          <section>
+            <div className="flex items-end justify-between gap-3">
+              <h2 className="font-display text-2xl">Tasks</h2>
+              <Link href="/admin/operations/tasks" className="text-sm underline">
+                All tasks
+              </Link>
+            </div>
             <ul className="mt-4 grid gap-3">
-              {attention.length === 0 ? <li className="text-sm text-muted">No denied or rejected claims.</li> : null}
-              {attention.map((claim) => (
-                <li key={claim.id}>
-                  <Link href={`/admin/operations/denials`} className="block border border-line bg-card p-3 text-sm">
-                    <span className="block font-semibold">{names.get(claim.patientId)}</span>
-                    <span className="text-muted">{claim.denialReason}</span>
+              {openTasks.length === 0 ? <li className="text-sm text-muted">Nothing due.</li> : null}
+              {openTasks.map((task) => (
+                <li key={task.id}>
+                  <Link href={`/admin/operations/patients/${task.patientId}`} className="block border border-line bg-card p-3 text-sm">
+                    <span className="block font-semibold">{task.title}</span>
+                    <span className="text-muted">{task.detail}</span>
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
-          <div>
-            <h2 className="font-display text-2xl">Upcoming visits</h2>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl">Charts to finish</h2>
             <ul className="mt-4 grid gap-3">
-              {upcoming.map((appointment) => (
-                <li key={appointment.id} className="border border-line bg-card p-3 text-sm">
-                  <span className="block font-semibold">{names.get(appointment.patientId)}</span>
-                  <span className="text-muted">
-                    {formatDay(appointment.start)} · {appointment.reason}
-                  </span>
+              {gaps.length === 0 ? <li className="text-sm text-muted">Intake, coverage, and allergies are on file.</li> : null}
+              {gaps.map(({ patient, gaps: items }) => (
+                <li key={patient.id}>
+                  <Link href={`/admin/operations/patients/${patient.id}`} className="block border border-line bg-card p-3 text-sm">
+                    <span className="block font-semibold">{patientName(patient)}</span>
+                    <span className="text-muted">{items.slice(0, 2).join(" · ")}</span>
+                  </Link>
                 </li>
               ))}
             </ul>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
     </main>
   );

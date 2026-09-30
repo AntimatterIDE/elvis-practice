@@ -29,6 +29,18 @@ export function formatWhen(value: string) {
   });
 }
 
+export function formatTime(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+}
+
+export function formatClinicDay(value: string) {
+  const date = new Date(`${value.slice(0, 10)}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+}
+
 export function statusLabel(status: string) {
   return status.replaceAll("_", " ");
 }
