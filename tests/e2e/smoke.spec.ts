@@ -37,5 +37,5 @@ test("missing pages use the custom 404", async ({ page }) => {
 test("admin is behind a login wall", async ({ page }) => {
   await page.goto("/admin");
   await expect(page).toHaveURL(/\/admin\/login/);
-  await expect(page.getByRole("heading", { name: /Sign in|Supabase is not connected/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Sign in|Demo sign-in|Supabase is not connected/ })).toBeVisible();
 });

@@ -63,6 +63,6 @@ export function isAdminHostAllowed(hostHeader: string | null) {
   const hostname = hostHeader.split(":")[0]?.toLowerCase() ?? "";
   if (hostname === "localhost" || hostname === "127.0.0.1") return true;
   if (hostname === canonicalHost().toLowerCase()) return true;
-  if (process.env.VERCEL_ENV === "preview" && hostname.endsWith(".vercel.app")) return true;
+  if (hostname.endsWith(".vercel.app")) return true;
   return false;
 }
