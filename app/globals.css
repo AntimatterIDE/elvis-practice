@@ -177,6 +177,11 @@ body {
   }
 }
 
+:where(.admin-canvas) :where(.border-line.bg-card) {
+  border-radius: 1rem;
+  box-shadow: 0 16px 36px -28px rgb(7 30 54 / 0.45);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -73,16 +73,16 @@ export function PatientDetail({ id }: { id: string }) {
       <PageHeader
         kicker={`MRN ${patient.mrn || "new"}`}
         title={patientName(patient)}
-        lede={[
-          patient.preferredName && patient.preferredName !== patient.firstName ? `Goes by ${patient.preferredName}` : "",
-          age !== null ? `${age} yrs` : "",
-          patient.pronouns,
-          `DOB ${formatDay(patient.dateOfBirth)}`,
-          patient.phone || "No phone",
-          patient.language,
-        ]
-          .filter(Boolean)
-          .join(" · ")}
+        lede={patient.preferredName && patient.preferredName !== patient.firstName ? `Goes by ${patient.preferredName}` : undefined}
+        meta={
+          <dl className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            <Identity label="Date of birth" value={formatDay(patient.dateOfBirth)} />
+            <Identity label="Age" value={age !== null ? `${age} yrs` : ""} />
+            <Identity label="Phone" value={patient.phone || "No phone on file"} />
+            <Identity label="Language" value={patient.language} />
+            <Identity label="Pronouns" value={patient.pronouns} />
+          </dl>
+        }
         action={
           <Button asChild>
             <Link href={`/admin/operations/scheduling?patient=${patient.id}`}>Schedule visit</Link>
@@ -98,22 +98,34 @@ export function PatientDetail({ id }: { id: string }) {
           ))}
         </div>
       ) : null}
-      <p className={`mt-4 border px-4 py-3 text-sm ${severeAllergy || !patient.allergiesReviewed ? "border-emergency/30 bg-red-50" : "border-line bg-mint/40"}`}>
-        {!patient.allergiesReviewed
-          ? "Allergies have not been reviewed."
-          : patient.allergies.length
-            ? `Allergies: ${patient.allergies.map((allergy) => `${allergy.substance} (${allergy.reaction})`).join(" · ")}`
-            : "No known drug allergies."}
-        {coverage ? ` · ${coverage.payerName} copay ${money(coverage.copay)}` : ""}
-      </p>
-      <div className="mt-6 flex gap-2 overflow-x-auto border-b border-line">
+      <div
+        className={`mt-5 rounded-2xl border px-4 py-3 text-sm ${
+          !patient.allergiesReviewed
+            ? "border-amber-200 bg-amber-50"
+            : severeAllergy
+              ? "border-emergency/30 bg-red-50"
+              : "border-line bg-mint/50"
+        }`}
+      >
+        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-muted">Allergies</p>
+        <p className="mt-1 font-medium">
+          {!patient.allergiesReviewed
+            ? "Not reviewed. Confirm before prescribing or injecting."
+            : patient.allergies.length
+              ? patient.allergies.map((allergy) => `${allergy.substance} (${allergy.reaction})`).join(" · ")
+              : "No known drug allergies."}
+        </p>
+        {coverage ? <p className="mt-1 text-muted">{coverage.payerName} · copay {money(coverage.copay)}</p> : null}
+      </div>
+      <div className="mt-6 flex flex-wrap gap-1 rounded-2xl bg-mist/80 p-1" role="tablist" aria-label="Chart">
         {tabs.map(([key, label]) => (
           <button
             key={key}
             type="button"
+            role="tab"
             onClick={() => setTab(key)}
-            className={`shrink-0 border-b-2 px-3 py-2 text-sm ${tab === key ? "border-oxide font-semibold text-oxide" : "border-transparent text-muted"}`}
-            aria-current={tab === key ? "page" : undefined}
+            className={`shrink-0 rounded-xl px-3 py-2 text-sm ${tab === key ? "bg-card font-semibold text-ink shadow-sm" : "text-muted"}`}
+            aria-selected={tab === key}
           >
             {label}
           </button>
@@ -143,6 +155,16 @@ export function PatientDetail({ id }: { id: string }) {
         {tab === "billing" ? <Billing claims={claims.filter((claim) => claim.patientId === id)} /> : null}
       </div>
     </main>
+  );
+}
+
+function Identity({ label, value }: { label: string; value: string }) {
+  if (!value) return null;
+  return (
+    <div>
+      <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-muted">{label}</dt>
+      <dd className="mt-0.5">{value}</dd>
+    </div>
   );
 }
 

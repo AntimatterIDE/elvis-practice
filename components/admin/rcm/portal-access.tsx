@@ -54,8 +54,8 @@ export function PortalAccess({ patient }: { patient: Patient }) {
   const text = `Portal: ${loginUrl}\nEmail: ${email}\nPassword: ${password}`;
 
   return (
-    <section className="border border-line bg-card p-4 lg:col-span-2">
-      <h2 className="font-display text-2xl">Patient portal</h2>
+    <section className="rounded-2xl border border-line bg-card p-5 lg:col-span-2">
+      <h2 className="font-display text-2xl tracking-tight">Patient portal</h2>
       <p className="mt-2 text-sm text-muted">
         {hasLogin
           ? "This patient can sign in with the email below. Resetting the password replaces the old one."

@@ -17,8 +17,8 @@ const siteLinks = [
 const practiceLinks = [
   ["/admin/operations", "Today"],
   ["/admin/operations/patients", "Patients"],
-  ["/admin/operations/intake", "Intake"],
   ["/admin/operations/scheduling", "Schedule"],
+  ["/admin/operations/intake", "Intake"],
   ["/admin/operations/tasks", "Tasks"],
   ["/admin/operations/practice", "Practice"],
 ] as const;
@@ -36,10 +36,7 @@ const billingLinks = [
 function isActive(pathname: string, href: string) {
   if (href === "/admin" || href === "/admin/operations") return pathname === href;
   if (href === "/admin/operations/claims") {
-    return (
-      pathname === href ||
-      (pathname.startsWith(`${href}/`) && !pathname.startsWith(`${href}/drafts`))
-    );
+    return pathname === href || (pathname.startsWith(`${href}/`) && !pathname.startsWith(`${href}/drafts`));
   }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -54,19 +51,25 @@ function Group({
   pathname: string;
 }) {
   return (
-    <div className="mt-6">
-      <p className="text-xs uppercase tracking-[0.16em] text-muted">{label}</p>
-      <div className="mt-2 grid gap-1.5 text-sm">
-        {links.map(([href, title]) => (
-          <Link
-            key={href}
-            href={href}
-            className={cn(isActive(pathname, href) && "font-semibold text-oxide")}
-            aria-current={isActive(pathname, href) ? "page" : undefined}
-          >
-            {title}
-          </Link>
-        ))}
+    <div className="mt-5 first:mt-0">
+      <p className="px-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-foam/70">{label}</p>
+      <div className="mt-1.5 grid gap-0.5">
+        {links.map(([href, title]) => {
+          const active = isActive(pathname, href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={cn(
+                "rounded-lg px-3 py-2 text-sm text-paper/75 transition hover:bg-white/10 hover:text-paper",
+                active && "bg-white/15 font-semibold text-foam",
+              )}
+              aria-current={active ? "page" : undefined}
+            >
+              {title}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
@@ -76,9 +79,36 @@ export function AdminNav() {
   const pathname = usePathname();
   return (
     <nav aria-label="Admin">
-      <Group label="Practice" links={practiceLinks} pathname={pathname} />
-      <Group label="Billing" links={billingLinks} pathname={pathname} />
-      <Group label="Site" links={siteLinks} pathname={pathname} />
+      <div className="md:hidden">
+        <div className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1">
+          {practiceLinks.map(([href, title]) => {
+            const active = isActive(pathname, href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={cn(
+                  "shrink-0 rounded-full px-3 py-1.5 text-sm text-paper/80",
+                  active && "bg-white/15 font-semibold text-foam",
+                )}
+                aria-current={active ? "page" : undefined}
+              >
+                {title}
+              </Link>
+            );
+          })}
+        </div>
+        <details className="mt-3">
+          <summary className="cursor-pointer px-1 text-xs font-semibold uppercase tracking-[0.16em] text-foam/70">Billing and website</summary>
+          <Group label="Billing" links={billingLinks} pathname={pathname} />
+          <Group label="Website" links={siteLinks} pathname={pathname} />
+        </details>
+      </div>
+      <div className="hidden md:block">
+        <Group label="Clinic" links={practiceLinks} pathname={pathname} />
+        <Group label="Billing" links={billingLinks} pathname={pathname} />
+        <Group label="Website" links={siteLinks} pathname={pathname} />
+      </div>
     </nav>
   );
 }

@@ -59,12 +59,12 @@ export function Workbench() {
               Full schedule
             </Link>
           </div>
-          <ul className="mt-4 divide-y divide-line border-y border-line">
-            {dayVisits.length === 0 ? <li className="py-4 text-sm text-muted">No visits on this day.</li> : null}
+          <ul className="mt-4 overflow-hidden rounded-2xl border border-line bg-card">
+            {dayVisits.length === 0 ? <li className="px-4 py-5 text-sm text-muted">No visits on this day. The schedule is clear.</li> : null}
             {dayVisits.map((appointment) => (
-              <li key={appointment.id} className="grid gap-3 py-4 sm:grid-cols-[5.5rem_1fr_auto] sm:items-center">
+              <li key={appointment.id} className="grid gap-3 border-b border-line px-4 py-4 last:border-b-0 sm:grid-cols-[5.5rem_1fr_auto] sm:items-center">
                 <div>
-                  <p className="font-semibold">{formatTime(appointment.start)}</p>
+                  <p className="font-semibold tabular-nums">{formatTime(appointment.start)}</p>
                   <p className="text-xs text-muted">{appointment.durationMinutes} min</p>
                 </div>
                 <div>
@@ -96,7 +96,7 @@ export function Workbench() {
               {openTasks.length === 0 ? <li className="text-sm text-muted">Nothing due.</li> : null}
               {openTasks.map((task) => (
                 <li key={task.id}>
-                  <Link href={`/admin/operations/patients/${task.patientId}`} className="block border border-line bg-card p-3 text-sm">
+                  <Link href={`/admin/operations/patients/${task.patientId}`} className="block rounded-2xl border border-line bg-card p-3 text-sm">
                     <span className="block font-semibold">{task.title}</span>
                     <span className="text-muted">{task.detail}</span>
                   </Link>
@@ -110,7 +110,7 @@ export function Workbench() {
               {gaps.length === 0 ? <li className="text-sm text-muted">Intake, coverage, and allergies are on file.</li> : null}
               {gaps.map(({ patient, gaps: items }) => (
                 <li key={patient.id}>
-                  <Link href={`/admin/operations/patients/${patient.id}`} className="block border border-line bg-card p-3 text-sm">
+                  <Link href={`/admin/operations/patients/${patient.id}`} className="block rounded-2xl border border-line bg-card p-3 text-sm">
                     <span className="block font-semibold">{patientName(patient)}</span>
                     <span className="text-muted">{items.slice(0, 2).join(" · ")}</span>
                   </Link>

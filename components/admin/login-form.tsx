@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import type { AdminFormState } from "@/app/admin/actions";
+import { fieldClass } from "@/components/admin/rcm/ui";
 
 const initial: AdminFormState = {};
 
@@ -17,21 +18,21 @@ export function LoginForm({
   const [state, formAction, pending] = useActionState(action, initial);
 
   return (
-    <form action={formAction} className="mt-8 grid gap-4">
-      <label className="grid gap-2 text-sm" htmlFor="email">
+    <form action={formAction} className="mt-6 grid gap-4">
+      <label className="grid gap-2 text-sm font-medium" htmlFor="email">
         Email
-        <input id="email" name="email" type="email" autoComplete="username" required defaultValue={defaultEmail} className="border border-line bg-card px-3 py-3 text-base" />
+        <input id="email" name="email" type="email" autoComplete="username" required defaultValue={defaultEmail} className={fieldClass} />
       </label>
-      <label className="grid gap-2 text-sm" htmlFor="password">
+      <label className="grid gap-2 text-sm font-medium" htmlFor="password">
         Password
-        <input id="password" name="password" type="password" autoComplete="current-password" required defaultValue={defaultPassword} className="border border-line bg-card px-3 py-3 text-base" />
+        <input id="password" name="password" type="password" autoComplete="current-password" required defaultValue={defaultPassword} className={fieldClass} />
       </label>
       {state.error ? (
-        <p role="alert" className="text-sm text-emergency">
+        <p role="alert" className="rounded-xl border border-emergency/30 bg-red-50 px-3 py-2 text-sm text-emergency">
           {state.error}
         </p>
       ) : null}
-      <button type="submit" disabled={pending} className="justify-self-start bg-oxide px-5 py-3 text-sm text-paper">
+      <button type="submit" disabled={pending} className="mt-1 inline-flex items-center justify-center rounded-full bg-oxide px-5 py-3.5 text-sm font-semibold text-paper hover:bg-oxide-deep disabled:opacity-50">
         {pending ? "Signing in…" : "Sign in"}
       </button>
     </form>

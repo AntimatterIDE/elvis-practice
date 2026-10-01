@@ -53,7 +53,7 @@ export function ScheduleDesk() {
             key={day}
             type="button"
             onClick={() => setPickedDay(day)}
-            className={`shrink-0 border px-3 py-2 text-left text-sm ${day === focus ? "border-oxide bg-mint" : "border-line bg-card"}`}
+            className={`shrink-0 rounded-2xl border px-4 py-2.5 text-left text-sm ${day === focus ? "border-oxide bg-mint" : "border-line bg-card"}`}
           >
             <span className="block font-semibold">{formatClinicDay(day).split(",")[0]}</span>
             <span className="text-muted">{day.slice(5)}</span>
@@ -63,13 +63,13 @@ export function ScheduleDesk() {
       <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_18rem]">
         <section>
           <h2 className="font-display text-2xl">{formatClinicDay(focus)}</h2>
-          <ul className="mt-4 divide-y divide-line border-y border-line">
-            {rows.length === 0 ? <li className="py-4 text-sm text-muted">No visits on this day.</li> : null}
+          <ul className="mt-4 overflow-hidden rounded-2xl border border-line bg-card">
+            {rows.length === 0 ? <li className="px-4 py-5 text-sm text-muted">No visits on this day.</li> : null}
             {rows.map((appointment) => (
-              <li key={appointment.id} className="grid gap-3 py-4">
+              <li key={appointment.id} className="grid gap-3 border-b border-line px-4 py-4 last:border-b-0">
                 <div className="grid gap-3 sm:grid-cols-[5.5rem_1fr] sm:items-start">
                   <div>
-                    <p className="font-semibold">{formatTime(appointment.start)}</p>
+                    <p className="font-semibold tabular-nums">{formatTime(appointment.start)}</p>
                     <p className="text-xs text-muted">{appointment.durationMinutes} min</p>
                   </div>
                   <div className="flex flex-wrap items-start justify-between gap-3">

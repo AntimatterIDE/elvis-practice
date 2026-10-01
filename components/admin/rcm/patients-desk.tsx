@@ -88,8 +88,8 @@ export function PatientsDesk() {
             className={fieldClass}
             aria-label="Search patients"
           />
-          <ul className="mt-4 divide-y divide-line border-y border-line">
-            {rows.length === 0 ? <li className="py-4 text-sm text-muted">No patients match.</li> : null}
+          <ul className="mt-4 overflow-hidden rounded-2xl border border-line bg-card">
+            {rows.length === 0 ? <li className="px-4 py-5 text-sm text-muted">No charts match that search.</li> : null}
             {rows.map((patient) => {
               const upcoming = appointments
                 .filter(
@@ -101,19 +101,23 @@ export function PatientsDesk() {
                 .sort((a, b) => a.start.localeCompare(b.start))[0];
               const gaps = chartGaps(patient);
               const age = ageFromDob(patient.dateOfBirth, today);
+              const initials = `${patient.firstName.slice(0, 1)}${patient.lastName.slice(0, 1)}`.toUpperCase();
               return (
-                <li key={patient.id}>
-                  <Link href={`/admin/operations/patients/${patient.id}`} className="flex items-center justify-between gap-4 py-4">
-                    <span>
+                <li key={patient.id} className="border-b border-line last:border-b-0">
+                  <Link href={`/admin/operations/patients/${patient.id}`} className="flex items-center gap-4 px-4 py-3.5 hover:bg-mist/60">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-mist text-xs font-semibold tracking-wide text-pine" aria-hidden>
+                      {initials}
+                    </span>
+                    <span className="min-w-0 flex-1">
                       <span className="block font-semibold">{patientName(patient)}</span>
                       <span className="text-sm text-muted">
                         DOB {formatDay(patient.dateOfBirth)}
-                        {age !== null ? ` · ${age}` : ""} · MRN {patient.mrn || "new"} · {patient.phone || "No phone"}
+                        {age !== null ? ` · ${age} yrs` : ""} · MRN {patient.mrn || "new"} · {patient.phone || "No phone"}
                       </span>
                     </span>
-                    <span className="text-right text-sm text-muted">
-                      <span className="block">{upcoming ? `${formatDay(upcoming.start)} ${formatTime(upcoming.start)}` : "No upcoming visit"}</span>
-                      <span className="block">{gaps.length ? `${gaps.length} chart items open` : patient.payerName}</span>
+                    <span className="hidden text-right text-sm text-muted sm:block">
+                      <span className="block text-ink">{upcoming ? `${formatDay(upcoming.start)} ${formatTime(upcoming.start)}` : "No visit booked"}</span>
+                      <span className="block">{gaps.length ? `${gaps.length} items still open on the chart` : patient.payerName}</span>
                     </span>
                   </Link>
                 </li>
@@ -121,8 +125,11 @@ export function PatientsDesk() {
             })}
           </ul>
         </section>
-        <form onSubmit={onSubmit} className="grid h-fit gap-4 border border-line bg-card p-4">
-          <h2 className="font-display text-2xl">Add patient</h2>
+        <form onSubmit={onSubmit} className="grid h-fit gap-4 rounded-2xl border border-line bg-card p-5">
+          <div>
+            <h2 className="font-display text-2xl tracking-tight">Walk-in chart</h2>
+            <p className="mt-1 text-sm leading-relaxed text-muted">Use this when the patient is here. Send an intake link when they can fill it out first.</p>
+          </div>
           <Field label="First name">
             <input className={fieldClass} value={form.firstName} onChange={(event) => update("firstName", event.target.value)} required />
           </Field>
