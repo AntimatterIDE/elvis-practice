@@ -114,14 +114,17 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
         title="Patient intake"
         lede="Shape the questions, send a private link, and open a chart when the form comes back. A portal login is a separate step you can hand to the patient."
       />
-      <p className="mt-4 text-sm text-muted">
+      <p className="mt-4 text-sm leading-relaxed text-muted">
         {snapshot.storage === "database"
           ? "Submitted forms are stored in the practice database."
           : "Submitted forms are stored on this server. Connect Supabase and run the portal migration to keep them in the practice database."}
       </p>
-      <div className="mt-8 grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
-        <section className="grid gap-4 border border-line bg-card p-4">
-          <h2 className="font-display text-2xl">Form</h2>
+      <div className="mt-8 grid items-start gap-8 xl:grid-cols-[22rem_minmax(0,1fr)]">
+        <section className="order-2 grid gap-4 rounded-2xl border border-line bg-card p-5">
+          <div>
+            <h2 className="font-display text-2xl tracking-tight">Questions on the form</h2>
+            <p className="mt-1 text-sm leading-relaxed text-muted">Name, date of birth, and email stay on the form. Everything else can be reworded, reordered, or removed.</p>
+          </div>
           <Field label="Title">
             <input className={fieldClass} value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} />
           </Field>
@@ -135,7 +138,7 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
           </Field>
           <ol className="grid gap-4">
             {form.fields.map((field, index) => (
-              <li key={field.id} className="grid gap-3 border border-line p-3">
+              <li key={field.id} className="grid gap-3 rounded-2xl border border-line bg-paper p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-xs uppercase tracking-[0.14em] text-muted">Question {index + 1}</p>
                   <div className="flex gap-3 text-sm">
@@ -252,10 +255,12 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
           </div>
           {saved ? <p className="text-sm text-oxide">{saved}</p> : null}
         </section>
-        <div className="grid gap-6">
-          <form onSubmit={onInvite} className="grid gap-4 border border-line bg-card p-4">
-            <h2 className="font-display text-2xl">Send a link</h2>
-            <p className="text-sm text-muted">The link expires in 14 days and can be submitted once.</p>
+        <div className="order-1 grid gap-6">
+          <form onSubmit={onInvite} className="grid gap-4 rounded-2xl border border-oxide/30 bg-card p-5">
+            <div>
+              <h2 className="font-display text-2xl tracking-tight">Send a form</h2>
+              <p className="mt-1 text-sm leading-relaxed text-muted">One private link. It expires in 14 days and can be submitted once.</p>
+            </div>
             <Field label="Patient name">
               <input className={fieldClass} value={recipientName} onChange={(event) => setRecipientName(event.target.value)} />
             </Field>
@@ -265,15 +270,15 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
             <Button type="submit">Create link</Button>
             {freshPath ? <LinkCard path={freshPath} origin={origin} email={snapshot.invites[0]?.recipientEmail ?? ""} name={snapshot.invites[0]?.recipientName ?? ""} /> : null}
           </form>
-          <section className="border border-line bg-card p-4">
-            <h2 className="font-display text-2xl">Links</h2>
+          <section className="rounded-2xl border border-line bg-card p-5">
+            <h2 className="font-display text-2xl tracking-tight">Links out</h2>
             <ul className="mt-3 divide-y divide-line">
               {snapshot.invites.length === 0 ? <li className="py-3 text-sm text-muted">No links yet.</li> : null}
               {snapshot.invites.map((invite) => (
                 <li key={invite.id} className="py-3 text-sm">
                   <span className="block font-semibold">{invite.recipientName || "Unnamed link"}</span>
                   <span className="text-muted">
-                    {invite.status} · {formatDay(invite.createdAt)}
+                    {invite.status === "open" ? "Waiting on the patient" : invite.status === "completed" ? "Submitted" : "Expired"} · {formatDay(invite.createdAt)}
                     {invite.recipientEmail ? ` · ${invite.recipientEmail}` : ""}
                   </span>
                   {invite.status === "open" ? <LinkCard path={invite.path} origin={origin} email={invite.recipientEmail} name={invite.recipientName} /> : null}
@@ -286,8 +291,8 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
               ))}
             </ul>
           </section>
-          <section className="border border-line bg-card p-4">
-            <h2 className="font-display text-2xl">Submitted forms</h2>
+          <section className="rounded-2xl border border-line bg-card p-5">
+            <h2 className="font-display text-2xl tracking-tight">Charts opened</h2>
             <ul className="mt-3 divide-y divide-line">
               {snapshot.submissions.length === 0 ? <li className="py-3 text-sm text-muted">Nothing submitted yet.</li> : null}
               {snapshot.submissions.map((submission) => {
@@ -326,7 +331,7 @@ function LinkCard({ path, origin, email, name }: { path: string; origin: string;
       )}`
     : "";
   return (
-    <div className="mt-3 grid gap-2 bg-mist p-3">
+    <div className="mt-3 grid gap-2 rounded-xl bg-mist p-3">
       <p className="break-all text-sm">{url}</p>
       <div className="flex flex-wrap gap-3 text-sm">
         <button type="button" className="underline" onClick={() => void navigator.clipboard.writeText(url)}>
@@ -346,7 +351,7 @@ function CredentialCard({ email, password, origin }: { email: string; password: 
   const loginUrl = `${origin}/portal/login`;
   const text = `Portal: ${loginUrl}\nEmail: ${email}\nPassword: ${password}`;
   return (
-    <div className="mt-3 grid gap-2 border border-oxide/30 bg-mint/40 p-3">
+    <div className="mt-3 grid gap-2 rounded-xl border border-oxide/30 bg-mint/50 p-3">
       <p>Show this password once. It cannot be looked up later. You can reset it.</p>
       <p className="break-all">
         {loginUrl}

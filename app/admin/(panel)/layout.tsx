@@ -3,7 +3,9 @@ import { signOut } from "@/app/admin/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { PortalBridge } from "@/components/admin/rcm/portal-bridge";
 import { RcmProvider } from "@/components/admin/rcm/store";
+import { Mark } from "@/components/site/mark";
 import { getStaffSession } from "@/lib/supabase/session";
+import { practice } from "@/lib/site";
 
 export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
   const staff = await getStaffSession();
@@ -13,27 +15,39 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
   }
 
   return (
-    <div className="mx-auto grid min-h-full max-w-7xl gap-8 px-5 py-8 md:grid-cols-[16rem_1fr] md:px-8">
-      <aside className="border-b border-line pb-6 md:sticky md:top-6 md:max-h-[calc(100vh-3rem)] md:overflow-y-auto md:border-b-0 md:border-r md:pr-6">
-        <p className="font-display text-2xl">Admin</p>
-        <p className="mt-2 text-sm text-muted">
-          {staff.displayName}
-          <span className="mt-1 block uppercase tracking-[0.14em]">{staff.role}</span>
-        </p>
-        {staff.userId === "demo-admin" ? (
-          <p className="mt-3 text-sm text-oxide">Demo admin. Intake forms and portal logins are saved on this server.</p>
-        ) : staff.aal !== "aal2" ? (
-          <p className="mt-3 text-sm text-oxide">Development session without multi-factor authentication.</p>
-        ) : null}
-        <AdminNav />
-        <form action={signOut} className="mt-6">
-          <button className="text-sm underline underline-offset-4">Sign out</button>
-        </form>
+    <div className="min-h-full md:grid md:grid-cols-[17rem_minmax(0,1fr)]">
+      <aside className="bg-pine text-paper md:sticky md:top-0 md:flex md:h-screen md:flex-col md:overflow-y-auto">
+        <div className="flex items-center gap-3 px-4 py-5">
+          <Mark className="bg-white/10 text-foam shadow-none" />
+          <div className="min-w-0">
+            <p className="truncate font-display text-lg leading-tight">{practice.name}</p>
+            <p className="text-xs text-foam/70">Practice desk</p>
+          </div>
+        </div>
+        <div className="px-3 pb-4 md:flex-1">
+          <AdminNav />
+        </div>
+        <div className="border-t border-white/10 px-4 py-4">
+          <p className="text-sm font-semibold">{staff.displayName}</p>
+          <p className="mt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-foam/70">{staff.role}</p>
+          {staff.userId === "demo-admin" ? (
+            <p className="mt-3 text-xs leading-relaxed text-paper/60">
+              Demo desk. Intake and portal logins are saved on the server. Other charts stay in this browser until a patient login is created.
+            </p>
+          ) : staff.aal !== "aal2" ? (
+            <p className="mt-3 text-xs leading-relaxed text-foam">Development session without multi-factor authentication.</p>
+          ) : null}
+          <form action={signOut} className="mt-4">
+            <button className="text-sm text-paper/70 underline decoration-white/30 underline-offset-4 hover:text-paper">Sign out</button>
+          </form>
+        </div>
       </aside>
-      <RcmProvider>
-        <PortalBridge />
-        <div>{children}</div>
-      </RcmProvider>
+      <div className="admin-canvas min-w-0">
+        <RcmProvider>
+          <PortalBridge />
+          <div className="mx-auto max-w-6xl px-5 py-8 md:px-10 md:py-10">{children}</div>
+        </RcmProvider>
+      </div>
     </div>
   );
 }
