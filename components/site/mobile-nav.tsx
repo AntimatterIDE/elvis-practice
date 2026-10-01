@@ -38,6 +38,12 @@ export function MobileNav() {
                 </a>
               </Dialog.Close>
             ))}
+            <Dialog.Close asChild>
+              <a className="flex items-center justify-between border-b border-line py-4 text-lg font-medium text-ink" href="/portal/login">
+                Patient login
+                <ArrowRight className="size-4 text-oxide" aria-hidden />
+              </a>
+            </Dialog.Close>
           </nav>
           <Dialog.Close asChild>
             <a

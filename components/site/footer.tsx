@@ -40,6 +40,9 @@ export function Footer() {
           <a href="/medical-disclaimer" className="text-paper/85 hover:text-foam">
             Medical disclaimer
           </a>
+          <a href="/portal/login" className="text-paper/85 hover:text-foam">
+            Patient login
+          </a>
         </nav>
       </div>
       <div className="border-t border-white/10">

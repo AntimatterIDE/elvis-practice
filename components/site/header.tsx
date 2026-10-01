@@ -29,9 +29,14 @@ export function Header() {
           <p className="truncate">
             New patients are welcome. Phone, address, and hours publish when the practice confirms them.
           </p>
-          <a href="/contact" className="shrink-0 font-semibold text-foam hover:underline">
-            Contact
-          </a>
+          <span className="flex shrink-0 gap-4">
+            <a href="/portal/login" className="font-semibold text-foam hover:underline">
+              Patient login
+            </a>
+            <a href="/contact" className="font-semibold text-foam hover:underline">
+              Contact
+            </a>
+          </span>
         </div>
       </div>
       <header>

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { signOut } from "@/app/admin/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { PortalBridge } from "@/components/admin/rcm/portal-bridge";
 import { RcmProvider } from "@/components/admin/rcm/store";
 import { getStaffSession } from "@/lib/supabase/session";
 
@@ -20,7 +21,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
           <span className="mt-1 block uppercase tracking-[0.14em]">{staff.role}</span>
         </p>
         {staff.userId === "demo-admin" ? (
-          <p className="mt-3 text-sm text-oxide">Demo admin. Practice records stay in this browser.</p>
+          <p className="mt-3 text-sm text-oxide">Demo admin. Intake forms and portal logins are saved on this server.</p>
         ) : staff.aal !== "aal2" ? (
           <p className="mt-3 text-sm text-oxide">Development session without multi-factor authentication.</p>
         ) : null}
@@ -30,6 +31,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
         </form>
       </aside>
       <RcmProvider>
+        <PortalBridge />
         <div>{children}</div>
       </RcmProvider>
     </div>

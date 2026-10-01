@@ -19,6 +19,7 @@ import type {
   Problem,
   Sex,
 } from "@/lib/rcm/types";
+import { PortalAccess } from "@/components/admin/rcm/portal-access";
 import { Field, LoadingDesk, PageHeader, StatusPill, fieldClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -40,11 +41,12 @@ function nid(prefix: string) {
 
 export function PatientDetail({ id }: { id: string }) {
   const today = useClinicToday();
-  const { ready, patients, claims, appointments, eligibility, tasks, patchPatient, removePatient, updateAppointment } = useRcm();
+  const { ready, rosterReady, patients, claims, appointments, eligibility, tasks, patchPatient, removePatient, updateAppointment } = useRcm();
   const [tab, setTab] = useState<Tab>("overview");
   const patient = patients.find((item) => item.id === id);
 
   if (!ready) return <LoadingDesk />;
+  if (!patient && !rosterReady) return <LoadingDesk />;
   if (!patient) {
     return (
       <main>
@@ -160,6 +162,20 @@ function Overview({
   const coverage = primaryCoverage(patient);
   return (
     <div className="grid gap-4 lg:grid-cols-2">
+      <PortalAccess patient={patient} />
+      {patient.intakeAnswers?.length ? (
+        <section className="border border-line bg-card p-4 lg:col-span-2">
+          <h2 className="font-display text-2xl">Intake answers</h2>
+          <dl className="mt-3 grid gap-3">
+            {patient.intakeAnswers.map((answer) => (
+              <div key={answer.label}>
+                <dt className="text-xs uppercase tracking-[0.14em] text-muted">{answer.label}</dt>
+                <dd className="mt-1 text-sm">{answer.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ) : null}
       <section className="border border-line bg-card p-4">
         <h2 className="font-display text-2xl">Next visit</h2>
         {nextVisit ? (

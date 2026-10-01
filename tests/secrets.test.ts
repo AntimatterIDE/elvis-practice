@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 const allowed = new Set([
   "lib/supabase/admin.ts",
   "lib/env.ts",
+  "lib/portal/supabase-store.ts",
   "scripts/seed-content.ts",
 ]);
 
