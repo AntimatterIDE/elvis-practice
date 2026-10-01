@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
-import { applyPrimaryCoverage, emptyVitals, normalizeState, withChart } from "@/lib/rcm/chart";
+import { applyPrimaryCoverage, emptyVitals, normalizeAppointment, normalizePatient, normalizeState, withChart } from "@/lib/rcm/chart";
 import { STORAGE_KEY, createSeedState } from "@/lib/rcm/seed";
 import type {
   Appointment,
@@ -17,7 +17,9 @@ import type {
   ServiceLine,
 } from "@/lib/rcm/types";
 
-type RcmContextValue = RcmState & {
+type DeskSnapshot = RcmState & { rosterReady: boolean };
+
+type RcmContextValue = DeskSnapshot & {
   ready: boolean;
   addPatient: (input: PatientInput) => Patient;
   updatePatient: (id: string, input: PatientInput) => void;
@@ -37,8 +39,16 @@ type RcmContextValue = RcmState & {
 
 const RcmContext = createContext<RcmContextValue | null>(null);
 const serverState = createSeedState();
+const serverSnapshot: DeskSnapshot = { ...serverState, rosterReady: false };
 const listeners = new Set<() => void>();
+const portalListeners = new Set<(snap: { patients: Patient[]; appointments: Appointment[] }) => void>();
+const removalListeners = new Set<(ids: string[]) => void>();
 let clientState: RcmState | null = null;
+let published: DeskSnapshot | null = null;
+let rosterReady = false;
+let portalReady = false;
+let portalIds = new Set<string>();
+let pushChain: Promise<void> = Promise.resolve();
 
 function isState(value: unknown): value is RcmState {
   if (!value || typeof value !== "object") return false;
@@ -57,12 +67,17 @@ function readStored() {
   }
 }
 
+function ensureClient() {
+  if (clientState) return;
+  const stored = readStored();
+  clientState = stored ? normalizeState(stored) : serverState;
+  published = { ...clientState, rosterReady };
+}
+
 function getSnapshot() {
-  if (!clientState) {
-    const stored = readStored();
-    clientState = stored ? normalizeState(stored) : serverState;
-  }
-  return clientState;
+  ensureClient();
+  if (!published) published = { ...clientState!, rosterReady };
+  return published;
 }
 
 function subscribe(listener: () => void) {
@@ -70,10 +85,102 @@ function subscribe(listener: () => void) {
   return () => listeners.delete(listener);
 }
 
-function commit(next: RcmState) {
-  clientState = next;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+function emit() {
+  published = { ...clientState!, rosterReady };
   for (const listener of listeners) listener();
+}
+
+function notifyPortalPush() {
+  if (!clientState || !portalReady) return;
+  const patients = clientState.patients.filter((patient) => portalIds.has(patient.id));
+  if (!patients.length) return;
+  const appointments = clientState.appointments.filter((appointment) => portalIds.has(appointment.patientId));
+  const snap = { patients, appointments };
+  for (const listener of portalListeners) listener(snap);
+}
+
+function withoutRoster(next: RcmState) {
+  if (!("rosterReady" in next)) return next;
+  const rest = { ...next };
+  delete (rest as { rosterReady?: boolean }).rosterReady;
+  return rest;
+}
+
+function commit(next: RcmState, mode: "local" | "merge" = "local") {
+  const rest = withoutRoster(next);
+  const previous = clientState;
+  clientState = rest;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(rest));
+  emit();
+  if (mode !== "local" || !portalReady || !previous) return;
+  const removed = previous.patients
+    .filter((patient) => portalIds.has(patient.id) && !rest.patients.some((item) => item.id === patient.id))
+    .map((patient) => patient.id);
+  for (const id of removed) portalIds.delete(id);
+  if (removed.length) {
+    for (const listener of removalListeners) listener(removed);
+  }
+  notifyPortalPush();
+}
+
+export function subscribePortalRemoval(listener: (ids: string[]) => void) {
+  removalListeners.add(listener);
+  return () => {
+    removalListeners.delete(listener);
+  };
+}
+
+export function subscribePortalPush(listener: (snap: { patients: Patient[]; appointments: Appointment[] }) => void) {
+  portalListeners.add(listener);
+  return () => {
+    portalListeners.delete(listener);
+  };
+}
+
+export function enqueuePortalPush(task: () => Promise<void>) {
+  pushChain = pushChain.then(task, task);
+  return pushChain;
+}
+
+export function whenPortalIdle() {
+  return pushChain;
+}
+
+export function markRosterReady() {
+  ensureClient();
+  if (rosterReady) return;
+  rosterReady = true;
+  emit();
+}
+
+export function notePortalPatient(id: string) {
+  portalIds.add(id);
+  portalReady = true;
+}
+
+export function mergePortalRoster(patients: Patient[], appointments: Appointment[]) {
+  ensureClient();
+  const current = clientState!;
+  const ids = new Set(patients.map((patient) => patient.id));
+  portalIds = ids;
+  portalReady = true;
+  rosterReady = true;
+  const serverAppointmentIds = new Set(appointments.map((appointment) => appointment.id));
+  const pending = current.appointments.filter(
+    (appointment) => ids.has(appointment.patientId) && !serverAppointmentIds.has(appointment.id),
+  );
+  commit(
+    {
+      ...current,
+      patients: [...patients.map((patient) => normalizePatient(patient)), ...current.patients.filter((patient) => !ids.has(patient.id))],
+      appointments: [
+        ...appointments.map((appointment) => normalizeAppointment(appointment)),
+        ...pending,
+        ...current.appointments.filter((appointment) => !ids.has(appointment.patientId)),
+      ],
+    },
+    pending.length ? "local" : "merge",
+  );
 }
 
 function nid(prefix: string) {
@@ -81,7 +188,7 @@ function nid(prefix: string) {
 }
 
 export function RcmProvider({ children }: { children: React.ReactNode }) {
-  const state = useSyncExternalStore(subscribe, getSnapshot, () => serverState);
+  const state = useSyncExternalStore(subscribe, getSnapshot, () => serverSnapshot);
 
   const value = useMemo<RcmContextValue>(() => {
     return {
@@ -239,7 +346,7 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
       resetDemo: () => {
         clientState = createSeedState();
         localStorage.removeItem(STORAGE_KEY);
-        for (const listener of listeners) listener();
+        emit();
       },
     };
   }, [state]);

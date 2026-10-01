@@ -72,7 +72,12 @@ export function PatientsDesk() {
       <PageHeader
         kicker="Practice"
         title="Patients"
-        lede="Find a chart by name, date of birth, phone, or MRN. New patients open straight into the chart."
+        lede="Find a chart by name, date of birth, phone, or MRN. Send an intake link when you want the patient to fill out their own form."
+        action={
+          <Button asChild variant="secondary">
+            <Link href="/admin/operations/intake">Intake form</Link>
+          </Button>
+        }
       />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_20rem]">
         <section>

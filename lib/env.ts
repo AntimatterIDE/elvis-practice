@@ -47,3 +47,7 @@ export function readServerEnv(source: NodeJS.ProcessEnv = process.env): ServerEn
 export function isSupabaseConfigured(env: ServerEnv = readServerEnv()) {
   return Boolean(env.NEXT_PUBLIC_SUPABASE_URL && env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 }
+
+export function isServiceRoleConfigured(env: ServerEnv = readServerEnv()) {
+  return Boolean(env.NEXT_PUBLIC_SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY);
+}

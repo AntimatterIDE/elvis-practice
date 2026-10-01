@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { PGlite } from "@electric-sql/pglite";
 import { describe, expect, it } from "vitest";
 
@@ -19,7 +19,12 @@ async function database() {
       select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid;
     $$;
   `);
-  await db.exec(readFileSync("supabase/migrations/20260930180000_init.sql", "utf8"));
+  const migrations = readdirSync("supabase/migrations")
+    .filter((file) => file.endsWith(".sql"))
+    .sort();
+  for (const file of migrations) {
+    await db.exec(readFileSync(`supabase/migrations/${file}`, "utf8"));
+  }
   await db.exec(`
     insert into public.invitations (email, display_name, role) values
       ('owner@example.com', 'Owner', 'owner'),
@@ -98,5 +103,23 @@ describe("row level security", () => {
     );
     expect(settings.rows[0]?.phone).toBeNull();
     expect(published.rows).toHaveLength(1);
+  });
+
+  it("keeps portal charts off the public role", async () => {
+    const db = await database();
+    await asRole(db, "anon");
+    await expect(db.query("select id from public.portal_patients")).rejects.toThrow();
+    await expect(db.query("select email from public.portal_accounts")).rejects.toThrow();
+  });
+
+  it("lets staff store a portal chart", async () => {
+    const db = await database();
+    await asRole(db, "authenticated", editorId);
+    await db.exec(
+      `insert into public.portal_patients (id, mrn, chart) values ('pt_test', '200100', '{"firstName":"Ada","lastName":"Lovelace"}'::jsonb)`,
+    );
+    await db.exec("reset role");
+    const rows = await db.query<{ id: string }>("select id from public.portal_patients");
+    expect(rows.rows.map((row) => row.id)).toEqual(["pt_test"]);
   });
 });

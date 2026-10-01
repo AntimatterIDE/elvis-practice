@@ -152,6 +152,95 @@ export type Database = {
         },
         Record<string, never>
       >;
+      intake_forms: Table<
+        { id: string; title: string; introduction: string; fields: Json; updated_at: string },
+        { id?: string; title: string; introduction: string; fields: Json; updated_at?: string },
+        { title?: string; introduction?: string; fields?: Json; updated_at?: string }
+      >;
+      intake_invites: Table<
+        {
+          id: string;
+          token: string;
+          recipient_email: string;
+          recipient_name: string;
+          expires_at: string;
+          submitted_at: string | null;
+          patient_id: string | null;
+          created_at: string;
+        },
+        {
+          id: string;
+          token: string;
+          recipient_email?: string;
+          recipient_name?: string;
+          expires_at: string;
+          submitted_at?: string | null;
+          patient_id?: string | null;
+          created_at?: string;
+        },
+        {
+          recipient_email?: string;
+          recipient_name?: string;
+          expires_at?: string;
+          submitted_at?: string | null;
+          patient_id?: string | null;
+        }
+      >;
+      intake_submissions: Table<
+        {
+          id: string;
+          invite_id: string;
+          patient_id: string;
+          answers: Json;
+          fields: Json;
+          created_at: string;
+        },
+        {
+          id: string;
+          invite_id: string;
+          patient_id: string;
+          answers: Json;
+          fields: Json;
+          created_at?: string;
+        },
+        { answers?: Json; fields?: Json }
+      >;
+      portal_patients: Table<
+        {
+          id: string;
+          mrn: string;
+          chart: Json;
+          answers: Json;
+          fields: Json;
+          created_at: string;
+          updated_at: string;
+        },
+        {
+          id: string;
+          mrn: string;
+          chart: Json;
+          answers?: Json;
+          fields?: Json;
+          created_at?: string;
+          updated_at?: string;
+        },
+        { mrn?: string; chart?: Json; answers?: Json; fields?: Json; updated_at?: string }
+      >;
+      portal_accounts: Table<
+        { patient_id: string; email: string; password_hash: string; created_at: string },
+        { patient_id: string; email: string; password_hash: string; created_at?: string },
+        { email?: string; password_hash?: string }
+      >;
+      portal_visits: Table<
+        { id: string; patient_id: string; appointment: Json; start_at: string },
+        { id: string; patient_id: string; appointment: Json; start_at: string },
+        { appointment?: Json; start_at?: string; patient_id?: string }
+      >;
+      portal_sessions: Table<
+        { token_hash: string; patient_id: string; expires_at: string },
+        { token_hash: string; patient_id: string; expires_at: string },
+        { expires_at?: string }
+      >;
     };
     Views: { [_ in never]: never };
     Functions: { [_ in never]: never };

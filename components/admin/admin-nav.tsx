@@ -17,6 +17,7 @@ const siteLinks = [
 const practiceLinks = [
   ["/admin/operations", "Today"],
   ["/admin/operations/patients", "Patients"],
+  ["/admin/operations/intake", "Intake"],
   ["/admin/operations/scheduling", "Schedule"],
   ["/admin/operations/tasks", "Tasks"],
   ["/admin/operations/practice", "Practice"],

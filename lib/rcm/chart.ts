@@ -97,6 +97,7 @@ export function normalizePatient(patient: Patient): Patient {
     allergies: next.allergies ?? [],
     medications: next.medications ?? [],
     documents: next.documents?.length ? next.documents : defaultDocuments(),
+    intakeAnswers: next.intakeAnswers ?? [],
   };
 }
 

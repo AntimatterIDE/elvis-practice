@@ -117,6 +117,7 @@ export type Patient = PatientRegistration & {
   allergies: Allergy[];
   medications: Medication[];
   documents: ChartDocument[];
+  intakeAnswers?: { label: string; value: string }[];
 };
 
 export type PatientInput = PatientRegistration;

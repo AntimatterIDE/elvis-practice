@@ -1,0 +1,230 @@
+import type { IntakeField, IntakeForm, IntakeMap } from "@/lib/portal/types";
+
+export const LOCKED_FIELD_IDS = ["firstName", "lastName", "dateOfBirth", "email"] as const;
+
+export const CHART_FIELDS: { id: IntakeMap; label: string }[] = [
+  { id: "firstName", label: "First name" },
+  { id: "lastName", label: "Last name" },
+  { id: "preferredName", label: "Preferred name" },
+  { id: "dateOfBirth", label: "Date of birth" },
+  { id: "sex", label: "Sex" },
+  { id: "phone", label: "Phone" },
+  { id: "email", label: "Email" },
+  { id: "address", label: "Street address" },
+  { id: "city", label: "City" },
+  { id: "state", label: "State" },
+  { id: "postalCode", label: "Postal code" },
+  { id: "payerName", label: "Insurance payer" },
+  { id: "memberId", label: "Member id" },
+  { id: "emergencyName", label: "Emergency contact name" },
+  { id: "emergencyPhone", label: "Emergency contact phone" },
+  { id: "emergencyRelation", label: "Emergency contact relationship" },
+  { id: "pharmacyName", label: "Pharmacy" },
+  { id: "pharmacyPhone", label: "Pharmacy phone" },
+];
+
+const sexOptions = ["female", "male", "other", "unknown"];
+
+function field(input: IntakeField): IntakeField {
+  return input;
+}
+
+export function defaultIntakeForm(updatedAt: string): IntakeForm {
+  return {
+    id: "active",
+    title: "New patient form",
+    introduction:
+      "Use this form so the practice can open your chart before you arrive. It is not emergency care.",
+    updatedAt,
+    fields: [
+      field({
+        id: "firstName",
+        label: "First name",
+        help: "",
+        type: "short_text",
+        required: true,
+        options: [],
+        mapsTo: "firstName",
+        locked: true,
+      }),
+      field({
+        id: "lastName",
+        label: "Last name",
+        help: "",
+        type: "short_text",
+        required: true,
+        options: [],
+        mapsTo: "lastName",
+        locked: true,
+      }),
+      field({
+        id: "preferredName",
+        label: "Preferred name",
+        help: "What should we call you?",
+        type: "short_text",
+        required: false,
+        options: [],
+        mapsTo: "preferredName",
+        locked: false,
+      }),
+      field({
+        id: "dateOfBirth",
+        label: "Date of birth",
+        help: "",
+        type: "date",
+        required: true,
+        options: [],
+        mapsTo: "dateOfBirth",
+        locked: true,
+      }),
+      field({
+        id: "sex",
+        label: "Sex",
+        help: "",
+        type: "select",
+        required: true,
+        options: sexOptions,
+        mapsTo: "sex",
+        locked: false,
+      }),
+      field({
+        id: "phone",
+        label: "Phone",
+        help: "",
+        type: "phone",
+        required: true,
+        options: [],
+        mapsTo: "phone",
+        locked: false,
+      }),
+      field({
+        id: "email",
+        label: "Email",
+        help: "This is also the address for a portal login.",
+        type: "email",
+        required: true,
+        options: [],
+        mapsTo: "email",
+        locked: true,
+      }),
+      field({
+        id: "address",
+        label: "Street address",
+        help: "",
+        type: "short_text",
+        required: false,
+        options: [],
+        mapsTo: "address",
+        locked: false,
+      }),
+      field({
+        id: "city",
+        label: "City",
+        help: "",
+        type: "short_text",
+        required: false,
+        options: [],
+        mapsTo: "city",
+        locked: false,
+      }),
+      field({
+        id: "state",
+        label: "State",
+        help: "",
+        type: "short_text",
+        required: false,
+        options: [],
+        mapsTo: "state",
+        locked: false,
+      }),
+      field({
+        id: "postalCode",
+        label: "Postal code",
+        help: "",
+        type: "short_text",
+        required: false,
+        options: [],
+        mapsTo: "postalCode",
+        locked: false,
+      }),
+      field({
+        id: "payerName",
+        label: "Insurance payer",
+        help: "Leave blank if you are paying yourself.",
+        type: "short_text",
+        required: false,
+        options: [],
+        mapsTo: "payerName",
+        locked: false,
+      }),
+      field({
+        id: "memberId",
+        label: "Member id",
+        help: "",
+        type: "short_text",
+        required: false,
+        options: [],
+        mapsTo: "memberId",
+        locked: false,
+      }),
+      field({
+        id: "emergencyName",
+        label: "Emergency contact name",
+        help: "",
+        type: "short_text",
+        required: false,
+        options: [],
+        mapsTo: "emergencyName",
+        locked: false,
+      }),
+      field({
+        id: "emergencyPhone",
+        label: "Emergency contact phone",
+        help: "",
+        type: "phone",
+        required: false,
+        options: [],
+        mapsTo: "emergencyPhone",
+        locked: false,
+      }),
+      field({
+        id: "emergencyRelation",
+        label: "Emergency contact relationship",
+        help: "",
+        type: "short_text",
+        required: false,
+        options: [],
+        mapsTo: "emergencyRelation",
+        locked: false,
+      }),
+      field({
+        id: "reasonForVisit",
+        label: "What would you like help with?",
+        help: "A short note is enough. Do not send images.",
+        type: "long_text",
+        required: true,
+        options: [],
+        mapsTo: null,
+        locked: false,
+      }),
+      field({
+        id: "notEmergency",
+        label: "I understand this form is not for emergencies",
+        help: "If you have sudden weakness, trouble walking, or loss of bowel or bladder control, call 911.",
+        type: "acknowledge",
+        required: true,
+        options: [],
+        mapsTo: null,
+        locked: false,
+      }),
+    ],
+  };
+}
+
+export function sexLabel(value: string) {
+  if (value === "female") return "Female";
+  if (value === "male") return "Male";
+  if (value === "other") return "Other";
+  if (value === "unknown") return "Prefer not to say";
+  return value;
+}
