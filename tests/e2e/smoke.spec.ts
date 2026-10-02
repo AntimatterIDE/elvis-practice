@@ -26,7 +26,7 @@ test("contact form refuses medical details", async ({ page }) => {
   await page.getByLabel("Email").fill("ada@example.com");
   await page.getByLabel("Note, optional").fill("I have severe back pain after surgery");
   await page.getByRole("button", { name: "Submit inquiry" }).click();
-  await expect(page.getByRole("alert")).toContainText("medical information");
+  await expect(page.getByRole("alert").filter({ hasText: "medical information" })).toBeVisible();
 });
 
 test("missing pages use the custom 404", async ({ page }) => {
@@ -37,5 +37,5 @@ test("missing pages use the custom 404", async ({ page }) => {
 test("admin is behind a login wall", async ({ page }) => {
   await page.goto("/admin");
   await expect(page).toHaveURL(/\/admin\/login/);
-  await expect(page.getByRole("heading", { name: /Sign in|Demo sign-in|Supabase is not connected/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Staff sign-in|Sign in|Demo sign-in|Supabase is not connected/ })).toBeVisible();
 });

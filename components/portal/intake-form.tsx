@@ -2,6 +2,8 @@
 
 import { useActionState } from "react";
 import { submitIntakeAction } from "@/app/portal/actions";
+import { Button } from "@/components/ui/button";
+import { controlClass as sharedControlClass } from "@/components/ui/control";
 import { sexLabel } from "@/lib/portal/defaults";
 import type { IntakeField, IntakeMap, PublicIntake } from "@/lib/portal/types";
 import { emergencyNote } from "@/lib/site";
@@ -9,8 +11,7 @@ import { cn } from "@/lib/utils";
 
 const initial = { error: undefined as string | undefined, done: false };
 
-const controlClass =
-  "w-full max-w-full rounded-xl border border-line bg-paper px-3.5 py-3.5 text-base text-ink outline-none transition placeholder:text-muted/50 focus:border-oxide focus:bg-card focus:ring-4 focus:ring-oxide/15";
+const controlClass = `${sharedControlClass} max-w-full scroll-mb-28`;
 
 const sections = {
   you: {
@@ -120,7 +121,7 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
   if (state.done) {
     return (
       <div className="mt-8 rounded-3xl border border-line bg-card p-6 shadow-[0_18px_40px_-32px_rgb(7_30_54_/_0.55)] sm:p-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oxide">Received</p>
+        <p className="kicker text-oxide-deep">Received</p>
         <h2 className="mt-2 font-display text-4xl tracking-tight">The practice has your form.</h2>
         <p className="mt-3 max-w-prose text-base leading-relaxed text-muted">
           A chart will be opened from what you sent. You do not need to fill this out again.
@@ -145,7 +146,7 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
             <li key={`${group.key}-${index}`}>
               <a
                 href={`#section-${index}`}
-                className="inline-flex whitespace-nowrap rounded-full border border-line bg-card px-3 py-1.5 text-xs font-semibold text-ink hover:border-oxide"
+                className="inline-flex min-h-11 items-center whitespace-nowrap rounded-full border border-line bg-card px-4 text-sm font-semibold text-ink hover:border-oxide-deep"
               >
                 {sections[group.key].title}
               </a>
@@ -163,7 +164,7 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
           key={`${group.key}-${index}`}
           id={`section-${index}`}
           className={cn(
-            "scroll-mt-24 rounded-3xl border bg-card p-5 shadow-[0_18px_40px_-32px_rgb(7_30_54_/_0.55)] sm:p-7",
+            "scroll-mt-24 scroll-mb-28 rounded-3xl border bg-card p-5 card-shadow sm:p-7",
             group.key === "safety" ? "border-emergency/25 bg-red-50/40" : "border-line",
           )}
         >
@@ -181,15 +182,15 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
           </div>
         </section>
       ))}
-      <div className="flex flex-col gap-4 rounded-3xl border border-line bg-card p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-        <p className="max-w-md text-sm leading-relaxed text-muted">The link works once. You can change answers until you send the form.</p>
-        <button
-          type="submit"
-          disabled={pending}
-          className="inline-flex items-center justify-center rounded-full bg-oxide px-6 py-3.5 text-sm font-semibold text-paper hover:bg-oxide-deep disabled:opacity-50"
-        >
-          {pending ? "Sending…" : "Send to the practice"}
-        </button>
+      <div className="sticky bottom-0 z-10 -mx-5 border-t border-line bg-paper/95 px-5 py-3 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:rounded-3xl sm:border sm:border-line sm:bg-card sm:p-6 sm:card-shadow">
+          <p className="hidden max-w-md text-sm leading-relaxed text-muted sm:block">
+            The link works once. You can change answers until you send the form.
+          </p>
+          <Button type="submit" disabled={pending} className="w-full sm:w-auto">
+            {pending ? "Sending…" : "Send to the practice"}
+          </Button>
+        </div>
       </div>
       <p className="text-sm leading-relaxed text-muted">{emergencyNote}</p>
     </form>
@@ -239,7 +240,7 @@ function Question({ field, className }: { field: IntakeField; className?: string
     <div className={cn("grid content-start gap-2", className)}>
       <label htmlFor={inputId} className="text-sm font-medium text-ink">
         {field.label}
-        {field.required ? <span className="ml-2 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-oxide">Required</span> : null}
+        {field.required ? <span className="kicker ml-2 text-oxide-deep">Required</span> : null}
       </label>
       <Control field={field} name={name} inputId={inputId} />
       {field.help ? <p className="text-sm leading-relaxed text-muted">{field.help}</p> : null}
@@ -252,7 +253,7 @@ function Legend({ field }: { field: IntakeField }) {
     <>
       <legend className="text-sm font-medium text-ink">
         {field.label}
-        {field.required ? <span className="ml-2 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-oxide">Required</span> : null}
+        {field.required ? <span className="kicker ml-2 text-oxide-deep">Required</span> : null}
       </legend>
       {field.help ? <p className="mt-1 text-sm leading-relaxed text-muted">{field.help}</p> : null}
     </>

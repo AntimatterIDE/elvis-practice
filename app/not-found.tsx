@@ -5,6 +5,9 @@ import { MissingPage } from "@/components/site/missing-page";
 export default function NotFound() {
   return (
     <div className="flex min-h-full flex-col">
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
       <Header />
       <main id="main" className="flex-1">
         <MissingPage />

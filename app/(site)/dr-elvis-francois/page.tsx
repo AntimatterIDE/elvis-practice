@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function PhysicianPage() {
   return (
-    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8">
+    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
       <PageIntro
         kicker="Physician"
         title={practice.physicianName}
@@ -50,7 +50,7 @@ export default function PhysicianPage() {
           </p>
         </div>
         <aside className="rounded-2xl border border-line bg-mist p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-oxide">Training</p>
+          <p className="kicker text-oxide-deep">Training</p>
           <dl className="mt-4 space-y-4">
             {physicianTraining.map((item) => (
               <div key={item.label}>
@@ -59,13 +59,13 @@ export default function PhysicianPage() {
               </div>
             ))}
           </dl>
-          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-oxide">Clinical focus</p>
+          <p className="kicker mt-6 text-oxide-deep">Clinical focus</p>
           <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
             {clinicalFocus.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
-          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-oxide">Registry</p>
+          <p className="kicker mt-6 text-oxide-deep">Registry</p>
           <p className="mt-4 text-sm leading-relaxed text-muted">
             National Provider Identifier {practice.npi}, orthopedic surgery. The federal registry
             entry was last updated on August 31, 2021, and it records Georgia license number 89867.

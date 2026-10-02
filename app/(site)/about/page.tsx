@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8">
+    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
       <PageIntro
         kicker="Practice"
         title="A clinic built around a clear conversation."

@@ -34,7 +34,7 @@ export function ClinicalArticle({
       </div>
       <div className="mt-10 grid gap-4">
         {document.sections.map((section) => (
-          <section key={section.id} className="rounded-2xl border border-line bg-card p-6 shadow-sm md:p-8">
+          <section key={section.id} className="rounded-2xl border border-line bg-card p-6 card-shadow md:p-8">
             <h2 className="font-display text-2xl font-semibold tracking-tight">{section.heading}</h2>
             <div className="mt-4 max-w-3xl">
               <Markdown source={section.body} />
@@ -57,7 +57,7 @@ export function ClinicalArticle({
       ) : null}
       {related.length > 0 ? (
         <section className="mt-12 border-t border-line pt-8">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-oxide">Related</h2>
+          <h2 className="kicker text-oxide-deep">Related</h2>
           <ul className="mt-4 grid gap-2">
             {related.map((item) => (
               <li key={item.href}>
@@ -73,9 +73,9 @@ export function ClinicalArticle({
         <p className="max-w-xl text-muted">
           This page is general information. It does not say whether the care is right for you.
         </p>
-        <a href="/contact" className="rounded-full bg-oxide px-5 py-3 text-center text-sm font-semibold text-paper hover:bg-oxide-deep">
+        <Link href="/contact" className="inline-flex min-h-11 items-center justify-center rounded-full bg-oxide-deep px-5 text-center text-sm font-semibold text-paper hover:bg-oxide-ink">
           Contact the practice
-        </a>
+        </Link>
       </section>
     </article>
   );
