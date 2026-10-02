@@ -17,7 +17,7 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
 
   return (
     <ClinicFrame kicker={`${practice.physicianName} · Patient form`}>
-      <main className="mx-auto min-w-0 max-w-3xl px-5 py-10 sm:py-14">
+      <div className="mx-auto min-w-0 max-w-3xl px-5 py-10 sm:py-14">
         {invite.status === "missing" ? (
           <Closed title="This link is not valid." body="Ask the practice to send a new form. The address may have been cut off when it was copied." />
         ) : null}
@@ -32,7 +32,7 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
         ) : null}
         {invite.status === "open" ? (
           <>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oxide">Before your visit</p>
+            <p className="kicker text-oxide-deep">Before your visit</p>
             <h1 className="mt-3 max-w-2xl font-display text-4xl tracking-tight sm:text-5xl">{invite.form.title}</h1>
             {invite.form.recipientName ? (
               <p className="mt-4 text-xl text-ink">Hello, {invite.form.recipientName}.</p>
@@ -43,7 +43,7 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
             <IntakeForm token={token} form={invite.form} />
           </>
         ) : null}
-      </main>
+      </div>
     </ClinicFrame>
   );
 }
@@ -51,7 +51,7 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
 function Closed({ title, body }: { title: string; body: string }) {
   return (
     <div className="max-w-xl rounded-3xl border border-line bg-card p-6 shadow-[0_18px_40px_-32px_rgb(7_30_54_/_0.55)] sm:p-8">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oxide">{practice.name}</p>
+      <p className="kicker text-oxide-deep">{practice.name}</p>
       <h1 className="mt-3 font-display text-4xl tracking-tight">{title}</h1>
       <p className="mt-3 text-base leading-relaxed text-muted">{body}</p>
     </div>

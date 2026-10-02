@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { IndexCard } from "@/components/site/index-card";
 import { PageIntro } from "@/components/site/page-intro";
 import { conditions } from "@/lib/content/conditions";
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function ConditionsIndexPage() {
   return (
-    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8">
+    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
       <PageIntro
         kicker="Conditions"
         title="Problems people bring to a spine visit."
@@ -20,10 +21,7 @@ export default function ConditionsIndexPage() {
       <ul className="mt-12 grid gap-4">
         {conditions.map((document) => (
           <li key={document.slug} id={document.slug} className="scroll-mt-28">
-            <article className="rounded-2xl border border-line bg-card px-6 py-6 shadow-sm">
-              <h2 className="font-display text-2xl font-semibold tracking-tight">{document.title}</h2>
-              <p className="mt-2 max-w-2xl text-muted">{document.summary}</p>
-            </article>
+            <IndexCard document={document} />
           </li>
         ))}
       </ul>

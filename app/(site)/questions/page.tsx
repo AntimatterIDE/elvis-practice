@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function QuestionsPage() {
   return (
-    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8">
+    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
       <PageIntro
         kicker="Questions"
         title="Answers we can stand behind."

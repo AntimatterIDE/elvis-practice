@@ -1,13 +1,6 @@
 import { cn } from "@/lib/utils";
+import { controlClass } from "@/components/ui/control";
 
 export function Input({ className, ...props }: React.ComponentProps<"input">) {
-  return (
-    <input
-      className={cn(
-        "w-full rounded-xl border border-line bg-card px-3 py-3 text-base text-ink shadow-sm placeholder:text-muted/70",
-        className,
-      )}
-      {...props}
-    />
-  );
+  return <input className={cn(controlClass, "min-h-12", className)} {...props} />;
 }

@@ -19,17 +19,19 @@ export function AccordionTrigger({
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
   return (
-    <AccordionPrimitive.Header className="flex">
-      <AccordionPrimitive.Trigger
-        className={cn(
-          "group flex flex-1 items-center justify-between gap-4 py-5 text-left text-lg font-semibold tracking-tight text-ink transition hover:text-oxide",
-          className,
-        )}
-        {...props}
-      >
-        {children}
-        <ChevronDown className="size-4 shrink-0 text-oxide transition-transform duration-300 group-data-[state=open]:rotate-180" aria-hidden />
-      </AccordionPrimitive.Trigger>
+    <AccordionPrimitive.Header asChild>
+      <h2 className="flex">
+        <AccordionPrimitive.Trigger
+          className={cn(
+            "group flex min-h-11 flex-1 items-center justify-between gap-4 py-5 text-left text-lg font-semibold tracking-tight text-ink transition hover:text-oxide-deep",
+            className,
+          )}
+          {...props}
+        >
+          {children}
+          <ChevronDown className="size-4 shrink-0 text-oxide-deep transition-transform duration-300 group-data-[state=open]:rotate-180 motion-reduce:transition-none" aria-hidden />
+        </AccordionPrimitive.Trigger>
+      </h2>
     </AccordionPrimitive.Header>
   );
 }

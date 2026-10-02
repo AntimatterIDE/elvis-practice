@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { IndexCard } from "@/components/site/index-card";
 import { PageIntro } from "@/components/site/page-intro";
 import { treatments } from "@/lib/content/treatments";
 import { clinicalFocus } from "@/lib/site";
@@ -21,7 +22,7 @@ export default function TreatmentsIndexPage() {
   const documents = treatments.filter((document) => !omitted.has(document.slug));
 
   return (
-    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8">
+    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
       <PageIntro
         kicker="Treatments"
         title="Operations a visit may discuss."
@@ -31,7 +32,7 @@ export default function TreatmentsIndexPage() {
         {clinicalFocus.map((item) => (
           <li
             key={item}
-            className="rounded-full border border-line bg-card px-3 py-1.5 text-sm font-medium text-ink"
+            className="inline-flex min-h-11 items-center rounded-full border border-line bg-card px-4 text-sm font-medium text-ink card-shadow"
           >
             {item}
           </li>
@@ -39,11 +40,8 @@ export default function TreatmentsIndexPage() {
       </ul>
       <ul className="mt-10 grid gap-4">
         {documents.map((document) => (
-          <li key={document.slug}>
-            <article className="rounded-2xl border border-line bg-card px-6 py-6 shadow-sm">
-              <h2 className="font-display text-2xl font-semibold tracking-tight">{document.title}</h2>
-              <p className="mt-2 max-w-2xl text-muted">{document.summary}</p>
-            </article>
+          <li key={document.slug} id={document.slug} className="scroll-mt-28">
+            <IndexCard document={document} />
           </li>
         ))}
       </ul>

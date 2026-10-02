@@ -17,7 +17,7 @@ export function PhotoPlaceholder({
       <p className="relative font-display text-5xl font-semibold tracking-tight">EF</p>
       <figcaption className="relative">
         <span className="block font-display text-2xl font-semibold tracking-tight">{label}</span>
-        <span className="mt-3 inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium tracking-wide text-paper/90 backdrop-blur">
+        <span className="mt-3 inline-flex rounded-full border border-white/30 bg-pine/35 px-3 py-1 text-xs font-medium tracking-wide text-paper">
           {caption}
         </span>
       </figcaption>

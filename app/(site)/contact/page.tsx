@@ -19,7 +19,7 @@ const facts = [
 
 export default function ContactPage() {
   return (
-    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8">
+    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
       <PageIntro
         kicker="Contact"
         title="Request a call."
@@ -27,8 +27,8 @@ export default function ContactPage() {
       />
       <dl className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {facts.map((fact) => (
-          <div key={fact.label} className="rounded-2xl border border-line bg-card p-5 shadow-sm">
-            <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-oxide">{fact.label}</dt>
+          <div key={fact.label} className="rounded-2xl border border-line bg-card p-5 card-shadow">
+            <dt className="kicker text-oxide-deep">{fact.label}</dt>
             <dd className="mt-2 text-lg font-medium">{fact.value}</dd>
           </div>
         ))}
@@ -40,7 +40,7 @@ export default function ContactPage() {
         profiles place him in Tulsa and in New York. None of those offices is this website’s
         appointment line.
       </p>
-      <div className="mt-12 max-w-3xl rounded-[1.5rem] border border-line bg-card p-6 shadow-sm md:p-8">
+      <div className="mt-12 max-w-3xl rounded-[1.5rem] border border-line bg-card p-6 card-shadow md:p-8">
         <h2 className="font-display text-3xl font-semibold tracking-tight">Ask the practice to call</h2>
         <div className="mt-6">
           <ContactForm />

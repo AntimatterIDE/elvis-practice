@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <article className="mx-auto max-w-3xl px-5 py-16 md:px-8">
+    <article className="mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-20">
       <PageIntro
         kicker="Privacy"
         title="What this website handles."

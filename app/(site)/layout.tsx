@@ -5,7 +5,7 @@ import { StructuredData } from "@/components/site/structured-data";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
-    <div className="flex min-h-full flex-col pb-20 md:pb-0">
+    <div className="flex min-h-full flex-col">
       <StructuredData />
       <a className="skip-link" href="#main">
         Skip to content
