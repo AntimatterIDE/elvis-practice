@@ -28,15 +28,15 @@ const journey = [
   },
   {
     label: "Follow-through",
-    body: "Next steps are written down. The practice will publish preparation details once they are confirmed.",
+    body: "You leave with the next step written down: time, therapy, a test, or a procedure.",
   },
 ];
 
 const assurances = [
   { label: "Physician-led", body: "Elvis Francois, MD sees the problem with you, not through a script." },
+  { label: "Fellowship-trained", body: "Spine fellowship at Harvard, after orthopedic residency at the Mayo Clinic." },
   { label: "Plain language", body: "Findings and options are explained so you can actually use them." },
-  { label: "Shared decisions", body: "Surgery is one path. It is not the assumption you walk in with." },
-  { label: "No invented facts", body: "Address, phone, hours, and credentials stay blank until confirmed." },
+  { label: "Shared decisions", body: "Surgery is one path. Nonoperative care is part of the same conversation." },
 ];
 
 export default function HomePage() {
@@ -59,8 +59,8 @@ export default function HomePage() {
                 Spine care, carefully aligned.
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-paper/80">
-                {practice.name} is a new practice led by {practice.physicianName}. The work is to
-                understand the problem, explain it clearly, and decide the next step with you.
+                {practice.physicianName} is an orthopedic spine surgeon. The work of this practice is
+                to understand the problem, explain it clearly, and decide the next step with you.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
@@ -78,11 +78,12 @@ export default function HomePage() {
                 </a>
               </div>
               <p className="mt-6 max-w-md text-sm leading-relaxed text-paper/70">
-                Address, phone, hours, and online booking will appear after the practice confirms them.
+                New patients are welcome. Request a call from the contact page. Do not include
+                symptoms or insurance numbers.
               </p>
             </div>
             <p className="float-chip relative justify-self-start rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium tracking-wide text-paper/85 backdrop-blur lg:justify-self-end">
-              Photograph pending
+              {practice.specialty}
             </p>
           </div>
         </div>
@@ -114,8 +115,8 @@ export default function HomePage() {
               </h2>
             </div>
             <p className="max-w-md text-muted">
-              Four ways people arrive. Written condition guides stay unpublished until a clinician
-              approves them.
+              Neck pain, low back pain, and pain that remains after surgery are the problems people
+              most often bring to a first visit.
             </p>
           </div>
         </Reveal>
@@ -125,7 +126,7 @@ export default function HomePage() {
       <section className="bg-mist" aria-labelledby="physician-heading">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 md:grid-cols-[16rem_1fr] md:px-8 md:py-20">
           <Reveal>
-            <PhotoPlaceholder label="Portrait pending" className="min-h-80" />
+            <PhotoPlaceholder className="min-h-80" />
           </Reveal>
           <Reveal delay={0.08}>
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-oxide">Physician</p>
@@ -136,9 +137,9 @@ export default function HomePage() {
               {practice.physicianName}
             </h2>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
-              Dr. Francois is the physician of {practice.name}. This site introduces the practice. It
-              does not list training, certification, hospital appointments, or public appearances until
-              those details are confirmed for publication.
+              Dr. Francois trained in orthopedic surgery at the Mayo Clinic and in spine surgery at
+              Harvard. He treats disc disease, nerve compression, and spinal deformity, and he starts
+              with the care that does not require an operation when that care can solve the problem.
             </p>
             <a
               href={practice.physicianPath}
@@ -180,8 +181,8 @@ export default function HomePage() {
                 Ready when you are.
               </h2>
               <p className="mt-4 max-w-lg text-lg leading-relaxed text-paper/75">
-                There is no online booking link yet. Use the contact page for an administrative inquiry.
-                Do not include medical details.
+                Request a call about a visit. Leave symptoms, images, and insurance numbers off the
+                form. This website is not an emergency department.
               </p>
             </div>
             <a

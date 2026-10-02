@@ -20,7 +20,7 @@ export default function QuestionsPage() {
       <PageIntro
         kicker="Questions"
         title="Answers we can stand behind."
-        lede="These are administrative answers. They do not describe your diagnosis, and they do not invent insurance coverage, telehealth, or an emergency department."
+        lede="Practical answers about appointments, emergencies, and what to bring. They are not a diagnosis and they are not an insurance quote."
       />
       <Accordion type="single" collapsible className="mt-10 max-w-3xl">
         {faqs.map((faq) => (

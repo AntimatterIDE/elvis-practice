@@ -64,7 +64,7 @@ export async function submitInquiry(_previous: ContactState, formData: FormData)
     return {
       status: "not_sent",
       message:
-        "This message was not sent and was not saved. The practice has not connected an inbox. Do not include medical information in a later attempt until a phone number or approved channel is published.",
+        "This message was not sent and was not saved. Do not add symptoms, records, or insurance numbers and try again.",
     };
   }
 

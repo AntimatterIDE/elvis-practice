@@ -4,7 +4,7 @@ test("homepage introduces the practice without borrowed facts", async ({ page })
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "Spine care, carefully aligned." })).toBeVisible();
   await expect(page.getByRole("link", { name: "Contact the practice" }).first()).toBeVisible();
-  await expect(page.getByText("Photograph pending").first()).toBeVisible();
+  await expect(page.getByText("Orthopedic spine surgery").first()).toBeVisible();
   const body = await page.locator("body").innerText();
   expect(body).not.toMatch(/Big Apple|Medipark|Zocdoc|Arutyunyan|14 Wall|646-216-6222/i);
 });

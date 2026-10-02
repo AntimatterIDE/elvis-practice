@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/site/contact-form";
 import { PageIntro } from "@/components/site/page-intro";
+import { practice } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Contact The Alignment Clinic. Address, phone, and hours are unpublished until the practice confirms them.",
+    "Request a call from The Alignment Clinic. The form is for scheduling questions only and does not accept medical information.",
   alternates: { canonical: "/contact" },
 };
 
 const facts = [
-  { label: "Address", value: "Pending confirmation" },
-  { label: "Phone", value: "Pending confirmation" },
-  { label: "Hours", value: "Pending confirmation" },
-  { label: "Booking", value: "No online scheduler is connected" },
+  { label: "Physician", value: practice.physicianName },
+  { label: "Specialty", value: practice.specialty },
+  { label: "New patients", value: "Welcome" },
+  { label: "Appointments", value: "Request a call below" },
 ];
 
 export default function ContactPage() {
@@ -21,8 +22,8 @@ export default function ContactPage() {
     <article className="mx-auto max-w-6xl px-5 py-16 md:px-8">
       <PageIntro
         kicker="Contact"
-        title="Call or write when the practice publishes a channel."
-        lede="Until then, this page is honest about what is missing. Messages are not a way to send medical information."
+        title="Request a call."
+        lede="New patients are welcome. Send your name and a way to reach you. This form is for scheduling and other non-medical questions."
       />
       <dl className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {facts.map((fact) => (
@@ -32,8 +33,15 @@ export default function ContactPage() {
           </div>
         ))}
       </dl>
+      <p className="mt-8 max-w-3xl text-base leading-relaxed text-muted">
+        A street address and office hours are not listed, because the public listings under
+        Dr. Francois’s name belong to other practices. His National Provider Identifier record,
+        last updated August 31, 2021, shows 156 Foster Drive, Suite B, McDonough, Georgia. Later
+        profiles place him in Tulsa and in New York. None of those offices is this website’s
+        appointment line.
+      </p>
       <div className="mt-12 max-w-3xl rounded-[1.5rem] border border-line bg-card p-6 shadow-sm md:p-8">
-        <h2 className="font-display text-3xl font-semibold tracking-tight">Administrative inquiry</h2>
+        <h2 className="font-display text-3xl font-semibold tracking-tight">Ask the practice to call</h2>
         <div className="mt-6">
           <ContactForm />
         </div>

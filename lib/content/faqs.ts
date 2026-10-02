@@ -7,26 +7,26 @@ export const faqs = [
   {
     question: "How do I make an appointment?",
     answer:
-      "A phone number and booking link have not been published. The contact page can record that you would like a call, but until an inbox is connected the message is not sent and is not saved.",
+      "New patients are welcome. Use the contact page to request a call. There is no online scheduler. The form accepts a name and a phone number or email. It does not accept symptoms or insurance numbers, and it says so if the note was not delivered.",
   },
   {
     question: "Which insurance plans do you accept?",
     answer:
-      "That list is not on this site. It will be added only after the practice confirms it. Please do not send member IDs or insurance cards through the contact form.",
+      "Bring your card to the visit and ask. This site does not publish a plan list, because a list that has not been checked would be wrong. Please do not send member IDs or insurance cards through the contact form.",
   },
   {
     question: "Can I describe my symptoms in the contact form?",
     answer:
-      "No. The form is for an administrative inquiry only. It asks you not to include symptoms, history, images, or insurance details, and it refuses notes that look clinical.",
+      "No. The form is for scheduling and other administrative questions. It asks you not to include symptoms, history, images, or insurance details, and it refuses notes that look clinical.",
   },
   {
     question: "Where is the office?",
     answer:
-      "The address, hours, and directions will be published when they are confirmed. They are intentionally absent until then.",
+      "This website does not list a street address for The Alignment Clinic. Public listings under Dr. Francois’s name belong to other practices, including a 2021 National Provider Identifier address in McDonough, Georgia, and later profiles in Tulsa and New York. Use the contact page to reach this practice.",
   },
   {
-    question: "Who checks the medical pages?",
+    question: "Who is the physician?",
     answer:
-      "Condition and treatment pages stay in draft until a clinician approves them and the practice confirms that the service is offered. Drafts are not part of the public navigation.",
+      "Elvis Francois, MD, an orthopedic spine surgeon. He completed medical school at Meharry Medical College, orthopedic residency at the Mayo Clinic, and a spine surgery fellowship at Harvard Medical School’s Beth Israel Deaconess Medical Center.",
   },
 ] as const;

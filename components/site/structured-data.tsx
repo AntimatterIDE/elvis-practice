@@ -1,4 +1,4 @@
-import { canonicalOrigin, practice } from "@/lib/site";
+import { canonicalOrigin, physicianTraining, practice } from "@/lib/site";
 
 export function StructuredData() {
   const origin = canonicalOrigin();
@@ -10,6 +10,8 @@ export function StructuredData() {
         "@id": `${origin}#clinic`,
         name: practice.name,
         url: origin,
+        medicalSpecialty: practice.specialty,
+        description: practice.description,
       },
       {
         "@type": "Physician",
@@ -17,6 +19,9 @@ export function StructuredData() {
         name: "Elvis Francois",
         honorificSuffix: "MD",
         url: `${origin}${practice.physicianPath}`,
+        medicalSpecialty: practice.specialty,
+        identifier: practice.npi,
+        alumniOf: physicianTraining.map((item) => item.value),
         worksFor: { "@id": `${origin}#clinic` },
       },
     ],

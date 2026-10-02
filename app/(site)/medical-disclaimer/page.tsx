@@ -23,9 +23,10 @@ export default function DisclaimerPage() {
           treatment.
         </p>
         <p>
-          Outcomes vary. This site does not quote success rates, and it does not use patient
-          stories. Credentials and hospital affiliations appear only after the practice approves
-          the wording.
+          Outcomes vary. This site does not quote success rates or patient stories. The physician
+          page lists training that is part of Dr. Francois’s public biography: Meharry Medical
+          College, the Mayo Clinic, and a spine fellowship at Harvard. Hospital appointments are
+          confirmed when surgery is scheduled.
         </p>
         <p>{emergencyNote}</p>
       </div>

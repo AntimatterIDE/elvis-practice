@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/site/page-intro";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
-import { practice } from "@/lib/site";
+import { clinicalFocus, physicianTraining, practice } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: practice.physicianName,
   description:
-    "Elvis Francois, MD, is the physician at The Alignment Clinic. Credentials will be published only after they are confirmed.",
+    "Elvis Francois, MD, is an orthopedic spine surgeon. He trained at Meharry Medical College, the Mayo Clinic, and Harvard.",
   alternates: { canonical: "/dr-elvis-francois" },
 };
 
@@ -16,31 +16,60 @@ export default function PhysicianPage() {
       <PageIntro
         kicker="Physician"
         title={practice.physicianName}
-        lede="The physician at The Alignment Clinic. This profile will grow as biography, training, and philosophy are approved for this site."
+        lede="Orthopedic spine surgeon. The physician of The Alignment Clinic."
       />
-      <div className="mt-12 grid gap-8 md:grid-cols-[16rem_1fr_16rem] md:items-start">
-        <PhotoPlaceholder label="Portrait pending" className="min-h-80" />
+      <div className="mt-12 grid gap-8 lg:grid-cols-[16rem_1fr_18rem] lg:items-start">
+        <PhotoPlaceholder className="min-h-80" />
         <div className="max-w-xl space-y-6 text-lg leading-relaxed text-muted">
           <p>
-            Dr. Francois leads {practice.name}. Patients should expect a visit that starts with the
-            story of the problem, continues with an examination, and ends with options explained in
-            plain language.
+            Dr. Francois is an orthopedic spine surgeon. He completed a spine surgery fellowship at
+            Harvard Medical School’s Beth Israel Deaconess Medical Center after an orthopedic surgery
+            residency at the Mayo Clinic in Rochester, Minnesota. He earned his medical degree at
+            Meharry Medical College in Nashville and a bachelor’s degree in neuroscience and biology
+            at Oberlin College.
           </p>
           <p>
-            Surgery is discussed when it is one of the reasonable paths, not as a default. Care that
-            does not involve an operation is part of the same conversation.
+            His clinical work follows the problems people bring to a spine visit: neck and low-back
+            pain, cervical and lumbar disc disease, nerve compression, and spinal deformity. In
+            published interviews he has described the same order of care this practice uses. Therapy
+            and other nonoperative treatment come first when they fit. Surgery is discussed when
+            those measures have not helped and the anatomy explains the symptoms.
           </p>
           <p>
-            A longer biography, including training and any public work outside the clinic, will be
-            added only with wording the practice approves. This page does not repeat claims from
-            other websites.
+            He has practiced spine surgery at Resurgens Orthopaedics in metro Atlanta and at Tulsa
+            Bone and Joint in Oklahoma. Later public profiles list him with a spine practice in New
+            York. Those offices are other practices. This website does not use their phone numbers,
+            street addresses, or hours.
+          </p>
+          <p>
+            Outside the clinic he founded Music is Medicine, a project that brings live music into
+            hospitals. In 2020, during the pandemic, a recording of “Imagine” that he made with
+            Dr. William Robinson was widely shared. He has appeared on Good Morning America, the
+            Today show, and The Ellen DeGeneres Show, and in 2024 he released an original song,
+            “Difference.” He is the son of Haitian immigrants.
           </p>
         </div>
         <aside className="rounded-2xl border border-line bg-mist p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-oxide">Credentials</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-oxide">Training</p>
+          <dl className="mt-4 space-y-4">
+            {physicianTraining.map((item) => (
+              <div key={item.label}>
+                <dt className="text-sm font-semibold text-ink">{item.label}</dt>
+                <dd className="mt-1 text-sm leading-relaxed text-muted">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-oxide">Clinical focus</p>
+          <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
+            {clinicalFocus.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-oxide">Registry</p>
           <p className="mt-4 text-sm leading-relaxed text-muted">
-            Training, certification, and hospital appointments are hidden until the practice confirms
-            the exact wording. Empty lines are not filled with guesses.
+            National Provider Identifier {practice.npi}, orthopedic surgery. The federal registry
+            entry was last updated on August 31, 2021, and it records Georgia license number 89867.
+            Hospital appointments are confirmed when surgery is scheduled.
           </p>
         </aside>
       </div>

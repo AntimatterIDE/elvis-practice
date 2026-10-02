@@ -40,8 +40,8 @@ export default function PrivacyPage() {
           only that patient's profile and visits.
         </p>
         <p>
-          A privacy contact address will be published after the practice chooses one. Until then,
-          use the contact page only for non-medical questions, knowing delivery may be unavailable.
+          Questions about this notice go through the contact page. Send a name and a way to reach
+          you, and leave medical information off the form.
         </p>
       </div>
     </article>

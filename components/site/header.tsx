@@ -27,7 +27,7 @@ export function Header() {
       <div className="bg-pine text-paper">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 text-xs md:px-8 md:text-sm">
           <p className="truncate">
-            New patients are welcome. Phone, address, and hours publish when the practice confirms them.
+            New patients are welcome. Orthopedic spine surgery with {practice.physicianName}.
           </p>
           <span className="flex shrink-0 gap-4">
             <a href="/portal/login" className="font-semibold text-foam hover:underline">

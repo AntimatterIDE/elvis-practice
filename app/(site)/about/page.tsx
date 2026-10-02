@@ -6,7 +6,7 @@ import { practice } from "@/lib/site";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "The Alignment Clinic is a new spine practice led by Elvis Francois, MD. It is not a rebrand of another clinic.",
+    "The Alignment Clinic is an orthopedic spine practice led by Elvis Francois, MD.",
   alternates: { canonical: "/about" },
 };
 
@@ -21,25 +21,27 @@ export default function AboutPage() {
       <div className="mt-12 grid gap-12 md:grid-cols-[1fr_16rem]">
         <div className="max-w-2xl space-y-6 text-lg leading-relaxed text-muted">
           <p>
-            {practice.physicianName} is the physician. This is a new practice site. It does not
-            inherit another clinic’s address, phone number, staff, testimonials, or claims.
+            {practice.physicianName} is the physician. He is an orthopedic spine surgeon who trained
+            at Meharry Medical College, the Mayo Clinic, and Harvard. The visit is his: a history,
+            an examination, and a plan explained in ordinary language.
           </p>
           <p>
-            The public pages explain spine problems in ordinary language. They describe evaluation
-            and the kinds of options a visit may include. They do not diagnose you, and they do not
-            promise a result.
+            People come for neck pain, low back pain, pain that travels into an arm or a leg, and
+            pain that remains after an earlier spine operation. Many of those problems improve
+            without surgery. An operation is one option among others, chosen when the symptoms and
+            the imaging agree.
           </p>
           <p>
-            Location, hours, insurance participation, hospital affiliations, and which procedures are
-            offered here will be added only after the practice confirms them. Until then, those
-            facts are left blank on purpose.
+            The condition and treatment notes on this site are general education. They prepare you
+            for a conversation. They do not diagnose you, and they do not promise a result. Reading
+            them does not create a physician-patient relationship.
           </p>
           <p>
-            Medical pages stay in draft until a clinician reviews them. Legal pages are drafts for
-            an attorney. Nothing on this site is a substitute for a visit.
+            This practice does not publish another clinic’s phone number, street address, or office
+            hours. To ask for a call, use the contact page, and leave medical details off the form.
           </p>
         </div>
-        <PhotoPlaceholder label="Clinic photograph pending" />
+        <PhotoPlaceholder label={practice.name} caption={practice.specialty} />
       </div>
     </article>
   );
