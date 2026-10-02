@@ -1,0 +1,1640 @@
+{
+  "root": "/tmp/am-ws/ch_murexqna_2",
+  "name": "ch_murexqna_2",
+  "generatedAt": "2026-10-02T20:26:03.606Z",
+  "fileCount": 187,
+  "dirCount": 68,
+  "languages": {
+    "Markdown": 3,
+    "TypeScript": 170,
+    "CSS": 1,
+    "JavaScript": 2,
+    "JSON": 3,
+    "SQL": 2
+  },
+  "keyFiles": [
+    "package.json",
+    "README.md",
+    "tsconfig.json"
+  ],
+  "directories": [
+    {
+      "dir": "(root)",
+      "fileCount": 14,
+      "files": [
+        ".env.example",
+        ".gitignore",
+        "AGENTS.md",
+        "CLAUDE.md",
+        "eslint.config.mjs",
+        "next.config.ts",
+        "package-lock.json",
+        "package.json",
+        "playwright.config.ts",
+        "postcss.config.mjs",
+        "proxy.ts",
+        "README.md",
+        "tsconfig.json",
+        "vitest.config.ts"
+      ],
+      "symbols": [
+        {
+          "name": "proxy",
+          "kind": "fn"
+        },
+        {
+          "name": "config",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app",
+      "fileCount": 9,
+      "files": [
+        "favicon.ico",
+        "global-error.tsx",
+        "globals.css",
+        "icon.svg",
+        "layout.tsx",
+        "not-found.tsx",
+        "opengraph-image.tsx",
+        "robots.ts",
+        "sitemap.ts"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        },
+        {
+          "name": "size",
+          "kind": "const"
+        },
+        {
+          "name": "contentType",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)",
+      "fileCount": 4,
+      "files": [
+        "error.tsx",
+        "layout.tsx",
+        "not-found.tsx",
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/about",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/conditions",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/conditions/[slug]",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "generateStaticParams",
+          "kind": "fn"
+        },
+        {
+          "name": "generateMetadata",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/contact",
+      "fileCount": 2,
+      "files": [
+        "actions.ts",
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "submitInquiry",
+          "kind": "fn"
+        },
+        {
+          "name": "ContactState",
+          "kind": "type"
+        },
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/dr-elvis-francois",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/medical-disclaimer",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/preview/conditions/[slug]",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/preview/treatments/[slug]",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/privacy",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/questions",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/terms",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/treatments",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/treatments/[slug]",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "generateStaticParams",
+          "kind": "fn"
+        },
+        {
+          "name": "generateMetadata",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "app/(site)/visit",
+      "fileCount": 2,
+      "files": [
+        "loading.tsx",
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/admin",
+      "fileCount": 2,
+      "files": [
+        "actions.ts",
+        "layout.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "signIn",
+          "kind": "fn"
+        },
+        {
+          "name": "signOut",
+          "kind": "fn"
+        },
+        {
+          "name": "verifyTotp",
+          "kind": "fn"
+        },
+        {
+          "name": "requestStaffPasswordReset",
+          "kind": "fn"
+        },
+        {
+          "name": "updateStaffPassword",
+          "kind": "fn"
+        },
+        {
+          "name": "enrollTotp",
+          "kind": "fn"
+        },
+        {
+          "name": "saveClinical",
+          "kind": "fn"
+        },
+        {
+          "name": "saveFaq",
+          "kind": "fn"
+        },
+        {
+          "name": "saveMedia",
+          "kind": "fn"
+        },
+        {
+          "name": "saveSettings",
+          "kind": "fn"
+        },
+        {
+          "name": "inviteEditor",
+          "kind": "fn"
+        },
+        {
+          "name": "AdminFormState",
+          "kind": "type"
+        }
+      ]
+    },
+    {
+      "dir": "app/admin/(panel)",
+      "fileCount": 2,
+      "files": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/audit",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/conditions",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/conditions/[slug]",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/faqs",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/media",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations",
+      "fileCount": 2,
+      "files": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/analytics",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/claims",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/claims/[id]",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/claims/drafts",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/claims/new",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/denials",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/eligibility",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/intake",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "dynamic",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/admin/(panel)/operations/patients",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/patients/[id]",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/practice",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/scheduling",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/tasks",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/tools",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/operations/upload",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/settings",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/treatments",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/(panel)/treatments/[slug]",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/forgot",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/login",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/mfa",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/admin/reset-password",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "app/auth/confirm",
+      "fileCount": 1,
+      "files": [
+        "route.ts"
+      ],
+      "symbols": [
+        {
+          "name": "GET",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "app/intake/[token]",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "dynamic",
+          "kind": "const"
+        },
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/portal",
+      "fileCount": 3,
+      "files": [
+        "actions.ts",
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "saveIntakeFormAction",
+          "kind": "fn"
+        },
+        {
+          "name": "createIntakeInviteAction",
+          "kind": "fn"
+        },
+        {
+          "name": "intakeSnapshotAction",
+          "kind": "fn"
+        },
+        {
+          "name": "submitIntakeAction",
+          "kind": "fn"
+        },
+        {
+          "name": "issuePortalLoginAction",
+          "kind": "fn"
+        },
+        {
+          "name": "portalAccountAction",
+          "kind": "fn"
+        },
+        {
+          "name": "loadPortalRosterAction",
+          "kind": "fn"
+        },
+        {
+          "name": "pushPortalChartsAction",
+          "kind": "fn"
+        },
+        {
+          "name": "deletePortalPatientsAction",
+          "kind": "fn"
+        },
+        {
+          "name": "portalSignInAction",
+          "kind": "fn"
+        },
+        {
+          "name": "portalSignOutAction",
+          "kind": "fn"
+        },
+        {
+          "name": "metadata",
+          "kind": "const"
+        },
+        {
+          "name": "dynamic",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "app/portal/login",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "dynamic",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "components/admin",
+      "fileCount": 7,
+      "files": [
+        "admin-nav.tsx",
+        "clinical-editor.tsx",
+        "enroll-form.tsx",
+        "login-form.tsx",
+        "mfa-form.tsx",
+        "password-reset-form.tsx",
+        "state-form.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "AdminNav",
+          "kind": "fn"
+        },
+        {
+          "name": "ClinicalEditor",
+          "kind": "fn"
+        },
+        {
+          "name": "EnrollForm",
+          "kind": "fn"
+        },
+        {
+          "name": "LoginForm",
+          "kind": "fn"
+        },
+        {
+          "name": "MfaForm",
+          "kind": "fn"
+        },
+        {
+          "name": "ForgotPasswordForm",
+          "kind": "fn"
+        },
+        {
+          "name": "NewPasswordForm",
+          "kind": "fn"
+        },
+        {
+          "name": "AdminStateForm",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "components/admin/rcm",
+      "fileCount": 20,
+      "files": [
+        "analytics-desk.tsx",
+        "claim-detail.tsx",
+        "claim-form.tsx",
+        "claims-desk.tsx",
+        "denials-desk.tsx",
+        "drafts-desk.tsx",
+        "eligibility-desk.tsx",
+        "intake-desk.tsx",
+        "patient-detail.tsx",
+        "patients-desk.tsx",
+        "portal-access.tsx",
+        "portal-bridge.tsx",
+        "practice-desk.tsx",
+        "schedule-desk.tsx",
+        "store.tsx",
+        "tasks-desk.tsx",
+        "tools-desk.tsx",
+        "ui.tsx",
+        "upload-desk.tsx",
+        "workbench.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "AnalyticsDesk",
+          "kind": "fn"
+        },
+        {
+          "name": "ClaimDetail",
+          "kind": "fn"
+        },
+        {
+          "name": "ClaimForm",
+          "kind": "fn"
+        },
+        {
+          "name": "ClaimsDesk",
+          "kind": "fn"
+        },
+        {
+          "name": "DenialsDesk",
+          "kind": "fn"
+        },
+        {
+          "name": "DraftsDesk",
+          "kind": "fn"
+        },
+        {
+          "name": "EligibilityDesk",
+          "kind": "fn"
+        },
+        {
+          "name": "IntakeDesk",
+          "kind": "fn"
+        },
+        {
+          "name": "PatientDetail",
+          "kind": "fn"
+        },
+        {
+          "name": "PatientsDesk",
+          "kind": "fn"
+        },
+        {
+          "name": "PortalAccess",
+          "kind": "fn"
+        },
+        {
+          "name": "PortalBridge",
+          "kind": "fn"
+        },
+        {
+          "name": "PracticeDesk",
+          "kind": "fn"
+        },
+        {
+          "name": "ScheduleDesk",
+          "kind": "fn"
+        },
+        {
+          "name": "subscribePortalRemoval",
+          "kind": "fn"
+        },
+        {
+          "name": "subscribePortalPush",
+          "kind": "fn"
+        },
+        {
+          "name": "enqueuePortalPush",
+          "kind": "fn"
+        },
+        {
+          "name": "whenPortalIdle",
+          "kind": "fn"
+        },
+        {
+          "name": "markRosterReady",
+          "kind": "fn"
+        },
+        {
+          "name": "notePortalPatient",
+          "kind": "fn"
+        },
+        {
+          "name": "mergePortalRoster",
+          "kind": "fn"
+        },
+        {
+          "name": "RcmProvider",
+          "kind": "fn"
+        },
+        {
+          "name": "useRcm",
+          "kind": "fn"
+        },
+        {
+          "name": "TasksDesk",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "components/clinic",
+      "fileCount": 1,
+      "files": [
+        "frame.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "ClinicFrame",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "components/portal",
+      "fileCount": 2,
+      "files": [
+        "intake-form.tsx",
+        "login-form.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "IntakeForm",
+          "kind": "fn"
+        },
+        {
+          "name": "PortalLoginForm",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "components/site",
+      "fileCount": 23,
+      "files": [
+        "alignment-rule.tsx",
+        "care-index.tsx",
+        "clinical-article.tsx",
+        "contact-form.tsx",
+        "emergency-note.tsx",
+        "focus-cycle.tsx",
+        "footer.tsx",
+        "header.tsx",
+        "icons.tsx",
+        "index-card.tsx",
+        "loading-state.tsx",
+        "mark.tsx",
+        "markdown.tsx",
+        "missing-page.tsx",
+        "mobile-nav.tsx",
+        "page-intro.tsx",
+        "photo-placeholder.tsx",
+        "reveal.tsx",
+        "review-banner.tsx",
+        "site-link.tsx",
+        "spine-art.tsx",
+        "sticky-contact.tsx",
+        "structured-data.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "AlignmentRule",
+          "kind": "fn"
+        },
+        {
+          "name": "CareIndex",
+          "kind": "fn"
+        },
+        {
+          "name": "ClinicalArticle",
+          "kind": "fn"
+        },
+        {
+          "name": "ContactForm",
+          "kind": "fn"
+        },
+        {
+          "name": "EmergencyNote",
+          "kind": "fn"
+        },
+        {
+          "name": "FocusCycle",
+          "kind": "fn"
+        },
+        {
+          "name": "Footer",
+          "kind": "fn"
+        },
+        {
+          "name": "Header",
+          "kind": "fn"
+        },
+        {
+          "name": "IconArrow",
+          "kind": "fn"
+        },
+        {
+          "name": "IconMenu",
+          "kind": "fn"
+        },
+        {
+          "name": "IconClose",
+          "kind": "fn"
+        },
+        {
+          "name": "IconRule",
+          "kind": "fn"
+        },
+        {
+          "name": "IconPlus",
+          "kind": "fn"
+        },
+        {
+          "name": "IconNeck",
+          "kind": "fn"
+        },
+        {
+          "name": "IconLowBack",
+          "kind": "fn"
+        },
+        {
+          "name": "IconAfterSurgery",
+          "kind": "fn"
+        },
+        {
+          "name": "IconVisit",
+          "kind": "fn"
+        },
+        {
+          "name": "IndexCard",
+          "kind": "fn"
+        },
+        {
+          "name": "LoadingState",
+          "kind": "fn"
+        },
+        {
+          "name": "Mark",
+          "kind": "fn"
+        },
+        {
+          "name": "Markdown",
+          "kind": "fn"
+        },
+        {
+          "name": "MissingPage",
+          "kind": "fn"
+        },
+        {
+          "name": "MobileNav",
+          "kind": "fn"
+        },
+        {
+          "name": "PageIntro",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "components/ui",
+      "fileCount": 8,
+      "files": [
+        "accordion.tsx",
+        "button.tsx",
+        "control.ts",
+        "input.tsx",
+        "label.tsx",
+        "select.tsx",
+        "separator.tsx",
+        "textarea.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "AccordionItem",
+          "kind": "fn"
+        },
+        {
+          "name": "AccordionTrigger",
+          "kind": "fn"
+        },
+        {
+          "name": "AccordionContent",
+          "kind": "fn"
+        },
+        {
+          "name": "Accordion",
+          "kind": "const"
+        },
+        {
+          "name": "Button",
+          "kind": "fn"
+        },
+        {
+          "name": "controlClass",
+          "kind": "const"
+        },
+        {
+          "name": "Input",
+          "kind": "fn"
+        },
+        {
+          "name": "Label",
+          "kind": "fn"
+        },
+        {
+          "name": "Select",
+          "kind": "fn"
+        },
+        {
+          "name": "Separator",
+          "kind": "fn"
+        },
+        {
+          "name": "Textarea",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "lib",
+      "fileCount": 5,
+      "files": [
+        "demo-admin.ts",
+        "env.ts",
+        "rate-limit.ts",
+        "site.ts",
+        "utils.ts"
+      ],
+      "symbols": [
+        {
+          "name": "isDemoAdminEnabled",
+          "kind": "fn"
+        },
+        {
+          "name": "DEMO_ADMIN_EMAIL",
+          "kind": "const"
+        },
+        {
+          "name": "DEMO_ADMIN_PASSWORD",
+          "kind": "const"
+        },
+        {
+          "name": "DEMO_ADMIN_COOKIE",
+          "kind": "const"
+        },
+        {
+          "name": "DEMO_ADMIN_COOKIE_VALUE",
+          "kind": "const"
+        },
+        {
+          "name": "readServerEnv",
+          "kind": "fn"
+        },
+        {
+          "name": "isSupabaseConfigured",
+          "kind": "fn"
+        },
+        {
+          "name": "isServiceRoleConfigured",
+          "kind": "fn"
+        },
+        {
+          "name": "ServerEnv",
+          "kind": "type"
+        },
+        {
+          "name": "rateLimit",
+          "kind": "fn"
+        },
+        {
+          "name": "canonicalOrigin",
+          "kind": "fn"
+        },
+        {
+          "name": "canonicalHost",
+          "kind": "fn"
+        },
+        {
+          "name": "isIndexingEnabled",
+          "kind": "fn"
+        },
+        {
+          "name": "canViewDraftsWithoutAuth",
+          "kind": "fn"
+        },
+        {
+          "name": "isAdminHostAllowed",
+          "kind": "fn"
+        },
+        {
+          "name": "practice",
+          "kind": "const"
+        },
+        {
+          "name": "physicianTraining",
+          "kind": "const"
+        },
+        {
+          "name": "clinicalFocus",
+          "kind": "const"
+        },
+        {
+          "name": "emergencyNote",
+          "kind": "const"
+        },
+        {
+          "name": "publicNav",
+          "kind": "const"
+        },
+        {
+          "name": "carePathways",
+          "kind": "const"
+        },
+        {
+          "name": "cn",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "lib/contact",
+      "fileCount": 1,
+      "files": [
+        "guard.ts"
+      ],
+      "symbols": [
+        {
+          "name": "noteLooksClinical",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "lib/content",
+      "fileCount": 7,
+      "files": [
+        "conditions.ts",
+        "faqs.ts",
+        "index.ts",
+        "markdown.ts",
+        "publish.ts",
+        "schema.ts",
+        "treatments.ts"
+      ],
+      "symbols": [
+        {
+          "name": "conditions",
+          "kind": "const"
+        },
+        {
+          "name": "faqs",
+          "kind": "const"
+        },
+        {
+          "name": "allClinicalDocuments",
+          "kind": "fn"
+        },
+        {
+          "name": "getCondition",
+          "kind": "fn"
+        },
+        {
+          "name": "getTreatment",
+          "kind": "fn"
+        },
+        {
+          "name": "getClinicalDocument",
+          "kind": "fn"
+        },
+        {
+          "name": "publicPath",
+          "kind": "fn"
+        },
+        {
+          "name": "previewPath",
+          "kind": "fn"
+        },
+        {
+          "name": "publicConditions",
+          "kind": "fn"
+        },
+        {
+          "name": "publicTreatments",
+          "kind": "fn"
+        },
+        {
+          "name": "publicClinicalDocuments",
+          "kind": "fn"
+        },
+        {
+          "name": "renderMarkdown",
+          "kind": "fn"
+        },
+        {
+          "name": "documentText",
+          "kind": "fn"
+        },
+        {
+          "name": "findBannedPhrases",
+          "kind": "fn"
+        },
+        {
+          "name": "canPublish",
+          "kind": "fn"
+        },
+        {
+          "name": "isPubliclyVisible",
+          "kind": "fn"
+        },
+        {
+          "name": "retiredSlugs",
+          "kind": "const"
+        },
+        {
+          "name": "ClinicalDocument",
+          "kind": "type"
+        },
+        {
+          "name": "OfferingStatus",
+          "kind": "type"
+        },
+        {
+          "name": "ReviewStatus",
+          "kind": "type"
+        },
+        {
+          "name": "ContactInquiry",
+          "kind": "type"
+        },
+        {
+          "name": "slugSchema",
+          "kind": "const"
+        },
+        {
+          "name": "offeringStatusSchema",
+          "kind": "const"
+        },
+        {
+          "name": "reviewStatusSchema",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "lib/portal",
+      "fileCount": 9,
+      "files": [
+        "cookie.ts",
+        "defaults.ts",
+        "engine.ts",
+        "file-store.ts",
+        "password.ts",
+        "repository.ts",
+        "supabase-store.ts",
+        "types.ts",
+        "view.ts"
+      ],
+      "symbols": [
+        {
+          "name": "readPortalCookie",
+          "kind": "fn"
+        },
+        {
+          "name": "writePortalCookie",
+          "kind": "fn"
+        },
+        {
+          "name": "clearPortalCookie",
+          "kind": "fn"
+        },
+        {
+          "name": "PORTAL_COOKIE",
+          "kind": "const"
+        },
+        {
+          "name": "defaultIntakeForm",
+          "kind": "fn"
+        },
+        {
+          "name": "sexLabel",
+          "kind": "fn"
+        },
+        {
+          "name": "LOCKED_FIELD_IDS",
+          "kind": "const"
+        },
+        {
+          "name": "CHART_FIELDS",
+          "kind": "const"
+        },
+        {
+          "name": "createPortalDb",
+          "kind": "fn"
+        },
+        {
+          "name": "saveForm",
+          "kind": "fn"
+        },
+        {
+          "name": "cleanAnswers",
+          "kind": "fn"
+        },
+        {
+          "name": "patientFromAnswers",
+          "kind": "fn"
+        },
+        {
+          "name": "createInvite",
+          "kind": "fn"
+        },
+        {
+          "name": "findInvite",
+          "kind": "fn"
+        },
+        {
+          "name": "submitIntake",
+          "kind": "fn"
+        },
+        {
+          "name": "issueLogin",
+          "kind": "fn"
+        },
+        {
+          "name": "markPortalActive",
+          "kind": "fn"
+        },
+        {
+          "name": "createSession",
+          "kind": "fn"
+        },
+        {
+          "name": "sessionExpiry",
+          "kind": "fn"
+        },
+        {
+          "name": "readSession",
+          "kind": "fn"
+        },
+        {
+          "name": "fileStore",
+          "kind": "const"
+        },
+        {
+          "name": "hashPassword",
+          "kind": "fn"
+        },
+        {
+          "name": "verifyPassword",
+          "kind": "fn"
+        },
+        {
+          "name": "generatePassword",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "lib/rcm",
+      "fileCount": 6,
+      "files": [
+        "chart.ts",
+        "format.ts",
+        "import.ts",
+        "metrics.ts",
+        "seed.ts",
+        "types.ts"
+      ],
+      "symbols": [
+        {
+          "name": "emptyVitals",
+          "kind": "fn"
+        },
+        {
+          "name": "defaultDocuments",
+          "kind": "fn"
+        },
+        {
+          "name": "defaultCoverage",
+          "kind": "fn"
+        },
+        {
+          "name": "withChart",
+          "kind": "fn"
+        },
+        {
+          "name": "normalizePatient",
+          "kind": "fn"
+        },
+        {
+          "name": "normalizeAppointment",
+          "kind": "fn"
+        },
+        {
+          "name": "normalizeState",
+          "kind": "fn"
+        },
+        {
+          "name": "primaryCoverage",
+          "kind": "fn"
+        },
+        {
+          "name": "applyPrimaryCoverage",
+          "kind": "fn"
+        },
+        {
+          "name": "chartGaps",
+          "kind": "fn"
+        },
+        {
+          "name": "ageFromDob",
+          "kind": "fn"
+        },
+        {
+          "name": "localIsoDay",
+          "kind": "fn"
+        },
+        {
+          "name": "money",
+          "kind": "fn"
+        },
+        {
+          "name": "patientName",
+          "kind": "fn"
+        },
+        {
+          "name": "claimTotal",
+          "kind": "fn"
+        },
+        {
+          "name": "formatDay",
+          "kind": "fn"
+        },
+        {
+          "name": "formatWhen",
+          "kind": "fn"
+        },
+        {
+          "name": "formatTime",
+          "kind": "fn"
+        },
+        {
+          "name": "formatClinicDay",
+          "kind": "fn"
+        },
+        {
+          "name": "statusLabel",
+          "kind": "fn"
+        },
+        {
+          "name": "parsePracticeCsv",
+          "kind": "fn"
+        },
+        {
+          "name": "CsvRow",
+          "kind": "type"
+        },
+        {
+          "name": "CsvParseResult",
+          "kind": "type"
+        },
+        {
+          "name": "summarizeClaims",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "lib/supabase",
+      "fileCount": 5,
+      "files": [
+        "admin.ts",
+        "database.ts",
+        "map-clinical.ts",
+        "server.ts",
+        "session.ts"
+      ],
+      "symbols": [
+        {
+          "name": "createSupabaseAdminClient",
+          "kind": "fn"
+        },
+        {
+          "name": "StaffRole",
+          "kind": "type"
+        },
+        {
+          "name": "ReviewStatus",
+          "kind": "type"
+        },
+        {
+          "name": "OfferingStatus",
+          "kind": "type"
+        },
+        {
+          "name": "RightsStatus",
+          "kind": "type"
+        },
+        {
+          "name": "Json",
+          "kind": "type"
+        },
+        {
+          "name": "Database",
+          "kind": "type"
+        },
+        {
+          "name": "clinicalRowToDocument",
+          "kind": "fn"
+        },
+        {
+          "name": "createSupabaseServerClient",
+          "kind": "fn"
+        },
+        {
+          "name": "getStaffSession",
+          "kind": "fn"
+        },
+        {
+          "name": "StaffSession",
+          "kind": "type"
+        }
+      ]
+    },
+    {
+      "dir": "public",
+      "fileCount": 2,
+      "files": [
+        "globe.svg",
+        "next.svg"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "scripts",
+      "fileCount": 1,
+      "files": [
+        "seed-content.ts"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "supabase/migrations",
+      "fileCount": 2,
+      "files": [
+        "20260930180000_init.sql",
+        "20261001170000_patient_portal.sql"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "tests",
+      "fileCount": 5,
+      "files": [
+        "portal.test.ts",
+        "publish.test.ts",
+        "rcm.test.ts",
+        "rls.test.ts",
+        "secrets.test.ts"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "tests/e2e",
+      "fileCount": 1,
+      "files": [
+        "smoke.spec.ts"
+      ],
+      "symbols": []
+    }
+  ]
+}

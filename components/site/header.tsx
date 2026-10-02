@@ -30,7 +30,7 @@ export function Header() {
               <span className="block truncate font-display text-base font-medium leading-tight lg:text-lg">
                 {practice.name}
               </span>
-              <span className="kicker hidden text-muted sm:block">Spine practice</span>
+              <span className="kicker hidden font-bold sm:block">Orthopedic Spine Surgery</span>
             </span>
           </Link>
           <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
