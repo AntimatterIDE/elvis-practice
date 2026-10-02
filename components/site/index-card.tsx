@@ -1,5 +1,5 @@
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { IconArrow } from "@/components/site/icons";
 import { publicPath } from "@/lib/content";
 import { isPubliclyVisible } from "@/lib/content/publish";
 import type { ClinicalDocument } from "@/lib/content/schema";
@@ -8,12 +8,12 @@ export function IndexCard({ document }: { document: ClinicalDocument }) {
   const visible = isPubliclyVisible(document);
   const body = (
     <>
-      <h2 className="font-display text-2xl font-semibold tracking-tight">{document.title}</h2>
+      <h2 className="font-display text-2xl font-medium leading-tight">{document.title}</h2>
       <p className="mt-2 max-w-2xl leading-relaxed text-muted">{document.summary}</p>
       {visible ? (
         <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-oxide-deep">
           Read this note
-          <ArrowRight className="size-4" aria-hidden />
+          <IconArrow className="size-4" />
         </span>
       ) : null}
     </>

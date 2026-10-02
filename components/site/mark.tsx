@@ -9,17 +9,10 @@ export function Mark({ className }: { className?: string }) {
       )}
       aria-hidden
     >
-      <svg viewBox="0 0 32 32" className="size-6">
-        <path
-          d="M16 3.5c3 3.4-3 5.6 0 9s-3 5.6 0 9 0 5.2 0 7"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-        <circle cx="16" cy="8" r="1.35" fill="#9fe3d8" />
-        <circle cx="16" cy="16" r="1.35" fill="#9fe3d8" />
-        <circle cx="16" cy="24" r="1.35" fill="#9fe3d8" />
+      <svg viewBox="0 0 32 32" className="size-7" fill="currentColor">
+        <path d="M8 2.2h10v2.2h6.2v4.2h-6.2v2.2H8z" />
+        <path d="M6 12.2h12.2v2.4h7v4.6h-7v2.4H6z" />
+        <path d="M8 22.2h10.4v2.2h6.4v4.2h-6.4v2.2H8z" />
       </svg>
     </span>
   );

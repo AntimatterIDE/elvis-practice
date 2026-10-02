@@ -1,4 +1,5 @@
 import { SpineArt } from "@/components/site/spine-art";
+import { cn } from "@/lib/utils";
 
 export function PhotoPlaceholder({
   label = "Elvis Francois, MD",
@@ -11,14 +12,16 @@ export function PhotoPlaceholder({
 }) {
   return (
     <figure
-      className={`hero-panel relative flex min-h-72 flex-col justify-between overflow-hidden rounded-[1.5rem] p-6 text-paper shadow-[0_24px_50px_-32px_rgb(7_30_54_/_0.8)] ${className}`}
+      className={cn(
+        "hero-panel relative flex min-h-80 flex-col overflow-hidden rounded-[1.5rem] p-6 text-paper shadow-[0_24px_50px_-32px_rgb(7_30_54_/_0.8)]",
+        className,
+      )}
     >
-      <SpineArt className="pointer-events-none absolute -right-8 top-0 h-full w-auto opacity-80" />
-      <p className="relative font-display text-5xl font-semibold tracking-tight">EF</p>
-      <figcaption className="relative">
-        <span className="block font-display text-2xl font-semibold tracking-tight">{label}</span>
-        <span className="mt-3 inline-flex rounded-full border border-white/30 bg-pine/35 px-3 py-1 text-xs font-medium tracking-wide text-paper">
-          {caption}
+      <figcaption className="relative flex min-h-0 flex-1 flex-col">
+        <p className="kicker text-foam">{caption}</p>
+        <SpineArt className="mx-auto mt-3 h-44 w-full flex-1 text-paper" />
+        <span className="mt-4 block border-t border-white/25 pt-4 font-display text-2xl font-medium leading-tight">
+          {label}
         </span>
       </figcaption>
     </figure>

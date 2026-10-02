@@ -1,7 +1,7 @@
 "use client";
 
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDown } from "lucide-react";
+import { IconPlus } from "@/components/site/icons";
 import { cn } from "@/lib/utils";
 
 export const Accordion = AccordionPrimitive.Root;
@@ -23,13 +23,13 @@ export function AccordionTrigger({
       <h2 className="flex">
         <AccordionPrimitive.Trigger
           className={cn(
-            "group flex min-h-11 flex-1 items-center justify-between gap-4 py-5 text-left text-lg font-semibold tracking-tight text-ink transition hover:text-oxide-deep",
+            "group flex min-h-11 flex-1 items-center justify-between gap-4 py-5 text-left font-display text-xl font-medium leading-snug text-ink transition hover:text-oxide-deep",
             className,
           )}
           {...props}
         >
           {children}
-          <ChevronDown className="size-4 shrink-0 text-oxide-deep transition-transform duration-300 group-data-[state=open]:rotate-180 motion-reduce:transition-none" aria-hidden />
+          <IconPlus className="size-3.5 shrink-0 text-oxide-deep" />
         </AccordionPrimitive.Trigger>
       </h2>
     </AccordionPrimitive.Header>

@@ -11,7 +11,7 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-3">
             <Mark className="bg-white/10 text-foam shadow-none" />
-            <p className="font-display text-xl font-semibold tracking-tight">{practice.name}</p>
+            <p className="font-display text-xl font-medium leading-tight">{practice.name}</p>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-paper/90">
             Orthopedic spine surgery with {practice.physicianName}. Fellowship-trained at Harvard

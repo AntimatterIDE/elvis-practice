@@ -9,9 +9,7 @@ export function PageIntro({
 }) {
   return (
     <header className="border-b border-line pb-10">
-      <p className="inline-flex rounded-full bg-mint px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-oxide-deep">
-        {kicker}
-      </p>
+      <p className="kicker text-oxide-deep">{kicker}</p>
       <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.1] tracking-tight text-ink md:text-5xl">
         {title}
       </h1>

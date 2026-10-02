@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { CareIndex } from "@/components/site/care-index";
+import { IconArrow } from "@/components/site/icons";
 import { FocusCycle } from "@/components/site/focus-cycle";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
 import { Reveal } from "@/components/site/reveal";
@@ -45,8 +45,8 @@ export default function HomePage() {
     <>
       <section className="px-4 pt-4 md:px-8 md:pt-6">
         <div className="hero-panel relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] text-paper shadow-[0_30px_70px_-40px_rgb(7_30_54_/_0.85)]">
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[44%] lg:block">
-            <SpineArt className="absolute right-0 top-8 h-[92%] w-full" />
+          <div className="pointer-events-none absolute inset-y-6 right-0 hidden w-[40%] lg:block">
+            <SpineArt className="h-full w-full text-paper" />
           </div>
           <div className="relative grid gap-10 px-6 py-12 md:px-12 md:py-16 lg:grid-cols-[minmax(0,36rem)_1fr] lg:items-end">
             <div>
@@ -54,8 +54,8 @@ export default function HomePage() {
               <div className="mt-4">
                 <FocusCycle />
               </div>
-              <h1 className="mt-4 max-w-xl font-display text-4xl font-semibold leading-[1.08] tracking-tight md:text-6xl">
-                Spine care, carefully aligned.
+              <h1 className="mt-4 max-w-xl font-display text-4xl font-semibold leading-[1.08] md:text-6xl">
+                Spine care, <em>carefully aligned.</em>
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-paper">
                 {practice.physicianName} is an orthopedic spine surgeon. The work of this practice is
@@ -67,7 +67,7 @@ export default function HomePage() {
                   className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-foam px-5 text-sm font-semibold text-pine hover:bg-white"
                 >
                   Contact the practice
-                  <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
+                  <IconArrow className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
                 </Link>
                 <Link
                   href="/about"
@@ -80,10 +80,8 @@ export default function HomePage() {
                 New patients are welcome. Request a call from the contact page. Do not include
                 symptoms or insurance numbers.
               </p>
+              <p className="kicker mt-5 text-foam">{practice.specialty}</p>
             </div>
-            <p className="relative justify-self-start rounded-full border border-white/30 bg-pine/40 px-3 py-1.5 text-xs font-medium tracking-wide text-paper lg:justify-self-end">
-              {practice.specialty}
-            </p>
           </div>
         </div>
       </section>
@@ -97,7 +95,7 @@ export default function HomePage() {
             <Reveal key={item.label} delay={index * 0.06}>
               <article className="clinic-card h-full rounded-2xl border border-line bg-card p-5 card-shadow">
                 <p className="kicker text-oxide-deep">0{index + 1}</p>
-                <h3 className="mt-3 font-display text-lg font-semibold tracking-tight">{item.label}</h3>
+                <h3 className="mt-3 font-display text-xl font-medium leading-tight">{item.label}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
               </article>
             </Reveal>
@@ -146,7 +144,7 @@ export default function HomePage() {
               className="group mt-6 inline-flex min-h-11 items-center gap-2 font-semibold text-oxide-deep"
             >
               Read the physician profile
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
+              <IconArrow className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
             </Link>
           </Reveal>
         </div>
@@ -163,10 +161,8 @@ export default function HomePage() {
               className="clinic-card rise-in h-full rounded-2xl border border-line bg-card p-5 card-shadow"
               style={{ animationDelay: `${index * 0.07}s` }}
             >
-              <span className="inline-flex size-11 items-center justify-center rounded-full bg-mint text-sm font-semibold text-oxide-deep">
-                0{index + 1}
-              </span>
-              <h3 className="mt-4 font-display text-xl font-semibold tracking-tight">{step.label}</h3>
+              <span className="kicker text-oxide-deep">0{index + 1}</span>
+              <h3 className="mt-4 font-display text-xl font-medium leading-tight">{step.label}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
             </li>
           ))}
@@ -190,7 +186,7 @@ export default function HomePage() {
               className="group inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-foam px-5 text-sm font-semibold text-pine hover:bg-white"
             >
               Contact the practice
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
+              <IconArrow className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
             </Link>
           </div>
         </Reveal>

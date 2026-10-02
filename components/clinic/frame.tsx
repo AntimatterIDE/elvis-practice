@@ -11,7 +11,7 @@ export function ClinicFrame({ kicker, children }: { kicker: string; children: Re
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-5 py-4">
           <Mark className="bg-white/10 text-foam shadow-none" />
           <div className="min-w-0">
-            <p className="truncate font-display text-lg font-semibold leading-tight">{practice.name}</p>
+            <p className="truncate font-display text-lg font-medium leading-tight">{practice.name}</p>
             <p className="text-xs text-foam">{kicker}</p>
           </div>
         </div>

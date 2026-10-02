@@ -1,8 +1,8 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { ArrowRight, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { IconArrow, IconClose, IconMenu } from "@/components/site/icons";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Mark } from "@/components/site/mark";
@@ -20,7 +20,7 @@ export function MobileNav() {
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-card px-3 text-sm font-medium lg:hidden">
-        <Menu className="size-4" aria-hidden />
+        <IconMenu className="size-4" />
         Menu
       </Dialog.Trigger>
       <Dialog.Portal>
@@ -32,7 +32,7 @@ export function MobileNav() {
               <span className="truncate">{practice.name}</span>
             </Dialog.Title>
             <Dialog.Close className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-line px-3 text-sm">
-              <X className="size-4" aria-hidden />
+              <IconClose className="size-3.5" />
               Close
             </Dialog.Close>
           </div>
@@ -46,7 +46,7 @@ export function MobileNav() {
                   href={item.href}
                 >
                   {item.label}
-                  <ArrowRight className="size-4 text-oxide-deep" aria-hidden />
+                  <IconArrow className="size-4 text-oxide-deep" />
                 </SiteLink>
               </Dialog.Close>
             ))}
@@ -57,7 +57,7 @@ export function MobileNav() {
                 href="/portal/login"
               >
                 Patient login
-                <ArrowRight className="size-4 text-oxide-deep" aria-hidden />
+                <IconArrow className="size-4 text-oxide-deep" />
               </SiteLink>
             </Dialog.Close>
           </nav>

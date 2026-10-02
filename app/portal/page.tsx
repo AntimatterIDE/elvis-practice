@@ -42,7 +42,7 @@ export default async function PortalHomePage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="kicker text-oxide-deep">Your record</p>
-          <h1 className="mt-2 font-display text-4xl tracking-tight sm:text-5xl">Hello, {greeting}</h1>
+          <h1 className="mt-2 font-display text-4xl font-medium leading-tight sm:text-5xl">Hello, {greeting}</h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
             This is what the practice has on file for you. Call them if a phone number, pharmacy, or insurance card should change.
           </p>
@@ -58,20 +58,20 @@ export default async function PortalHomePage() {
         <p className="kicker text-foam">{next ? "Next visit" : "Visits"}</p>
         {next ? (
           <>
-            <p className="mt-2 font-display text-3xl tracking-tight">{formatWhen(next.start)}</p>
+            <p className="mt-2 font-display text-3xl font-medium leading-tight">{formatWhen(next.start)}</p>
             <p className="mt-2 text-sm leading-relaxed text-foam">
               {[visitTypeLabel[next.visitType] ?? next.visitType, next.reason, next.providerName, next.room].filter(Boolean).join(" · ")}
             </p>
             <p className="mt-3 text-sm text-paper">{visitStatus[next.status] ?? next.status}</p>
           </>
         ) : (
-          <p className="mt-2 font-display text-3xl tracking-tight">Nothing is on the books.</p>
+          <p className="mt-2 font-display text-3xl font-medium leading-tight">Nothing is on the books.</p>
         )}
         {upcoming.length > 1 ? <VisitList visits={upcoming.slice(1)} tone="dark" /> : null}
       </section>
 
       <section className="rounded-3xl border border-line bg-card p-6">
-        <h2 className="font-display text-2xl tracking-tight">On your chart</h2>
+        <h2 className="font-display text-2xl font-medium leading-tight">On your chart</h2>
         <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
           <Info label="Legal name" value={`${home.firstName} ${home.lastName}`.trim()} />
           <Info label="Date of birth" value={home.dateOfBirth} />
@@ -87,7 +87,7 @@ export default async function PortalHomePage() {
 
       {home.allergies.length || home.medications.length ? (
         <section className="rounded-3xl border border-line bg-card p-6">
-          <h2 className="font-display text-2xl tracking-tight">Allergies and medicines</h2>
+          <h2 className="font-display text-2xl font-medium leading-tight">Allergies and medicines</h2>
           <p className="mt-2 text-sm text-muted">Tell the practice if this list is missing something.</p>
           {home.allergies.length ? <p className="mt-4 text-sm"><span className="font-semibold">Allergies. </span>{home.allergies.join(" · ")}</p> : null}
           {home.medications.length ? <p className="mt-2 text-sm"><span className="font-semibold">Medicines. </span>{home.medications.join(" · ")}</p> : null}
@@ -96,11 +96,11 @@ export default async function PortalHomePage() {
 
       {home.answers.length ? (
         <section className="rounded-3xl border border-line bg-card p-6">
-          <h2 className="font-display text-2xl tracking-tight">What you sent</h2>
+          <h2 className="font-display text-2xl font-medium leading-tight">What you sent</h2>
           <dl className="mt-4 grid gap-4">
             {home.answers.map((answer) => (
               <div key={answer.label}>
-                <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-muted">{answer.label}</dt>
+                <dt className="kicker text-muted">{answer.label}</dt>
                 <dd className="mt-1 text-sm leading-relaxed">{answer.value}</dd>
               </div>
             ))}
@@ -109,7 +109,7 @@ export default async function PortalHomePage() {
       ) : null}
 
       <section className="rounded-3xl border border-line bg-card p-6">
-        <h2 className="font-display text-2xl tracking-tight">Papers</h2>
+        <h2 className="font-display text-2xl font-medium leading-tight">Papers</h2>
         {needed.length ? (
           <p className="mt-3 text-sm">Still needed before the visit: {needed.map((document) => document.name).join(", ")}.</p>
         ) : (
@@ -128,7 +128,7 @@ export default async function PortalHomePage() {
 
       {earlier.length ? (
         <section className="rounded-3xl border border-line bg-card p-6">
-          <h2 className="font-display text-2xl tracking-tight">Earlier visits</h2>
+          <h2 className="font-display text-2xl font-medium leading-tight">Earlier visits</h2>
           <VisitList visits={earlier} />
         </section>
       ) : null}
@@ -160,7 +160,7 @@ function Info({ label, value }: { label: string; value: string }) {
   if (!value) return null;
   return (
     <div>
-      <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-muted">{label}</dt>
+      <dt className="kicker text-muted">{label}</dt>
       <dd className="mt-1 leading-relaxed">{value}</dd>
     </div>
   );

@@ -21,9 +21,7 @@ export function ClinicalArticle({
         </p>
       ) : null}
       <header className="border-b border-line pb-10">
-        <p className="inline-flex rounded-full bg-mint px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-oxide-deep">
-          {document.kind === "condition" ? "Condition" : "Treatment"}
-        </p>
+        <p className="kicker text-oxide-deep">{document.kind === "condition" ? "Condition" : "Treatment"}</p>
         <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.1] tracking-tight md:text-5xl">
           {document.title}
         </h1>
@@ -35,7 +33,7 @@ export function ClinicalArticle({
       <div className="mt-10 grid gap-4">
         {document.sections.map((section) => (
           <section key={section.id} className="rounded-2xl border border-line bg-card p-6 card-shadow md:p-8">
-            <h2 className="font-display text-2xl font-semibold tracking-tight">{section.heading}</h2>
+            <h2 className="font-display text-2xl font-medium leading-tight">{section.heading}</h2>
             <div className="mt-4 max-w-3xl">
               <Markdown source={section.body} />
             </div>
@@ -48,7 +46,7 @@ export function ClinicalArticle({
           <dl className="mt-6 grid gap-6">
             {document.faqs.map((faq) => (
               <div key={faq.question}>
-                <dt className="text-lg text-ink">{faq.question}</dt>
+                <dt className="font-display text-xl font-medium leading-snug text-ink">{faq.question}</dt>
                 <dd className="mt-2 max-w-2xl text-muted">{faq.answer}</dd>
               </div>
             ))}
