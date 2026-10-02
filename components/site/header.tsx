@@ -27,10 +27,10 @@ export function Header() {
           <Link href="/" className="flex min-h-11 min-w-0 items-center gap-3 text-ink">
             <Mark />
             <span className="min-w-0">
-              <span className="block truncate font-display text-base font-semibold leading-tight tracking-tight lg:text-lg">
+              <span className="block truncate font-display text-base font-medium leading-tight lg:text-lg">
                 {practice.name}
               </span>
-              <span className="hidden text-xs font-medium text-muted sm:block">Spine practice</span>
+              <span className="kicker hidden text-muted sm:block">Spine practice</span>
             </span>
           </Link>
           <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">

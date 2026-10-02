@@ -15,7 +15,7 @@
   --color-mist: #e7f2f8;
   --color-mint: #d7f5f0;
   --color-foam: #9fe3d8;
-  --font-display: var(--font-sans-family), "Plus Jakarta Sans", sans-serif;
+  --font-display: var(--font-display-family), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-sans-family), "Plus Jakarta Sans", sans-serif;
 }
 
@@ -32,7 +32,26 @@ body {
     var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  font-variant-numeric: lining-nums;
   text-rendering: optimizeLegibility;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.font-display {
+  font-feature-settings: "kern" 1, "liga" 1, "lnum" 1;
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.font-display em {
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 ::selection {
@@ -120,29 +139,8 @@ body {
   transform: scaleX(1);
 }
 
-.spine-vertebra {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: vertebra-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.spine-glow {
-  opacity: 0.45;
-}
-
 .sheet-in {
   animation: sheet-in 0.38s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@keyframes vertebra-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 @keyframes sheet-in {
@@ -161,12 +159,18 @@ body {
   box-shadow: var(--shadow-card);
 }
 
+.spine-plate path {
+  vector-effect: non-scaling-stroke;
+}
+
 .kicker {
-  font-size: 0.75rem;
-  line-height: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  letter-spacing: 0.005em;
+  font-optical-sizing: auto;
 }
 
 .card-shadow {
