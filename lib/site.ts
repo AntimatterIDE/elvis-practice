@@ -2,9 +2,37 @@ export const practice = {
   name: "The Alignment Clinic",
   physicianName: "Elvis Francois, MD",
   physicianPath: "/dr-elvis-francois",
+  specialty: "Orthopedic spine surgery",
+  npi: "1114306040",
   description:
-    "The Alignment Clinic is a spine practice led by Elvis Francois, MD. Visits are unhurried, explanations are plain, and decisions are made with you.",
+    "The Alignment Clinic is an orthopedic spine practice led by Elvis Francois, MD. Visits start with the problem, explain the findings in plain language, and decide the next step with you.",
 } as const;
+
+export const physicianTraining = [
+  {
+    label: "Spine surgery fellowship",
+    value: "Harvard Medical School, Beth Israel Deaconess Medical Center, Boston",
+  },
+  {
+    label: "Orthopedic surgery residency",
+    value: "Mayo Clinic, Rochester, Minnesota",
+  },
+  {
+    label: "Medical degree",
+    value: "Meharry Medical College, Nashville",
+  },
+  {
+    label: "Undergraduate degree",
+    value: "Oberlin College, neuroscience and biology",
+  },
+] as const;
+
+export const clinicalFocus = [
+  "Minimally invasive spine surgery",
+  "Cervical and lumbar disc disease",
+  "Spinal deformity",
+  "Motion-preserving techniques",
+] as const;
 
 export const emergencyNote =
   "This website does not provide emergency care. If you have sudden weakness, trouble walking, loss of bowel or bladder control, fever with severe back or neck pain, or a recent serious injury, call 911 or go to the nearest emergency department.";
@@ -22,17 +50,20 @@ export const carePathways = [
   {
     id: "neck",
     label: "Neck pain",
-    body: "Neck pain can come from muscles, joints, discs, or pressure on a nerve. A guide is being written for this practice and will be published only after a clinician reviews it.",
+    href: "/conditions#neck-pain",
+    body: "Neck pain can come from muscles, joints, a disc, or pressure on a nerve or the spinal cord. The visit starts with your story and an examination.",
   },
   {
     id: "low-back",
     label: "Low back pain",
-    body: "Low back pain is common, and most episodes are not a surgical problem. The written guide stays in draft until the practice confirms how this care is offered here.",
+    href: "/conditions#low-back-pain",
+    body: "Low back pain is common, and most episodes are not a surgical problem. A visit looks for the pattern before anyone talks about a procedure.",
   },
   {
     id: "after-surgery",
     label: "Pain after spine surgery",
-    body: "Pain that continues after an operation needs a careful second look, not a slogan. That page will not go live until Dr. Francois confirms it belongs on this site.",
+    href: "/conditions#pain-after-spine-surgery",
+    body: "Pain that continues after an operation has more than one explanation. It needs a fresh history, an examination, and a look at the imaging you already have.",
   },
   {
     id: "visit",

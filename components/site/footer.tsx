@@ -11,8 +11,8 @@ export function Footer() {
             <p className="font-display text-xl font-semibold tracking-tight">{practice.name}</p>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-paper/75">
-            A spine practice led by {practice.physicianName}. Address, phone, and hours will be
-            published when the practice confirms them.
+            Orthopedic spine surgery with {practice.physicianName}. Fellowship-trained at Harvard
+            after an orthopedic residency at the Mayo Clinic.
           </p>
         </div>
         <nav aria-label="Footer" className="grid content-start gap-3 text-sm">

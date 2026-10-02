@@ -1,43 +1,37 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/site/page-intro";
-import { publicConditions } from "@/lib/content";
+import { conditions } from "@/lib/content/conditions";
 
 export const metadata: Metadata = {
   title: "Conditions",
-  description: "Condition guides published by The Alignment Clinic after clinical review.",
+  description:
+    "Plain-language notes on the spine problems people bring to The Alignment Clinic, including neck pain, low back pain, and nerve pain.",
   alternates: { canonical: "/conditions" },
 };
 
 export default function ConditionsIndexPage() {
-  const documents = publicConditions();
-
   return (
     <article className="mx-auto max-w-6xl px-5 py-16 md:px-8">
       <PageIntro
         kicker="Conditions"
-        title="Guides, after they are approved."
-        lede="The practice is preparing plain-language pages about neck pain, low back pain, nerve pain, and a small number of more serious problems. Nothing is listed here until a clinician approves it and the practice confirms the scope of care."
+        title="Problems people bring to a spine visit."
+        lede="These notes describe common reasons for an appointment with Dr. Francois. They are general education. A visit is where the cause, and the next step, are decided."
       />
-      {documents.length === 0 ? (
-        <p className="mt-12 max-w-2xl rounded-2xl border border-line bg-card px-6 py-8 text-lg leading-relaxed text-muted shadow-sm">
-          No condition guides are published yet. Drafts are withheld from this page, from search
-          engines, and from the homepage.
-        </p>
-      ) : (
-        <ul className="mt-12 grid gap-4">
-          {documents.map((document) => (
-            <li key={document.slug}>
-              <a
-                className="clinic-card block rounded-2xl border border-line bg-card px-6 py-6 shadow-sm"
-                href={`/conditions/${document.slug}`}
-              >
-                <span className="font-display text-2xl font-semibold tracking-tight">{document.title}</span>
-                <span className="mt-2 block max-w-2xl text-muted">{document.summary}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className="mt-12 grid gap-4">
+        {conditions.map((document) => (
+          <li key={document.slug} id={document.slug} className="scroll-mt-28">
+            <article className="rounded-2xl border border-line bg-card px-6 py-6 shadow-sm">
+              <h2 className="font-display text-2xl font-semibold tracking-tight">{document.title}</h2>
+              <p className="mt-2 max-w-2xl text-muted">{document.summary}</p>
+            </article>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted">
+        Neck fractures and spine tumors need urgent in-person care. This list explains those
+        problems. It does not mean every operation is the right one, or that this website can
+        evaluate an emergency.
+      </p>
     </article>
   );
 }
