@@ -37,9 +37,8 @@ insert into public.invitations (email, display_name, role)
 values ('you@example.com', 'Your Name', 'owner');
 ```
 
-5. Require TOTP for owner and admin users before production. Enroll an authenticator, then complete `/admin/mfa`. Development can sign in without a second factor and shows a warning. Production (`VERCEL_ENV=production`) blocks the dashboard until the session is `aal2`.
-6. Run `npm run seed` to copy repository drafts into the database. They stay unpublished.
-7. Leave `CONTENT_SOURCE=file` until you have reviewed row-level security. `supabase` makes public clinical routes read published rows only.
+5. Run `npm run seed` to copy repository drafts into the database. They stay unpublished.
+6. Leave `CONTENT_SOURCE=file` until you have reviewed row-level security. `supabase` makes public clinical routes read published rows only.
 
 Roles:
 

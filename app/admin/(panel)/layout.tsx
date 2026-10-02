@@ -10,9 +10,6 @@ import { practice } from "@/lib/site";
 export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
   const staff = await getStaffSession();
   if (!staff) redirect("/admin/login");
-  if (process.env.VERCEL_ENV === "production" && staff.userId !== "demo-admin" && staff.aal !== "aal2") {
-    redirect("/admin/mfa");
-  }
 
   return (
     <div className="min-h-full md:grid md:grid-cols-[17rem_minmax(0,1fr)]">
@@ -34,8 +31,6 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
             <p className="mt-3 text-xs leading-relaxed text-paper/60">
               Demo desk. Intake and portal logins are saved on the server. Other charts stay in this browser until a patient login is created.
             </p>
-          ) : staff.aal !== "aal2" ? (
-            <p className="mt-3 text-xs leading-relaxed text-foam">Development session without multi-factor authentication.</p>
           ) : null}
           <form action={signOut} className="mt-4">
             <button className="text-sm text-paper/70 underline decoration-white/30 underline-offset-4 hover:text-paper">Sign out</button>
