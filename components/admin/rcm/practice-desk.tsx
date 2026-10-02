@@ -24,7 +24,7 @@ export function PracticeDesk() {
       <PageHeader
         kicker="Practice"
         title="Practice profile"
-        lede="Billing defaults for new demo claims. The NPI and tax id here are placeholders."
+        lede="Billing defaults for claims written here. Add the NPI and tax id before a claim is filed."
       />
       <form
         className="mt-8 grid max-w-2xl gap-4 sm:grid-cols-2"

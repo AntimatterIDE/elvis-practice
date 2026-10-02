@@ -13,7 +13,7 @@ export default async function AdminHomePage() {
       <p className="mt-4 max-w-xl text-muted">
         The public site is reading <strong>{env.CONTENT_SOURCE}</strong> content. Draft clinical pages
         stay off the public indexes until they are offered, approved, and published. The practice desk
-        uses separate demo records and does not publish them on the site.
+        keeps charts off the public site.
       </p>
       <p className="mt-4">
         <a href="/admin/operations" className="text-sm underline underline-offset-4">

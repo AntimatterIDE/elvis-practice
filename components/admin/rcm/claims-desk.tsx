@@ -42,7 +42,7 @@ export function ClaimsDesk() {
       <PageHeader
         kicker="Practice"
         title="Claims"
-        lede="Draft, submitted, and decided demo claims. Nothing is sent to a clearinghouse."
+        lede="Claims recorded at the practice. Nothing on this desk is sent to a clearinghouse."
         action={
           <Button asChild>
             <Link href="/admin/operations/claims/new">New claim</Link>

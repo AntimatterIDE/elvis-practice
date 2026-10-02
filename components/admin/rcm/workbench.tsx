@@ -8,7 +8,7 @@ import { LoadingDesk, PageHeader, Stat, StatusPill, useClinicToday, visitLabel }
 import { useRcm } from "@/components/admin/rcm/store";
 
 export function Workbench() {
-  const { ready, patients, appointments, tasks, resetDemo } = useRcm();
+  const { ready, patients, appointments, tasks } = useRcm();
   const today = useClinicToday();
   if (!ready) return <LoadingDesk />;
 
@@ -33,11 +33,11 @@ export function Workbench() {
       <PageHeader
         kicker="Practice"
         title={focus === today ? "Today" : "Clinic day"}
-        lede={`${formatClinicDay(focus)} with ${dayVisits[0]?.providerName ?? "the practice"}. The front desk runs the day from here. Claims are filed by the billing team.`}
+        lede={`${formatClinicDay(focus)}. New patients come in through an intake link, or as a walk-in chart.`}
         action={
           <div className="flex flex-wrap gap-3">
-            <Button variant="secondary" type="button" onClick={resetDemo}>
-              Reset demo
+            <Button asChild variant="secondary">
+              <Link href="/admin/operations/intake">Send an intake link</Link>
             </Button>
             <Button asChild>
               <Link href="/admin/operations/scheduling">Schedule a visit</Link>
@@ -107,7 +107,8 @@ export function Workbench() {
           <section>
             <h2 className="font-display text-2xl">Charts to finish</h2>
             <ul className="mt-4 grid gap-3">
-              {gaps.length === 0 ? <li className="text-sm text-muted">Intake, coverage, and allergies are on file.</li> : null}
+              {patients.length === 0 ? <li className="text-sm text-muted">No charts yet.</li> : null}
+              {patients.length > 0 && gaps.length === 0 ? <li className="text-sm text-muted">Intake, coverage, and allergies are on file.</li> : null}
               {gaps.map(({ patient, gaps: items }) => (
                 <li key={patient.id}>
                   <Link href={`/admin/operations/patients/${patient.id}`} className="block rounded-2xl border border-line bg-card p-3 text-sm">

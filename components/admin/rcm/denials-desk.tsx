@@ -41,7 +41,7 @@ export function DenialsDesk() {
       <PageHeader
         kicker="Practice"
         title="Denials"
-        lede="Review demo denials, write an appeal, or mark the claim for resubmission."
+        lede="Review a denial, write an appeal, or mark the claim for resubmission."
       />
       {denied.length === 0 ? <p className="mt-8 text-sm text-muted">No denied or rejected claims.</p> : null}
       <div className="mt-8 grid gap-6 lg:grid-cols-[16rem_1fr]">

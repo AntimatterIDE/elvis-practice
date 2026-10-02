@@ -21,7 +21,7 @@ function appealLetter(claim: Claim, name: string, practiceName: string) {
     claim.denialReason ? `The denial reason on file is: ${claim.denialReason}.` : "",
     claim.carc ? `CARC ${claim.carc}${claim.rarc ? `, RARC ${claim.rarc}` : ""}.` : "",
     "",
-    "This is a demo letter and was not sent.",
+    "This letter stays in the chart. It has not been sent.",
     practiceName,
   ]
     .filter((paragraph) => paragraph !== "")

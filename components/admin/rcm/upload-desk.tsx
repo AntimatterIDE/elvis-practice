@@ -3,17 +3,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { parsePracticeCsv } from "@/lib/rcm/import";
-import { patientName } from "@/lib/rcm/format";
 import { Field, LoadingDesk, PageHeader, fieldClass } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
-const sample = `first,last,dob,payer,member,dos,cpt,description,charge,icd
-Elena,Voss,1984-04-12,Aetna,AET88421,2026-09-28,99214,Office visit,210,M54.5
-Chris,Nguyen,1990-08-02,Cigna,CIG55210,2026-09-27,97110,Therapeutic exercise,78,M54.2`;
-
 export function UploadDesk() {
   const { ready, patients, addPatient, addClaim } = useRcm();
-  const [text, setText] = useState(sample);
+  const [text, setText] = useState("");
   const [message, setMessage] = useState("");
 
   if (!ready) return <LoadingDesk />;
@@ -79,7 +74,7 @@ export function UploadDesk() {
       <PageHeader
         kicker="Practice"
         title="Upload"
-        lede="Paste or drop a CSV. Matching names attach to an existing demo patient. New names are added to the roster."
+        lede="Paste or drop a CSV. A matching name attaches to an existing chart. A new name opens a chart."
       />
       <form
         className="mt-8 grid max-w-3xl gap-4"
@@ -89,7 +84,12 @@ export function UploadDesk() {
         }}
       >
         <Field label="CSV">
-          <textarea className={`${fieldClass} min-h-48 font-mono`} value={text} onChange={(event) => setText(event.target.value)} />
+          <textarea
+            className={`${fieldClass} min-h-48 font-mono`}
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            placeholder={"first,last,dob,payer,member,dos,cpt,description,charge,icd"}
+          />
         </Field>
         <Field label="Or choose a file">
           <input
@@ -106,7 +106,7 @@ export function UploadDesk() {
           />
         </Field>
         <p className="text-sm text-muted">
-          Columns: first, last, dob, payer, member, dos, cpt, description, charge, icd. The sample adds {patientName({ firstName: "Elena", lastName: "Voss" })} and Chris Nguyen if they are not already here.
+          Columns: first, last, dob, payer, member, dos, cpt, description, charge, icd. Each row becomes a draft claim. It is not sent to a payer.
         </p>
         {message ? <p className="text-sm">{message}</p> : null}
         <Button type="submit" className="justify-self-start">

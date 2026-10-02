@@ -18,7 +18,7 @@ export function DraftsDesk() {
       <PageHeader
         kicker="Practice"
         title="Agent drafts"
-        lede="Claims waiting for a person to review. Approving one marks it submitted in the demo only."
+        lede="Claims waiting for a person to review. Approving one marks it submitted here. It is not sent to a payer."
       />
       <ul className="mt-8 grid gap-4">
         {drafts.length === 0 ? <li className="text-sm text-muted">No drafts. Create a claim or import a CSV.</li> : null}

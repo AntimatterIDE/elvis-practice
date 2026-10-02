@@ -20,19 +20,19 @@ describe("practice desk demo data", () => {
     expect(parsed.ok).toBe(false);
   });
 
-  it("seeds practice charts for the clinic day", () => {
+  it("starts with an empty practice", () => {
     const state = createSeedState();
-    expect(state.patients.every((patient) => patient.mrn && patient.coverages.length > 0 && patient.documents.length > 0)).toBe(true);
-    expect(state.appointments.some((appointment) => appointment.start.startsWith("2026-09-30"))).toBe(true);
-    expect(state.tasks.some((task) => task.status === "open")).toBe(true);
-    const priya = state.patients.find((patient) => patient.id === "p5");
-    expect(priya?.allergiesReviewed).toBe(false);
+    expect(state.practice.legalName).toBe("The Alignment Clinic");
+    expect(state.practice.npi).toBe("");
+    expect(state.patients).toEqual([]);
+    expect(state.appointments).toEqual([]);
+    expect(state.claims).toEqual([]);
+    expect(state.tasks).toEqual([]);
   });
 
-  it("summarizes the seeded claims", () => {
+  it("summarizes an empty claim list", () => {
     const summary = summarizeClaims(createSeedState().claims);
-    expect(summary.billed).toBeGreaterThan(0);
-    expect(summary.firstPass).toBeGreaterThan(0);
-    expect(summary.firstPass).toBeLessThanOrEqual(1);
+    expect(summary.billed).toBe(0);
+    expect(summary.firstPass).toBe(0);
   });
 });
