@@ -434,7 +434,7 @@ function Demographics({
           type="button"
           variant="secondary"
           onClick={() => {
-            if (!window.confirm("Remove this demo patient and their chart?")) return;
+            if (!window.confirm("Remove this chart? A portal login for this patient is removed with it.")) return;
             onRemove(patient.id);
             router.push("/admin/operations/patients");
           }}

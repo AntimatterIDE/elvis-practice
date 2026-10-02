@@ -89,7 +89,9 @@ export function PatientsDesk() {
             aria-label="Search patients"
           />
           <ul className="mt-4 overflow-hidden rounded-2xl border border-line bg-card">
-            {rows.length === 0 ? <li className="px-4 py-5 text-sm text-muted">No charts match that search.</li> : null}
+            {rows.length === 0 ? (
+              <li className="px-4 py-5 text-sm text-muted">{query.trim() ? "No charts match that search." : "No charts yet. Send an intake link, or add a walk-in."}</li>
+            ) : null}
             {rows.map((patient) => {
               const upcoming = appointments
                 .filter(

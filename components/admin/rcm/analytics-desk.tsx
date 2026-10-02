@@ -16,7 +16,7 @@ export function AnalyticsDesk() {
 
   return (
     <main>
-      <PageHeader kicker="Practice" title="Analytics" lede="Figures are calculated from the demo claims in this browser." />
+      <PageHeader kicker="Practice" title="Analytics" lede="Figures are calculated from the claims recorded in this browser." />
       <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Stat label="Billed" value={money(summary.billed)} detail={`${claims.length} claims`} />
         <Stat label="Accepted" value={money(summary.accepted)} detail="Accepted and paid dollars" />

@@ -32,7 +32,7 @@ export function ToolsDesk() {
       <PageHeader
         kicker="Practice"
         title="Tools"
-        lede="A short code list and sample fees for the demo. This is not a full fee schedule or payer policy library."
+        lede="A short code list. Fees here are examples, not the practice fee schedule."
       />
       <input
         className={`${fieldClass} mt-8 max-w-md`}
@@ -56,9 +56,7 @@ export function ToolsDesk() {
       <section className="mt-8 max-w-2xl border border-line bg-card p-4 text-sm">
         <h2 className="font-display text-2xl">Prior auth watch</h2>
         <p className="mt-3 text-muted">
-          In this demo, MRI lumbar spine (72148) is treated as a service that often needs authorization. Eligibility
-          estimates also flag Aetna and UnitedHealthcare for imaging review. Confirm the real payer rule before using
-          this in clinic.
+          MRI lumbar spine (72148) often needs authorization. Confirm the payer rule before scheduling imaging.
         </p>
       </section>
     </main>

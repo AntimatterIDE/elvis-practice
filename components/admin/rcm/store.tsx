@@ -34,7 +34,6 @@ type RcmContextValue = DeskSnapshot & {
   removeAppointment: (id: string) => void;
   addEligibility: (result: Omit<EligibilityResult, "id" | "createdAt">) => EligibilityResult;
   updatePractice: (patch: Partial<PracticeProfile>) => void;
-  resetDemo: () => void;
 };
 
 const RcmContext = createContext<RcmContextValue | null>(null);
@@ -342,11 +341,6 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
       updatePractice: (patch) => {
         const current = getSnapshot();
         commit({ ...current, practice: { ...current.practice, ...patch } });
-      },
-      resetDemo: () => {
-        clientState = createSeedState();
-        localStorage.removeItem(STORAGE_KEY);
-        emit();
       },
     };
   }, [state]);
