@@ -18,10 +18,6 @@ import { getStaffSession, type StaffRole } from "@/lib/supabase/session";
 
 export type AdminFormState = { error?: string; message?: string };
 
-function productionMfaBlocked(aal: "aal1" | "aal2") {
-  return process.env.VERCEL_ENV === "production" && aal !== "aal2";
-}
-
 const demoCookie = {
   httpOnly: true,
   sameSite: "lax" as const,
@@ -58,10 +54,6 @@ export async function signIn(_previous: AdminFormState, formData: FormData): Pro
     }
   }
 
-  const { data: assurance } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-  if (assurance?.nextLevel === "aal2" && assurance.currentLevel !== "aal2") {
-    redirect("/admin/mfa");
-  }
   redirect("/admin");
 }
 
@@ -183,7 +175,6 @@ function assertRole(role: StaffRole, allowed: StaffRole[]) {
 export async function saveClinical(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
   const staff = await getStaffSession();
   if (!staff) return { error: "Sign in required." };
-  if (productionMfaBlocked(staff.aal)) return { error: "Multi-factor authentication is required before production changes." };
   const blocked = demoSaveBlocked();
   if (blocked) return blocked;
 
@@ -272,7 +263,6 @@ export async function saveClinical(_previous: AdminFormState, formData: FormData
 export async function saveFaq(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
   const staff = await getStaffSession();
   if (!staff) return { error: "Sign in required." };
-  if (productionMfaBlocked(staff.aal)) return { error: "Multi-factor authentication is required before production changes." };
   const blocked = demoSaveBlocked();
   if (blocked) return blocked;
 
@@ -309,7 +299,6 @@ export async function saveFaq(_previous: AdminFormState, formData: FormData): Pr
 export async function saveMedia(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
   const staff = await getStaffSession();
   if (!staff) return { error: "Sign in required." };
-  if (productionMfaBlocked(staff.aal)) return { error: "Multi-factor authentication is required before production changes." };
   if (staff.role === "editor" && formData.get("rightsStatus") === "approved") {
     return { error: "Editors cannot approve media rights." };
   }
@@ -331,7 +320,6 @@ export async function saveSettings(_previous: AdminFormState, formData: FormData
   const staff = await getStaffSession();
   if (!staff) return { error: "Sign in required." };
   if (staff.role !== "owner") return { error: "Only an owner can change site settings." };
-  if (productionMfaBlocked(staff.aal)) return { error: "Multi-factor authentication is required before production changes." };
   const blocked = demoSaveBlocked();
   if (blocked) return blocked;
 
