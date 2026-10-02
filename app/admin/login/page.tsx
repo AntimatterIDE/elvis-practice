@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { signIn } from "@/app/admin/actions";
 import { LoginForm } from "@/components/admin/login-form";
@@ -55,6 +56,11 @@ export default async function LoginPage() {
             Invitation only. There is no public registration. Production accounts for owners and admins must use an authenticator app.
           </p>
           <LoginForm action={signIn} />
+          <p className="mt-4 text-sm">
+            <Link href="/admin/forgot" className="font-medium text-oxide underline decoration-oxide/30 underline-offset-4">
+              Forgot password
+            </Link>
+          </p>
         </div>
       </main>
     </ClinicFrame>

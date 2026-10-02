@@ -12,6 +12,7 @@ import {
   isDemoAdminEnabled,
 } from "@/lib/demo-admin";
 import { isSupabaseConfigured } from "@/lib/env";
+import { canonicalOrigin } from "@/lib/site";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getStaffSession, type StaffRole } from "@/lib/supabase/session";
 
@@ -48,6 +49,15 @@ export async function signIn(_previous: AdminFormState, formData: FormData): Pro
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return { error: "Those credentials were not accepted." };
 
+  const { data: userData } = await supabase.auth.getUser();
+  if (userData.user) {
+    const { data: profile } = await supabase.from("profiles").select("id").eq("id", userData.user.id).maybeSingle();
+    if (!profile) {
+      await supabase.auth.signOut();
+      return { error: "This email is not a staff account." };
+    }
+  }
+
   const { data: assurance } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
   if (assurance?.nextLevel === "aal2" && assurance.currentLevel !== "aal2") {
     redirect("/admin/mfa");
@@ -80,10 +90,55 @@ export async function verifyTotp(_previous: AdminFormState, formData: FormData):
   redirect("/admin");
 }
 
+export async function requestStaffPasswordReset(
+  _previous: AdminFormState,
+  formData: FormData,
+): Promise<AdminFormState> {
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  if (!email.includes("@") || email.length > 320) return { error: "Enter the email on the staff account." };
+  if (!isSupabaseConfigured()) return { error: "Password reset is available once Supabase is connected." };
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${canonicalOrigin()}/auth/confirm?next=/admin/reset-password`,
+  });
+  if (error) {
+    if (/rate/i.test(error.message)) {
+      return { error: "Too many reset emails were just sent. Wait a few minutes and try again." };
+    }
+    return { error: "The reset email could not be sent. Try again in a few minutes." };
+  }
+  return {
+    message: "If that email has a staff account, a reset link is on its way. It expires in one hour.",
+  };
+}
+
+export async function updateStaffPassword(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
+  const password = String(formData.get("password") ?? "");
+  const confirm = String(formData.get("confirm") ?? "");
+  if (password.length < 8 || password.length > 128) return { error: "Use at least 8 characters." };
+  if (password !== confirm) return { error: "Those passwords do not match." };
+  if (!isSupabaseConfigured()) return { error: "Password reset is available once Supabase is connected." };
+
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) return { error: "This reset link has expired. Request a new one." };
+
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) return { error: "The new password was not saved. Request a fresh link and try again." };
+  redirect("/admin");
+}
+
 export async function enrollTotp(): Promise<{ factorId: string; qr: string; secret: string } | { error: string }> {
   const staff = await getStaffSession();
   if (!staff) return { error: "Sign in required." };
   const supabase = await createSupabaseServerClient();
+  const existing = await supabase.auth.mfa.listFactors();
+  for (const factor of existing.data?.all ?? []) {
+    if (factor.status !== "verified") {
+      await supabase.auth.mfa.unenroll({ factorId: factor.id });
+    }
+  }
   const enrolled = await supabase.auth.mfa.enroll({
     factorType: "totp",
     friendlyName: "Alignment Clinic admin",
