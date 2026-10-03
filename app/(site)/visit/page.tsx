@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/site/page-intro";
+import { publicPageMetadata } from "@/lib/share-metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Your visit",
   description:
     "How a visit at The Alignment Clinic works, what to bring, and what this website will not collect.",
-  alternates: { canonical: "/visit" },
-};
+  canonical: "/visit",
+});
 
 const sections = [
   {

@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/site/page-intro";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
+import { publicPageMetadata } from "@/lib/share-metadata";
 import { practice } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "About",
-  description:
-    "The Alignment Clinic is an orthopedic spine practice led by Elvis Francois, MD.",
-  alternates: { canonical: "/about" },
-};
+  description: "The Alignment Clinic is an orthopedic spine practice led by Elvis Francois, MD.",
+  canonical: "/about",
+});
 
 export default function AboutPage() {
   return (

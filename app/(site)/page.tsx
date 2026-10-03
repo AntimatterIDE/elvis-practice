@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HeroArtwork } from "@/components/site/brand";
 import { CareIndex } from "@/components/site/care-index";
 import { IconArrow } from "@/components/site/icons";
-import { FocusCycle } from "@/components/site/focus-cycle";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
+import { Promises } from "@/components/site/promises";
 import { Reveal } from "@/components/site/reveal";
-import { SpineArt } from "@/components/site/spine-art";
+import { publicPageMetadata } from "@/lib/share-metadata";
 import { practice } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: { absolute: practice.name },
   description: practice.description,
-  alternates: { canonical: "/" },
-};
+  canonical: "/",
+});
 
 const journey = [
   {
@@ -45,15 +46,9 @@ export default function HomePage() {
     <>
       <section className="px-4 pt-4 md:px-8 md:pt-6">
         <div className="hero-panel relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] text-paper shadow-[0_30px_70px_-40px_rgb(7_30_54_/_0.85)]">
-          <div className="pointer-events-none absolute inset-y-6 right-0 hidden w-[40%] lg:block">
-            <SpineArt className="h-full w-full text-paper" />
-          </div>
-          <div className="relative grid gap-10 px-6 py-12 md:px-12 md:py-16 lg:grid-cols-[minmax(0,36rem)_1fr] lg:items-end">
+          <div className="relative grid gap-2 px-6 py-12 md:px-12 md:py-16 lg:grid-cols-[minmax(0,36rem)_minmax(16rem,1fr)] lg:items-center lg:gap-16">
             <div>
               <p className="kicker text-foam">{practice.name}</p>
-              <div className="mt-4">
-                <FocusCycle />
-              </div>
               <h1 className="mt-4 max-w-xl font-display text-4xl font-semibold leading-[1.08] md:text-6xl">
                 Spine care, <em>carefully aligned.</em>
               </h1>
@@ -82,8 +77,10 @@ export default function HomePage() {
               </p>
               <p className="kicker mt-5 text-foam">{practice.specialty}</p>
             </div>
+            <HeroArtwork />
           </div>
         </div>
+        <Promises />
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14" aria-labelledby="assurance-heading">

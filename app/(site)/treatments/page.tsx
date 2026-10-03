@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import { IndexCard } from "@/components/site/index-card";
 import { PageIntro } from "@/components/site/page-intro";
 import { treatments } from "@/lib/content/treatments";
+import { publicPageMetadata } from "@/lib/share-metadata";
 import { clinicalFocus } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Treatments",
   description:
     "Plain-language notes on spine operations Dr. Francois may discuss, including disc surgery, decompression, and fusion.",
-  alternates: { canonical: "/treatments" },
-};
+  canonical: "/treatments",
+});
 
 const omitted = new Set([
   "image-guided-spine-surgery",

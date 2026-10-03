@@ -2,20 +2,22 @@
 
 import * as Dialog from "@radix-ui/react-dialog";
 import Link from "next/link";
+import { BrandLogo } from "@/components/site/brand";
 import { IconArrow, IconClose, IconMenu } from "@/components/site/icons";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Mark } from "@/components/site/mark";
+import { useState } from "react";
 import { SiteLink } from "@/components/site/site-link";
-import { practice, publicNav } from "@/lib/site";
+import { publicNav } from "@/lib/site";
 
 export function MobileNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [trackedPath, setTrackedPath] = useState(pathname);
 
-  useEffect(() => {
+  if (trackedPath !== pathname) {
+    setTrackedPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -27,9 +29,8 @@ export function MobileNav() {
         <Dialog.Overlay className="fixed inset-0 z-40 bg-pine/50 backdrop-blur-[2px]" />
         <Dialog.Content className="sheet-in fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col bg-card px-6 py-6 shadow-[0_24px_80px_-32px_rgb(7_30_54_/_0.6)]">
           <div className="flex items-center justify-between gap-3">
-            <Dialog.Title className="flex min-w-0 items-center gap-3 font-display text-lg font-semibold">
-              <Mark className="size-9" />
-              <span className="truncate">{practice.name}</span>
+            <Dialog.Title className="min-w-0 flex-1">
+              <BrandLogo className="h-auto w-full max-w-[220px]" />
             </Dialog.Title>
             <Dialog.Close className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-line px-3 text-sm">
               <IconClose className="size-3.5" />

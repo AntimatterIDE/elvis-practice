@@ -3,7 +3,7 @@ import { signOut } from "@/app/admin/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { PortalBridge } from "@/components/admin/rcm/portal-bridge";
 import { RcmProvider } from "@/components/admin/rcm/store";
-import { Mark } from "@/components/site/mark";
+import { BrandMark } from "@/components/site/brand";
 import { getStaffSession } from "@/lib/supabase/session";
 import { practice } from "@/lib/site";
 
@@ -15,7 +15,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
     <div className="min-h-full md:grid md:grid-cols-[17rem_minmax(0,1fr)]">
       <aside className="bg-pine text-paper md:sticky md:top-0 md:flex md:h-screen md:flex-col md:overflow-y-auto">
         <div className="flex items-center gap-3 px-4 py-5">
-          <Mark className="bg-white/10 text-foam shadow-none" />
+          <BrandMark tone="reverse" className="size-11" />
           <div className="min-w-0">
             <p className="truncate font-display text-lg leading-tight">{practice.name}</p>
             <p className="text-xs text-foam/70">Practice desk</p>

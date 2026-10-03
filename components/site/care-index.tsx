@@ -1,14 +1,15 @@
 import Link from "next/link";
-import { IconAfterSurgery, IconArrow, IconLowBack, IconNeck, IconVisit } from "@/components/site/icons";
+import { BrandIcon } from "@/components/site/brand";
+import { IconArrow } from "@/components/site/icons";
 import { publicConditions, publicPath } from "@/lib/content";
 import { carePathways } from "@/lib/site";
 
 const icons = {
-  neck: IconNeck,
-  "low-back": IconLowBack,
-  "after-surgery": IconAfterSurgery,
-  visit: IconVisit,
-};
+  neck: "/brand/icons/neck-pain.svg",
+  "low-back": "/brand/icons/low-back-pain.svg",
+  "after-surgery": "/brand/icons/reassessment.svg",
+  visit: "/brand/icons/visit-process.svg",
+} as const;
 
 export function CareIndex() {
   const published = new Map(publicConditions().map((document) => [document.slug, document]));
@@ -16,7 +17,6 @@ export function CareIndex() {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {carePathways.map((item) => {
-        const Icon = icons[item.id] ?? IconVisit;
         const hash = item.href.includes("#") ? item.href.split("#")[1] : "";
         const document = hash ? published.get(hash) : undefined;
         const href = document ? publicPath(document) : item.href;
@@ -26,7 +26,7 @@ export function CareIndex() {
             href={href}
             className="clinic-card group flex h-full flex-col rounded-2xl border border-line bg-card p-6 card-shadow"
           >
-            <Icon className="h-9 w-12 text-oxide-deep" />
+            <BrandIcon src={icons[item.id]} />
             <span className="mt-5 flex items-start justify-between gap-4">
               <span className="font-display text-2xl font-medium leading-tight">{item.label}</span>
               <IconArrow className="mt-2 size-4 shrink-0 text-oxide-deep transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />

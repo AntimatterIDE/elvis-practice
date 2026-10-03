@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { IndexCard } from "@/components/site/index-card";
 import { PageIntro } from "@/components/site/page-intro";
 import { conditions } from "@/lib/content/conditions";
+import { publicPageMetadata } from "@/lib/share-metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Conditions",
   description:
     "Plain-language notes on the spine problems people bring to The Alignment Clinic, including neck pain, low back pain, and nerve pain.",
-  alternates: { canonical: "/conditions" },
-};
+  canonical: "/conditions",
+});
 
 export default function ConditionsIndexPage() {
   return (
