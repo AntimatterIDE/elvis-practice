@@ -47,3 +47,26 @@ next-env.d.ts
 # local patient portal records
 /data/portal-store.json
 /data/*.tmp
+
+# antimatter defaults
+# dependencies
+node_modules/
+.pnp
+.pnp.*
+
+# next / build
+.next/
+out/
+build/
+dist/
+
+# misc
+.DS_Store
+*.pem
+.env*
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+
+# agent scratch (never commit runner paths)
+tmp/
