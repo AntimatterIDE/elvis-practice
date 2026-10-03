@@ -9,9 +9,9 @@ const promises = [
 
 export function Promises() {
   return (
-    <ul className="mx-auto mt-6 grid max-w-6xl grid-cols-2 gap-x-4 gap-y-4 md:mt-8 lg:grid-cols-4 lg:gap-x-8">
+    <ul className="mx-auto mt-6 grid max-w-6xl grid-cols-2 gap-4 px-5 md:mt-8 md:px-8 lg:grid-cols-4">
       {promises.map((item) => (
-        <li key={item.label} className="flex items-center gap-3">
+        <li key={item.label} className="flex items-center justify-center gap-3 text-center">
           <BrandIcon src={item.src} />
           <span className="text-sm font-medium leading-snug text-ink">{item.label}</span>
         </li>
