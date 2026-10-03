@@ -41,7 +41,7 @@ export default function AboutPage() {
             hours. To ask for a call, use the contact page, and leave medical details off the form.
           </p>
         </div>
-        <PhotoPlaceholder label={practice.name} caption={practice.specialty} />
+        <PhotoPlaceholder />
       </div>
     </article>
   );
