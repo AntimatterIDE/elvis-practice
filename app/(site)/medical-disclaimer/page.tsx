@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/site/page-intro";
+import { publicPageMetadata } from "@/lib/share-metadata";
 import { emergencyNote } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Medical disclaimer",
   description: "The Alignment Clinic website is general information, not personal medical advice.",
-  alternates: { canonical: "/medical-disclaimer" },
-};
+  canonical: "/medical-disclaimer",
+});
 
 export default function DisclaimerPage() {
   return (

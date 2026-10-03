@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { ClinicFrame } from "@/components/clinic/frame";
+import { unlistedShareMetadata } from "@/lib/share-metadata";
 import { practice } from "@/lib/site";
 
 export const metadata: Metadata = {
+  ...unlistedShareMetadata,
   title: "Patient portal",
-  robots: { index: false, follow: false },
 };
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {

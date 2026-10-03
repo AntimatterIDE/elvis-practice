@@ -4,6 +4,7 @@ import { ClinicalArticle } from "@/components/site/clinical-article";
 import { MissingPage } from "@/components/site/missing-page";
 import { getCondition, publicConditions } from "@/lib/content";
 import { isPubliclyVisible } from "@/lib/content/publish";
+import { publicPageMetadata, unlistedShareMetadata } from "@/lib/share-metadata";
 
 type Params = { slug: string };
 
@@ -15,13 +16,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const document = getCondition(slug);
   if (!document || !isPubliclyVisible(document)) {
-    return { title: "Not published", robots: { index: false, follow: false } };
+    return { title: "Not published", ...unlistedShareMetadata };
   }
-  return {
+  return publicPageMetadata({
     title: document.seoTitle,
     description: document.seoDescription,
-    alternates: { canonical: `/conditions/${document.slug}` },
-  };
+    canonical: `/conditions/${document.slug}`,
+  });
 }
 
 export default async function ConditionPage({ params }: { params: Promise<Params> }) {

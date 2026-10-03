@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/site/page-intro";
 import { ReviewBanner } from "@/components/site/review-banner";
+import { publicPageMetadata } from "@/lib/share-metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Privacy",
   description: "Draft privacy notice for The Alignment Clinic website. Awaiting attorney review.",
-  alternates: { canonical: "/privacy" },
+  canonical: "/privacy",
   robots: { index: false, follow: false },
-};
+});
 
 export default function PrivacyPage() {
   return (
@@ -37,7 +38,7 @@ export default function PrivacyPage() {
           The site does not run analytics in this version. It does not sell personal information.
           Admin accounts are invitation-only and are separate from patient care. A patient intake
           link stores the answers in the practice records and opens a chart. A patient login shows
-          only that patient's profile and visits.
+          only that patient&apos;s profile and visits.
         </p>
         <p>
           Questions about this notice go through the contact page. Send a name and a way to reach

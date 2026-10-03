@@ -1,5 +1,5 @@
 import { emergencyNote, practice, publicNav } from "@/lib/site";
-import { Mark } from "@/components/site/mark";
+import { BrandMark } from "@/components/site/brand";
 import { SiteLink } from "@/components/site/site-link";
 
 const linkClass = "inline-flex min-h-11 items-center text-paper/90 hover:text-foam";
@@ -9,8 +9,8 @@ export function Footer() {
     <footer className="mt-auto bg-pine text-paper">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.4fr_0.8fr_0.8fr] md:px-8">
         <div>
-          <div className="flex items-center gap-3">
-            <Mark className="bg-white/10 text-foam shadow-none" />
+          <div className="flex items-center gap-4">
+            <BrandMark tone="reverse" className="size-16" />
             <p className="font-display text-xl font-medium leading-tight">{practice.name}</p>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-paper/90">

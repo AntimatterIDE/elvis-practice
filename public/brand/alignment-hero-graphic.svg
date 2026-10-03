@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 520" role="img"><title>Open-axis hero graphic</title><desc>A large open A with a spine-like central axis on a dark teal field.</desc>
+<path d="M94 42 C17 142 43 333 105 465" fill="none" stroke="#C9EEE4" stroke-opacity=".18" stroke-width="1.6"/>
+<path d="M331 48 C419 177 392 364 328 472" fill="none" stroke="#C9EEE4" stroke-opacity=".18" stroke-width="1.6"/>
+<g transform="translate(-17 40) scale(7.4)"><path fill="#F3F7FB" d="M9 54 C7 49 9 41 13 33 C18 24 21 16 22 9 C23 5 27 5 27 10 C27 18 25 26 22 34 C18 44 14 51 9 54 Z"/><path fill="#F3F7FB" transform="translate(64 0) scale(-1 1)" d="M9 54 C7 49 9 41 13 33 C18 24 21 16 22 9 C23 5 27 5 27 10 C27 18 25 26 22 34 C18 44 14 51 9 54 Z"/><g fill="#C9EEE4"><path d="M27 29 C29 27 30 27 32 28 C34 27 35 27 37 29 L37 32 C35 34 34 34 32 33 C30 34 29 34 27 32 Z"/><path d="M26 40 C28 38 30 38 32 39 C34 38 36 38 38 40 L38 43 C36 45 34 45 32 44 C30 45 28 45 26 43 Z"/></g></g>
+<circle cx="74" cy="268" r="3" fill="#C9EEE4" opacity=".58"/>
+<circle cx="369" cy="268" r="3" fill="#C9EEE4" opacity=".58"/></svg>

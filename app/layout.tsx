@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Newsreader, Plus_Jakarta_Sans } from "next/font/google";
+import { shareImage } from "@/lib/share-metadata";
 import { canonicalOrigin, isIndexingEnabled, practice } from "@/lib/site";
 import "./globals.css";
 
@@ -31,12 +32,26 @@ export const metadata: Metadata = {
   robots: isIndexingEnabled()
     ? { index: true, follow: true }
     : { index: false, follow: false, nocache: true },
+  icons: {
+    icon: [
+      { url: "/brand/alignment-favicon.svg", type: "image/svg+xml" },
+      { url: "/brand/favicon-32.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     type: "website",
     siteName: practice.name,
-    title: practice.name,
+    title: { absolute: practice.name },
     description: practice.description,
-    url: canonicalOrigin(),
+    url: "/",
+    images: [shareImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: { absolute: practice.name },
+    description: practice.description,
+    images: [shareImage],
   },
 };
 

@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/site/page-intro";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
+import { publicPageMetadata } from "@/lib/share-metadata";
 import { clinicalFocus, physicianTraining, practice } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: practice.physicianName,
   description:
     "Elvis Francois, MD, is an orthopedic spine surgeon. He trained at Meharry Medical College, the Mayo Clinic, and Harvard.",
-  alternates: { canonical: "/dr-elvis-francois" },
-};
+  canonical: "/dr-elvis-francois",
+});
 
 export default function PhysicianPage() {
   return (
@@ -19,7 +20,7 @@ export default function PhysicianPage() {
         lede="Orthopedic spine surgeon. The physician of The Alignment Clinic."
       />
       <div className="mt-12 grid gap-8 lg:grid-cols-[16rem_1fr_18rem] lg:items-start">
-        <PhotoPlaceholder className="min-h-80" />
+        <PhotoPlaceholder lockup="physician" />
         <div className="max-w-xl space-y-6 text-lg leading-relaxed text-muted">
           <p>
             Dr. Francois is an orthopedic spine surgeon. He completed a spine surgery fellowship at

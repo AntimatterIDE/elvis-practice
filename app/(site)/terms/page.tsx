@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/site/page-intro";
 import { ReviewBanner } from "@/components/site/review-banner";
+import { publicPageMetadata } from "@/lib/share-metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Terms",
   description: "Draft terms for The Alignment Clinic website. Awaiting attorney review.",
-  alternates: { canonical: "/terms" },
+  canonical: "/terms",
   robots: { index: false, follow: false },
-};
+});
 
 export default function TermsPage() {
   return (

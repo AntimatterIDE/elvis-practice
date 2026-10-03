@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/site/contact-form";
 import { PageIntro } from "@/components/site/page-intro";
+import { publicPageMetadata } from "@/lib/share-metadata";
 import { practice } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicPageMetadata({
   title: "Contact",
   description:
     "Request a call from The Alignment Clinic. The form is for scheduling questions only and does not accept medical information.",
-  alternates: { canonical: "/contact" },
-};
+  canonical: "/contact",
+});
 
 const facts = [
   { label: "Physician", value: practice.physicianName },

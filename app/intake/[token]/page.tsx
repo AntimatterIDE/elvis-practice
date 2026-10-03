@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { ClinicFrame } from "@/components/clinic/frame";
 import { IntakeForm } from "@/components/portal/intake-form";
 import { getPortalStore } from "@/lib/portal/repository";
+import { unlistedShareMetadata } from "@/lib/share-metadata";
 import { practice } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  ...unlistedShareMetadata,
   title: "Patient form",
-  robots: { index: false, follow: false },
 };
 
 export default async function IntakePage({ params }: { params: Promise<{ token: string }> }) {
