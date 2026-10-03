@@ -80,8 +80,8 @@ export default function HomePage() {
             <HeroArtwork />
           </div>
         </div>
-        <Promises />
       </section>
+      <Promises />
 
       <section className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14" aria-labelledby="assurance-heading">
         <h2 id="assurance-heading" className="sr-only">
