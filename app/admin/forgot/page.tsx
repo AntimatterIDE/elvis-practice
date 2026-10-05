@@ -22,7 +22,7 @@ export default async function ForgotPasswordPage({
           </p>
           {expired ? (
             <p role="alert" className="mt-4 rounded-xl border border-emergency/30 bg-red-50 px-3 py-2 text-sm text-emergency">
-              That reset link has expired. Request a new one.
+              That reset link has already been used or has expired. A link works once, and some email apps open it before you do. Request a new one.
             </p>
           ) : null}
           <ForgotPasswordForm action={requestStaffPasswordReset} />
