@@ -1,13 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { focusClinicDay, visitTypeLabel } from "@/lib/rcm/chart";
-import { formatClinicDay, formatTime, patientName } from "@/lib/rcm/format";
+import { formatClinicDay, patientName } from "@/lib/rcm/format";
 import type { AppointmentStatus, ConfirmationStatus, VisitType } from "@/lib/rcm/types";
-import { Field, LoadingDesk, PageHeader, StatusPill, fieldClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
+import { DaySheet } from "@/components/admin/rcm/day-sheet";
+import { Field, LoadingDesk, PageHeader, fieldClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
 const statuses: AppointmentStatus[] = ["scheduled", "arrived", "in_progress", "completed", "cancelled", "no_show"];
@@ -62,44 +62,25 @@ export function ScheduleDesk() {
       </div>
       <div className="mt-6 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <section>
-          <h2 className="font-display text-2xl">{formatClinicDay(focus)}</h2>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
-            {rows.length === 0 ? <li className="rounded-2xl border border-dashed border-line px-4 py-5 text-sm text-muted md:col-span-2">No visits on this day.</li> : null}
-            {rows.map((appointment) => (
-              <li key={appointment.id} className="grid gap-3 rounded-2xl border border-line bg-card p-4">
-                <div className="grid gap-3 sm:grid-cols-[5.5rem_1fr] sm:items-start">
-                  <div>
-                    <p className="font-semibold tabular-nums">{formatTime(appointment.start)}</p>
-                    <p className="text-xs text-muted">{appointment.durationMinutes} min</p>
-                  </div>
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
-                      <Link href={`/admin/operations/patients/${appointment.patientId}`} className="font-semibold hover:text-oxide">
-                        {names.get(appointment.patientId) ?? "Unknown patient"}
-                      </Link>
-                      <p className="text-sm text-muted">
-                        {visitTypeLabel[appointment.visitType] ?? appointment.visitType} · {appointment.reason} · {appointment.room}
-                      </p>
-                      {appointment.notes ? <p className="mt-1 text-sm">{appointment.notes}</p> : null}
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <StatusPill status={appointment.confirmation} label={visitLabel(appointment.confirmation)} />
-                      <StatusPill status={appointment.status} label={visitLabel(appointment.status)} />
-                    </div>
-                  </div>
-                </div>
+          <DaySheet
+            visits={rows}
+            names={names}
+            title={formatClinicDay(focus)}
+            empty="No visits on this day."
+            renderExtra={(appointment) => (
                 <div className="flex flex-wrap items-center gap-2">
-                  {appointment.confirmation !== "confirmed" ? (
+                  {appointment.confirmation !== "confirmed" && appointment.status !== "cancelled" ? (
                     <Button
                       type="button"
                       variant="secondary"
+                      className="min-h-9 px-3 py-1.5 text-xs"
                       onClick={() => updateAppointment(appointment.id, { confirmation: "confirmed" satisfies ConfirmationStatus })}
                     >
                       Confirm
                     </Button>
                   ) : null}
                   <select
-                    className={`${fieldClass} max-w-40`}
+                    className={`${fieldClass} max-w-36 py-1.5`}
                     value={appointment.status}
                     aria-label={`Status for ${names.get(appointment.patientId)}`}
                     onChange={(event) => updateAppointment(appointment.id, { status: event.target.value as AppointmentStatus })}
@@ -110,13 +91,12 @@ export function ScheduleDesk() {
                       </option>
                     ))}
                   </select>
-                  <button type="button" className="text-sm underline" onClick={() => removeAppointment(appointment.id)}>
+                  <button type="button" className="text-xs underline" onClick={() => removeAppointment(appointment.id)}>
                     Remove
                   </button>
                 </div>
-              </li>
-            ))}
-          </ul>
+              )}
+          />
         </section>
         <form
           className="grid h-fit gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] xl:sticky xl:top-6"
