@@ -30,16 +30,16 @@ export function TasksDesk() {
         title="Tasks"
         lede="Confirmations, missing intake, interpreters, and anything the front desk owes before the visit."
       />
-      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_18rem]">
+      <div className="mt-8 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <section>
           <label className="mb-4 flex items-center gap-2 text-sm">
             <input type="checkbox" checked={showDone} onChange={(event) => setShowDone(event.target.checked)} />
             Show completed
           </label>
-          <ul className="divide-y divide-line border-y border-line">
-            {rows.length === 0 ? <li className="py-4 text-sm text-muted">No open tasks.</li> : null}
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {rows.length === 0 ? <li className="rounded-2xl border border-dashed border-line px-4 py-4 text-sm text-muted sm:col-span-2">No open tasks.</li> : null}
             {rows.map((task) => (
-              <li key={task.id} className="grid gap-3 py-4 sm:grid-cols-[1fr_auto] sm:items-center">
+              <li key={task.id} className="flex flex-col justify-between gap-3 rounded-2xl border border-line bg-card p-4">
                 <div>
                   <p className={task.status === "done" ? "text-muted line-through" : "font-semibold"}>{task.title}</p>
                   <p className="text-sm text-muted">
@@ -63,7 +63,7 @@ export function TasksDesk() {
           </ul>
         </section>
         <form
-          className="grid h-fit gap-4 border border-line bg-card p-4"
+          className="grid h-fit gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]"
           onSubmit={(event) => {
             event.preventDefault();
             if (!resolvedPatient || !title.trim()) return;

@@ -51,40 +51,41 @@ export function Workbench() {
         <Stat label="In the office" value={String(inOffice.length)} detail="Arrived or in a room" />
         <Stat label="Open tasks" value={String(openTasks.length)} detail="Due today or overdue" />
       </div>
-      <div className="mt-10 grid gap-8 lg:grid-cols-[1.5fr_0.8fr]">
-        <section>
+      <div className="mt-8 grid items-start gap-6 xl:grid-cols-12">
+        <section className="xl:col-span-7">
           <div className="flex items-end justify-between gap-3">
             <h2 className="font-display text-2xl">Schedule</h2>
             <Link href="/admin/operations/scheduling" className="text-sm underline">
               Full schedule
             </Link>
           </div>
-          <ul className="mt-4 overflow-hidden rounded-2xl border border-line bg-card">
-            {dayVisits.length === 0 ? <li className="px-4 py-5 text-sm text-muted">No visits on this day. The schedule is clear.</li> : null}
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            {dayVisits.length === 0 ? (
+              <li className="rounded-2xl border border-line bg-card px-4 py-5 text-sm text-muted sm:col-span-2">No visits on this day. The schedule is clear.</li>
+            ) : null}
             {dayVisits.map((appointment) => (
-              <li key={appointment.id} className="grid gap-3 border-b border-line px-4 py-4 last:border-b-0 sm:grid-cols-[5.5rem_1fr_auto] sm:items-center">
-                <div>
-                  <p className="font-semibold tabular-nums">{formatTime(appointment.start)}</p>
-                  <p className="text-xs text-muted">{appointment.durationMinutes} min</p>
-                </div>
-                <div>
-                  <Link href={`/admin/operations/patients/${appointment.patientId}`} className="font-semibold hover:text-oxide">
-                    {names.get(appointment.patientId) ?? "Unknown patient"}
-                  </Link>
-                  <p className="text-sm text-muted">
-                    {visitTypeLabel[appointment.visitType] ?? appointment.visitType} · {appointment.reason} · {appointment.room}
-                  </p>
-                  {appointment.notes ? <p className="mt-1 text-sm">{appointment.notes}</p> : null}
-                </div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <StatusPill status={appointment.confirmation} label={visitLabel(appointment.confirmation)} />
+              <li key={appointment.id} className="rounded-2xl border border-line bg-card p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold tabular-nums">{formatTime(appointment.start)}</p>
+                    <p className="text-xs text-muted">{appointment.durationMinutes} min · {appointment.room}</p>
+                  </div>
                   <StatusPill status={appointment.status} label={visitLabel(appointment.status)} />
+                </div>
+                <Link href={`/admin/operations/patients/${appointment.patientId}`} className="mt-3 block font-semibold hover:text-oxide">
+                  {names.get(appointment.patientId) ?? "Unknown patient"}
+                </Link>
+                <p className="mt-1 text-sm text-muted">
+                  {visitTypeLabel[appointment.visitType] ?? appointment.visitType} · {appointment.reason}
+                </p>
+                <div className="mt-3">
+                  <StatusPill status={appointment.confirmation} label={visitLabel(appointment.confirmation)} />
                 </div>
               </li>
             ))}
           </ul>
         </section>
-        <div className="grid content-start gap-8">
+        <div className="grid content-start gap-6 xl:col-span-5">
           <section>
             <div className="flex items-end justify-between gap-3">
               <h2 className="font-display text-2xl">Tasks</h2>
@@ -92,8 +93,8 @@ export function Workbench() {
                 All tasks
               </Link>
             </div>
-            <ul className="mt-4 grid gap-3">
-              {openTasks.length === 0 ? <li className="text-sm text-muted">Nothing due.</li> : null}
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+              {openTasks.length === 0 ? <li className="rounded-2xl border border-dashed border-line px-4 py-4 text-sm text-muted">Nothing due.</li> : null}
               {openTasks.map((task) => (
                 <li key={task.id}>
                   <Link href={`/admin/operations/patients/${task.patientId}`} className="block rounded-2xl border border-line bg-card p-3 text-sm">
@@ -106,9 +107,11 @@ export function Workbench() {
           </section>
           <section>
             <h2 className="font-display text-2xl">Charts to finish</h2>
-            <ul className="mt-4 grid gap-3">
-              {patients.length === 0 ? <li className="text-sm text-muted">No charts yet.</li> : null}
-              {patients.length > 0 && gaps.length === 0 ? <li className="text-sm text-muted">Intake, coverage, and allergies are on file.</li> : null}
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+              {patients.length === 0 ? <li className="rounded-2xl border border-dashed border-line px-4 py-4 text-sm text-muted">No charts yet.</li> : null}
+              {patients.length > 0 && gaps.length === 0 ? (
+                <li className="rounded-2xl border border-dashed border-line px-4 py-4 text-sm text-muted">Intake, coverage, and allergies are on file.</li>
+              ) : null}
               {gaps.map(({ patient, gaps: items }) => (
                 <li key={patient.id}>
                   <Link href={`/admin/operations/patients/${patient.id}`} className="block rounded-2xl border border-line bg-card p-3 text-sm">

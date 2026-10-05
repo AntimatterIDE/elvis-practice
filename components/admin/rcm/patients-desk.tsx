@@ -79,7 +79,7 @@ export function PatientsDesk() {
           </Button>
         }
       />
-      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_20rem]">
+      <div className="mt-8 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <section>
           <input
             value={query}
@@ -88,7 +88,7 @@ export function PatientsDesk() {
             className={fieldClass}
             aria-label="Search patients"
           />
-          <ul className="mt-4 overflow-hidden rounded-2xl border border-line bg-card">
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
             {rows.length === 0 ? (
               <li className="px-4 py-5 text-sm text-muted">{query.trim() ? "No charts match that search." : "No charts yet. Send an intake link, or add a walk-in."}</li>
             ) : null}
@@ -105,8 +105,8 @@ export function PatientsDesk() {
               const age = ageFromDob(patient.dateOfBirth, today);
               const initials = `${patient.firstName.slice(0, 1)}${patient.lastName.slice(0, 1)}`.toUpperCase();
               return (
-                <li key={patient.id} className="border-b border-line last:border-b-0">
-                  <Link href={`/admin/operations/patients/${patient.id}`} className="flex items-center gap-4 px-4 py-3.5 hover:bg-mist/60">
+                <li key={patient.id}>
+                  <Link href={`/admin/operations/patients/${patient.id}`} className="flex h-full items-center gap-4 rounded-2xl border border-line bg-card px-4 py-4 hover:border-oxide/40">
                     <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-mist text-xs font-semibold tracking-wide text-pine" aria-hidden>
                       {initials}
                     </span>

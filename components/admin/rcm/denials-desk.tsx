@@ -44,14 +44,14 @@ export function DenialsDesk() {
         lede="Review a denial, write an appeal, or mark the claim for resubmission."
       />
       {denied.length === 0 ? <p className="mt-8 text-sm text-muted">No denied or rejected claims.</p> : null}
-      <div className="mt-8 grid gap-6 lg:grid-cols-[16rem_1fr]">
+      <div className="mt-8 grid items-start gap-6 xl:grid-cols-[18rem_minmax(0,1fr)]">
         <ul className="grid gap-2">
           {denied.map((claim) => (
             <li key={claim.id}>
               <button
                 type="button"
                 onClick={() => setSelectedId(claim.id)}
-                className={`w-full border px-3 py-3 text-left text-sm ${selected?.id === claim.id ? "border-oxide bg-mint/40" : "border-line bg-card"}`}
+                className={`w-full rounded-2xl border px-4 py-3 text-left text-sm ${selected?.id === claim.id ? "border-oxide bg-mint/50" : "border-line bg-card"}`}
               >
                 <span className="block font-semibold">{names.get(claim.patientId)}</span>
                 <span className="text-muted">{claim.controlNumber}</span>
@@ -60,7 +60,7 @@ export function DenialsDesk() {
           ))}
         </ul>
         {selected ? (
-          <section className="border border-line bg-card p-5">
+          <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 className="font-display text-2xl">{names.get(selected.patientId)}</h2>
               <StatusPill status={selected.status} />

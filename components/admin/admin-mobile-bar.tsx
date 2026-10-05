@@ -17,7 +17,7 @@ export function AdminMobileBar({ name, role }: { name: string; role: string }) {
   }, [pathname]);
 
   return (
-    <div className="sticky top-0 z-30 border-b border-line bg-paper/95 backdrop-blur md:hidden">
+    <div className="sticky top-0 z-30 border-b border-line bg-paper/95 backdrop-blur lg:hidden">
       <div className="flex items-center gap-3 px-4 py-3">
         <BrandMark className="size-9" />
         <div className="min-w-0 flex-1">

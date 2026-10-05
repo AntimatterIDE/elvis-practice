@@ -5,7 +5,8 @@ import { submitIntakeAction } from "@/app/portal/actions";
 import { Button } from "@/components/ui/button";
 import { controlClass as sharedControlClass } from "@/components/ui/control";
 import { sexLabel } from "@/lib/portal/defaults";
-import type { IntakeField, IntakeMap, PublicIntake } from "@/lib/portal/types";
+import { intakeBlocks as blocks, intakeFieldSpan as span, intakeSections as sections } from "@/lib/portal/form-layout";
+import type { IntakeField, PublicIntake } from "@/lib/portal/types";
 import { emergencyNote } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -13,65 +14,7 @@ const initial = { error: undefined as string | undefined, done: false };
 
 const controlClass = `${sharedControlClass} max-w-full scroll-mb-28`;
 
-const sections = {
-  you: {
-    title: "About you",
-    lede: "This is the name and date of birth on your chart.",
-  },
-  reach: {
-    title: "How we reach you",
-    lede: "We use this the day of your visit. A portal login, if the practice sends one, goes to this email.",
-  },
-  coverage: {
-    title: "Insurance",
-    lede: "Bring the card to the visit. Leave this blank if you are paying yourself.",
-  },
-  emergency: {
-    title: "If we cannot reach you",
-    lede: "Someone we can call. This is not your referring physician.",
-  },
-  pharmacy: {
-    title: "Pharmacy",
-    lede: "Where a prescription should go, if you need one.",
-  },
-  visit: {
-    title: "Why you are coming",
-    lede: "A few sentences is enough. Please do not attach photos.",
-  },
-  other: {
-    title: "A few more questions",
-    lede: "The practice added these for your visit.",
-  },
-  safety: {
-    title: "Before you send",
-    lede: "This form does not reach a clinician in real time.",
-  },
-} as const;
-
-type SectionKey = keyof typeof sections;
-
-const mappedSection: Record<IntakeMap, SectionKey> = {
-  firstName: "you",
-  lastName: "you",
-  preferredName: "you",
-  dateOfBirth: "you",
-  sex: "you",
-  phone: "reach",
-  email: "reach",
-  address: "reach",
-  city: "reach",
-  state: "reach",
-  postalCode: "reach",
-  payerName: "coverage",
-  memberId: "coverage",
-  emergencyName: "emergency",
-  emergencyPhone: "emergency",
-  emergencyRelation: "emergency",
-  pharmacyName: "pharmacy",
-  pharmacyPhone: "pharmacy",
-};
-
-const autoComplete: Partial<Record<IntakeMap | string, string>> = {
+const autoComplete: Partial<Record<string, string>> = {
   firstName: "given-name",
   lastName: "family-name",
   preferredName: "nickname",
@@ -83,35 +26,6 @@ const autoComplete: Partial<Record<IntakeMap | string, string>> = {
   state: "address-level1",
   postalCode: "postal-code",
 };
-
-function sectionKey(field: IntakeField): SectionKey {
-  if (field.type === "acknowledge") return "safety";
-  if (field.mapsTo) return mappedSection[field.mapsTo];
-  if (field.type === "long_text" || field.id === "reasonForVisit") return "visit";
-  return "other";
-}
-
-function blocks(fields: IntakeField[]) {
-  const safety = fields.filter((field) => field.type === "acknowledge");
-  const rest = fields.filter((field) => field.type !== "acknowledge");
-  const grouped: { key: SectionKey; fields: IntakeField[] }[] = [];
-  for (const field of rest) {
-    const key = sectionKey(field);
-    const last = grouped[grouped.length - 1];
-    if (last?.key === key) last.fields.push(field);
-    else grouped.push({ key, fields: [field] });
-  }
-  if (safety.length) grouped.push({ key: "safety", fields: safety });
-  return grouped;
-}
-
-function span(field: IntakeField) {
-  if (field.type === "long_text" || field.type === "acknowledge" || field.type === "yes_no") return "min-w-0 sm:col-span-6";
-  if (field.type === "select") return "min-w-0 sm:col-span-6";
-  if (field.mapsTo === "address" || field.mapsTo === "preferredName") return "min-w-0 sm:col-span-6";
-  if (field.mapsTo === "city" || field.mapsTo === "state" || field.mapsTo === "postalCode") return "min-w-0 sm:col-span-2";
-  return "min-w-0 sm:col-span-3";
-}
 
 function answerLabel(field: IntakeField, value: string) {
   if (!value) return "Not answered";
