@@ -7,13 +7,14 @@ export type RecoveryState = { error?: string };
 
 export async function completeRecovery(_previous: RecoveryState, formData: FormData): Promise<RecoveryState> {
   const tokenHash = String(formData.get("token_hash") ?? "");
+  const otpType = String(formData.get("otp_type") ?? "");
   const code = String(formData.get("code") ?? "");
   const accessToken = String(formData.get("access_token") ?? "");
   const refreshToken = String(formData.get("refresh_token") ?? "");
   const supabase = await createSupabaseServerClient();
 
-  if (tokenHash) {
-    const verified = await supabase.auth.verifyOtp({ type: "recovery", token_hash: tokenHash });
+  if (tokenHash && (otpType === "recovery" || otpType === "invite" || otpType === "signup")) {
+    const verified = await supabase.auth.verifyOtp({ type: otpType, token_hash: tokenHash });
     if (verified.error) return { error: "This reset link has already been used or has expired. Request a new one." };
   } else if (code) {
     const exchanged = await supabase.auth.exchangeCodeForSession(code);

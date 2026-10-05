@@ -13,6 +13,7 @@ import {
 } from "@/lib/demo-admin";
 import { isSupabaseConfigured } from "@/lib/env";
 import { canonicalOrigin } from "@/lib/site";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getStaffSession, type StaffRole } from "@/lib/supabase/session";
 
@@ -357,13 +358,41 @@ export async function inviteEditor(_previous: AdminFormState, formData: FormData
   const blocked = demoSaveBlocked();
   if (blocked) return blocked;
 
-  const supabase = await createSupabaseServerClient();
-  const saved = await supabase.from("invitations").insert({
-    email: String(formData.get("email") ?? "").trim().toLowerCase(),
-    display_name: String(formData.get("displayName") ?? "") || null,
-    role: role as StaffRole,
-    invited_by: staff.userId,
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const displayName = String(formData.get("displayName") ?? "").trim();
+  if (!email.includes("@") || email.length > 320) return { error: "Enter an email address." };
+
+  let admin;
+  try {
+    admin = createSupabaseAdminClient();
+  } catch {
+    return { error: "Invitations need the Supabase service connection." };
+  }
+
+  const saved = await admin
+    .from("invitations")
+    .insert({
+      email,
+      display_name: displayName || null,
+      role: role as StaffRole,
+      invited_by: staff.userId,
+    })
+    .select("id")
+    .single();
+  if (saved.error || !saved.data) {
+    if (saved.error?.code === "23505") return { error: "That email already has an open invitation." };
+    return { error: "The invitation was not created." };
+  }
+
+  const invited = await admin.auth.admin.inviteUserByEmail(email, {
+    redirectTo: `${canonicalOrigin()}/auth/confirm?next=/admin/reset-password`,
+    data: displayName ? { display_name: displayName } : undefined,
   });
-  if (saved.error) return { error: "The invitation was not created." };
-  return { message: "Invitation recorded. Create the auth user only after this row exists, and keep public sign-up disabled." };
+  if (invited.error) {
+    await admin.from("invitations").delete().eq("id", saved.data.id);
+    const already = /already|registered|exists/i.test(invited.error.message);
+    return { error: already ? "That email already has an account." : "The invitation email was not sent. Try again." };
+  }
+
+  return { message: "Invitation sent." };
 }

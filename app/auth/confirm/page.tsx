@@ -8,7 +8,8 @@ export default async function ConfirmRecoveryPage({
   searchParams: Promise<{ token_hash?: string; type?: string; code?: string; error?: string; error_code?: string; next?: string }>;
 }) {
   const params = await searchParams;
-  const tokenHash = params.type === "recovery" ? params.token_hash ?? "" : "";
+  const otpType = params.type === "recovery" || params.type === "invite" || params.type === "signup" ? params.type : "";
+  const tokenHash = otpType ? params.token_hash ?? "" : "";
   const code = params.code ?? "";
   const spent = Boolean(params.error || params.error_code);
 
@@ -34,7 +35,7 @@ export default async function ConfirmRecoveryPage({
               <p className="mt-3 text-base leading-relaxed text-muted">
                 Continue to choose a new password. This link works once, and only after you press the button.
               </p>
-              <ContinueForm tokenHash={tokenHash} code={code} />
+              <ContinueForm tokenHash={tokenHash} code={code} otpType={otpType} />
             </>
           )}
         </div>
