@@ -78,6 +78,8 @@ export function ClaimForm() {
     <main>
       <PageHeader kicker="Claims" title="New claim" lede="Saves a draft on this desk. It is not submitted to a payer." />
       <form onSubmit={onSubmit} className="mt-8 grid max-w-3xl gap-4">
+        <section className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
+        <h2 className="font-display text-2xl">Visit</h2>
         <Field label="Patient">
           <select className={fieldClass} value={resolvedPatientId} onChange={(event) => setPatientId(event.target.value)} required>
             {options.map((option) => (
@@ -95,9 +97,10 @@ export function ClaimForm() {
             <input className={fieldClass} value={placeOfService} onChange={(event) => setPlaceOfService(event.target.value)} />
           </Field>
         </div>
+        </section>
         {lines.map((line, index) => (
-          <fieldset key={index} className="grid gap-3 border border-line bg-card p-4 sm:grid-cols-3">
-            <legend className="px-1 text-sm">Line {index + 1}</legend>
+          <fieldset key={index} className="grid gap-3 rounded-2xl border border-line bg-card p-4 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] sm:grid-cols-3">
+            <legend className="px-1 font-display text-xl">Line {index + 1}</legend>
             <Field label="CPT">
               <input className={fieldClass} value={line.cpt} onChange={(event) => updateLine(index, { cpt: event.target.value })} required />
             </Field>
@@ -118,17 +121,13 @@ export function ClaimForm() {
             </Field>
           </fieldset>
         ))}
-        <button
-          type="button"
-          className="justify-self-start text-sm underline"
-          onClick={() => setLines((current) => [...current, emptyLine()])}
-        >
+        <div className="sticky bottom-0 z-10 -mx-5 flex flex-wrap items-center gap-3 border-t border-line bg-paper/95 px-5 py-3 backdrop-blur md:mx-0 md:rounded-2xl md:border md:px-4">
+        <Button type="button" variant="secondary" onClick={() => setLines((current) => [...current, emptyLine()])}>
           Add a line
-        </button>
-        {error ? <p className="text-sm text-emergency">{error}</p> : null}
-        <Button type="submit" className="justify-self-start">
-          Save draft
         </Button>
+        <Button type="submit">Save draft</Button>
+        {error ? <p className="text-sm text-emergency">{error}</p> : null}
+        </div>
       </form>
     </main>
   );

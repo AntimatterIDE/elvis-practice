@@ -1,3 +1,4 @@
+import { PageHeader, panelClass } from "@/components/admin/rcm/ui";
 import { conditions } from "@/lib/content/conditions";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -15,16 +16,16 @@ export default async function AdminConditionsPage() {
 
   return (
     <main>
-      <h1 className="font-display text-4xl">Conditions</h1>
+      <PageHeader kicker="Website" title="Conditions" lede="Open a page to edit the public copy. File drafts are not in the database yet." />
       {error ? <p className="mt-4 text-emergency">Could not load database rows.</p> : null}
-      {rows.length === 0 ? (
+      {rows.length === 0 && missing.length === 0 ? (
         <p className="mt-6 text-muted">No database rows yet. Open a file draft to save it into Supabase.</p>
       ) : null}
-      <ul className="mt-8 divide-y divide-line border-y border-line">
+      <ul className="mt-8 grid gap-3">
         {rows.map((row) => (
           <li key={row.slug}>
-            <a className="flex items-baseline justify-between gap-4 py-4" href={`/admin/conditions/${row.slug}`}>
-              <span>{row.title}</span>
+            <a className={`${panelClass} flex items-center justify-between gap-4 transition hover:border-oxide/40`} href={`/admin/conditions/${row.slug}`}>
+              <span className="font-medium">{row.title}</span>
               <span className="text-sm text-muted">
                 {row.published_at ? "Published" : row.review_status} · {row.offering_status}
               </span>
@@ -33,8 +34,8 @@ export default async function AdminConditionsPage() {
         ))}
         {missing.map((document) => (
           <li key={document.slug}>
-            <a className="flex items-baseline justify-between gap-4 py-4" href={`/admin/conditions/${document.slug}`}>
-              <span>{document.title}</span>
+            <a className={`${panelClass} flex items-center justify-between gap-4 transition hover:border-oxide/40`} href={`/admin/conditions/${document.slug}`}>
+              <span className="font-medium">{document.title}</span>
               <span className="text-sm text-oxide">File draft</span>
             </a>
           </li>

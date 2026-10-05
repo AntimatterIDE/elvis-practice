@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { signOut } from "@/app/admin/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { AdminMobileBar } from "@/components/admin/admin-mobile-bar";
 import { PortalBridge } from "@/components/admin/rcm/portal-bridge";
 import { RcmProvider } from "@/components/admin/rcm/store";
 import { BrandMark } from "@/components/site/brand";
@@ -13,7 +14,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
 
   return (
     <div className="min-h-full md:grid md:grid-cols-[17rem_minmax(0,1fr)]">
-      <aside className="bg-pine text-paper md:sticky md:top-0 md:flex md:h-screen md:flex-col md:overflow-y-auto">
+      <aside className="hidden bg-pine text-paper md:sticky md:top-0 md:flex md:h-screen md:flex-col md:overflow-y-auto">
         <div className="flex items-center gap-3 px-4 py-5">
           <BrandMark tone="reverse" className="size-11" />
           <div className="min-w-0">
@@ -38,6 +39,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
         </div>
       </aside>
       <div className="admin-canvas min-w-0">
+        <AdminMobileBar name={staff.displayName} role={staff.role} />
         <RcmProvider>
           <PortalBridge />
           <div className="mx-auto max-w-6xl px-5 py-8 md:px-10 md:py-10">{children}</div>

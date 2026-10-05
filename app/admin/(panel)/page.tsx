@@ -1,5 +1,7 @@
 import { inviteEditor } from "@/app/admin/actions";
 import { AdminStateForm } from "@/components/admin/state-form";
+import { Field, PageHeader, fieldClass, panelClass } from "@/components/admin/rcm/ui";
+import { Button } from "@/components/ui/button";
 import { readServerEnv } from "@/lib/env";
 import { getStaffSession } from "@/lib/supabase/session";
 
@@ -9,52 +11,49 @@ export default async function AdminHomePage() {
 
   return (
     <main>
-      <h1 className="font-display text-4xl">Content desk</h1>
-      <p className="mt-4 max-w-xl text-muted">
-        The public site is reading <strong>{env.CONTENT_SOURCE}</strong> content. Draft clinical pages
-        stay off the public indexes until they are offered, approved, and published. The practice desk
-        keeps charts off the public site.
-      </p>
-      <p className="mt-4">
-        <a href="/admin/operations" className="text-sm underline underline-offset-4">
-          Open the practice desk
-        </a>
-      </p>
+      <PageHeader
+        kicker="Website"
+        title="Content desk"
+        lede={`The public site is reading ${env.CONTENT_SOURCE} content. Draft clinical pages stay off the public indexes until they are offered, approved, and published.`}
+        action={
+          <Button asChild variant="secondary">
+            <a href="/admin/operations">Open the practice desk</a>
+          </Button>
+        }
+      />
       <dl className="mt-8 grid gap-4 text-sm md:grid-cols-3">
-        <div className="border border-line p-4">
-          <dt className="uppercase tracking-[0.14em] text-oxide">Role</dt>
-          <dd className="mt-2">{staff?.role}</dd>
+        <div className={panelClass}>
+          <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Role</dt>
+          <dd className="mt-2 font-display text-2xl">{staff?.role}</dd>
         </div>
-        <div className="border border-line p-4">
-          <dt className="uppercase tracking-[0.14em] text-oxide">Source</dt>
-          <dd className="mt-2">{env.CONTENT_SOURCE}</dd>
+        <div className={panelClass}>
+          <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Source</dt>
+          <dd className="mt-2 font-display text-2xl">{env.CONTENT_SOURCE}</dd>
         </div>
-        <div className="border border-line p-4">
-          <dt className="uppercase tracking-[0.14em] text-oxide">Indexing</dt>
-          <dd className="mt-2">{env.INDEXING_ENABLED === "true" ? "Requested" : "Off"}</dd>
+        <div className={panelClass}>
+          <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Indexing</dt>
+          <dd className="mt-2 font-display text-2xl">{env.INDEXING_ENABLED === "true" ? "Requested" : "Off"}</dd>
         </div>
       </dl>
       {staff && staff.role !== "editor" ? (
-        <section className="mt-12 max-w-lg">
+        <section className={`${panelClass} mt-8 max-w-lg`}>
           <h2 className="font-display text-2xl">Invite a user</h2>
+          <p className="mt-1 text-sm text-muted">They receive an email and set their own password.</p>
           <AdminStateForm action={inviteEditor}>
-            <label className="grid gap-2 text-sm">
-              Email
-              <input name="email" type="email" required className="border border-line bg-card px-3 py-3" />
-            </label>
-            <label className="grid gap-2 text-sm">
-              Name
-              <input name="displayName" className="border border-line bg-card px-3 py-3" />
-            </label>
-            <label className="grid gap-2 text-sm">
-              Role
-              <select name="role" defaultValue="editor" className="border border-line bg-card px-3 py-3">
+            <Field label="Email">
+              <input name="email" type="email" required className={fieldClass} />
+            </Field>
+            <Field label="Name">
+              <input name="displayName" className={fieldClass} />
+            </Field>
+            <Field label="Role">
+              <select name="role" defaultValue="editor" className={fieldClass}>
                 <option value="editor">Editor</option>
                 {staff.role === "owner" ? <option value="admin">Admin</option> : null}
                 {staff.role === "owner" ? <option value="owner">Owner</option> : null}
               </select>
-            </label>
-            <button className="justify-self-start bg-oxide px-4 py-2 text-sm text-paper">Create invitation</button>
+            </Field>
+            <Button className="justify-self-start">Create invitation</Button>
           </AdminStateForm>
         </section>
       ) : null}

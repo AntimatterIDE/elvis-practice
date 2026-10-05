@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { ClinicalEditor } from "@/components/admin/clinical-editor";
+import { PageHeader } from "@/components/admin/rcm/ui";
 import { getTreatment } from "@/lib/content";
 import { isSupabaseConfigured } from "@/lib/env";
 import { clinicalRowToDocument } from "@/lib/supabase/map-clinical";
@@ -18,11 +19,16 @@ export default async function EditTreatmentPage({ params }: { params: Promise<{ 
 
   return (
     <main>
-      <p className="text-xs uppercase tracking-[0.18em] text-oxide">Treatment draft</p>
-      <h1 className="mt-3 font-display text-4xl">{document.title}</h1>
-      <p className="mt-3 text-sm text-muted">
-        Public preview, not indexed: <a href={`/preview/treatments/${document.slug}`}>/preview/treatments/{document.slug}</a>
-      </p>
+      <PageHeader
+        kicker="Treatment draft"
+        title={document.title}
+        lede="Search listing and page sections stay closed until you open them. Markdown is limited to paragraphs, lists, and emphasis."
+        action={
+          <a className="text-sm font-semibold underline underline-offset-4" href={`/preview/treatments/${document.slug}`}>
+            Preview
+          </a>
+        }
+      />
       <ClinicalEditor document={document} role={staff.role} />
     </main>
   );

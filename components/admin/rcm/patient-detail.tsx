@@ -117,7 +117,7 @@ export function PatientDetail({ id }: { id: string }) {
         </p>
         {coverage ? <p className="mt-1 text-muted">{coverage.payerName} · copay {money(coverage.copay)}</p> : null}
       </div>
-      <div className="mt-6 flex flex-wrap gap-1 rounded-2xl bg-mist/80 p-1" role="tablist" aria-label="Chart">
+      <div className="sticky top-14 z-20 mt-6 flex gap-1 overflow-x-auto rounded-2xl border border-line bg-paper/95 p-1 backdrop-blur md:top-0" role="tablist" aria-label="Chart">
         {tabs.map(([key, label]) => (
           <button
             key={key}
@@ -186,7 +186,7 @@ function Overview({
     <div className="grid gap-4 lg:grid-cols-2">
       <PortalAccess patient={patient} />
       {patient.intakeAnswers?.length ? (
-        <section className="border border-line bg-card p-4 lg:col-span-2">
+        <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] lg:col-span-2">
           <h2 className="font-display text-2xl">Intake answers</h2>
           <dl className="mt-3 grid gap-3">
             {patient.intakeAnswers.map((answer) => (
@@ -198,7 +198,7 @@ function Overview({
           </dl>
         </section>
       ) : null}
-      <section className="border border-line bg-card p-4">
+      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
         <h2 className="font-display text-2xl">Next visit</h2>
         {nextVisit ? (
           <p className="mt-3 text-sm">
@@ -214,7 +214,7 @@ function Overview({
           Visit history
         </button>
       </section>
-      <section className="border border-line bg-card p-4">
+      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
         <h2 className="font-display text-2xl">Coverage</h2>
         {coverage ? (
           <p className="mt-3 text-sm">
@@ -233,7 +233,7 @@ function Overview({
           Insurance
         </button>
       </section>
-      <section className="border border-line bg-card p-4">
+      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
         <h2 className="font-display text-2xl">Clinical snapshot</h2>
         <p className="mt-3 text-sm">
           <span className="block font-semibold">Problems</span>
@@ -254,7 +254,7 @@ function Overview({
           Open the clinical chart
         </button>
       </section>
-      <section className="border border-line bg-card p-4">
+      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
         <h2 className="font-display text-2xl">Front desk</h2>
         {gaps.length ? (
           <ul className="mt-3 grid gap-1 text-sm text-muted">
@@ -301,7 +301,7 @@ function Demographics({
 
   return (
     <form
-      className="grid gap-4 border border-line bg-card p-4 sm:grid-cols-2"
+      className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] sm:grid-cols-2"
       onSubmit={(event) => {
         event.preventDefault();
         onSave(patient.id, {
@@ -468,7 +468,7 @@ function CoverageDesk({
       {patient.coverages.map((coverage) => (
         <form
           key={coverage.id}
-          className="grid gap-4 border border-line bg-card p-4 sm:grid-cols-2"
+          className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] sm:grid-cols-2"
           onSubmit={(event) => {
             event.preventDefault();
             const data = new FormData(event.currentTarget);
@@ -549,7 +549,7 @@ function CoverageDesk({
         </Button>
       ) : null}
       {eligibility.length ? (
-        <section className="border border-line bg-card p-4">
+        <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
           <h2 className="font-display text-2xl">Latest eligibility</h2>
           <ul className="mt-3 grid gap-2 text-sm">
             {eligibility.map((item) => (
@@ -578,7 +578,7 @@ function Clinical({ patient, onSave }: { patient: Patient; onSave: (id: string, 
 
   return (
     <div className="grid gap-4">
-      <section className="border border-line bg-card p-4">
+      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-display text-2xl">Allergies</h2>
           <label className="flex items-center gap-2 text-sm">
@@ -622,7 +622,7 @@ function Clinical({ patient, onSave }: { patient: Patient; onSave: (id: string, 
           </Button>
         </form>
       </section>
-      <section className="border border-line bg-card p-4">
+      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
         <h2 className="font-display text-2xl">Problems</h2>
         <List
           empty="No problems recorded."
@@ -649,7 +649,7 @@ function Clinical({ patient, onSave }: { patient: Patient; onSave: (id: string, 
           </Button>
         </form>
       </section>
-      <section className="border border-line bg-card p-4">
+      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
         <h2 className="font-display text-2xl">Medications</h2>
         <List
           empty="No medications recorded."
@@ -694,7 +694,7 @@ function History({ patient, onSave }: { patient: Patient; onSave: (patch: Partia
   const [surgical, setSurgical] = useState(patient.surgicalHistory);
   return (
     <form
-      className="grid gap-4 border border-line bg-card p-4"
+      className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]"
       onSubmit={(event) => {
         event.preventDefault();
         onSave({ medicalHistory: medical, surgicalHistory: surgical });
@@ -750,7 +750,7 @@ function Visits({
   return (
     <ul className="grid gap-4">
       {visits.map((visit) => (
-        <li key={visit.id} className="border border-line bg-card p-4">
+        <li key={visit.id} className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="font-semibold">{formatWhen(visit.start)}</p>
