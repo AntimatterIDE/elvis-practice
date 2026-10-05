@@ -60,13 +60,13 @@ export function ScheduleDesk() {
           </button>
         ))}
       </div>
-      <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_18rem]">
+      <div className="mt-6 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <section>
           <h2 className="font-display text-2xl">{formatClinicDay(focus)}</h2>
-          <ul className="mt-4 overflow-hidden rounded-2xl border border-line bg-card">
-            {rows.length === 0 ? <li className="px-4 py-5 text-sm text-muted">No visits on this day.</li> : null}
+          <ul className="mt-4 grid gap-3 md:grid-cols-2">
+            {rows.length === 0 ? <li className="rounded-2xl border border-dashed border-line px-4 py-5 text-sm text-muted md:col-span-2">No visits on this day.</li> : null}
             {rows.map((appointment) => (
-              <li key={appointment.id} className="grid gap-3 border-b border-line px-4 py-4 last:border-b-0">
+              <li key={appointment.id} className="grid gap-3 rounded-2xl border border-line bg-card p-4">
                 <div className="grid gap-3 sm:grid-cols-[5.5rem_1fr] sm:items-start">
                   <div>
                     <p className="font-semibold tabular-nums">{formatTime(appointment.start)}</p>
@@ -88,7 +88,7 @@ export function ScheduleDesk() {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 sm:pl-[5.5rem]">
+                <div className="flex flex-wrap items-center gap-2">
                   {appointment.confirmation !== "confirmed" ? (
                     <Button
                       type="button"
@@ -119,7 +119,7 @@ export function ScheduleDesk() {
           </ul>
         </section>
         <form
-          className="grid h-fit gap-4 border border-line bg-card p-4"
+          className="grid h-fit gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] xl:sticky xl:top-6"
           onSubmit={(event) => {
             event.preventDefault();
             if (!resolvedPatient || !reason.trim()) return;

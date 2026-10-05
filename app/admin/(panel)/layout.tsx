@@ -13,8 +13,8 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
   if (!staff) redirect("/admin/login");
 
   return (
-    <div className="min-h-full md:grid md:grid-cols-[17rem_minmax(0,1fr)]">
-      <aside className="hidden bg-pine text-paper md:sticky md:top-0 md:flex md:h-screen md:flex-col md:overflow-y-auto">
+    <div className="min-h-full lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
+      <aside className="hidden bg-pine text-paper lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:overflow-y-auto">
         <div className="flex items-center gap-3 px-4 py-5">
           <BrandMark tone="reverse" className="size-11" />
           <div className="min-w-0">
@@ -42,7 +42,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
         <AdminMobileBar name={staff.displayName} role={staff.role} />
         <RcmProvider>
           <PortalBridge />
-          <div className="mx-auto max-w-6xl px-5 py-8 md:px-10 md:py-10">{children}</div>
+          <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</div>
         </RcmProvider>
       </div>
     </div>

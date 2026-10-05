@@ -117,7 +117,7 @@ export function PatientDetail({ id }: { id: string }) {
         </p>
         {coverage ? <p className="mt-1 text-muted">{coverage.payerName} · copay {money(coverage.copay)}</p> : null}
       </div>
-      <div className="sticky top-14 z-20 mt-6 flex gap-1 overflow-x-auto rounded-2xl border border-line bg-paper/95 p-1 backdrop-blur md:top-0" role="tablist" aria-label="Chart">
+      <div className="sticky top-14 z-20 mt-6 flex gap-1 overflow-x-auto rounded-2xl border border-line bg-paper/95 p-1 backdrop-blur lg:top-0" role="tablist" aria-label="Chart">
         {tabs.map(([key, label]) => (
           <button
             key={key}

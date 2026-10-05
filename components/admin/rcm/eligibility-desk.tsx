@@ -23,8 +23,9 @@ export function EligibilityDesk() {
         title="Eligibility"
         lede="Sample benefit estimates. These numbers are not a live 270/271 response."
       />
+      <div className="mt-8 grid items-start gap-6 xl:grid-cols-[22rem_minmax(0,1fr)]">
       <form
-        className="mt-8 grid max-w-xl gap-4 border border-line bg-card p-4"
+        className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]"
         onSubmit={(event) => {
           event.preventDefault();
           const patient = patients.find((item) => item.id === resolved);
@@ -61,9 +62,9 @@ export function EligibilityDesk() {
           Run estimate
         </Button>
       </form>
-      <ul className="mt-8 grid gap-4">
+      <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-1">
         {eligibility.map((check) => (
-          <li key={check.id} className="border border-line bg-card p-4">
+          <li key={check.id} className="rounded-2xl border border-line bg-card p-4">
             <div className="flex flex-wrap items-baseline justify-between gap-3">
               <h2 className="font-display text-2xl">{names.get(check.patientId) ?? "Patient"}</h2>
               <span className="text-sm text-muted">{formatWhen(check.createdAt)}</span>
@@ -94,6 +95,7 @@ export function EligibilityDesk() {
           </li>
         ))}
       </ul>
+      </div>
     </main>
   );
 }

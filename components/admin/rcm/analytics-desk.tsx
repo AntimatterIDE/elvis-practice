@@ -52,10 +52,10 @@ export function AnalyticsDesk() {
       </section>
       <section className="mt-10">
         <h2 className="font-display text-2xl">Denial dollars</h2>
-        <ul className="mt-4 divide-y divide-line border-y border-line">
-          {denied.length === 0 ? <li className="py-3 text-sm text-muted">None.</li> : null}
+        <ul className="mt-4 grid gap-3 md:grid-cols-2">
+          {denied.length === 0 ? <li className="rounded-2xl border border-dashed border-line px-4 py-3 text-sm text-muted">None.</li> : null}
           {denied.map((claim) => (
-            <li key={claim.id} className="flex items-center justify-between gap-4 py-3 text-sm">
+            <li key={claim.id} className="flex items-center justify-between gap-4 rounded-2xl border border-line bg-card px-4 py-3 text-sm">
               <span>
                 {names.get(claim.patientId)} · {formatDay(claim.dateOfService)} · {claim.denialReason}
               </span>
