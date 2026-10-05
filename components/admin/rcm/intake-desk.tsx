@@ -30,6 +30,7 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
   const [recipientName, setRecipientName] = useState("");
   const [freshPath, setFreshPath] = useState("");
   const [issued, setIssued] = useState<Record<string, { email: string; password: string }>>({});
+  const [openId, setOpenId] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -136,28 +137,49 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
               onChange={(event) => setForm({ ...form, introduction: event.target.value })}
             />
           </Field>
-          <ol className="grid gap-4">
-            {form.fields.map((field, index) => (
-              <li key={field.id} className="grid gap-3 rounded-2xl border border-line bg-paper p-4">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-xs uppercase tracking-[0.14em] text-muted">Question {index + 1}</p>
-                  <div className="flex gap-3 text-sm">
+          <ol className="grid gap-2">
+            {form.fields.map((field, index) => {
+              const open = openId === field.id;
+              return (
+              <li key={field.id} className="rounded-2xl border border-line bg-paper">
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left"
+                  aria-expanded={open}
+                  onClick={() => setOpenId(open ? null : field.id)}
+                >
+                  <span className="w-6 shrink-0 text-xs font-semibold tabular-nums text-muted">{index + 1}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate font-medium">{field.label}</span>
+                    <span className="text-xs text-muted">
+                      {types.find((type) => type.id === field.type)?.label}
+                      {field.required ? " · Required" : ""}
+                      {field.locked ? " · Kept on every form" : ""}
+                    </span>
+                  </span>
+                  <span className="text-sm text-oxide">{open ? "Close" : "Edit"}</span>
+                </button>
+                {open ? (
+                <div className="grid gap-3 border-t border-line px-4 py-4">
+                <div className="flex flex-wrap gap-3 text-sm">
                     <button type="button" className="underline" onClick={() => move(field.id, -1)}>
-                      Up
+                      Move up
                     </button>
                     <button type="button" className="underline" onClick={() => move(field.id, 1)}>
-                      Down
+                      Move down
                     </button>
                     {field.locked ? null : (
                       <button
                         type="button"
                         className="underline"
-                        onClick={() => setForm((current) => ({ ...current, fields: current.fields.filter((item) => item.id !== field.id) }))}
+                        onClick={() => {
+                          setOpenId(null);
+                          setForm((current) => ({ ...current, fields: current.fields.filter((item) => item.id !== field.id) }));
+                        }}
                       >
                         Remove
                       </button>
                     )}
-                  </div>
                 </div>
                 <Field label="Label">
                   <input className={fieldClass} value={field.label} onChange={(event) => updateField(field.id, { label: event.target.value })} />
@@ -221,20 +243,25 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
                     />
                   </Field>
                 ) : null}
+                </div>
+                ) : null}
               </li>
-            ))}
+              );
+            })}
           </ol>
-          <div className="flex flex-wrap gap-3">
+          <div className="sticky bottom-0 z-10 -mx-5 flex flex-wrap gap-3 border-t border-line bg-card/95 px-5 py-3 backdrop-blur">
             <Button
               type="button"
               variant="secondary"
-              onClick={() =>
+              onClick={() => {
+                const id = `q_${crypto.randomUUID().slice(0, 8)}`;
+                setOpenId(id);
                 setForm((current) => ({
                   ...current,
                   fields: [
                     ...current.fields,
                     {
-                      id: `q_${crypto.randomUUID().slice(0, 8)}`,
+                      id,
                       label: "New question",
                       help: "",
                       type: "short_text",
@@ -244,16 +271,16 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
                       locked: false,
                     },
                   ],
-                }))
-              }
+                }));
+              }}
             >
               Add question
             </Button>
             <Button type="button" onClick={() => void onSave()} disabled={pending}>
               {pending ? "Saving…" : "Save form"}
             </Button>
+            {saved ? <p className="self-center text-sm text-oxide">{saved}</p> : null}
           </div>
-          {saved ? <p className="text-sm text-oxide">{saved}</p> : null}
         </section>
         <div className="order-1 grid gap-6">
           <form onSubmit={onInvite} className="grid gap-4 rounded-2xl border border-oxide/30 bg-card p-5">

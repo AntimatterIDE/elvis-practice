@@ -1,5 +1,7 @@
 import { saveFaq } from "@/app/admin/actions";
 import { AdminStateForm } from "@/components/admin/state-form";
+import { Field, PageHeader, fieldClass, panelClass } from "@/components/admin/rcm/ui";
+import { Button } from "@/components/ui/button";
 import { faqs } from "@/lib/content/faqs";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -14,40 +16,44 @@ export default async function AdminFaqsPage() {
 
   return (
     <main>
-      <h1 className="font-display text-4xl">Questions</h1>
-      {rows.length === 0 ? (
-        <p className="mt-6 max-w-xl text-muted">
-          No database questions yet. The public page still uses the reviewed file copy. Seed or add a question here. File questions: {faqs.length}.
-        </p>
-      ) : (
+      <PageHeader
+        kicker="Website"
+        title="Questions"
+        lede={
+          rows.length === 0
+            ? `No database questions yet. The public page still uses the reviewed file copy. File questions: ${faqs.length}.`
+            : "Published questions appear on the public page."
+        }
+      />
+      {rows.length > 0 ? (
         <ul className="mt-8 grid gap-3">
           {rows.map((row) => (
-            <li key={row.id} className="border border-line px-4 py-3 text-sm">
-              {row.question}
-              <span className="mt-1 block text-muted">{row.published_at ? "Published" : row.review_status}</span>
+            <li key={row.id} className={panelClass}>
+              <p className="font-medium">{row.question}</p>
+              <p className="mt-1 text-sm text-muted">{row.published_at ? "Published" : row.review_status}</p>
             </li>
           ))}
         </ul>
-      )}
-      <section className="mt-12 max-w-xl">
+      ) : null}
+      <section className={`${panelClass} mt-8 max-w-xl`}>
         <h2 className="font-display text-2xl">New question</h2>
         <AdminStateForm action={saveFaq}>
-          <label className="grid gap-2 text-sm">
-            Question
-            <input name="question" required className="border border-line bg-card px-3 py-3" />
-          </label>
-          <label className="grid gap-2 text-sm">
-            Answer
-            <textarea name="answer" required className="min-h-28 border border-line bg-card px-3 py-3" />
-          </label>
-          <button name="intent" value="save" className="justify-self-start border border-ink/20 px-4 py-2 text-sm">
-            Save draft
-          </button>
-          {staff?.role === "editor" ? null : (
-            <button name="intent" value="publish" className="justify-self-start bg-oxide px-4 py-2 text-sm text-paper">
-              Publish
-            </button>
-          )}
+          <Field label="Question">
+            <input name="question" required className={fieldClass} />
+          </Field>
+          <Field label="Answer">
+            <textarea name="answer" required className={`${fieldClass} min-h-28`} />
+          </Field>
+          <div className="flex flex-wrap gap-3">
+            <Button name="intent" value="save" variant="secondary">
+              Save draft
+            </Button>
+            {staff?.role === "editor" ? null : (
+              <Button name="intent" value="publish">
+                Publish
+              </Button>
+            )}
+          </div>
         </AdminStateForm>
       </section>
     </main>

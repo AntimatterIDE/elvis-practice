@@ -1,3 +1,4 @@
+import { PageHeader, panelClass } from "@/components/admin/rcm/ui";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getStaffSession } from "@/lib/supabase/session";
@@ -7,8 +8,7 @@ export default async function AuditPage() {
   if (staff?.role === "editor") {
     return (
       <main>
-        <h1 className="font-display text-4xl">Audit</h1>
-        <p className="mt-4 text-muted">Editors do not have access to the audit log.</p>
+        <PageHeader kicker="Website" title="Audit" lede="Editors do not have access to the audit log." />
       </main>
     );
   }
@@ -24,14 +24,14 @@ export default async function AuditPage() {
 
   return (
     <main>
-      <h1 className="font-display text-4xl">Audit</h1>
+      <PageHeader kicker="Website" title="Audit" lede="The latest fifty changes recorded for this site." />
       {error ? <p className="mt-4 text-emergency">Could not load the audit log.</p> : null}
-      {(data ?? []).length === 0 ? <p className="mt-6 text-muted">No recorded changes yet.</p> : null}
-      <ul className="mt-8 divide-y divide-line border-y border-line">
+      {(data ?? []).length === 0 ? <p className="mt-6 text-sm text-muted">No recorded changes yet.</p> : null}
+      <ul className="mt-8 grid gap-3">
         {(data ?? []).map((entry) => (
-          <li key={entry.id} className="py-4 text-sm">
-            <p>{entry.summary}</p>
-            <p className="mt-1 text-muted">
+          <li key={entry.id} className={panelClass}>
+            <p className="font-medium">{entry.summary}</p>
+            <p className="mt-1 text-sm text-muted">
               {entry.action} · {entry.entity_table} · {entry.entity_id} · {new Date(entry.created_at).toLocaleString()}
             </p>
           </li>

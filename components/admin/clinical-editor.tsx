@@ -1,5 +1,6 @@
 import { saveClinical } from "@/app/admin/actions";
 import { AdminStateForm } from "@/components/admin/state-form";
+import { fieldClass } from "@/components/admin/rcm/ui";
 import type { ClinicalDocument } from "@/lib/content/schema";
 import type { StaffRole } from "@/lib/supabase/session";
 
@@ -8,57 +9,63 @@ export function ClinicalEditor({ document, role }: { document: ClinicalDocument;
     <AdminStateForm action={saveClinical}>
       <input type="hidden" name="kind" value={document.kind} />
       <input type="hidden" name="slug" value={document.slug} />
-      <label className="grid gap-2 text-sm">
+      <label className="grid gap-2 text-sm font-medium">
         Title
-        <input name="title" defaultValue={document.title} required className="border border-line bg-card px-3 py-3" />
+        <input name="title" defaultValue={document.title} required className={fieldClass} />
       </label>
-      <label className="grid gap-2 text-sm">
+      <label className="grid gap-2 text-sm font-medium">
         Summary
-        <textarea name="summary" defaultValue={document.summary} required className="min-h-24 border border-line bg-card px-3 py-3" />
+        <textarea name="summary" defaultValue={document.summary} required className={`${fieldClass} min-h-24`} />
       </label>
-      <div className="grid gap-4 md:grid-cols-2">
-        <label className="grid gap-2 text-sm">
-          SEO title
-          <input name="seoTitle" defaultValue={document.seoTitle} required className="border border-line bg-card px-3 py-3" />
-        </label>
-        <label className="grid gap-2 text-sm">
-          SEO description
-          <input name="seoDescription" defaultValue={document.seoDescription} required className="border border-line bg-card px-3 py-3" />
-        </label>
-      </div>
-      <label className="grid gap-2 text-sm">
-        Related slugs, comma separated
-        <input name="relatedSlugs" defaultValue={document.relatedSlugs.join(", ")} className="border border-line bg-card px-3 py-3" />
-      </label>
+      <details className="rounded-2xl border border-line bg-card p-4">
+        <summary className="cursor-pointer font-medium">Search listing</summary>
+        <div className="mt-4 grid gap-4">
+          <label className="grid gap-2 text-sm font-medium">
+            Search title
+            <input name="seoTitle" defaultValue={document.seoTitle} required className={fieldClass} />
+          </label>
+          <label className="grid gap-2 text-sm font-medium">
+            Search description
+            <input name="seoDescription" defaultValue={document.seoDescription} required className={fieldClass} />
+          </label>
+          <label className="grid gap-2 text-sm font-medium">
+            Related pages, comma separated
+            <input name="relatedSlugs" defaultValue={document.relatedSlugs.join(", ")} className={fieldClass} />
+          </label>
+        </div>
+      </details>
       {document.faqs.map((faq, index) => (
-        <fieldset key={faq.question} className="grid gap-3 border border-line p-4">
-          <legend className="px-2 text-xs uppercase tracking-[0.14em] text-oxide">Question</legend>
-          <input name={`faqs.${index}.question`} defaultValue={faq.question} className="border border-line bg-card px-3 py-2" />
-          <textarea name={`faqs.${index}.answer`} defaultValue={faq.answer} className="min-h-24 border border-line bg-card px-3 py-3" />
-        </fieldset>
+        <details key={faq.question} className="rounded-2xl border border-line bg-card p-4">
+          <summary className="cursor-pointer font-medium">{faq.question}</summary>
+          <div className="mt-4 grid gap-3">
+            <input name={`faqs.${index}.question`} defaultValue={faq.question} className={fieldClass} />
+            <textarea name={`faqs.${index}.answer`} defaultValue={faq.answer} className={`${fieldClass} min-h-24`} />
+          </div>
+        </details>
       ))}
       {document.sections.map((section, index) => (
-        <fieldset key={section.id} className="grid gap-3 border border-line p-4">
-          <legend className="px-2 text-xs uppercase tracking-[0.14em] text-oxide">{section.heading}</legend>
-          <input type="hidden" name={`sections.${index}.id`} value={section.id} />
-          <input name={`sections.${index}.heading`} defaultValue={section.heading} className="border border-line bg-card px-3 py-2" />
-          <textarea name={`sections.${index}.body`} defaultValue={section.body} className="min-h-36 border border-line bg-card px-3 py-3" />
-        </fieldset>
+        <details key={section.id} className="rounded-2xl border border-line bg-card p-4">
+          <summary className="cursor-pointer font-display text-xl">{section.heading}</summary>
+          <div className="mt-4 grid gap-3">
+            <input type="hidden" name={`sections.${index}.id`} value={section.id} />
+            <input name={`sections.${index}.heading`} defaultValue={section.heading} className={fieldClass} />
+            <textarea name={`sections.${index}.body`} defaultValue={section.body} className={`${fieldClass} min-h-36`} />
+          </div>
+        </details>
       ))}
       <p className="text-sm text-muted">
-        Status: {document.reviewStatus}, offering {document.offeringStatus}. Markdown is limited to
-        paragraphs, lists, and emphasis. HTML is escaped.
+        Status: {document.reviewStatus}, offering {document.offeringStatus}. HTML is escaped.
       </p>
-      <div className="flex flex-wrap gap-3">
-        <button name="intent" value="save" className="border border-ink/20 px-4 py-2 text-sm">
+      <div className="sticky bottom-0 z-10 -mx-5 flex flex-wrap gap-3 border-t border-line bg-paper/95 px-5 py-3 backdrop-blur md:-mx-10 md:px-10">
+        <button name="intent" value="save" className="rounded-full border border-line bg-card px-4 py-2.5 text-sm font-semibold">
           Save draft
         </button>
         {role === "editor" ? null : (
           <>
-            <button name="intent" value="publish" className="bg-oxide px-4 py-2 text-sm text-paper">
+            <button name="intent" value="publish" className="rounded-full bg-oxide px-4 py-2.5 text-sm font-semibold text-paper">
               Publish
             </button>
-            <button name="intent" value="unpublish" className="border border-ink/20 px-4 py-2 text-sm">
+            <button name="intent" value="unpublish" className="rounded-full border border-line bg-card px-4 py-2.5 text-sm font-semibold">
               Unpublish
             </button>
           </>

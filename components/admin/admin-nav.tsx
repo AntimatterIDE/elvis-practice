@@ -51,8 +51,8 @@ function Group({
   pathname: string;
 }) {
   return (
-    <div className="mt-5 first:mt-0">
-      <p className="px-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-foam/70">{label}</p>
+    <div className="mt-6 first:mt-0">
+      <p className="px-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-foam/55">{label}</p>
       <div className="mt-1.5 grid gap-0.5">
         {links.map(([href, title]) => {
           const active = isActive(pathname, href);
@@ -61,8 +61,8 @@ function Group({
               key={href}
               href={href}
               className={cn(
-                "rounded-lg px-3 py-2 text-sm text-paper/75 transition hover:bg-white/10 hover:text-paper",
-                active && "bg-white/15 font-semibold text-foam",
+                "rounded-xl px-3 py-2 text-sm text-paper/75 transition hover:bg-white/10 hover:text-paper",
+                active && "bg-white text-pine font-semibold shadow-sm",
               )}
               aria-current={active ? "page" : undefined}
             >
@@ -75,40 +75,18 @@ function Group({
   );
 }
 
-export function AdminNav() {
+export function currentDeskLabel(pathname: string) {
+  const links = [...practiceLinks, ...billingLinks, ...siteLinks];
+  return links.find(([href]) => isActive(pathname, href))?.[1] ?? "Desk";
+}
+
+export function AdminNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   return (
-    <nav aria-label="Admin">
-      <div className="md:hidden">
-        <div className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1">
-          {practiceLinks.map(([href, title]) => {
-            const active = isActive(pathname, href);
-            return (
-              <Link
-                key={href}
-                href={href}
-                className={cn(
-                  "shrink-0 rounded-full px-3 py-1.5 text-sm text-paper/80",
-                  active && "bg-white/15 font-semibold text-foam",
-                )}
-                aria-current={active ? "page" : undefined}
-              >
-                {title}
-              </Link>
-            );
-          })}
-        </div>
-        <details className="mt-3">
-          <summary className="cursor-pointer px-1 text-xs font-semibold uppercase tracking-[0.16em] text-foam/70">Billing and website</summary>
-          <Group label="Billing" links={billingLinks} pathname={pathname} />
-          <Group label="Website" links={siteLinks} pathname={pathname} />
-        </details>
-      </div>
-      <div className="hidden md:block">
-        <Group label="Clinic" links={practiceLinks} pathname={pathname} />
-        <Group label="Billing" links={billingLinks} pathname={pathname} />
-        <Group label="Website" links={siteLinks} pathname={pathname} />
-      </div>
+    <nav aria-label="Admin" onClick={onNavigate}>
+      <Group label="Clinic" links={practiceLinks} pathname={pathname} />
+      <Group label="Billing" links={billingLinks} pathname={pathname} />
+      <Group label="Website" links={siteLinks} pathname={pathname} />
     </nav>
   );
 }

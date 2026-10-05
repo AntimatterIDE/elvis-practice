@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { submitIntakeAction } from "@/app/portal/actions";
 import { Button } from "@/components/ui/button";
 import { controlClass as sharedControlClass } from "@/components/ui/control";
@@ -113,10 +113,123 @@ function span(field: IntakeField) {
   return "min-w-0 sm:col-span-3";
 }
 
+function answerLabel(field: IntakeField, value: string) {
+  if (!value) return "Not answered";
+  if (field.type === "yes_no") return value === "yes" ? "Yes" : "No";
+  if (field.mapsTo === "sex") return sexLabel(value);
+  if (field.type === "acknowledge") return "Yes";
+  return value;
+}
+
 export function IntakeForm({ token, form }: { token: string; form: PublicIntake }) {
   const [state, action, pending] = useActionState(submitIntakeAction, initial);
+  const [step, setStep] = useState(0);
+  const [furthest, setFurthest] = useState(0);
+  const [showInvalid, setShowInvalid] = useState(false);
+  const [review, setReview] = useState<{ id: string; label: string; value: string }[]>([]);
+  const formRef = useRef<HTMLFormElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const groups = blocks(form.fields);
   const minutes = Math.max(2, Math.round(form.fields.length / 5));
+  const reviewing = step >= groups.length;
+  const current = groups[step];
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (!showInvalid) return;
+    setShowInvalid(false);
+    validateCurrent();
+  }, [step, showInvalid]);
+
+  function readReview() {
+    const data = new FormData(formRef.current ?? undefined);
+    setReview(
+      form.fields.map((field) => ({
+        id: field.id,
+        label: field.label,
+        value: answerLabel(field, String(data.get(`a.${field.id}`) ?? "")),
+      })),
+    );
+  }
+
+  function validateCurrent() {
+    const section = sectionRef.current;
+    if (!section) return true;
+    const fields = [...section.querySelectorAll("input, textarea, select")] as HTMLInputElement[];
+    for (const field of fields) {
+      if (!field.checkValidity()) {
+        field.reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function findInvalid() {
+    const form = formRef.current;
+    if (!form) return null;
+    const sections = [...form.querySelectorAll<HTMLElement>("[data-intake-step]")];
+    for (let index = 0; index < sections.length; index += 1) {
+      const seen = new Set<string>();
+      const fields = [...sections[index].querySelectorAll("input, textarea, select")] as HTMLInputElement[];
+      for (const field of fields) {
+        if (!field.required || field.disabled) continue;
+        if (field.type === "radio") {
+          if (seen.has(field.name)) continue;
+          seen.add(field.name);
+          if (!form.querySelector(`input[name="${CSS.escape(field.name)}"]:checked`)) return index;
+          continue;
+        }
+        if (field.type === "checkbox") {
+          if (!field.checked) return index;
+          continue;
+        }
+        if (!field.value.trim()) return index;
+      }
+    }
+    return null;
+  }
+
+  function goTo(index: number) {
+    if (index === step || index > furthest) return;
+    if (index > step) {
+      const invalid = findInvalid();
+      if (invalid !== null && invalid < index) {
+        setShowInvalid(true);
+        setStep(invalid);
+        return;
+      }
+    }
+    setStep(index);
+  }
+
+  function openReview() {
+    const invalid = findInvalid();
+    if (invalid !== null) {
+      setShowInvalid(true);
+      setStep(invalid);
+      return;
+    }
+    readReview();
+    setFurthest(groups.length);
+    setStep(groups.length);
+  }
+
+  function goNext() {
+    if (!validateCurrent()) return;
+    const next = Math.min(step + 1, groups.length);
+    setFurthest((currentFurthest) => Math.max(currentFurthest, next));
+    if (next === groups.length) readReview();
+    setStep(next);
+  }
+
+  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    const invalid = findInvalid();
+    if (invalid === null) return;
+    event.preventDefault();
+    setShowInvalid(true);
+    setStep(invalid);
+  }
 
   if (state.done) {
     return (
@@ -137,23 +250,59 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
   }
 
   return (
-    <form action={action} className="mt-8 grid min-w-0 gap-5">
+    <form ref={formRef} action={action} onSubmit={onSubmit} className="mt-8 grid min-w-0 gap-5">
       <input type="hidden" name="token" value={token} />
-      <p className="text-sm text-muted">About {minutes} minutes. Answers stay with the practice and are not published on the website.</p>
-      <nav aria-label="Form sections" className="sticky top-0 z-20 -mx-5 overflow-x-auto border-b border-line bg-paper/90 px-5 py-3 backdrop-blur">
-        <ol className="flex w-max gap-2">
-          {groups.map((group, index) => (
-            <li key={`${group.key}-${index}`}>
-              <a
-                href={`#section-${index}`}
-                className="inline-flex min-h-11 items-center whitespace-nowrap rounded-full border border-line bg-card px-4 text-sm font-semibold text-ink hover:border-oxide-deep"
-              >
-                {sections[group.key].title}
-              </a>
-            </li>
-          ))}
+      <div className="rounded-3xl border border-line bg-card p-4 card-shadow sm:p-5">
+        <div className="flex items-center justify-between gap-3 text-sm">
+          <p className="font-medium text-ink">{reviewing ? "Review" : sections[current.key].title}</p>
+          <p className="text-muted">
+            {reviewing ? groups.length : step + 1} of {groups.length}
+          </p>
+        </div>
+        <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-mist" aria-hidden="true">
+          <div
+            className="h-full rounded-full bg-oxide transition-[width]"
+            style={{ width: `${(Math.min(reviewing ? groups.length : step + 1, groups.length) / Math.max(groups.length, 1)) * 100}%` }}
+          />
+        </div>
+        <ol className="mt-4 flex flex-wrap gap-2">
+          {groups.map((group, index) => {
+            const reached = index <= furthest;
+            const active = !reviewing && index === step;
+            return (
+              <li key={`${group.key}-${index}`}>
+                <button
+                  type="button"
+                  disabled={!reached}
+                  onClick={() => goTo(index)}
+                  className={cn(
+                    "rounded-full px-3 py-1.5 text-xs font-semibold",
+                    active ? "bg-oxide text-paper" : reached ? "bg-mint text-oxide-deep" : "bg-mist text-muted",
+                  )}
+                  aria-current={active ? "step" : undefined}
+                >
+                  {sections[group.key].title}
+                </button>
+              </li>
+            );
+          })}
+          <li>
+            <button
+              type="button"
+              disabled={furthest < groups.length}
+              onClick={openReview}
+              className={cn(
+                "rounded-full px-3 py-1.5 text-xs font-semibold",
+                reviewing ? "bg-oxide text-paper" : furthest >= groups.length ? "bg-mint text-oxide-deep" : "bg-mist text-muted",
+              )}
+              aria-current={reviewing ? "step" : undefined}
+            >
+              Review
+            </button>
+          </li>
         </ol>
-      </nav>
+        <p className="mt-3 text-sm text-muted">About {minutes} minutes. One part at a time. Nothing is published on the website.</p>
+      </div>
       {state.error ? (
         <p role="alert" className="rounded-2xl border border-emergency/30 bg-red-50 px-4 py-3 text-sm text-emergency">
           {state.error}
@@ -162,18 +311,15 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
       {groups.map((group, index) => (
         <section
           key={`${group.key}-${index}`}
-          id={`section-${index}`}
+          ref={index === step ? sectionRef : undefined}
+          data-intake-step={index}
+          hidden={index !== step}
           className={cn(
-            "scroll-mt-24 scroll-mb-28 rounded-3xl border bg-card p-5 card-shadow sm:p-7",
+            "rounded-3xl border bg-card p-5 card-shadow sm:p-7",
             group.key === "safety" ? "border-emergency/25 bg-red-50/40" : "border-line",
           )}
         >
-          <div className="flex items-baseline justify-between gap-3">
-            <h2 className="min-w-0 font-display text-2xl tracking-tight">{sections[group.key].title}</h2>
-            <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
-              {index + 1} of {groups.length}
-            </p>
-          </div>
+          <h2 className="font-display text-3xl tracking-tight">{sections[group.key].title}</h2>
           <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted">{sections[group.key].lede}</p>
           <div className="mt-6 grid w-full min-w-0 grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-6">
             {group.fields.map((field) => (
@@ -182,15 +328,35 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
           </div>
         </section>
       ))}
-      <div className="sticky bottom-0 z-10 -mx-5 border-t border-line bg-paper/95 px-5 py-3 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:rounded-3xl sm:border sm:border-line sm:bg-card sm:p-6 sm:card-shadow">
-          <p className="hidden max-w-md text-sm leading-relaxed text-muted sm:block">
-            The link works once. You can change answers until you send the form.
-          </p>
-          <Button type="submit" disabled={pending} className="w-full sm:w-auto">
+      {reviewing ? (
+        <section className="rounded-3xl border border-line bg-card p-5 card-shadow sm:p-7">
+          <h2 className="font-display text-3xl tracking-tight">Check your answers</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted">The link works once. Go back if something should change, then send the form.</p>
+          <dl className="mt-6 divide-y divide-line">
+            {review.map((item) => (
+              <div key={item.id} className="grid gap-1 py-3 sm:grid-cols-[12rem_1fr] sm:gap-4">
+                <dt className="text-sm text-muted">{item.label}</dt>
+                <dd className="text-sm font-medium text-ink">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ) : null}
+      <div className="sticky bottom-0 z-10 -mx-5 flex gap-3 border-t border-line bg-paper/95 px-5 py-3 backdrop-blur">
+        {step > 0 ? (
+          <Button type="button" variant="secondary" className="flex-1 sm:flex-none" onClick={() => setStep((currentStep) => currentStep - 1)}>
+            Back
+          </Button>
+        ) : null}
+        {reviewing ? (
+          <Button type="submit" disabled={pending} className="flex-1 sm:ml-auto sm:flex-none">
             {pending ? "Sending…" : "Send to the practice"}
           </Button>
-        </div>
+        ) : (
+          <Button type="button" className="flex-1 sm:ml-auto sm:flex-none" onClick={goNext}>
+            {step === groups.length - 1 ? "Review answers" : "Continue"}
+          </Button>
+        )}
       </div>
       <p className="text-sm leading-relaxed text-muted">{emergencyNote}</p>
     </form>
