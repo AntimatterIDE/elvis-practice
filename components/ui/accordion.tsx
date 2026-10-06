@@ -23,13 +23,13 @@ export function AccordionTrigger({
       <h2 className="flex">
         <AccordionPrimitive.Trigger
           className={cn(
-            "group flex min-h-11 flex-1 items-center justify-between gap-4 py-5 text-left font-display text-xl font-medium leading-snug text-ink transition hover:text-oxide-deep",
+            "group flex min-h-12 flex-1 items-center justify-between gap-4 px-7 py-6 text-left font-display text-xl font-medium leading-snug text-ink transition hover:text-oxide-deep",
             className,
           )}
           {...props}
         >
           {children}
-          <IconPlus className="size-3.5 shrink-0 text-oxide-deep" />
+          <IconPlus className="size-4 shrink-0 text-oxide-deep" />
         </AccordionPrimitive.Trigger>
       </h2>
     </AccordionPrimitive.Header>
