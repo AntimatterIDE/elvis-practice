@@ -82,11 +82,11 @@ const statusDot: Record<ClaimStatus, string> = {
   rejected: "bg-emergency",
 };
 
-export function StatusPill({ status }: { status: string }) {
+export function StatusPill({ status, label }: { status: string; label?: string }) {
   return (
     <span className={cn(badgeClass, statusTone[status as ClaimStatus] ?? "bg-mist text-ink")}>
       <span className={cn("h-1.5 w-1.5 rounded-full", statusDot[status as ClaimStatus] ?? "bg-ink/30")} />
-      {status}
+      {label ?? status}
     </span>
   );
 }
