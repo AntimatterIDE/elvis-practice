@@ -68,19 +68,19 @@ export function ScheduleDesk() {
             title={formatClinicDay(focus)}
             empty="No visits on this day."
             renderExtra={(appointment) => (
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="grid min-w-0 gap-1.5">
                   {appointment.confirmation !== "confirmed" && appointment.status !== "cancelled" ? (
                     <Button
                       type="button"
                       variant="secondary"
-                      className="min-h-9 px-3 py-1.5 text-xs"
+                      className="min-h-8 w-full px-2 py-1 text-xs"
                       onClick={() => updateAppointment(appointment.id, { confirmation: "confirmed" satisfies ConfirmationStatus })}
                     >
                       Confirm
                     </Button>
                   ) : null}
                   <select
-                    className={`${fieldClass} max-w-36 py-1.5`}
+                    className={`${fieldClass} w-full min-w-0 max-w-none py-1.5`}
                     value={appointment.status}
                     aria-label={`Status for ${names.get(appointment.patientId)}`}
                     onChange={(event) => updateAppointment(appointment.id, { status: event.target.value as AppointmentStatus })}
