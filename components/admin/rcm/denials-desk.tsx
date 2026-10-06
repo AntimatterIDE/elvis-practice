@@ -152,7 +152,6 @@ export function DenialsDesk() {
               <div className="flex flex-wrap gap-2">
                 <Button
                   variant="primary"
-                  size="sm"
                   onClick={() =>
                     updateClaim(selected.id, { status: "submitted" })
                   }
@@ -161,7 +160,6 @@ export function DenialsDesk() {
                 </Button>
                 <Button
                   variant="secondary"
-                  size="sm"
                   onClick={() => {
                     navigator.clipboard?.writeText(
                       letter(selected, names.get(selected.patientId) ?? "", practice.legalName),
