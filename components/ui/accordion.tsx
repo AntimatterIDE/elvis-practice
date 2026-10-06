@@ -20,7 +20,7 @@ export function AccordionTrigger({
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
   return (
     <AccordionPrimitive.Header asChild>
-      <h2 className="flex">
+      <h2 className="flex group">
         <AccordionPrimitive.Trigger
           className={cn(
             "group flex min-h-12 flex-1 items-center justify-between gap-4 px-7 py-6 text-left font-display text-xl font-medium leading-snug text-ink transition hover:text-oxide-deep",
