@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/site/contact-form";
 import { PageIntro } from "@/components/site/page-intro";
+import { FeatureCards } from "@/components/site/feature-cards";
 import { publicPageMetadata } from "@/lib/share-metadata";
 import { practice } from "@/lib/site";
 
@@ -26,27 +27,51 @@ export default function ContactPage() {
         title="Request a call."
         lede="New patients are welcome. Send your name and a way to reach you. This form is for scheduling and other non-medical questions."
       />
-      <dl className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {facts.map((fact) => (
-          <div key={fact.label} className="rounded-2xl border border-line bg-card p-5 card-shadow">
-            <dt className="kicker text-oxide-deep">{fact.label}</dt>
-            <dd className="mt-2 text-lg font-medium">{fact.value}</dd>
+
+      {/* Practice info cards */}
+      <section className="mt-10">
+        <FeatureCards
+          cards={[
+            {
+              icon: "\uD83E\uDEC0",
+              title: practice.physicianName,
+              description: practice.specialty,
+            },
+            {
+              icon: "\uD83D\uDC4B",
+              title: "New patients",
+              description: "Always welcome. No referral needed.",
+            },
+            {
+              icon: "\uD83D\uDCF1",
+              title: "Appointments",
+              description: "Request a call below. The office will reach out to schedule.",
+            },
+          ]}
+          columns={3}
+        />
+      </section>
+
+      {/* Form + details grid */}
+      <section className="mt-16 mx-auto max-w-6xl px-5 md:px-8">
+        <div className="grid gap-10 md:grid-cols-[1.2fr_1fr]">
+          <div>
+            <h2 className="kicker text-oxide-deep">Send a message</h2>
+            <ContactForm />
           </div>
-        ))}
-      </dl>
-      <p className="mt-8 max-w-3xl text-base leading-relaxed text-muted">
-        A street address and office hours are not listed, because the public listings under
-        Dr. Francois’s name belong to other practices. His National Provider Identifier record,
-        last updated August 31, 2021, shows 156 Foster Drive, Suite B, McDonough, Georgia. Later
-        profiles place him in Tulsa and in New York. None of those offices is this website’s
-        appointment line.
-      </p>
-      <div className="mt-12 max-w-3xl rounded-[1.5rem] border border-line bg-card p-6 card-shadow md:p-8">
-        <h2 className="font-display text-3xl font-semibold tracking-tight">Ask the practice to call</h2>
-        <div className="mt-6">
-          <ContactForm />
+          <div>
+            <h2 className="kicker text-oxide-deep">Practice information</h2>
+            <dl className="mt-4 grid gap-4">
+              {facts.map((fact) => (
+                <div key={fact.label} className="rounded-2xl border border-line bg-card p-4">
+                  <dt className="kicker text-oxide-deep text-xs">{fact.label}</dt>
+                  <dd className="mt-1 text-base font-medium text-ink">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
-      </div>
+      </section>
     </article>
   );
 }
