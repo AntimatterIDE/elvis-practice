@@ -144,7 +144,7 @@ export function DenialsDesk() {
               <div>
                 <h3 className="mb-2 text-sm font-semibold text-ink">Appeal letter</h3>
                 <pre className="prose-clinical max-h-60 overflow-y-auto whitespace-pre-wrap rounded-xl bg-mist p-4 text-xs leading-relaxed text-ink">
-                  {letter(selected, names.get(selected.patientId) ?? "", practice.name)}
+                  {letter(selected, names.get(selected.patientId) ?? "", practice.legalName)}
                 </pre>
               </div>
 
@@ -154,7 +154,7 @@ export function DenialsDesk() {
                   variant="primary"
                   size="sm"
                   onClick={() =>
-                    updateClaim(selected.id, { status: "resubmitted" })
+                    updateClaim(selected.id, { status: "submitted" })
                   }
                 >
                   Mark resubmitted
@@ -164,7 +164,7 @@ export function DenialsDesk() {
                   size="sm"
                   onClick={() => {
                     navigator.clipboard?.writeText(
-                      letter(selected, names.get(selected.patientId) ?? "", practice.name),
+                      letter(selected, names.get(selected.patientId) ?? "", practice.legalName),
                     );
                   }}
                 >
