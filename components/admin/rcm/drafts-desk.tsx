@@ -87,12 +87,11 @@ export function DraftsDesk() {
                   </span>
                 ) : null}
                 <div className="mt-4 flex gap-2">
-                  <Button asChild variant="secondary" size="sm">
+                  <Button asChild variant="secondary">
                     <Link href={`/admin/operations/claims/${claim.id}`}>Review</Link>
                   </Button>
                   <Button
                     variant="primary"
-                    size="sm"
                     onClick={() => handleApprove(claim.id)}
                     disabled={approvedIds.has(claim.id)}
                   >
