@@ -28,7 +28,7 @@ export default function QuestionsPage() {
       {/* FAQ accordion */}
       <section className="mt-16 mx-auto max-w-4xl px-5 md:px-8">
         <h2 className="kicker text-oxide-deep">Frequently asked questions</h2>
-        <Accordion className="mt-6" type="multiple" suppressBehavior>
+        <Accordion className="mt-6" type="multiple">
           {faqs.map((faq, i) => (
             <AccordionItem key={faq.question} value={`faq-${i}`}>
               <AccordionTrigger>{faq.question}</AccordionTrigger>
