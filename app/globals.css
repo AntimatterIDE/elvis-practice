@@ -15,8 +15,6 @@
   --color-mist: #e7f2f8;
   --color-mint: #d7f5f0;
   --color-foam: #9fe3d8;
-  --color-leaf: #5bb89a;
-  --color-sky: #c4dff0;
   --font-display: var(--font-display-family), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-sans-family), "Plus Jakarta Sans", sans-serif;
 }
@@ -101,5 +99,195 @@ p {
 
 .hero-panel {
   background:
-    radial-gradient(520
-…[budget]
+    radial-gradient(520px 280px at 88% 18%, rgb(159 227 216 / 0.28), transparent 60%),
+    linear-gradient(128deg, #071e36 0%, #0c3d5c 52%, #0e7c78 100%);
+  background-size: 140% 140%;
+}
+
+.clinic-card {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease;
+}
+
+.clinic-card:hover {
+  transform: translateY(-4px);
+  border-color: rgb(14 143 132 / 0.45);
+  box-shadow: 0 18px 40px -28px rgb(7 30 54 / 0.55);
+}
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.35rem;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: #0e8f84;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.sheet-in {
+  animation: sheet-in 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0.4;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+:where(.admin-canvas) :where(.border-line.bg-card) {
+  border-radius: 1rem;
+  box-shadow: var(--shadow-card);
+}
+
+.kicker {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  letter-spacing: 0.005em;
+  font-optical-sizing: auto;
+}
+
+.card-shadow {
+  box-shadow: var(--shadow-card);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.motion-safe\:transition-all {
+  transition: all 0.3s ease;
+}
+
+.motion-safe\:duration-300 {
+  transition-duration: 0.3s;
+}
+
+.motion-safe\:duration-500 {
+  transition-duration: 0.5s;
+}
+
+.motion-safe\:duration-700 {
+  transition-duration: 0.7s;
+}
+
+.motion-safe\:ease-out {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.motion-safe\:delay-200 {
+  transition-delay: 0.2s;
+}
+
+.motion-safe\:hover\:-translate-y-0\.5 {
+  transition: transform 0.3s ease;
+}
+
+.motion-safe\:hover\:-translate-y-0\.5:hover {
+  transform: translateY(-0.125rem);
+}
+
+.motion-safe\:hover\:-translate-y-1:hover {
+  transform: translateY(-0.25rem);
+}
+
+.motion-safe\:group-hover\:translate-x-1:where(:hover) {
+  transform: translateX(0.25rem);
+}
+
+.motion-safe\:group-hover\:scale-105:where(:hover) {
+  transform: scale(1.05);
+}
+
+.motion-safe\:hover\:shadow-\[0_16px_40px_-16px_rgb\(7_30_54_\/_0\.3\)\]:hover {
+  box-shadow: 0 16px 40px -16px rgb(7 30 54 / 0.3);
+}
+
+.motion-safe\:hover\:shadow-\[0_12px_28px_-12px_rgb\(7_30_54_\/_0\.25\)\]:hover {
+  box-shadow: 0 12px 28px -12px rgb(7 30 54 / 0.25);
+}
+
+.motion-safe\:hover\:shadow-\[0_24px_60px_-32px_rgb\(7_30_54_\/_0\.35\)\]:hover {
+  box-shadow: 0 24px 60px -32px rgb(7 30 54 / 0.35);
+}
+
+.motion-safe\:hover\:bg-oxide-ink:hover {
+  background: #064e48;
+}
+
+.rise-in {
+  animation: rise-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-pulse {
+  animation: pulse-fade 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-fade {
+  0%, 100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .rise-in {
+    animation: rise-in linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 16px;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .site-bar-edge {
+    animation: site-bar-edge linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 16px;
+  }
+}
+
+@keyframes site-bar-edge {
+  from {
+    border-bottom-color: transparent;
+    box-shadow: none;
+  }
+  to {
+    border-bottom-color: rgb(14 143 132 / 0.18);
+    box-shadow: 0 1px 4px -2px rgb(7 30 54 / 0.08);
+  }
+}
