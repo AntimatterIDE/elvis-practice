@@ -90,7 +90,7 @@ export default function AboutPage() {
               your primary care physician. This practice does not arrange telehealth visits.
             </p>
           </div>
-          <PhotoPlaceholder className="hidden md:block md:sticky md:top-24" lockup="practice" />
+          <PhotoPlaceholder className="hidden md:block md:sticky md:top-24" lockup="mark" />
         </div>
       </section>
 
