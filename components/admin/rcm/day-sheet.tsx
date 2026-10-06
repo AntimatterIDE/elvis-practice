@@ -71,13 +71,13 @@ export function DaySheet({
       .sort((a, b) => a.start.localeCompare(b.start))
       .map((visit) => {
         const start = minutes(visit.start);
-        const visualEnd = start + Math.max(visit.durationMinutes || 30, 80);
+        const end = start + (visit.durationMinutes || 30);
         let lane = laneEnds.findIndex((endAt) => endAt <= start);
         if (lane < 0) {
           lane = laneEnds.length;
-          laneEnds.push(visualEnd);
+          laneEnds.push(end);
         } else {
-          laneEnds[lane] = visualEnd;
+          laneEnds[lane] = end;
         }
         return { visit, lane };
       });
@@ -131,7 +131,7 @@ export function DaySheet({
                       <div
                         key={visit.id}
                         className={cn(
-                          "absolute flex flex-col overflow-hidden rounded-xl border px-3 py-2 shadow-[0_10px_24px_-18px_rgb(7_30_54_/_0.7)]",
+                          "@container absolute flex min-w-0 flex-col overflow-hidden rounded-xl border px-2 py-1.5 shadow-[0_10px_24px_-18px_rgb(7_30_54_/_0.7)]",
                           visit.status === "in_progress" && "border-oxide bg-mint",
                           visit.status === "arrived" && "border-oxide/40 bg-mint/80",
                           visit.status === "completed" && "border-line bg-mist text-muted",
@@ -140,33 +140,33 @@ export function DaySheet({
                           visit.status === "scheduled" && "border-line bg-card",
                         )}
                         style={{
-                          left: `calc(${left}% + 0.35rem)`,
-                          width: `max(13.5rem, calc(${width}% - 0.7rem))`,
+                          left: `calc(${left}% + 0.3rem)`,
+                          width: `calc(${width}% - 0.6rem)`,
                           top: `${0.4 + lane * laneHeight}rem`,
                           height: `${laneHeight - 0.7}rem`,
                         }}
                       >
                         <div className="flex min-w-0 items-start gap-2">
-                          <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-pine text-[0.65rem] font-semibold text-paper" aria-hidden>
+                          <span className="mt-0.5 hidden size-7 shrink-0 items-center justify-center rounded-full bg-pine text-[0.65rem] font-semibold text-paper @[8rem]:flex" aria-hidden>
                             {initials(name)}
                           </span>
                           <div className="min-w-0 flex-1">
                             <Link href={`/admin/operations/patients/${visit.patientId}`} className="block truncate font-semibold hover:text-oxide">
                               {name}
                             </Link>
-                            <p className="truncate text-xs text-muted">
+                            <p className="truncate text-xs whitespace-nowrap text-muted">
                               {formatTime(visit.start)} · {duration} min
                             </p>
                           </div>
                         </div>
-                        <p className="mt-1 truncate text-sm">{visit.reason}</p>
-                        <p className="mt-auto truncate text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted">
+                        <p className="mt-1 hidden truncate text-sm @[7rem]:block">{visit.reason}</p>
+                        <p className="mt-auto hidden truncate text-[0.65rem] font-semibold uppercase tracking-[0.12em] whitespace-nowrap text-muted @[11rem]:block">
                           {visitTypeLabel[visit.visitType] ?? visit.visitType}
                           {" · "}
                           {visitLabel(visit.status)}
                           {visit.confirmation !== "confirmed" ? ` · ${visitLabel(visit.confirmation)}` : ""}
                         </p>
-                        {renderExtra ? <div className="mt-2">{renderExtra(visit)}</div> : null}
+                        {renderExtra ? <div className="mt-1.5 min-w-0">{renderExtra(visit)}</div> : null}
                       </div>
                     );
                   })}
