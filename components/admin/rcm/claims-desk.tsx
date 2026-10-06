@@ -5,8 +5,17 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { claimTotal, formatDay, money, patientName } from "@/lib/rcm/format";
 import type { ClaimStatus } from "@/lib/rcm/types";
-import { LoadingDesk, PageHeader, StatusPill, fieldClass } from "@/components/admin/rcm/ui";
+import {
+  LoadingDesk,
+  PageHeader,
+  StatusPill,
+  Stat,
+  fieldClass,
+  cardClass,
+  badgeClass,
+} from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
+import { cn } from "@/lib/utils";
 
 const filters: Array<ClaimStatus | "all"> = [
   "all",
@@ -35,6 +44,12 @@ export function ClaimsDesk() {
       .includes(term);
   });
 
+  const billed = claims.reduce((sum, c) => sum + claimTotal(c), 0);
+  const accepted = claims
+    .filter((c) => c.status === "accepted" || c.status === "paid")
+    .reduce((sum, c) => sum + claimTotal(c), 0);
+  const pct = billed > 0 ? Math.round((accepted / billed) * 100) : 0;
+
   if (!ready) return <LoadingDesk />;
 
   return (
@@ -49,7 +64,14 @@ export function ClaimsDesk() {
           </Button>
         }
       />
-      <div className="mt-8 flex flex-wrap gap-3">
+      {/* Summary stats */}
+      <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        <Stat label="Total billed" value={money(billed)} detail={`${claims.length} claims`} />
+        <Stat label="Accepted / paid" value={money(accepted)} detail={`${pct}% of billed`} />
+        <Stat label="Remaining" value={money(billed - accepted)} detail="In process, denied, or draft" />
+      </div>
+      {/* Filters */}
+      <div className="mt-8 flex flex-wrap items-center gap-3">
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
@@ -57,36 +79,66 @@ export function ClaimsDesk() {
           className={`${fieldClass} max-w-md`}
           aria-label="Search claims"
         />
-        <select
-          className={`${fieldClass} max-w-48`}
-          value={status}
-          onChange={(event) => setStatus(event.target.value as ClaimStatus | "all")}
-          aria-label="Filter by status"
-        >
+        <div className="flex flex-wrap gap-1.5" role="radiogroup" aria-label="Filter by status">
           {filters.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
+            <button
+              key={item}
+              onClick={() => setStatus(item)}
+              className={cn(
+                badgeClass,
+                "cursor-pointer transition",
+                status === item
+                  ? "bg-oxide-deep text-paper"
+                  : "bg-mist text-muted hover:bg-mint hover:text-oxide-deep",
+              )}
+              aria-pressed={status === item}
+            >
+              {item === "all" ? "All" : item}
+            </button>
           ))}
-        </select>
+        </div>
       </div>
-      <ul className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-        {rows.length === 0 ? <li className="rounded-2xl border border-dashed border-line px-4 py-4 text-sm text-muted md:col-span-2 xl:col-span-3">No claims match.</li> : null}
+      {/* Claim cards */}
+      <ul className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {rows.length === 0 ? (
+          <li className="col-span-full rounded-2xl border border-dashed border-line px-6 py-10 text-center text-sm text-muted">
+            No claims match.
+          </li>
+        ) : null}
         {rows.map((claim) => (
-          <li key={claim.id}>
-            <Link href={`/admin/operations/claims/${claim.id}`} className="flex h-full flex-col justify-between gap-4 rounded-2xl border border-line bg-card p-4 hover:border-oxide/40">
-              <span>
-                <span className="block">{names.get(claim.patientId) ?? "Unknown patient"}</span>
-                <span className="text-sm text-muted">
-                  {claim.payerName} · {formatDay(claim.dateOfService)} · {claim.controlNumber} ·{" "}
-                  {claim.lines.map((line) => line.cpt).join(", ")}
-                </span>
-              </span>
-              <span className="flex items-center gap-3">
-                <StatusPill status={claim.status} />
-                <span className="text-sm">{money(claimTotal(claim))}</span>
-              </span>
-            </Link>
+          <li key={claim.id} className={cardClass}>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="font-semibold text-ink">{names.get(claim.patientId) ?? "Unknown"}</p>
+                <p className="mt-0.5 text-xs text-muted">{claim.payerName}</p>
+              </div>
+              <StatusPill status={claim.status} />
+            </div>
+            <div className="mt-3 flex items-baseline justify-between gap-2 text-sm">
+              <span className="text-muted">{claim.controlNumber}</span>
+              <span className="font-semibold text-ink">{money(claimTotal(claim))}</span>
+            </div>
+            <p className="mt-1 text-xs text-muted">
+              {formatDay(claim.dateOfService)} &middot; {claim.lines.length} line{claim.lines.length > 1 ? "s" : ""}
+              &nbsp;·&nbsp;
+              {claim.lines.map((l) => l.cpt).join(", ")}
+            </p>
+            <div className="mt-4 flex gap-2">
+              <Button asChild variant="secondary" size="sm">
+                <Link href={`/admin/operations/claims/${claim.id}`}>View</Link>
+              </Button>
+              {claim.status === "draft" ? (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => {
+                    /* approve handler */
+                  }}
+                >
+                  Approve
+                </Button>
+              ) : null}
+            </div>
           </li>
         ))}
       </ul>
