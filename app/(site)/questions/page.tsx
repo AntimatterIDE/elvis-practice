@@ -15,22 +15,55 @@ export const metadata: Metadata = publicPageMetadata({
   canonical: "/questions",
 });
 
+const categories = [
+  {
+    label: "Emergencies",
+    slug: "emergencies",
+    faqs: faqs.filter((f) => f.category === "emergency"),
+  },
+  {
+    label: "Practice",
+    slug: "practice",
+    faqs: faqs.filter((f) => f.category === "practice"),
+  },
+  {
+    label: "Website",
+    slug: "website",
+    faqs: faqs.filter((f) => f.category === "website"),
+  },
+];
+
 export default function QuestionsPage() {
   return (
     <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
       <PageIntro
         kicker="Questions"
-        title="Answers we can stand behind."
-        lede="Practical answers about appointments, emergencies, and what to bring. They are not a diagnosis and they are not an insurance quote."
+        title="Practical answers about the practice."
+        lede="Emergencies, appointments, and what this website will and will not do."
       />
-      <Accordion type="single" collapsible className="mt-10 max-w-3xl">
-        {faqs.map((faq) => (
-          <AccordionItem key={faq.question} value={faq.question}>
-            <AccordionTrigger>{faq.question}</AccordionTrigger>
-            <AccordionContent>{faq.answer}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+      <div className="mt-14 grid gap-8">
+        {categories.map((category) =>
+          category.faqs.length > 0 ? (
+            <section key={category.slug}>
+              <h2 className="kicker text-oxide-deep">{category.label}</h2>
+              <Accordion className="mt-4 grid gap-3" type="multiple">
+                {category.faqs.map((faq, index) => (
+                  <AccordionItem
+                    key={faq.question}
+                    value={`${category.slug}-${index}`}
+                    className="rounded-2xl border border-line bg-card shadow-[0_2px_8px_-4px_rgb(7_30_54_/_0.12)]"
+                  >
+                    <AccordionTrigger>{faq.question}</AccordionTrigger>
+                    <AccordionContent className="px-6 py-4 text-muted">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </section>
+          ) : null,
+        )}
+      </div>
     </article>
   );
 }
