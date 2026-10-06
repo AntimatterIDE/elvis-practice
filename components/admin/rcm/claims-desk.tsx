@@ -124,13 +124,12 @@ export function ClaimsDesk() {
               {claim.lines.map((l) => l.cpt).join(", ")}
             </p>
             <div className="mt-4 flex gap-2">
-              <Button asChild variant="secondary" size="sm">
+              <Button asChild variant="secondary">
                 <Link href={`/admin/operations/claims/${claim.id}`}>View</Link>
               </Button>
               {claim.status === "draft" ? (
                 <Button
                   variant="primary"
-                  size="sm"
                   onClick={() => {
                     /* approve handler */
                   }}
