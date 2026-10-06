@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 import { DEMO_CLINIC_DAY, localIsoDay } from "@/lib/rcm/chart";
 import { cn } from "@/lib/utils";
-import type { ClaimStatus } from "@/lib/rcm/types";
+import type { ClaimStatus, AppointmentStatus } from "@/lib/rcm/types";
 
 export const fieldClass =
   "w-full rounded-xl border border-line bg-card px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-oxide focus:ring-4 focus:ring-oxide/15";
@@ -82,10 +82,10 @@ const statusDot: Record<ClaimStatus, string> = {
   rejected: "bg-emergency",
 };
 
-export function StatusPill({ status }: { status: ClaimStatus }) {
+export function StatusPill({ status }: { status: string }) {
   return (
-    <span className={cn(badgeClass, statusTone[status])}>
-      <span className={cn("h-1.5 w-1.5 rounded-full", statusDot[status])} />
+    <span className={cn(badgeClass, statusTone[status as ClaimStatus] ?? "bg-mist text-ink")}>
+      <span className={cn("h-1.5 w-1.5 rounded-full", statusDot[status as ClaimStatus] ?? "bg-ink/30")} />
       {status}
     </span>
   );
