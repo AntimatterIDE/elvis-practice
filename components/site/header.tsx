@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { BrandLogo } from "@/components/site/brand";
 import { MobileNav } from "@/components/site/mobile-nav";
 import { SiteLink } from "@/components/site/site-link";
 import { practice, publicNav } from "@/lib/site";
@@ -24,8 +23,9 @@ export function Header() {
       </div>
       <header>
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3.5 md:px-8">
-          <Link href="/" className="flex min-h-11 min-w-0 items-center">
-            <BrandLogo priority className="h-auto w-[min(17.5rem,calc(100vw-10.5rem))] sm:w-[17.5rem]" />
+          <Link href="/" className="flex flex-col min-h-11 min-w-0 items-start">
+            <span className="font-display text-xl font-bold leading-[1.1] tracking-tight text-navy md:text-2xl">The Alignment Clinic</span>
+            <span className="font-display text-xl font-bold leading-[1.1] tracking-tight text-gold md:text-2xl">orthopedic spine surgery</span>
           </Link>
           <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
             {publicNav.map((item) => (
