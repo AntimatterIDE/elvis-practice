@@ -20,6 +20,7 @@ const practiceLinks = [
   ["/admin/operations/scheduling", "Schedule"],
   ["/admin/operations/intake", "Intake"],
   ["/admin/operations/tasks", "Tasks"],
+  ["/admin/operations/people", "People"],
   ["/admin/operations/practice", "Practice"],
 ] as const;
 

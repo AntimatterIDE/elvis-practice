@@ -1,6 +1,5 @@
-import { inviteEditor } from "@/app/admin/actions";
-import { AdminStateForm } from "@/components/admin/state-form";
-import { Field, PageHeader, fieldClass, panelClass } from "@/components/admin/rcm/ui";
+import { StaffInvite } from "@/components/admin/staff-invite";
+import { PageHeader, panelClass } from "@/components/admin/rcm/ui";
 import { Button } from "@/components/ui/button";
 import { readServerEnv } from "@/lib/env";
 import { getStaffSession } from "@/lib/supabase/session";
@@ -35,28 +34,7 @@ export default async function AdminHomePage() {
           <dd className="mt-2 font-display text-2xl">{env.INDEXING_ENABLED === "true" ? "Requested" : "Off"}</dd>
         </div>
       </dl>
-      {staff && staff.role !== "editor" ? (
-        <section className={`${panelClass} mt-8 max-w-lg`}>
-          <h2 className="font-display text-2xl">Invite a user</h2>
-          <p className="mt-1 text-sm text-muted">They receive an email and set their own password.</p>
-          <AdminStateForm action={inviteEditor}>
-            <Field label="Email">
-              <input name="email" type="email" required className={fieldClass} />
-            </Field>
-            <Field label="Name">
-              <input name="displayName" className={fieldClass} />
-            </Field>
-            <Field label="Role">
-              <select name="role" defaultValue="editor" className={fieldClass}>
-                <option value="editor">Editor</option>
-                {staff.role === "owner" ? <option value="admin">Admin</option> : null}
-                {staff.role === "owner" ? <option value="owner">Owner</option> : null}
-              </select>
-            </Field>
-            <Button className="justify-self-start">Create invitation</Button>
-          </AdminStateForm>
-        </section>
-      ) : null}
+      <StaffInvite defaultRole="editor" />
     </main>
   );
 }
