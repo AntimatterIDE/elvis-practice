@@ -29,7 +29,7 @@ export function CareIndex() {
             <BrandIcon src={icons[item.id]} />
             <span className="mt-5 flex items-start justify-between gap-4">
               <span className="font-display text-2xl font-medium leading-tight">{item.label}</span>
-              <IconArrow className="mt-2 size-4 shrink-0 text-oxide-deep transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
+              <IconArrow className="mt-2 size-4 shrink-0 text-royal transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
             </span>
             <span className="mt-3 block text-sm leading-relaxed text-muted">{item.body}</span>
           </Link>
