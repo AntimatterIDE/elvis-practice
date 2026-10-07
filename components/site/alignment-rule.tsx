@@ -7,13 +7,13 @@ export function AlignmentRule({ className }: { className?: string }) {
   const reduce = useReducedMotion();
 
   if (reduce) {
-    return <div aria-hidden className={cn("w-px bg-oxide", className)} />;
+    return <div aria-hidden className={cn("w-px bg-gold", className)} />;
   }
 
   return (
     <motion.div
       aria-hidden
-      className={cn("w-px origin-top bg-oxide", className)}
+      className={cn("w-px origin-top bg-gold", className)}
       initial={{ scaleY: 0 }}
       animate={{ scaleY: 1 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}

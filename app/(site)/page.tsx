@@ -48,10 +48,12 @@ export default function HomePage() {
         <div className="hero-panel relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] text-paper shadow-[0_30px_70px_-40px_rgb(7_30_54_/_0.85)]">
           <div className="relative grid gap-2 px-6 py-12 md:px-12 md:py-16 lg:grid-cols-[minmax(0,36rem)_minmax(16rem,1fr)] lg:items-center lg:gap-16">
             <div>
-              <p className="kicker text-foam">{practice.name}</p>
-              <h1 className="mt-4 max-w-xl font-display text-4xl font-semibold leading-[1.08] md:text-6xl">
-                Spine care, <em>carefully aligned.</em>
+              <h1 className="font-display text-4xl font-bold leading-[1.08] tracking-tight md:text-6xl text-paper">
+                The Alignment Clinic
               </h1>
+              <p className="mt-1 font-display text-4xl font-bold leading-[1.08] tracking-tight md:text-6xl text-gold-bright">
+                orthopedic spine surgery
+              </p>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-paper">
                 {practice.physicianName} is an orthopedic spine surgeon. The work of this practice is
                 to understand the problem, explain it clearly, and decide the next step with you.
@@ -75,7 +77,6 @@ export default function HomePage() {
                 New patients are welcome. Request a call from the contact page. Do not include
                 symptoms or insurance numbers.
               </p>
-              <p className="kicker mt-5 text-foam">{practice.specialty}</p>
             </div>
             <HeroArtwork />
           </div>
