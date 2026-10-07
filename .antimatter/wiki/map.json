@@ -1,15 +1,16 @@
 {
-  "root": "/tmp/am-ws/ch_murexqna_2",
-  "name": "ch_murexqna_2",
-  "generatedAt": "2026-10-02T20:26:03.606Z",
-  "fileCount": 187,
-  "dirCount": 68,
+  "root": "/tmp/am-ws/ch_muyabpr2_1",
+  "name": "ch_muyabpr2_1",
+  "generatedAt": "2026-10-07T15:51:22.054Z",
+  "fileCount": 218,
+  "dirCount": 73,
   "languages": {
-    "Markdown": 3,
-    "TypeScript": 170,
+    "Markdown": 9,
+    "JSON": 4,
+    "TypeScript": 174,
     "CSS": 1,
+    "HTML": 1,
     "JavaScript": 2,
-    "JSON": 3,
     "SQL": 2
   },
   "keyFiles": [
@@ -18,6 +19,19 @@
     "tsconfig.json"
   ],
   "directories": [
+    {
+      "dir": ".antimatter/wiki",
+      "fileCount": 6,
+      "files": [
+        "index.md",
+        "log.md",
+        "map.json",
+        "map.md",
+        "overview.md",
+        "schema.md"
+      ],
+      "symbols": []
+    },
     {
       "dir": "(root)",
       "fileCount": 14,
@@ -50,29 +64,19 @@
     },
     {
       "dir": "app",
-      "fileCount": 9,
+      "fileCount": 7,
       "files": [
         "favicon.ico",
         "global-error.tsx",
         "globals.css",
-        "icon.svg",
         "layout.tsx",
         "not-found.tsx",
-        "opengraph-image.tsx",
         "robots.ts",
         "sitemap.ts"
       ],
       "symbols": [
         {
           "name": "metadata",
-          "kind": "const"
-        },
-        {
-          "name": "size",
-          "kind": "const"
-        },
-        {
-          "name": "contentType",
           "kind": "const"
         }
       ]
@@ -348,6 +352,10 @@
         {
           "name": "AdminFormState",
           "kind": "type"
+        },
+        {
+          "name": "metadata",
+          "kind": "const"
         }
       ]
     },
@@ -592,13 +600,23 @@
     },
     {
       "dir": "app/auth/confirm",
-      "fileCount": 1,
+      "fileCount": 3,
       "files": [
-        "route.ts"
+        "actions.ts",
+        "continue-form.tsx",
+        "page.tsx"
       ],
       "symbols": [
         {
-          "name": "GET",
+          "name": "completeRecovery",
+          "kind": "fn"
+        },
+        {
+          "name": "RecoveryState",
+          "kind": "type"
+        },
+        {
+          "name": "ContinueForm",
           "kind": "fn"
         }
       ]
@@ -697,9 +715,19 @@
       ]
     },
     {
-      "dir": "components/admin",
-      "fileCount": 7,
+      "dir": "brand",
+      "fileCount": 2,
       "files": [
+        "email-signature.html",
+        "identity-direction.md"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "components/admin",
+      "fileCount": 8,
+      "files": [
+        "admin-mobile-bar.tsx",
         "admin-nav.tsx",
         "clinical-editor.tsx",
         "enroll-form.tsx",
@@ -709,6 +737,14 @@
         "state-form.tsx"
       ],
       "symbols": [
+        {
+          "name": "AdminMobileBar",
+          "kind": "fn"
+        },
+        {
+          "name": "currentDeskLabel",
+          "kind": "fn"
+        },
         {
           "name": "AdminNav",
           "kind": "fn"
@@ -745,12 +781,13 @@
     },
     {
       "dir": "components/admin/rcm",
-      "fileCount": 20,
+      "fileCount": 21,
       "files": [
         "analytics-desk.tsx",
         "claim-detail.tsx",
         "claim-form.tsx",
         "claims-desk.tsx",
+        "day-sheet.tsx",
         "denials-desk.tsx",
         "drafts-desk.tsx",
         "eligibility-desk.tsx",
@@ -783,6 +820,10 @@
         },
         {
           "name": "ClaimsDesk",
+          "kind": "fn"
+        },
+        {
+          "name": "DaySheet",
           "kind": "fn"
         },
         {
@@ -860,10 +901,6 @@
         {
           "name": "useRcm",
           "kind": "fn"
-        },
-        {
-          "name": "TasksDesk",
-          "kind": "fn"
         }
       ]
     },
@@ -900,35 +937,50 @@
     },
     {
       "dir": "components/site",
-      "fileCount": 23,
+      "fileCount": 22,
       "files": [
         "alignment-rule.tsx",
+        "brand.tsx",
         "care-index.tsx",
         "clinical-article.tsx",
         "contact-form.tsx",
         "emergency-note.tsx",
-        "focus-cycle.tsx",
         "footer.tsx",
         "header.tsx",
         "icons.tsx",
         "index-card.tsx",
         "loading-state.tsx",
-        "mark.tsx",
         "markdown.tsx",
         "missing-page.tsx",
         "mobile-nav.tsx",
         "page-intro.tsx",
         "photo-placeholder.tsx",
+        "promises.tsx",
         "reveal.tsx",
         "review-banner.tsx",
         "site-link.tsx",
-        "spine-art.tsx",
         "sticky-contact.tsx",
         "structured-data.tsx"
       ],
       "symbols": [
         {
           "name": "AlignmentRule",
+          "kind": "fn"
+        },
+        {
+          "name": "BrandLogo",
+          "kind": "fn"
+        },
+        {
+          "name": "BrandMark",
+          "kind": "fn"
+        },
+        {
+          "name": "BrandIcon",
+          "kind": "fn"
+        },
+        {
+          "name": "HeroArtwork",
           "kind": "fn"
         },
         {
@@ -945,10 +997,6 @@
         },
         {
           "name": "EmergencyNote",
-          "kind": "fn"
-        },
-        {
-          "name": "FocusCycle",
           "kind": "fn"
         },
         {
@@ -972,27 +1020,7 @@
           "kind": "fn"
         },
         {
-          "name": "IconRule",
-          "kind": "fn"
-        },
-        {
           "name": "IconPlus",
-          "kind": "fn"
-        },
-        {
-          "name": "IconNeck",
-          "kind": "fn"
-        },
-        {
-          "name": "IconLowBack",
-          "kind": "fn"
-        },
-        {
-          "name": "IconAfterSurgery",
-          "kind": "fn"
-        },
-        {
-          "name": "IconVisit",
           "kind": "fn"
         },
         {
@@ -1001,10 +1029,6 @@
         },
         {
           "name": "LoadingState",
-          "kind": "fn"
-        },
-        {
-          "name": "Mark",
           "kind": "fn"
         },
         {
@@ -1021,6 +1045,18 @@
         },
         {
           "name": "PageIntro",
+          "kind": "fn"
+        },
+        {
+          "name": "PhotoPlaceholder",
+          "kind": "fn"
+        },
+        {
+          "name": "Promises",
+          "kind": "fn"
+        },
+        {
+          "name": "Reveal",
           "kind": "fn"
         }
       ]
@@ -1087,11 +1123,12 @@
     },
     {
       "dir": "lib",
-      "fileCount": 5,
+      "fileCount": 6,
       "files": [
         "demo-admin.ts",
         "env.ts",
         "rate-limit.ts",
+        "share-metadata.ts",
         "site.ts",
         "utils.ts"
       ],
@@ -1137,6 +1174,18 @@
           "kind": "fn"
         },
         {
+          "name": "publicPageMetadata",
+          "kind": "fn"
+        },
+        {
+          "name": "shareImage",
+          "kind": "const"
+        },
+        {
+          "name": "unlistedShareMetadata",
+          "kind": "const"
+        },
+        {
           "name": "canonicalOrigin",
           "kind": "fn"
         },
@@ -1179,10 +1228,6 @@
         {
           "name": "carePathways",
           "kind": "const"
-        },
-        {
-          "name": "cn",
-          "kind": "fn"
         }
       ]
     },
@@ -1312,12 +1357,13 @@
     },
     {
       "dir": "lib/portal",
-      "fileCount": 9,
+      "fileCount": 10,
       "files": [
         "cookie.ts",
         "defaults.ts",
         "engine.ts",
         "file-store.ts",
+        "form-layout.ts",
         "password.ts",
         "repository.ts",
         "supabase-store.ts",
@@ -1410,15 +1456,15 @@
           "kind": "const"
         },
         {
-          "name": "hashPassword",
+          "name": "intakeSectionKey",
           "kind": "fn"
         },
         {
-          "name": "verifyPassword",
+          "name": "intakeBlocks",
           "kind": "fn"
         },
         {
-          "name": "generatePassword",
+          "name": "intakeFieldSpan",
           "kind": "fn"
         }
       ]
@@ -1592,10 +1638,51 @@
     },
     {
       "dir": "public",
-      "fileCount": 2,
+      "fileCount": 3,
       "files": [
+        "apple-touch-icon.png",
         "globe.svg",
         "next.svg"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "public/brand",
+      "fileCount": 10,
+      "files": [
+        "alignment-favicon.svg",
+        "alignment-hero-graphic.svg",
+        "alignment-logo-physician.svg",
+        "alignment-logo.png",
+        "alignment-logo.svg",
+        "alignment-mark-reverse.svg",
+        "alignment-mark.svg",
+        "favicon-32.png",
+        "og.png",
+        "social-avatar.png"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "public/brand/icons",
+      "fileCount": 8,
+      "files": [
+        "clear-plan.svg",
+        "low-back-pain.svg",
+        "neck-pain.svg",
+        "plain-language.svg",
+        "reassessment.svg",
+        "shared-decisions.svg",
+        "unhurried-visits.svg",
+        "visit-process.svg"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "public/photos",
+      "fileCount": 1,
+      "files": [
+        "elvis-francois.jpg"
       ],
       "symbols": []
     },

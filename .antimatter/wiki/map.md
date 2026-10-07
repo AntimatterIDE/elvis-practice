@@ -1,14 +1,15 @@
-# Workspace Map — ch_murexqna_2
-_Generated 2026-10-02 · 187 files · 68 directories_  
+# Workspace Map — ch_muyabpr2_1
+_Generated 2026-10-07 · 218 files · 73 directories_  
 _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Map Workspace". Do not hand-edit._
 
 ## Languages
-- TypeScript: 170
-- Markdown: 3
-- JSON: 3
+- TypeScript: 174
+- Markdown: 9
+- JSON: 4
 - JavaScript: 2
 - SQL: 2
 - CSS: 1
+- HTML: 1
 
 ## Key files
 - `package.json`
@@ -16,13 +17,16 @@ _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Ma
 - `tsconfig.json`
 
 ## Directories
+### `.antimatter/wiki` — 6 files
+- files: index.md, log.md, map.json, map.md, overview.md, schema.md
+
 ### `(root)` — 14 files
 - symbols: proxy (fn), config (const)
 - files: .env.example, .gitignore, AGENTS.md, CLAUDE.md, eslint.config.mjs, next.config.ts, package-lock.json, package.json, playwright.config.ts, postcss.config.mjs, proxy.ts, README.md, tsconfig.json, vitest.config.ts
 
-### `app` — 9 files
-- symbols: metadata (const), size (const), contentType (const)
-- files: favicon.ico, global-error.tsx, globals.css, icon.svg, layout.tsx, not-found.tsx, opengraph-image.tsx, robots.ts, sitemap.ts
+### `app` — 7 files
+- symbols: metadata (const)
+- files: favicon.ico, global-error.tsx, globals.css, layout.tsx, not-found.tsx, robots.ts, sitemap.ts
 
 ### `app/(site)` — 4 files
 - symbols: metadata (const)
@@ -85,7 +89,7 @@ _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Ma
 - files: loading.tsx, page.tsx
 
 ### `app/admin` — 2 files
-- symbols: signIn (fn), signOut (fn), verifyTotp (fn), requestStaffPasswordReset (fn), updateStaffPassword (fn), enrollTotp (fn), saveClinical (fn), saveFaq (fn), saveMedia (fn), saveSettings (fn), inviteEditor (fn), AdminFormState (type)
+- symbols: signIn (fn), signOut (fn), verifyTotp (fn), requestStaffPasswordReset (fn), updateStaffPassword (fn), enrollTotp (fn), saveClinical (fn), saveFaq (fn), saveMedia (fn), saveSettings (fn), inviteEditor (fn), AdminFormState (type), metadata (const)
 - files: actions.ts, layout.tsx
 
 ### `app/admin/(panel)` — 2 files
@@ -176,9 +180,9 @@ _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Ma
 ### `app/admin/reset-password` — 1 file
 - files: page.tsx
 
-### `app/auth/confirm` — 1 file
-- symbols: GET (fn)
-- files: route.ts
+### `app/auth/confirm` — 3 files
+- symbols: completeRecovery (fn), RecoveryState (type), ContinueForm (fn)
+- files: actions.ts, continue-form.tsx, page.tsx
 
 ### `app/intake/[token]` — 1 file
 - symbols: dynamic (const), metadata (const)
@@ -192,13 +196,16 @@ _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Ma
 - symbols: dynamic (const)
 - files: page.tsx
 
-### `components/admin` — 7 files
-- symbols: AdminNav (fn), ClinicalEditor (fn), EnrollForm (fn), LoginForm (fn), MfaForm (fn), ForgotPasswordForm (fn), NewPasswordForm (fn), AdminStateForm (fn)
-- files: admin-nav.tsx, clinical-editor.tsx, enroll-form.tsx, login-form.tsx, mfa-form.tsx, password-reset-form.tsx, state-form.tsx
+### `brand` — 2 files
+- files: email-signature.html, identity-direction.md
 
-### `components/admin/rcm` — 20 files
-- symbols: AnalyticsDesk (fn), ClaimDetail (fn), ClaimForm (fn), ClaimsDesk (fn), DenialsDesk (fn), DraftsDesk (fn), EligibilityDesk (fn), IntakeDesk (fn), PatientDetail (fn), PatientsDesk (fn), PortalAccess (fn), PortalBridge (fn), PracticeDesk (fn), ScheduleDesk (fn), subscribePortalRemoval (fn), subscribePortalPush (fn), enqueuePortalPush (fn), whenPortalIdle (fn), markRosterReady (fn), notePortalPatient (fn), mergePortalRoster (fn), RcmProvider (fn), useRcm (fn), TasksDesk (fn)
-- files: analytics-desk.tsx, claim-detail.tsx, claim-form.tsx, claims-desk.tsx, denials-desk.tsx, drafts-desk.tsx, eligibility-desk.tsx, intake-desk.tsx, patient-detail.tsx, patients-desk.tsx, portal-access.tsx, portal-bridge.tsx, practice-desk.tsx, schedule-desk.tsx, store.tsx, tasks-desk.tsx, tools-desk.tsx, ui.tsx, upload-desk.tsx, workbench.tsx
+### `components/admin` — 8 files
+- symbols: AdminMobileBar (fn), currentDeskLabel (fn), AdminNav (fn), ClinicalEditor (fn), EnrollForm (fn), LoginForm (fn), MfaForm (fn), ForgotPasswordForm (fn), NewPasswordForm (fn), AdminStateForm (fn)
+- files: admin-mobile-bar.tsx, admin-nav.tsx, clinical-editor.tsx, enroll-form.tsx, login-form.tsx, mfa-form.tsx, password-reset-form.tsx, state-form.tsx
+
+### `components/admin/rcm` — 21 files
+- symbols: AnalyticsDesk (fn), ClaimDetail (fn), ClaimForm (fn), ClaimsDesk (fn), DaySheet (fn), DenialsDesk (fn), DraftsDesk (fn), EligibilityDesk (fn), IntakeDesk (fn), PatientDetail (fn), PatientsDesk (fn), PortalAccess (fn), PortalBridge (fn), PracticeDesk (fn), ScheduleDesk (fn), subscribePortalRemoval (fn), subscribePortalPush (fn), enqueuePortalPush (fn), whenPortalIdle (fn), markRosterReady (fn), notePortalPatient (fn), mergePortalRoster (fn), RcmProvider (fn), useRcm (fn)
+- files: analytics-desk.tsx, claim-detail.tsx, claim-form.tsx, claims-desk.tsx, day-sheet.tsx, denials-desk.tsx, drafts-desk.tsx, eligibility-desk.tsx, intake-desk.tsx, patient-detail.tsx, patients-desk.tsx, portal-access.tsx, portal-bridge.tsx, practice-desk.tsx, schedule-desk.tsx, store.tsx, tasks-desk.tsx, tools-desk.tsx, ui.tsx, upload-desk.tsx, workbench.tsx
 
 ### `components/clinic` — 1 file
 - symbols: ClinicFrame (fn)
@@ -208,17 +215,17 @@ _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Ma
 - symbols: IntakeForm (fn), PortalLoginForm (fn)
 - files: intake-form.tsx, login-form.tsx
 
-### `components/site` — 23 files
-- symbols: AlignmentRule (fn), CareIndex (fn), ClinicalArticle (fn), ContactForm (fn), EmergencyNote (fn), FocusCycle (fn), Footer (fn), Header (fn), IconArrow (fn), IconMenu (fn), IconClose (fn), IconRule (fn), IconPlus (fn), IconNeck (fn), IconLowBack (fn), IconAfterSurgery (fn), IconVisit (fn), IndexCard (fn), LoadingState (fn), Mark (fn), Markdown (fn), MissingPage (fn), MobileNav (fn), PageIntro (fn)
-- files: alignment-rule.tsx, care-index.tsx, clinical-article.tsx, contact-form.tsx, emergency-note.tsx, focus-cycle.tsx, footer.tsx, header.tsx, icons.tsx, index-card.tsx, loading-state.tsx, mark.tsx, markdown.tsx, missing-page.tsx, mobile-nav.tsx, page-intro.tsx, photo-placeholder.tsx, reveal.tsx, review-banner.tsx, site-link.tsx, spine-art.tsx, sticky-contact.tsx, structured-data.tsx
+### `components/site` — 22 files
+- symbols: AlignmentRule (fn), BrandLogo (fn), BrandMark (fn), BrandIcon (fn), HeroArtwork (fn), CareIndex (fn), ClinicalArticle (fn), ContactForm (fn), EmergencyNote (fn), Footer (fn), Header (fn), IconArrow (fn), IconMenu (fn), IconClose (fn), IconPlus (fn), IndexCard (fn), LoadingState (fn), Markdown (fn), MissingPage (fn), MobileNav (fn), PageIntro (fn), PhotoPlaceholder (fn), Promises (fn), Reveal (fn)
+- files: alignment-rule.tsx, brand.tsx, care-index.tsx, clinical-article.tsx, contact-form.tsx, emergency-note.tsx, footer.tsx, header.tsx, icons.tsx, index-card.tsx, loading-state.tsx, markdown.tsx, missing-page.tsx, mobile-nav.tsx, page-intro.tsx, photo-placeholder.tsx, promises.tsx, reveal.tsx, review-banner.tsx, site-link.tsx, sticky-contact.tsx, structured-data.tsx
 
 ### `components/ui` — 8 files
 - symbols: AccordionItem (fn), AccordionTrigger (fn), AccordionContent (fn), Accordion (const), Button (fn), controlClass (const), Input (fn), Label (fn), Select (fn), Separator (fn), Textarea (fn)
 - files: accordion.tsx, button.tsx, control.ts, input.tsx, label.tsx, select.tsx, separator.tsx, textarea.tsx
 
-### `lib` — 5 files
-- symbols: isDemoAdminEnabled (fn), DEMO_ADMIN_EMAIL (const), DEMO_ADMIN_PASSWORD (const), DEMO_ADMIN_COOKIE (const), DEMO_ADMIN_COOKIE_VALUE (const), readServerEnv (fn), isSupabaseConfigured (fn), isServiceRoleConfigured (fn), ServerEnv (type), rateLimit (fn), canonicalOrigin (fn), canonicalHost (fn), isIndexingEnabled (fn), canViewDraftsWithoutAuth (fn), isAdminHostAllowed (fn), practice (const), physicianTraining (const), clinicalFocus (const), emergencyNote (const), publicNav (const), carePathways (const), cn (fn)
-- files: demo-admin.ts, env.ts, rate-limit.ts, site.ts, utils.ts
+### `lib` — 6 files
+- symbols: isDemoAdminEnabled (fn), DEMO_ADMIN_EMAIL (const), DEMO_ADMIN_PASSWORD (const), DEMO_ADMIN_COOKIE (const), DEMO_ADMIN_COOKIE_VALUE (const), readServerEnv (fn), isSupabaseConfigured (fn), isServiceRoleConfigured (fn), ServerEnv (type), rateLimit (fn), publicPageMetadata (fn), shareImage (const), unlistedShareMetadata (const), canonicalOrigin (fn), canonicalHost (fn), isIndexingEnabled (fn), canViewDraftsWithoutAuth (fn), isAdminHostAllowed (fn), practice (const), physicianTraining (const), clinicalFocus (const), emergencyNote (const), publicNav (const), carePathways (const)
+- files: demo-admin.ts, env.ts, rate-limit.ts, share-metadata.ts, site.ts, utils.ts
 
 ### `lib/contact` — 1 file
 - symbols: noteLooksClinical (fn)
@@ -228,9 +235,9 @@ _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Ma
 - symbols: conditions (const), faqs (const), allClinicalDocuments (fn), getCondition (fn), getTreatment (fn), getClinicalDocument (fn), publicPath (fn), previewPath (fn), publicConditions (fn), publicTreatments (fn), publicClinicalDocuments (fn), renderMarkdown (fn), documentText (fn), findBannedPhrases (fn), canPublish (fn), isPubliclyVisible (fn), retiredSlugs (const), ClinicalDocument (type), OfferingStatus (type), ReviewStatus (type), ContactInquiry (type), slugSchema (const), offeringStatusSchema (const), reviewStatusSchema (const)
 - files: conditions.ts, faqs.ts, index.ts, markdown.ts, publish.ts, schema.ts, treatments.ts
 
-### `lib/portal` — 9 files
-- symbols: readPortalCookie (fn), writePortalCookie (fn), clearPortalCookie (fn), PORTAL_COOKIE (const), defaultIntakeForm (fn), sexLabel (fn), LOCKED_FIELD_IDS (const), CHART_FIELDS (const), createPortalDb (fn), saveForm (fn), cleanAnswers (fn), patientFromAnswers (fn), createInvite (fn), findInvite (fn), submitIntake (fn), issueLogin (fn), markPortalActive (fn), createSession (fn), sessionExpiry (fn), readSession (fn), fileStore (const), hashPassword (fn), verifyPassword (fn), generatePassword (fn)
-- files: cookie.ts, defaults.ts, engine.ts, file-store.ts, password.ts, repository.ts, supabase-store.ts, types.ts, view.ts
+### `lib/portal` — 10 files
+- symbols: readPortalCookie (fn), writePortalCookie (fn), clearPortalCookie (fn), PORTAL_COOKIE (const), defaultIntakeForm (fn), sexLabel (fn), LOCKED_FIELD_IDS (const), CHART_FIELDS (const), createPortalDb (fn), saveForm (fn), cleanAnswers (fn), patientFromAnswers (fn), createInvite (fn), findInvite (fn), submitIntake (fn), issueLogin (fn), markPortalActive (fn), createSession (fn), sessionExpiry (fn), readSession (fn), fileStore (const), intakeSectionKey (fn), intakeBlocks (fn), intakeFieldSpan (fn)
+- files: cookie.ts, defaults.ts, engine.ts, file-store.ts, form-layout.ts, password.ts, repository.ts, supabase-store.ts, types.ts, view.ts
 
 ### `lib/rcm` — 6 files
 - symbols: emptyVitals (fn), defaultDocuments (fn), defaultCoverage (fn), withChart (fn), normalizePatient (fn), normalizeAppointment (fn), normalizeState (fn), primaryCoverage (fn), applyPrimaryCoverage (fn), chartGaps (fn), ageFromDob (fn), localIsoDay (fn), money (fn), patientName (fn), claimTotal (fn), formatDay (fn), formatWhen (fn), formatTime (fn), formatClinicDay (fn), statusLabel (fn), parsePracticeCsv (fn), CsvRow (type), CsvParseResult (type), summarizeClaims (fn)
@@ -240,8 +247,17 @@ _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Ma
 - symbols: createSupabaseAdminClient (fn), StaffRole (type), ReviewStatus (type), OfferingStatus (type), RightsStatus (type), Json (type), Database (type), clinicalRowToDocument (fn), createSupabaseServerClient (fn), getStaffSession (fn), StaffSession (type)
 - files: admin.ts, database.ts, map-clinical.ts, server.ts, session.ts
 
-### `public` — 2 files
-- files: globe.svg, next.svg
+### `public` — 3 files
+- files: apple-touch-icon.png, globe.svg, next.svg
+
+### `public/brand` — 10 files
+- files: alignment-favicon.svg, alignment-hero-graphic.svg, alignment-logo-physician.svg, alignment-logo.png, alignment-logo.svg, alignment-mark-reverse.svg, alignment-mark.svg, favicon-32.png, og.png, social-avatar.png
+
+### `public/brand/icons` — 8 files
+- files: clear-plan.svg, low-back-pain.svg, neck-pain.svg, plain-language.svg, reassessment.svg, shared-decisions.svg, unhurried-visits.svg, visit-process.svg
+
+### `public/photos` — 1 file
+- files: elvis-francois.jpg
 
 ### `scripts` — 1 file
 - files: seed-content.ts
