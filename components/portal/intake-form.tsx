@@ -148,7 +148,7 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
   if (state.done) {
     return (
       <div className="mt-8 rounded-3xl border border-line bg-card p-6 shadow-[0_18px_40px_-32px_rgb(7_30_54_/_0.55)] sm:p-8">
-        <p className="kicker text-oxide-deep">Received</p>
+        <p className="kicker text-royal">Received</p>
         <h2 className="mt-2 font-display text-4xl tracking-tight">The practice has your form.</h2>
         <p className="mt-3 max-w-prose text-base leading-relaxed text-muted">
           A chart will be opened from what you sent. You do not need to fill this out again.
@@ -175,7 +175,7 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
         </div>
         <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-mist" aria-hidden="true">
           <div
-            className="h-full rounded-full bg-oxide transition-[width]"
+            className="h-full rounded-full bg-gold transition-[width]"
             style={{ width: `${(Math.min(reviewing ? groups.length : step + 1, groups.length) / Math.max(groups.length, 1)) * 100}%` }}
           />
         </div>
@@ -191,7 +191,7 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
                   onClick={() => goTo(index)}
                   className={cn(
                     "rounded-full px-3 py-1.5 text-xs font-semibold",
-                    active ? "bg-oxide text-paper" : reached ? "bg-mint text-oxide-deep" : "bg-mist text-muted",
+                    active ? "bg-gold text-paper" : reached ? "bg-gold/10 text-royal" : "bg-mist text-muted",
                   )}
                   aria-current={active ? "step" : undefined}
                 >
@@ -207,7 +207,7 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
               onClick={openReview}
               className={cn(
                 "rounded-full px-3 py-1.5 text-xs font-semibold",
-                reviewing ? "bg-oxide text-paper" : furthest >= groups.length ? "bg-mint text-oxide-deep" : "bg-mist text-muted",
+                reviewing ? "bg-gold text-paper" : furthest >= groups.length ? "bg-gold/10 text-royal" : "bg-mist text-muted",
               )}
               aria-current={reviewing ? "step" : undefined}
             >
@@ -284,7 +284,7 @@ function Question({ field, className }: { field: IntakeField; className?: string
     return (
       <div className={className}>
         <label htmlFor={inputId} className="flex items-start gap-3 rounded-2xl border border-emergency/20 bg-card px-4 py-4">
-          <input id={inputId} type="checkbox" name={name} value="yes" required={field.required} className="mt-1 size-5 accent-oxide" />
+          <input id={inputId} type="checkbox" name={name} value="yes" required={field.required} className="mt-1 size-5 accent-gold" />
           <span>
             <span className="block text-sm font-semibold leading-snug">{field.label}</span>
             {field.help ? <span className="mt-1 block text-sm leading-relaxed text-muted">{field.help}</span> : null}
@@ -305,7 +305,7 @@ function Question({ field, className }: { field: IntakeField; className?: string
               <label
                 key={option}
                 htmlFor={id}
-                className="flex cursor-pointer items-center justify-center rounded-xl border border-line bg-paper px-3 py-3.5 text-center text-sm font-semibold has-[:checked]:border-oxide has-[:checked]:bg-mint has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-oxide/20"
+                className="flex cursor-pointer items-center justify-center rounded-xl border border-line bg-paper px-3 py-3.5 text-center text-sm font-semibold has-[:checked]:border-gold has-[:checked]:bg-gold/10 has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-gold/20"
               >
                 <input id={id} type="radio" name={name} value={option} required={field.required} className="sr-only" />
                 {label}
@@ -320,7 +320,7 @@ function Question({ field, className }: { field: IntakeField; className?: string
     <div className={cn("grid content-start gap-2", className)}>
       <label htmlFor={inputId} className="text-sm font-medium text-ink">
         {field.label}
-        {field.required ? <span className="kicker ml-2 text-oxide-deep">Required</span> : null}
+        {field.required ? <span className="kicker ml-2 text-royal">Required</span> : null}
       </label>
       <Control field={field} name={name} inputId={inputId} />
       {field.help ? <p className="text-sm leading-relaxed text-muted">{field.help}</p> : null}
@@ -333,7 +333,7 @@ function Legend({ field }: { field: IntakeField }) {
     <>
       <legend className="text-sm font-medium text-ink">
         {field.label}
-        {field.required ? <span className="kicker ml-2 text-oxide-deep">Required</span> : null}
+        {field.required ? <span className="kicker ml-2 text-royal">Required</span> : null}
       </legend>
       {field.help ? <p className="mt-1 text-sm leading-relaxed text-muted">{field.help}</p> : null}
     </>

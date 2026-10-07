@@ -106,7 +106,7 @@ export function Workbench() {
             href={item.href}
             className={cn("px-5 py-4 transition hover:bg-mist/50", index > 0 && "border-line sm:border-l", index > 1 && "border-t xl:border-t-0")}
           >
-            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">{item.label}</p>
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-royal">{item.label}</p>
             <p className="mt-2 font-display text-3xl tracking-tight">{item.value}</p>
             <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">{item.detail}</p>
           </Link>
@@ -117,7 +117,7 @@ export function Workbench() {
         <aside className="overflow-hidden rounded-3xl border border-line bg-card shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
           <div className="flex items-end justify-between gap-3 border-b border-line px-5 py-4">
             <div>
-              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Front desk</p>
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-royal">Front desk</p>
               <h2 className="mt-1 font-display text-2xl tracking-tight">Needs you</h2>
             </div>
             <Link href="/admin/operations/tasks" className="text-sm underline">
@@ -129,7 +129,7 @@ export function Workbench() {
             {queue.map((item) => (
               <li key={item.key} className="border-t border-line first:border-t-0">
                 <Link href={item.href} className="grid grid-cols-[4.5rem_1fr] gap-3 px-5 py-4 hover:bg-mist/40">
-                  <span className="pt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-oxide">{item.kicker}</span>
+                  <span className="pt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-royal">{item.kicker}</span>
                   <span>
                     <span className="block font-semibold">{item.title}</span>
                     <span className="mt-0.5 block text-sm text-muted">{item.detail}</span>

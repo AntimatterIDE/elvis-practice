@@ -41,25 +41,25 @@ export default async function PortalHomePage() {
     <div className="mx-auto grid max-w-3xl gap-5 px-5 py-10 sm:py-12">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="kicker text-oxide-deep">Your record</p>
+          <p className="kicker text-royal">Your record</p>
           <h1 className="mt-2 font-display text-4xl font-medium leading-tight sm:text-5xl">Hello, {greeting}</h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
             This is what the practice has on file for you. Call them if a phone number, pharmacy, or insurance card should change.
           </p>
         </div>
         <form action={portalSignOutAction}>
-          <button className="inline-flex min-h-11 items-center text-sm font-medium text-oxide-deep underline decoration-oxide-deep/30 underline-offset-4">
+          <button className="inline-flex min-h-11 items-center text-sm font-medium text-royal underline decoration-gold/30 underline-offset-4">
             Sign out
           </button>
         </form>
       </div>
 
-      <section className="rounded-3xl bg-pine p-6 text-paper sm:p-7">
-        <p className="kicker text-foam">{next ? "Next visit" : "Visits"}</p>
+      <section className="rounded-3xl bg-navy p-6 text-paper sm:p-7">
+        <p className="kicker text-gold-bright">{next ? "Next visit" : "Visits"}</p>
         {next ? (
           <>
             <p className="mt-2 font-display text-3xl font-medium leading-tight">{formatWhen(next.start)}</p>
-            <p className="mt-2 text-sm leading-relaxed text-foam">
+            <p className="mt-2 text-sm leading-relaxed text-gold-bright">
               {[visitTypeLabel[next.visitType] ?? next.visitType, next.reason, next.providerName, next.room].filter(Boolean).join(" · ")}
             </p>
             <p className="mt-3 text-sm text-paper">{visitStatus[next.status] ?? next.status}</p>
@@ -145,7 +145,7 @@ function VisitList({ visits, tone = "light" }: { visits: PortalVisitView[]; tone
       {visits.map((visit) => (
         <li key={visit.id} className="py-3 text-sm">
           <span className="block font-semibold">{formatWhen(visit.start)}</span>
-          <span className={tone === "dark" ? "text-foam/80" : "text-muted"}>
+          <span className={tone === "dark" ? "text-gold-bright/80" : "text-muted"}>
             {[visitTypeLabel[visit.visitType] ?? visit.visitType, visit.reason, visit.providerName, visit.room, visitStatus[visit.status] ?? visit.status]
               .filter(Boolean)
               .join(" · ")}

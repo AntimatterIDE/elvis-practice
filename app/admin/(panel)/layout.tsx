@@ -14,12 +14,12 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
 
   return (
     <div className="min-h-full lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
-      <aside className="hidden bg-pine text-paper lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:overflow-y-auto">
+      <aside className="hidden bg-navy text-paper lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:overflow-y-auto">
         <div className="flex items-center gap-3 px-4 py-5">
           <BrandMark tone="reverse" className="size-11" />
           <div className="min-w-0">
             <p className="truncate font-display text-lg font-bold leading-tight text-paper">{practice.name}</p>
-            <p className="truncate font-display text-lg font-bold leading-tight text-foam">{practice.specialty}</p>
+            <p className="truncate font-display text-lg font-bold leading-tight text-gold-bright">{practice.specialty}</p>
           </div>
         </div>
         <div className="px-3 pb-4 md:flex-1">
@@ -27,7 +27,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
         </div>
         <div className="border-t border-white/10 px-4 py-4">
           <p className="text-sm font-semibold">{staff.displayName}</p>
-          <p className="mt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-foam/70">{staff.role}</p>
+          <p className="mt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-gold-bright/70">{staff.role}</p>
           {staff.userId === "demo-admin" ? (
             <p className="mt-3 text-xs leading-relaxed text-paper/60">
               Demo desk. Intake and portal logins are saved on the server. Other charts stay in this browser until a patient login is created.

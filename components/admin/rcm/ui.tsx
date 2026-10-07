@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import type { ClaimStatus } from "@/lib/rcm/types";
 
 export const fieldClass =
-  "w-full rounded-xl border border-line bg-card px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-oxide focus:ring-4 focus:ring-oxide/15";
+  "w-full rounded-xl border border-line bg-card px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/50 focus:border-gold focus:ring-4 focus:ring-gold/15";
 
 export const panelClass =
   "rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]";
@@ -28,7 +28,7 @@ export function PageHeader({
     <div className="border-b border-line pb-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-oxide">{kicker}</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-royal">{kicker}</p>
           <h1 className="mt-2 font-display text-3xl tracking-tight md:text-4xl">{title}</h1>
           {lede ? <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">{lede}</p> : null}
         </div>
@@ -59,9 +59,9 @@ export function Field({
 const statusTone: Record<ClaimStatus, string> = {
   draft: "bg-mist text-ink",
   submitted: "bg-mist text-ink",
-  processing: "bg-mist text-oxide-deep",
-  accepted: "bg-mint text-oxide-deep",
-  paid: "bg-mint text-oxide-deep",
+  processing: "bg-mist text-royal",
+  accepted: "bg-gold/10 text-royal",
+  paid: "bg-gold/10 text-royal",
   denied: "bg-red-50 text-emergency",
   rejected: "bg-red-50 text-emergency",
 };

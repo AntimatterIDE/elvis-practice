@@ -22,7 +22,7 @@ export function AdminStateForm({
         </p>
       ) : null}
       {state.message ? (
-        <p role="status" className="text-sm text-pine">
+        <p role="status" className="text-sm text-navy">
           {state.message}
         </p>
       ) : null}

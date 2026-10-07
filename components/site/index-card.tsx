@@ -11,7 +11,7 @@ export function IndexCard({ document }: { document: ClinicalDocument }) {
       <h2 className="font-display text-2xl font-medium leading-tight">{document.title}</h2>
       <p className="mt-2 max-w-2xl leading-relaxed text-muted">{document.summary}</p>
       {visible ? (
-        <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-oxide-deep">
+        <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-royal">
           Read this note
           <IconArrow className="size-4" />
         </span>

@@ -51,7 +51,7 @@ export function DenialsDesk() {
               <button
                 type="button"
                 onClick={() => setSelectedId(claim.id)}
-                className={`w-full rounded-2xl border px-4 py-3 text-left text-sm ${selected?.id === claim.id ? "border-oxide bg-mint/50" : "border-line bg-card"}`}
+                className={`w-full rounded-2xl border px-4 py-3 text-left text-sm ${selected?.id === claim.id ? "border-gold bg-gold/10/50" : "border-line bg-card"}`}
               >
                 <span className="block font-semibold">{names.get(claim.patientId)}</span>
                 <span className="text-muted">{claim.controlNumber}</span>

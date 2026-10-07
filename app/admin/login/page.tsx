@@ -16,7 +16,7 @@ export default async function LoginPage() {
       <ClinicFrame kicker="Staff">
         <div className="mx-auto max-w-lg px-5 py-12 sm:py-16">
           <div className="rounded-3xl border border-line bg-card p-6 shadow-[0_18px_40px_-32px_rgb(7_30_54_/_0.55)] sm:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oxide">Practice desk</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-royal">Practice desk</p>
             <h1 className="mt-3 font-display text-4xl tracking-tight">Staff sign-in</h1>
             <p className="mt-3 text-base leading-relaxed text-muted">
               This demo account works until Supabase is connected. Charts stay in this browser until a patient login is created.
@@ -50,14 +50,14 @@ export default async function LoginPage() {
     <ClinicFrame kicker="Staff">
       <div className="mx-auto max-w-lg px-5 py-12 sm:py-16">
         <div className="rounded-3xl border border-line bg-card p-6 shadow-[0_18px_40px_-32px_rgb(7_30_54_/_0.55)] sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oxide">Practice desk</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-royal">Practice desk</p>
           <h1 className="mt-3 font-display text-4xl tracking-tight">Staff sign-in</h1>
           <p className="mt-3 text-base leading-relaxed text-muted">
             Invitation only. There is no public registration.
           </p>
           <LoginForm action={signIn} />
           <p className="mt-4 text-sm">
-            <Link href="/admin/forgot" className="font-medium text-oxide underline decoration-oxide/30 underline-offset-4">
+            <Link href="/admin/forgot" className="font-medium text-royal underline decoration-gold/30 underline-offset-4">
               Forgot password
             </Link>
           </p>

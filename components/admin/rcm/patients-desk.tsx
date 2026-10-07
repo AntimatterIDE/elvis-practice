@@ -106,8 +106,8 @@ export function PatientsDesk() {
               const initials = `${patient.firstName.slice(0, 1)}${patient.lastName.slice(0, 1)}`.toUpperCase();
               return (
                 <li key={patient.id}>
-                  <Link href={`/admin/operations/patients/${patient.id}`} className="flex h-full items-center gap-4 rounded-2xl border border-line bg-card px-4 py-4 hover:border-oxide/40">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-mist text-xs font-semibold tracking-wide text-pine" aria-hidden>
+                  <Link href={`/admin/operations/patients/${patient.id}`} className="flex h-full items-center gap-4 rounded-2xl border border-line bg-card px-4 py-4 hover:border-gold/40">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-mist text-xs font-semibold tracking-wide text-navy" aria-hidden>
                       {initials}
                     </span>
                     <span className="min-w-0 flex-1">

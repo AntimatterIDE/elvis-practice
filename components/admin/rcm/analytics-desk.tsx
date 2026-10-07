@@ -30,7 +30,7 @@ export function AnalyticsDesk() {
             <li key={payer} className="grid items-center gap-3 text-sm sm:grid-cols-[minmax(9rem,14rem)_1fr_auto]">
               <span>{payer}</span>
               <span className="h-2 bg-mist">
-                <span className="block h-2 bg-oxide" style={{ width: `${Math.max(8, (amount / maxPayer) * 100)}%` }} />
+                <span className="block h-2 bg-gold" style={{ width: `${Math.max(8, (amount / maxPayer) * 100)}%` }} />
               </span>
               <span>{money(amount)}</span>
             </li>

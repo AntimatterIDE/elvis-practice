@@ -33,11 +33,11 @@ export function AdminMobileBar({ name, role }: { name: string; role: string }) {
         </button>
       </div>
       {open ? (
-        <div className="max-h-[70vh] overflow-y-auto border-t border-white/10 bg-pine px-3 py-4 text-paper">
+        <div className="max-h-[70vh] overflow-y-auto border-t border-white/10 bg-navy px-3 py-4 text-paper">
           <AdminNav onNavigate={() => setOpen(false)} />
           <div className="mt-6 border-t border-white/10 px-3 pt-4">
             <p className="text-sm font-semibold">{name}</p>
-            <p className="mt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-foam/70">{role}</p>
+            <p className="mt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-gold-bright/70">{role}</p>
             <form action={signOut} className="mt-3">
               <button className="text-sm text-paper/70 underline decoration-white/30 underline-offset-4">Sign out</button>
             </form>

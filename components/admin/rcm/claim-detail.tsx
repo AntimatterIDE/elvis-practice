@@ -60,7 +60,7 @@ export function ClaimDetail({ id }: { id: string }) {
         {" · "}
         {money(claimTotal(claim))} billed · source {claim.source}
       </p>
-      {claim.agentNote ? <p className="mt-4 border border-line bg-mint/50 p-4 text-sm">{claim.agentNote}</p> : null}
+      {claim.agentNote ? <p className="mt-4 border border-line bg-gold/10/50 p-4 text-sm">{claim.agentNote}</p> : null}
       {claim.denialReason ? (
         <p className="mt-4 border border-line bg-red-50 p-4 text-sm text-emergency">
           {claim.denialReason}

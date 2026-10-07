@@ -17,7 +17,7 @@ export function ContactForm() {
 
   return (
     <form action={formAction} className="grid gap-5" noValidate>
-      <p className="rounded-2xl border border-oxide/20 bg-mint px-4 py-3 text-sm leading-relaxed text-ink">
+      <p className="rounded-2xl border border-gold/20 bg-gold/10 px-4 py-3 text-sm leading-relaxed text-ink">
         Do not include medical information. That means no symptoms, history, images, medicines, or
         insurance numbers. This form is an administrative inquiry only.
       </p>

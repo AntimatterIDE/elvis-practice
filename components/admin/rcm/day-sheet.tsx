@@ -88,7 +88,7 @@ export function DaySheet({
     <section className="overflow-hidden rounded-3xl border border-line bg-card shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
       <div className="flex items-end justify-between gap-3 border-b border-line px-5 py-4">
         <div>
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Day sheet</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-royal">Day sheet</p>
           <h2 className="mt-1 font-display text-2xl tracking-tight">{title}</h2>
         </div>
         <p className="text-sm text-muted">{visits.length === 0 ? empty : `${visits.length} on the board`}</p>
@@ -132,8 +132,8 @@ export function DaySheet({
                         key={visit.id}
                         className={cn(
                           "@container absolute flex min-w-0 flex-col overflow-hidden rounded-xl border px-2 py-1.5 shadow-[0_10px_24px_-18px_rgb(7_30_54_/_0.7)]",
-                          visit.status === "in_progress" && "border-oxide bg-mint",
-                          visit.status === "arrived" && "border-oxide/40 bg-mint/80",
+                          visit.status === "in_progress" && "border-gold bg-gold/10",
+                          visit.status === "arrived" && "border-gold/40 bg-gold/10/80",
                           visit.status === "completed" && "border-line bg-mist text-muted",
                           visit.status === "no_show" && "border-dashed border-line bg-card text-muted",
                           visit.status === "cancelled" && "border-dashed border-line bg-card text-muted",
@@ -147,11 +147,11 @@ export function DaySheet({
                         }}
                       >
                         <div className="flex min-w-0 items-start gap-2">
-                          <span className="mt-0.5 hidden size-7 shrink-0 items-center justify-center rounded-full bg-pine text-[0.65rem] font-semibold text-paper @[8rem]:flex" aria-hidden>
+                          <span className="mt-0.5 hidden size-7 shrink-0 items-center justify-center rounded-full bg-navy text-[0.65rem] font-semibold text-paper @[8rem]:flex" aria-hidden>
                             {initials(name)}
                           </span>
                           <div className="min-w-0 flex-1">
-                            <Link href={`/admin/operations/patients/${visit.patientId}`} className="block truncate font-semibold hover:text-oxide">
+                            <Link href={`/admin/operations/patients/${visit.patientId}`} className="block truncate font-semibold hover:text-royal">
                               {name}
                             </Link>
                             <p className="truncate text-xs whitespace-nowrap text-muted">

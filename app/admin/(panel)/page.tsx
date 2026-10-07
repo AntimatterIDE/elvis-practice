@@ -23,15 +23,15 @@ export default async function AdminHomePage() {
       />
       <dl className="mt-8 grid gap-4 text-sm md:grid-cols-3">
         <div className={panelClass}>
-          <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Role</dt>
+          <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-royal">Role</dt>
           <dd className="mt-2 font-display text-2xl">{staff?.role}</dd>
         </div>
         <div className={panelClass}>
-          <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Source</dt>
+          <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-royal">Source</dt>
           <dd className="mt-2 font-display text-2xl">{env.CONTENT_SOURCE}</dd>
         </div>
         <div className={panelClass}>
-          <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Indexing</dt>
+          <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-royal">Indexing</dt>
           <dd className="mt-2 font-display text-2xl">{env.INDEXING_ENABLED === "true" ? "Requested" : "Off"}</dd>
         </div>
       </dl>

@@ -128,7 +128,7 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
       <div className="mt-6 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="grid min-w-0 gap-5">
           <section className="rounded-3xl border border-line bg-card p-5 sm:p-7">
-            <p className="kicker text-oxide-deep">What the patient sees</p>
+            <p className="kicker text-royal">What the patient sees</p>
             <input
               aria-label="Form title"
               className="mt-2 w-full bg-transparent font-display text-4xl tracking-tight text-ink outline-none"
@@ -203,11 +203,11 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
             <Button type="button" onClick={() => void onSave()} disabled={pending}>
               {pending ? "Saving…" : "Save form"}
             </Button>
-            {saved ? <p className="text-sm text-oxide">{saved}</p> : null}
+            {saved ? <p className="text-sm text-royal">{saved}</p> : null}
           </div>
         </div>
         <div className="grid content-start gap-4 xl:sticky xl:top-6">
-          <form onSubmit={onInvite} className="grid gap-4 rounded-2xl border border-oxide/30 bg-card p-5">
+          <form onSubmit={onInvite} className="grid gap-4 rounded-2xl border border-gold/30 bg-card p-5">
             <div>
               <h2 className="font-display text-2xl tracking-tight">Send a form</h2>
               <p className="mt-1 text-sm leading-relaxed text-muted">One private link. It expires in 14 days and can be submitted once.</p>
@@ -294,7 +294,7 @@ function QuestionCard({
   onRemove: () => void;
 }) {
   return (
-    <div className={cn("min-w-0 rounded-2xl border bg-paper p-3", open ? "border-oxide ring-4 ring-oxide/15" : "border-transparent", className)}>
+    <div className={cn("min-w-0 rounded-2xl border bg-paper p-3", open ? "border-gold ring-4 ring-gold/15" : "border-transparent", className)}>
       <button type="button" className="w-full text-left" aria-expanded={open} onClick={onOpen}>
         <FieldFace field={field} />
       </button>
@@ -399,7 +399,7 @@ function FieldFace({ field }: { field: IntakeField }) {
       <span className="block">
         <span className="text-sm font-medium text-ink">
           {field.label}
-          {field.required ? <span className="kicker ml-2 text-oxide-deep">Required</span> : null}
+          {field.required ? <span className="kicker ml-2 text-royal">Required</span> : null}
         </span>
         {field.help ? <span className="mt-1 block text-sm text-muted">{field.help}</span> : null}
         <span className={cn("mt-2 grid gap-2", choices.length > 2 ? "sm:grid-cols-2" : "grid-cols-2")}>
@@ -416,7 +416,7 @@ function FieldFace({ field }: { field: IntakeField }) {
     <span className="block">
       <span className="text-sm font-medium text-ink">
         {field.label}
-        {field.required ? <span className="kicker ml-2 text-oxide-deep">Required</span> : null}
+        {field.required ? <span className="kicker ml-2 text-royal">Required</span> : null}
       </span>
       <span
         className={cn(
@@ -459,7 +459,7 @@ function CredentialCard({ email, password, origin }: { email: string; password: 
   const loginUrl = `${origin}/portal/login`;
   const text = `Portal: ${loginUrl}\nEmail: ${email}\nPassword: ${password}`;
   return (
-    <div className="mt-3 grid gap-2 rounded-xl border border-oxide/30 bg-mint/50 p-3">
+    <div className="mt-3 grid gap-2 rounded-xl border border-gold/30 bg-gold/10/50 p-3">
       <p>Show this password once. It cannot be looked up later. You can reset it.</p>
       <p className="break-all">
         {loginUrl}

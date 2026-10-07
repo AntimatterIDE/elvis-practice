@@ -60,7 +60,7 @@ export function PracticeDesk() {
         </Field>
         <div className="flex items-center gap-3 sm:col-span-2">
           <Button type="submit">Save profile</Button>
-          {saved ? <span className="text-sm text-oxide">Saved in this browser.</span> : null}
+          {saved ? <span className="text-sm text-royal">Saved in this browser.</span> : null}
         </div>
       </form>
     </main>

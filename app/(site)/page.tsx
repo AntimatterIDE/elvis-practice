@@ -61,7 +61,7 @@ export default function HomePage() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/contact"
-                  className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-gold px-5 text-sm font-semibold text-pine hover:bg-gold-bright"
+                  className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-gold px-5 text-sm font-semibold text-navy hover:bg-gold-bright"
                 >
                   Contact the practice
                   <IconArrow className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
@@ -150,7 +150,7 @@ export default function HomePage() {
 
       <section className="px-4 pb-16 md:px-8 md:pb-20">
         <Reveal>
-          <div className="mx-auto flex max-w-6xl flex-col gap-6 rounded-[1.75rem] bg-pine px-6 py-12 text-paper md:flex-row md:items-end md:justify-between md:px-12 md:py-14">
+          <div className="mx-auto flex max-w-6xl flex-col gap-6 rounded-[1.75rem] bg-navy px-6 py-12 text-paper md:flex-row md:items-end md:justify-between md:px-12 md:py-14">
             <div>
               <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
                 Ready when you are.
@@ -162,7 +162,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/contact"
-              className="group inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-gold px-5 text-sm font-semibold text-pine hover:bg-gold-bright"
+              className="group inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-gold px-5 text-sm font-semibold text-navy hover:bg-gold-bright"
             >
               Contact the practice
               <IconArrow className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />

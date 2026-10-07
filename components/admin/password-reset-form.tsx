@@ -32,7 +32,7 @@ export function ForgotPasswordForm({
       <button
         type="submit"
         disabled={pending}
-        className="mt-1 inline-flex items-center justify-center rounded-full bg-oxide px-5 py-3.5 text-sm font-semibold text-paper hover:bg-oxide-deep disabled:opacity-50"
+        className="mt-1 inline-flex items-center justify-center rounded-full bg-gold px-5 py-3.5 text-sm font-semibold text-paper hover:bg-gold-deep disabled:opacity-50"
       >
         {pending ? "Sending…" : "Send reset link"}
       </button>
@@ -65,7 +65,7 @@ export function NewPasswordForm({
       <button
         type="submit"
         disabled={pending}
-        className="mt-1 inline-flex items-center justify-center rounded-full bg-oxide px-5 py-3.5 text-sm font-semibold text-paper hover:bg-oxide-deep disabled:opacity-50"
+        className="mt-1 inline-flex items-center justify-center rounded-full bg-gold px-5 py-3.5 text-sm font-semibold text-paper hover:bg-gold-deep disabled:opacity-50"
       >
         {pending ? "Saving…" : "Save password"}
       </button>

@@ -88,7 +88,7 @@ export function EligibilityDesk() {
                 <dd>{money(check.deductibleRemaining)}</dd>
               </div>
             </dl>
-            {check.priorAuthRequired ? <p className="mt-3 text-sm text-oxide">Prior authorization may be required.</p> : null}
+            {check.priorAuthRequired ? <p className="mt-3 text-sm text-royal">Prior authorization may be required.</p> : null}
             <Link href={`/admin/operations/patients/${check.patientId}`} className="mt-3 inline-block text-sm underline">
               Open patient
             </Link>
