@@ -46,15 +46,16 @@ export default function HomePage() {
     <>
       <section className="px-4 pt-4 md:px-8 md:pt-6">
         <div className="hero-panel relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] text-paper shadow-[0_30px_70px_-40px_rgb(11_42_91_/_0.85)]">
-          <div className="relative grid gap-2 px-6 py-12 md:px-12 md:py-16 lg:grid-cols-[minmax(0,36rem)_minmax(16rem,1fr)] lg:items-center lg:gap-16">
+          <div className="relative grid gap-6 px-6 py-12 md:px-12 md:py-16 lg:grid-cols-[minmax(0,36rem)_minmax(16rem,1fr)] lg:items-center lg:gap-16">
             <div>
-              <h1 className="font-display text-4xl font-bold leading-[1.08] tracking-tight md:text-6xl text-paper">
-                The Alignment Clinic
+              <h1 className="font-display text-4xl font-bold leading-[1.02] tracking-tight md:text-6xl text-paper">
+                The Alignment
+                <span className="block">
+                  Clinic <span className="text-gold-bright">orthopedic</span>
+                </span>
+                <span className="block text-gold-bright">spine surgery</span>
               </h1>
-              <p className="mt-1 font-display text-4xl font-bold leading-[1.08] tracking-tight md:text-6xl text-gold-bright">
-                orthopedic spine surgery
-              </p>
-              <p className="mt-5 max-w-xl text-lg leading-relaxed text-paper">
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper">
                 {practice.physicianName} is an orthopedic spine surgeon. The work of this practice is
                 to understand the problem, explain it clearly, and decide the next step with you.
               </p>
@@ -150,7 +151,7 @@ export default function HomePage() {
 
       <section className="px-4 pb-16 md:px-8 md:pb-20">
         <Reveal>
-          <div className="mx-auto flex max-w-6xl flex-col gap-6 rounded-[1.75rem] bg-navy px-6 py-12 text-paper md:flex-row md:items-end md:justify-between md:px-12 md:py-14">
+          <div className="mx-auto flex max-w-6xl flex-col gap-6 rounded-[1.75rem] bg-pine px-6 py-12 text-paper md:flex-row md:items-end md:justify-between md:px-12 md:py-14">
             <div>
               <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
                 Ready when you are.
