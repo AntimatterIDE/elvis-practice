@@ -33,7 +33,7 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
         ) : null}
         {invite.status === "open" ? (
           <>
-            <p className="kicker text-oxide-deep">Before your visit</p>
+            <p className="kicker text-royal">Before your visit</p>
             <h1 className="mt-3 max-w-2xl font-display text-4xl tracking-tight sm:text-5xl">{invite.form.title}</h1>
             {invite.form.recipientName ? (
               <p className="mt-4 text-xl text-ink">Hello, {invite.form.recipientName}.</p>

@@ -53,7 +53,7 @@ export function ScheduleDesk() {
             key={day}
             type="button"
             onClick={() => setPickedDay(day)}
-            className={`shrink-0 rounded-2xl border px-4 py-2.5 text-left text-sm ${day === focus ? "border-oxide bg-mint" : "border-line bg-card"}`}
+            className={`shrink-0 rounded-2xl border px-4 py-2.5 text-left text-sm ${day === focus ? "border-gold bg-gold/10" : "border-line bg-card"}`}
           >
             <span className="block font-semibold">{formatClinicDay(day).split(",")[0]}</span>
             <span className="text-muted">{day.slice(5)}</span>

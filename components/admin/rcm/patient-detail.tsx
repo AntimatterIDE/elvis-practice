@@ -104,7 +104,7 @@ export function PatientDetail({ id }: { id: string }) {
             ? "border-amber-200 bg-amber-50"
             : severeAllergy
               ? "border-emergency/30 bg-red-50"
-              : "border-line bg-mint/50"
+              : "border-line bg-gold/10/50"
         }`}
       >
         <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-muted">Allergies</p>
@@ -441,7 +441,7 @@ function Demographics({
         >
           Remove
         </Button>
-        {saved ? <span className="text-sm text-oxide">Saved in this browser.</span> : null}
+        {saved ? <span className="text-sm text-royal">Saved in this browser.</span> : null}
       </div>
     </form>
   );

@@ -26,7 +26,7 @@ export default async function AdminSettingsPage() {
         lede="Phone, address, hours, and booking stay empty until you enter confirmed facts. Only an owner can save this form. Do not put medical records here."
       />
       {staff?.role !== "owner" ? (
-        <p className="mt-6 text-sm text-oxide">You can read settings. You cannot change them.</p>
+        <p className="mt-6 text-sm text-royal">You can read settings. You cannot change them.</p>
       ) : (
         <section className={`${panelClass} mt-8 max-w-xl`}>
           <AdminStateForm action={saveSettings}>

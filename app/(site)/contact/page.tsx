@@ -29,7 +29,7 @@ export default function ContactPage() {
       <dl className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {facts.map((fact) => (
           <div key={fact.label} className="rounded-2xl border border-line bg-card p-5 card-shadow">
-            <dt className="kicker text-oxide-deep">{fact.label}</dt>
+            <dt className="kicker text-royal">{fact.label}</dt>
             <dd className="mt-2 text-lg font-medium">{fact.value}</dd>
           </div>
         ))}

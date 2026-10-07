@@ -48,9 +48,9 @@ export function BrandIcon({ src, className }: { src: string; className?: string 
   );
 }
 
-export function HeroArtwork() {
+export function HeroArtwork({ className }: { className?: string }) {
   return (
-    <div aria-hidden="true" className="pointer-events-none relative h-48 sm:h-56 lg:h-[30rem]">
+    <div aria-hidden="true" className={cn("pointer-events-none relative h-48 sm:h-56 lg:h-[30rem]", className)}>
       <img
         src="/brand/alignment-hero-graphic.svg"
         alt=""

@@ -1,0 +1,36 @@
+diff --git a/app/globals.css b/app/globals.css
+index cd30ab7..c46162f 100644
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -3,7 +3,8 @@
+ @theme inline {
+   /* Medical practice palette — blue base, gold accent */
+   --color-paper: #f8f6f0; /* warm off-white background */
+-  --color-ink: #0b2a5b; /* deep navy — headlines, header/footer, hero */
++  --color-ink: #0b2a5b; /* deep navy — headlines */
++  --color-navy: #0b2a5b; /* deep navy — headlines, header/footer, hero */
+   --color-muted: #1f2937; /* charcoal — body text */
+   --color-line: #d3e0ea;
+   --color-royal: #1e4fd8; /* royal blue — links, subheadings, secondary buttons */
+@@ -11,7 +12,6 @@
+   --color-gold: #d4a017; /* rich gold — buttons, icons, text on navy */
+   --color-gold-bright: #f2c14e; /* light gold — headline highlights on navy */
+   --color-gold-deep: #8b6914; /* antique gold — text-safe gold on white */
+-  --shadow-card: 0 16px 40px -32px rgb(7 30 54 / 0.5);
+   --color-pine: #0b2a5b; /* deep navy — dark surfaces */
+   --color-pine-deep: #071e42;
+   --color-emergency: #b42318;
+@@ -19,6 +19,13 @@
+   --color-mist: #e7eef7;
+   --color-navy-tint: #eaf0fa;
+   --color-cream: #f8f6f0;
++  /* Legacy aliases — keep existing classes resolving to the new palette */
++  --color-oxide: #1e4fd8;
++  --color-oxide-deep: #1e4fd8;
++  --color-oxide-ink: #173cb0;
++  --color-foam: #f2c14e;
++  --color-mint: #eaf0fa;
++  --shadow-card: 0 16px 40px -32px rgb(11 42 91 / 0.5);
+   --font-display: var(--font-display-family), Georgia, "Times New Roman", serif;
+   --font-sans: var(--font-sans-family), "Plus Jakarta Sans", sans-serif;
+ }

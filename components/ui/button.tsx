@@ -8,10 +8,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "min-h-11 bg-oxide-deep px-5 py-3 text-paper card-shadow hover:bg-oxide-ink motion-safe:hover:-translate-y-0.5",
+          "min-h-11 bg-gold-deep px-5 py-3 text-paper card-shadow hover:bg-gold-deep motion-safe:hover:-translate-y-0.5",
         secondary:
-          "min-h-11 border border-line bg-card px-5 py-3 text-ink hover:border-oxide-deep/40 motion-safe:hover:-translate-y-0.5",
-        ghost: "text-ink underline decoration-oxide-deep/40 underline-offset-4 hover:text-oxide-deep",
+          "min-h-11 border border-line bg-card px-5 py-3 text-ink hover:border-gold/40 motion-safe:hover:-translate-y-0.5",
+        ghost: "text-ink underline decoration-gold/40 underline-offset-4 hover:text-royal",
       },
     },
     defaultVariants: {

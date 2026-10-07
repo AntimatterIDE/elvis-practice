@@ -43,7 +43,7 @@ export function EnrollForm() {
           type="button"
           onClick={start}
           disabled={pending}
-          className="mt-6 inline-flex items-center justify-center rounded-full bg-oxide px-5 py-3.5 text-sm font-semibold text-paper hover:bg-oxide-deep disabled:opacity-50"
+          className="mt-6 inline-flex items-center justify-center rounded-full bg-gold px-5 py-3.5 text-sm font-semibold text-paper hover:bg-gold-deep disabled:opacity-50"
         >
           {pending ? "Preparing…" : "Set up authenticator"}
         </button>

@@ -43,7 +43,7 @@ export default function VisitPage() {
       <div className="mt-10 grid gap-4">
         {sections.map((section, index) => (
           <section key={section.heading} className="rounded-2xl border border-line bg-card p-6 card-shadow md:p-8">
-            <p className="kicker text-oxide-deep">0{index + 1}</p>
+            <p className="kicker text-royal">0{index + 1}</p>
             <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight">{section.heading}</h2>
             <p className="mt-3 max-w-2xl text-lg leading-relaxed text-muted">{section.body}</p>
           </section>

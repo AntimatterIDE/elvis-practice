@@ -24,7 +24,7 @@ export default async function AdminConditionsPage() {
       <ul className="mt-8 grid gap-3">
         {rows.map((row) => (
           <li key={row.slug}>
-            <a className={`${panelClass} flex items-center justify-between gap-4 transition hover:border-oxide/40`} href={`/admin/conditions/${row.slug}`}>
+            <a className={`${panelClass} flex items-center justify-between gap-4 transition hover:border-gold/40`} href={`/admin/conditions/${row.slug}`}>
               <span className="font-medium">{row.title}</span>
               <span className="text-sm text-muted">
                 {row.published_at ? "Published" : row.review_status} · {row.offering_status}
@@ -34,9 +34,9 @@ export default async function AdminConditionsPage() {
         ))}
         {missing.map((document) => (
           <li key={document.slug}>
-            <a className={`${panelClass} flex items-center justify-between gap-4 transition hover:border-oxide/40`} href={`/admin/conditions/${document.slug}`}>
+            <a className={`${panelClass} flex items-center justify-between gap-4 transition hover:border-gold/40`} href={`/admin/conditions/${document.slug}`}>
               <span className="font-medium">{document.title}</span>
-              <span className="text-sm text-oxide">File draft</span>
+              <span className="text-sm text-royal">File draft</span>
             </a>
           </li>
         ))}

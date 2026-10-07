@@ -15,7 +15,7 @@ export default async function ForgotPasswordPage({
     <ClinicFrame kicker="Staff">
       <div className="mx-auto max-w-lg px-5 py-12 sm:py-16">
         <div className="rounded-3xl border border-line bg-card p-6 shadow-[0_18px_40px_-32px_rgb(7_30_54_/_0.55)] sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oxide">Practice desk</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-royal">Practice desk</p>
           <h1 className="mt-3 font-display text-4xl tracking-tight">Reset your password</h1>
           <p className="mt-3 text-base leading-relaxed text-muted">
             Enter the email on the staff account. The demo password no longer works.
@@ -27,7 +27,7 @@ export default async function ForgotPasswordPage({
           ) : null}
           <ForgotPasswordForm action={requestStaffPasswordReset} />
           <p className="mt-4 text-sm">
-            <Link href="/admin/login" className="font-medium text-oxide underline decoration-oxide/30 underline-offset-4">
+            <Link href="/admin/login" className="font-medium text-royal underline decoration-gold/30 underline-offset-4">
               Back to sign-in
             </Link>
           </p>

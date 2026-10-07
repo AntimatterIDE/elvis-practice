@@ -15,13 +15,13 @@ export function ClinicalArticle({
   return (
     <article className="mx-auto max-w-6xl px-5 py-16 md:px-8">
       {preview ? (
-        <p className="mb-8 rounded-2xl border border-oxide/30 bg-mint px-4 py-3 text-sm text-oxide-deep" role="note">
+        <p className="mb-8 rounded-2xl border border-gold/30 bg-gold/10 px-4 py-3 text-sm text-royal" role="note">
           Draft preview. This page is not published, is not indexed, and is not a statement that the
           practice offers this care. Clinical review is still pending.
         </p>
       ) : null}
       <header className="border-b border-line pb-10">
-        <p className="kicker text-oxide-deep">{document.kind === "condition" ? "Condition" : "Treatment"}</p>
+        <p className="kicker text-royal">{document.kind === "condition" ? "Condition" : "Treatment"}</p>
         <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.1] tracking-tight md:text-5xl">
           {document.title}
         </h1>
@@ -55,7 +55,7 @@ export function ClinicalArticle({
       ) : null}
       {related.length > 0 ? (
         <section className="mt-12 border-t border-line pt-8">
-          <h2 className="kicker text-oxide-deep">Related</h2>
+          <h2 className="kicker text-royal">Related</h2>
           <ul className="mt-4 grid gap-2">
             {related.map((item) => (
               <li key={item.href}>
@@ -71,7 +71,7 @@ export function ClinicalArticle({
         <p className="max-w-xl text-muted">
           This page is general information. It does not say whether the care is right for you.
         </p>
-        <Link href="/contact" className="inline-flex min-h-11 items-center justify-center rounded-full bg-oxide-deep px-5 text-center text-sm font-semibold text-paper hover:bg-oxide-ink">
+        <Link href="/contact" className="inline-flex min-h-11 items-center justify-center rounded-full bg-gold-deep px-5 text-center text-sm font-semibold text-paper hover:bg-gold-deep">
           Contact the practice
         </Link>
       </section>

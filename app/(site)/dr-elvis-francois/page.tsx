@@ -51,7 +51,7 @@ export default function PhysicianPage() {
           </p>
         </div>
         <aside className="rounded-2xl border border-line bg-mist p-5">
-          <p className="kicker text-oxide-deep">Training</p>
+          <p className="kicker text-royal">Training</p>
           <dl className="mt-4 space-y-4">
             {physicianTraining.map((item) => (
               <div key={item.label}>
@@ -60,13 +60,13 @@ export default function PhysicianPage() {
               </div>
             ))}
           </dl>
-          <p className="kicker mt-6 text-oxide-deep">Clinical focus</p>
+          <p className="kicker mt-6 text-royal">Clinical focus</p>
           <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
             {clinicalFocus.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
-          <p className="kicker mt-6 text-oxide-deep">Registry</p>
+          <p className="kicker mt-6 text-royal">Registry</p>
           <p className="mt-4 text-sm leading-relaxed text-muted">
             National Provider Identifier {practice.npi}, orthopedic surgery. The federal registry
             entry was last updated on August 31, 2021, and it records Georgia license number 89867.

@@ -17,7 +17,7 @@ export default async function ResetPasswordPage() {
     <ClinicFrame kicker="Staff">
       <div className="mx-auto max-w-lg px-5 py-12 sm:py-16">
         <div className="rounded-3xl border border-line bg-card p-6 shadow-[0_18px_40px_-32px_rgb(7_30_54_/_0.55)] sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oxide">Practice desk</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-royal">Practice desk</p>
           <h1 className="mt-3 font-display text-4xl tracking-tight">Choose a new password</h1>
           {signedIn ? (
             <>
@@ -30,7 +30,7 @@ export default async function ResetPasswordPage() {
                 Open the reset link from your email, or request a new one. This page only works from that link.
               </p>
               <p className="mt-4 text-sm">
-                <Link href="/admin/forgot" className="font-medium text-oxide underline decoration-oxide/30 underline-offset-4">
+                <Link href="/admin/forgot" className="font-medium text-royal underline decoration-gold/30 underline-offset-4">
                   Request a reset link
                 </Link>
               </p>

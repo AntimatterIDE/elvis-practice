@@ -52,7 +52,7 @@ function Group({
 }) {
   return (
     <div className="mt-6 first:mt-0">
-      <p className="px-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-foam/55">{label}</p>
+      <p className="px-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-gold-bright/55">{label}</p>
       <div className="mt-1.5 grid gap-0.5">
         {links.map(([href, title]) => {
           const active = isActive(pathname, href);
@@ -62,7 +62,7 @@ function Group({
               href={href}
               className={cn(
                 "rounded-xl px-3 py-2 text-sm text-paper/75 transition hover:bg-white/10 hover:text-paper",
-                active && "bg-white text-pine font-semibold shadow-sm",
+                active && "bg-white text-navy font-semibold shadow-sm",
               )}
               aria-current={active ? "page" : undefined}
             >

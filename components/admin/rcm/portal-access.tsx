@@ -71,7 +71,7 @@ export function PortalAccess({ patient }: { patient: Patient }) {
       </div>
       {error ? <p className="mt-3 text-sm text-emergency">{error}</p> : null}
       {password ? (
-        <div className="mt-4 grid gap-2 border border-oxide/30 bg-mint/40 p-3 text-sm">
+        <div className="mt-4 grid gap-2 border border-gold/30 bg-gold/10/40 p-3 text-sm">
           <p>Give the patient this password now. It is not stored for you to view again.</p>
           <p className="break-all">
             {loginUrl}

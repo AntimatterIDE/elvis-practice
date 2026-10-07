@@ -62,7 +62,7 @@ export function ClinicalEditor({ document, role }: { document: ClinicalDocument;
         </button>
         {role === "editor" ? null : (
           <>
-            <button name="intent" value="publish" className="rounded-full bg-oxide px-4 py-2.5 text-sm font-semibold text-paper">
+            <button name="intent" value="publish" className="rounded-full bg-gold px-4 py-2.5 text-sm font-semibold text-paper">
               Publish
             </button>
             <button name="intent" value="unpublish" className="rounded-full border border-line bg-card px-4 py-2.5 text-sm font-semibold">

@@ -74,7 +74,7 @@ export function ClaimsDesk() {
         {rows.length === 0 ? <li className="rounded-2xl border border-dashed border-line px-4 py-4 text-sm text-muted md:col-span-2 xl:col-span-3">No claims match.</li> : null}
         {rows.map((claim) => (
           <li key={claim.id}>
-            <Link href={`/admin/operations/claims/${claim.id}`} className="flex h-full flex-col justify-between gap-4 rounded-2xl border border-line bg-card p-4 hover:border-oxide/40">
+            <Link href={`/admin/operations/claims/${claim.id}`} className="flex h-full flex-col justify-between gap-4 rounded-2xl border border-line bg-card p-4 hover:border-gold/40">
               <span>
                 <span className="block">{names.get(claim.patientId) ?? "Unknown patient"}</span>
                 <span className="text-sm text-muted">
