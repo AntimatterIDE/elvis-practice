@@ -45,7 +45,7 @@ export default function HomePage() {
   return (
     <>
       <section className="px-4 pt-4 md:px-8 md:pt-6">
-        <div className="hero-panel relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] text-paper shadow-[0_30px_70px_-40px_rgb(7_30_54_/_0.85)]">
+        <div className="hero-panel relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] text-paper shadow-[0_30px_70px_-40px_rgb(11_42_91_/_0.85)]">
           <div className="relative grid gap-2 px-6 py-12 md:px-12 md:py-16 lg:grid-cols-[minmax(0,36rem)_minmax(16rem,1fr)] lg:items-center lg:gap-16">
             <div>
               <h1 className="font-display text-4xl font-bold leading-[1.08] tracking-tight md:text-6xl text-paper">
@@ -61,7 +61,7 @@ export default function HomePage() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/contact"
-                  className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-foam px-5 text-sm font-semibold text-pine hover:bg-white"
+                  className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-gold px-5 text-sm font-semibold text-pine hover:bg-gold-bright"
                 >
                   Contact the practice
                   <IconArrow className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
@@ -75,46 +75,27 @@ export default function HomePage() {
               </div>
               <p className="mt-6 max-w-md text-sm leading-relaxed text-paper">
                 New patients are welcome. Request a call from the contact page. Do not include
-                symptoms or insurance numbers.
+                symptoms or personal health information in this request; the care team will ask
+                what they need on the call.
               </p>
             </div>
-            <HeroArtwork />
+            <HeroArtwork className="pointer-events-none select-none" />
           </div>
         </div>
       </section>
-      <Promises />
 
-      <section className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14" aria-labelledby="assurance-heading">
-        <h2 id="assurance-heading" className="sr-only">
-          How the practice works
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {assurances.map((item, index) => (
-            <Reveal key={item.label} delay={index * 0.06}>
-              <article className="clinic-card h-full rounded-2xl border border-line bg-card p-5 card-shadow">
-                <p className="kicker text-oxide-deep">0{index + 1}</p>
-                <h3 className="mt-3 font-display text-xl font-medium leading-tight">{item.label}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20" aria-labelledby="pathways-heading">
+      <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20" id="common-conditions">
         <Reveal>
-          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="kicker text-oxide-deep">Care</p>
-              <h2 id="pathways-heading" className="mt-2 font-display text-3xl font-semibold tracking-tight md:text-4xl">
-                Where people start
-              </h2>
-            </div>
-            <p className="max-w-md leading-relaxed text-muted">
-              Neck pain, low back pain, and pain that remains after surgery are the problems people
-              most often bring to a first visit.
+          <p className="kicker text-royal">Common conditions</p>
+          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight md:text-4xl">
+            The problems people most often bring to a first visit
+          </h2>
+          {practice.specialty && (
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+              {practice.name} is an {practice.specialty} practice. Care starts with your problem,
+              not with a procedure — and many problems resolve without an operation.
             </p>
-          </div>
+          )}
         </Reveal>
         <CareIndex />
       </section>
@@ -125,7 +106,7 @@ export default function HomePage() {
             <PhotoPlaceholder className="min-h-80" />
           </Reveal>
           <Reveal delay={0.08}>
-            <p className="kicker text-oxide-deep">Physician</p>
+            <p className="kicker text-royal">Physician</p>
             <h2
               id="physician-heading"
               className="mt-3 font-display text-4xl font-semibold tracking-tight text-ink md:text-5xl"
@@ -139,7 +120,7 @@ export default function HomePage() {
             </p>
             <Link
               href={practice.physicianPath}
-              className="group mt-6 inline-flex min-h-11 items-center gap-2 font-semibold text-oxide-deep"
+              className="group mt-6 inline-flex min-h-11 items-center gap-2 font-semibold text-royal"
             >
               Read the physician profile
               <IconArrow className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
@@ -159,7 +140,7 @@ export default function HomePage() {
               className="clinic-card rise-in h-full rounded-2xl border border-line bg-card p-5 card-shadow"
               style={{ animationDelay: `${index * 0.07}s` }}
             >
-              <span className="kicker text-oxide-deep">0{index + 1}</span>
+              <span className="kicker text-royal">0{index + 1}</span>
               <h3 className="mt-4 font-display text-xl font-medium leading-tight">{step.label}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
             </li>
@@ -181,7 +162,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/contact"
-              className="group inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-foam px-5 text-sm font-semibold text-pine hover:bg-white"
+              className="group inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-gold px-5 text-sm font-semibold text-pine hover:bg-gold-bright"
             >
               Contact the practice
               <IconArrow className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />

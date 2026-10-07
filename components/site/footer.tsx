@@ -11,10 +11,13 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-4">
             <BrandMark tone="reverse" className="size-16" />
-            <p className="font-display text-xl font-medium leading-tight">{practice.name}</p>
+            <p className="flex flex-col gap-0.5">
+              <span className="font-display text-xl font-bold leading-[1.15] text-paper">{practice.name}</span>
+              <span className="font-display text-xl font-bold leading-[1.15] text-foam">{practice.specialty}</span>
+            </p>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-paper/90">
-            Orthopedic spine surgery with {practice.physicianName}. Fellowship-trained at Harvard
+            {practice.specialty} with {practice.physicianName}. Fellowship-trained at Harvard
             after an orthopedic residency at the Mayo Clinic.
           </p>
         </div>
