@@ -1,20 +1,24 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-paper: #f3f7fb;
-  --color-ink: #0b1f33;
-  --color-muted: #4a6074;
+  /* Medical practice palette — blue base, gold accent */
+  --color-paper: #f8f6f0; /* warm off-white background */
+  --color-ink: #0b2a5b; /* deep navy — headlines, header/footer, hero */
+  --color-muted: #1f2937; /* charcoal — body text */
   --color-line: #d3e0ea;
-  --color-oxide: #0e8f84;
-  --color-oxide-deep: #0a6e66;
-  --color-oxide-ink: #064e48;
+  --color-royal: #1e4fd8; /* royal blue — links, subheadings, secondary buttons */
+  --color-royal-deep: #173cb0;
+  --color-gold: #d4a017; /* rich gold — buttons, icons, text on navy */
+  --color-gold-bright: #f2c14e; /* light gold — headline highlights on navy */
+  --color-gold-deep: #8b6914; /* antique gold — text-safe gold on white */
   --shadow-card: 0 16px 40px -32px rgb(7 30 54 / 0.5);
-  --color-pine: #071e36;
+  --color-pine: #0b2a5b; /* deep navy — dark surfaces */
+  --color-pine-deep: #071e42;
   --color-emergency: #b42318;
   --color-card: #ffffff;
-  --color-mist: #e7f2f8;
-  --color-mint: #d7f5f0;
-  --color-foam: #9fe3d8;
+  --color-mist: #e7eef7;
+  --color-navy-tint: #eaf0fa;
+  --color-cream: #f8f6f0;
   --font-display: var(--font-display-family), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-sans-family), "Plus Jakarta Sans", sans-serif;
 }
@@ -22,15 +26,15 @@
 :root {
   color-scheme: light;
   background: var(--color-paper);
-  color: var(--color-ink);
-  --shadow-card: 0 16px 40px -32px rgb(7 30 54 / 0.5);
+  color: var(--color-muted);
+  --shadow-card: 0 16px 40px -32px rgb(11 42 91 / 0.5);
 }
 
 body {
   background:
-    radial-gradient(900px 420px at 100% -10%, rgb(14 143 132 / 0.09), transparent 55%),
+    radial-gradient(900px 420px at 100% -10%, rgb(30 79 216 / 0.08), transparent 55%),
     var(--color-paper);
-  color: var(--color-ink);
+  color: var(--color-muted);
   font-family: var(--font-sans);
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
   font-variant-numeric: lining-nums;
@@ -39,6 +43,13 @@ body {
 
 p {
   text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--color-ink);
 }
 
 .font-display {
@@ -55,12 +66,12 @@ p {
 }
 
 ::selection {
-  background: #0e8f84;
-  color: #f3f7fb;
+  background: #d4a017;
+  color: #0b2a5b;
 }
 
 :focus-visible {
-  outline: 2px solid #0e8f84;
+  outline: 2px solid #1e4fd8;
   outline-offset: 3px;
 }
 
@@ -71,8 +82,8 @@ p {
   z-index: 50;
   transform: translateY(-140%);
   border-radius: 999px;
-  background: #071e36;
-  color: #f3f7fb;
+  background: #0b2a5b;
+  color: #ffffff;
   padding: 0.6rem 0.9rem;
 }
 
@@ -92,15 +103,15 @@ p {
 }
 
 .prose-clinical a {
-  color: #0a6e66;
+  color: #1e4fd8;
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
 
 .hero-panel {
   background:
-    radial-gradient(520px 280px at 88% 18%, rgb(159 227 216 / 0.28), transparent 60%),
-    linear-gradient(128deg, #071e36 0%, #0c3d5c 52%, #0e7c78 100%);
+    radial-gradient(520px 280px at 88% 18%, rgb(242 193 78 / 0.18), transparent 60%),
+    linear-gradient(128deg, #0b2a5b 0%, #122f66 52%, #0e3a80 100%);
   background-size: 140% 140%;
 }
 
@@ -113,8 +124,8 @@ p {
 
 .clinic-card:hover {
   transform: translateY(-4px);
-  border-color: rgb(14 143 132 / 0.45);
-  box-shadow: 0 18px 40px -28px rgb(7 30 54 / 0.55);
+  border-color: rgb(30 79 216 / 0.45);
+  box-shadow: 0 18px 40px -28px rgb(11 42 91 / 0.55);
 }
 
 .nav-link {
@@ -130,7 +141,7 @@ p {
   width: 100%;
   transform: scaleX(0);
   transform-origin: left;
-  background: #0e8f84;
+  background: #d4a017;
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -189,7 +200,7 @@ p {
 @keyframes site-bar-edge {
   to {
     border-bottom-color: var(--color-line);
-    box-shadow: 0 10px 30px -24px rgb(7 30 54 / 0.7);
+    box-shadow: 0 10px 30px -24px rgb(11 42 91 / 0.7);
   }
 }
 
@@ -234,10 +245,5 @@ p {
   .rise-in,
   .site-bar {
     animation: none;
-  }
-
-  .site-bar {
-    border-bottom-color: var(--color-line);
-    box-shadow: none;
   }
 }
