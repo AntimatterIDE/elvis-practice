@@ -51,8 +51,8 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
 
 function Closed({ title, body }: { title: string; body: string }) {
   return (
-    <div className="max-w-xl rounded-3xl border border-line bg-card p-6 shadow-[0_18px_40px_-32px_rgb(7_30_54_/_0.55)] sm:p-8">
-      <p className="kicker text-oxide-deep">{practice.name}</p>
+    <div className="max-w-xl rounded-3xl border border-line bg-card p-6 shadow-[0_18px_40px_-32px_rgb(11_42_91_/_0.55)] sm:p-8">
+      <p className="kicker text-gold-deep">{practice.name} · {practice.specialty}</p>
       <h1 className="mt-3 font-display text-4xl tracking-tight">{title}</h1>
       <p className="mt-3 text-base leading-relaxed text-muted">{body}</p>
     </div>

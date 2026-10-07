@@ -18,8 +18,8 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
         <div className="flex items-center gap-3 px-4 py-5">
           <BrandMark tone="reverse" className="size-11" />
           <div className="min-w-0">
-            <p className="truncate font-display text-lg leading-tight">{practice.name}</p>
-            <p className="text-xs text-foam/70">Practice desk</p>
+            <p className="truncate font-display text-lg font-bold leading-tight text-paper">{practice.name}</p>
+            <p className="truncate font-display text-lg font-bold leading-tight text-foam">{practice.specialty}</p>
           </div>
         </div>
         <div className="px-3 pb-4 md:flex-1">
