@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { signOut } from "@/app/admin/actions";
-import { AdminNav, currentDeskLabel } from "@/components/admin/admin-nav";
+import { AdminNav } from "@/components/admin/admin-nav";
 import { BrandMark } from "@/components/site/brand";
 import { practice } from "@/lib/site";
 
 export function AdminMobileBar({ name, role }: { name: string; role: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const label = currentDeskLabel(pathname);
 
   useEffect(() => {
     setOpen(false);
@@ -21,8 +20,8 @@ export function AdminMobileBar({ name, role }: { name: string; role: string }) {
       <div className="flex items-center gap-3 px-4 py-3">
         <BrandMark className="size-9" />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-xs text-muted">{practice.name}</p>
-          <p className="truncate font-display text-lg leading-tight">{label}</p>
+          <p className="truncate font-display text-base font-bold leading-tight text-navy">{practice.name}</p>
+          <p className="truncate font-display text-base font-bold leading-tight text-gold">{practice.specialty}</p>
         </div>
         <button
           type="button"
