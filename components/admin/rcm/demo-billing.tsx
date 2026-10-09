@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { clearinghouseStatus, proveTestKey, pullRemits, submitProfessionalClaim } from "@/app/admin/stedi/actions";
+import { pullRemits, searchPayers } from "@/app/admin/stedi/actions";
 import { Button } from "@/components/ui/button";
-import { claimSubmissionInput } from "@/lib/rcm/submit-input";
 import type { Claim, ClaimEvent } from "@/lib/rcm/types";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -13,59 +12,20 @@ function eventFrom(result: { event?: { kind: ClaimEvent["kind"]; summary: string
 }
 
 export function DemoBilling() {
-  const { claims, patients, practice, updateClaim, loadDemoDay } = useRcm();
+  const { claims, updateClaim } = useRcm();
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
 
-  async function checkKey() {
+  async function checkConnection() {
     setPending(true);
-    const result = await proveTestKey();
-    setMessage(result.message);
-    setPending(false);
-  }
-
-  async function submitDemos() {
-    setPending(true);
-    setMessage("");
-    const status = await clearinghouseStatus();
-    if (!status.signedIn) {
-      setMessage("Sign in as staff before submitting demo claims.");
-      setPending(false);
-      return;
-    }
-    if (!status.configured) {
-      setMessage("Add a Stedi Test API key as STEDI_API_KEY. The demo cases are loaded, and nothing was sent.");
-      setPending(false);
-      return;
-    }
-    const ready = claims.filter((claim) => claim.demoScenario && claim.status === "ready");
-    if (!ready.length) {
-      setMessage("Load a demo day first, or these demo claims were already sent.");
-      setPending(false);
-      return;
-    }
-    const notes: string[] = [];
-    for (const claim of ready) {
-      const patient = patients.find((item) => item.id === claim.patientId);
-      if (!patient) continue;
-      const result = await submitProfessionalClaim(claimSubmissionInput(claim, patient, practice));
-      const event = eventFrom(result);
-      updateClaim(claim.id, {
-        status: result.status ?? claim.status,
-        stediClaimId: result.stediClaimId ?? claim.stediClaimId,
-        stediSubmissionId: result.stediSubmissionId ?? claim.stediSubmissionId,
-        events: event ? [...claim.events, event] : claim.events,
-        denialReason: result.status === "rejected" ? result.message : claim.denialReason,
-      });
-      notes.push(`${claim.controlNumber}: ${result.message}`);
-    }
-    setMessage(notes.join(" "));
+    const result = await searchPayers("Aetna");
+    setMessage(result.ok ? "The production key reached Stedi. No claim was sent." : result.message);
     setPending(false);
   }
 
   async function trackRemits() {
     setPending(true);
-    const targets = claims.filter((claim) => claim.demoScenario || claim.stediClaimId);
+    const targets = claims.filter((claim) => claim.stediClaimId);
     const result = await pullRemits(targets.map((claim) => claim.controlNumber));
     if (!result.ok) {
       setMessage(result.message);
@@ -89,7 +49,7 @@ export function DemoBilling() {
         patientResponsibility: remit.patientResponsibility,
         adjustmentAmount: remit.adjustment,
         carc: remit.reasonCode || claim.carc,
-        denialReason: remit.outcome === "denied" ? "Test payer denied the claim." : claim.denialReason,
+        denialReason: remit.outcome === "denied" ? "The payer denied the claim." : claim.denialReason,
         events: [...claim.events, event],
       });
     }
@@ -100,14 +60,8 @@ export function DemoBilling() {
   return (
     <div className="grid justify-items-end gap-2">
       <div className="flex flex-wrap justify-end gap-2">
-        <Button type="button" variant="secondary" onClick={checkKey} disabled={pending}>
-          Check test key
-        </Button>
-        <Button type="button" variant="secondary" onClick={() => { loadDemoDay(); setMessage("Demo day loaded. Nothing was sent."); }} disabled={pending}>
-          Load demo day
-        </Button>
-        <Button type="button" onClick={submitDemos} disabled={pending}>
-          Submit demo claims
+        <Button type="button" variant="secondary" onClick={checkConnection} disabled={pending}>
+          Check connection
         </Button>
         <Button type="button" variant="secondary" onClick={trackRemits} disabled={pending}>
           Check remits

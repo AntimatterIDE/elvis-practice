@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { checkCoordination, checkEligibility, discoverCoverage, submitMockEligibilityBatch } from "@/app/admin/stedi/actions";
+import { checkCoordination, checkEligibility, discoverCoverage } from "@/app/admin/stedi/actions";
 import { Button } from "@/components/ui/button";
 import { formatWhen, money, patientName } from "@/lib/rcm/format";
 import { Field, LoadingDesk, PageHeader, fieldClass } from "@/components/admin/rcm/ui";
@@ -128,7 +128,7 @@ export function EligibilityDesk() {
               ))}
             </select>
           </Field>
-          <p className="text-sm text-muted">Jane Doe with member AETNA12345 is Stedi’s published Aetna test persona. Other names are rejected by a test key.</p>
+          <p className="text-sm text-muted">This check uses the practice NPI and the member id on the chart. A missing benefit stays unknown.</p>
           <div className="flex flex-wrap gap-2">
             <Button type="submit" disabled={pending || !patient}>Check eligibility</Button>
             <Button type="button" variant="secondary" disabled={pending || !patient} onClick={() => void runDiscovery()}>
@@ -136,20 +136,6 @@ export function EligibilityDesk() {
             </Button>
             <Button type="button" variant="secondary" disabled={pending || !patient} onClick={() => void runCoordination()}>
               Check coordination
-            </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              disabled={pending}
-              onClick={() => {
-                setPending(true);
-                void submitMockEligibilityBatch().then((result) => {
-                  setMessage(result.message);
-                  setPending(false);
-                });
-              }}
-            >
-              Batch the test persona
             </Button>
           </div>
           {message ? <p className="text-sm text-muted">{message}</p> : null}

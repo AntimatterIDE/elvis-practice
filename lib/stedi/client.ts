@@ -30,7 +30,7 @@ export function publicStediMessage(body: unknown, status: number) {
 export async function stediFetch(url: string, init: RequestInit = {}) {
   const key = readServerEnv().STEDI_API_KEY;
   if (!key) {
-    return { ok: false, status: 0, body: { message: "Add a Stedi Test API key as STEDI_API_KEY. Nothing was sent." } };
+    return { ok: false, status: 0, body: { message: "Add the Stedi API key as STEDI_API_KEY. Nothing was sent." } };
   }
   const headers = new Headers(init.headers);
   headers.set("Authorization", key.startsWith("Key ") ? key : `Key ${key}`);

@@ -1,6 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
+import { sendClinicEmail } from "@/lib/bird/send";
 import { noteLooksClinical } from "@/lib/contact/guard";
 import { contactInquirySchema } from "@/lib/content/schema";
 import { readServerEnv } from "@/lib/env";
@@ -60,7 +61,7 @@ export async function submitInquiry(_previous: ContactState, formData: FormData)
   }
 
   const env = readServerEnv();
-  if (!env.CONTACT_INBOX) {
+  if (!env.CONTACT_INBOX || !env.BIRD_API_KEY) {
     return {
       status: "not_sent",
       message:
@@ -68,9 +69,18 @@ export async function submitInquiry(_previous: ContactState, formData: FormData)
     };
   }
 
-  return {
-    status: "not_sent",
-    message:
-      "An inbox address is configured, but this site does not deliver mail and does not store the note. A separate, approved channel is required before messages can be sent.",
-  };
+  const sent = await sendClinicEmail({
+    to: env.CONTACT_INBOX,
+    subject: `Website inquiry: ${parsed.data.reason}`,
+    text: [`From: ${parsed.data.name}`, parsed.data.email, parsed.data.phone, "", parsed.data.note].filter(Boolean).join("\n"),
+    html: `<p>From ${escapeHtml(parsed.data.name)}</p><p>${escapeHtml(parsed.data.email)} ${escapeHtml(parsed.data.phone)}</p><p>${escapeHtml(parsed.data.note)}</p>`,
+  });
+  if (!sent.ok) {
+    return { status: "not_sent", message: "This message was not sent and was not saved. Please call the clinic." };
+  }
+  return { status: "idle", message: "Your message was sent. It was not saved on this site." };
+}
+
+function escapeHtml(value: string) {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }

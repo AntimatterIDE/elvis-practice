@@ -35,6 +35,20 @@ describe("service role boundary", () => {
     }
   });
 
+  it("keeps the Bird key on the server", () => {
+    const files = ["app", "components", "lib"].flatMap((directory) => walk(directory));
+    const allowedBird = new Set(["lib/env.ts", "lib/bird/client.ts"]);
+    for (const file of files) {
+      if (!file.endsWith(".ts") && !file.endsWith(".tsx")) continue;
+      const source = readFileSync(file, "utf8");
+      const readsKey = /readServerEnv\(\)\.BIRD_API_KEY|source\.BIRD_API_KEY|process\.env\.BIRD_API_KEY/.test(source);
+      if (!readsKey) continue;
+      const relative = file.split(path.sep).join("/");
+      expect(allowedBird.has(relative)).toBe(true);
+      expect(source.includes('"use client"') || source.includes("'use client'")).toBe(false);
+    }
+  });
+
   it("keeps the Stedi key on the server", () => {
     const files = ["app", "components", "lib"].flatMap((directory) => walk(directory));
     const allowedStedi = new Set(["lib/env.ts", "lib/stedi/client.ts"]);

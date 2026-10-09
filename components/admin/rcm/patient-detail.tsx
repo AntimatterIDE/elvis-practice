@@ -19,6 +19,7 @@ import type {
   Problem,
   Sex,
 } from "@/lib/rcm/types";
+import { PatientReach } from "@/components/admin/rcm/patient-reach";
 import { PortalAccess } from "@/components/admin/rcm/portal-access";
 import { Field, LoadingDesk, PageHeader, StatusPill, fieldClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
@@ -117,6 +118,7 @@ export function PatientDetail({ id }: { id: string }) {
         </p>
         {coverage ? <p className="mt-1 text-muted">{coverage.payerName} · copay {money(coverage.copay)}</p> : null}
       </div>
+      <PatientReach email={patient.email} phone={patient.phone} />
       <div className="sticky top-14 z-20 mt-6 flex gap-1 overflow-x-auto rounded-2xl border border-line bg-paper/95 p-1 backdrop-blur lg:top-0" role="tablist" aria-label="Chart">
         {tabs.map(([key, label]) => (
           <button

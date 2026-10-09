@@ -1,9 +1,9 @@
 "use server";
 
 import { getStaffSession } from "@/lib/supabase/session";
-import { CLAIMS, CORE, ELIGIBILITY, ENROLLMENTS, HEALTHCARE, MANAGER, PAYERS, isStediConfigured, publicStediMessage, stediFetch } from "@/lib/stedi/client";
+import { CORE, ELIGIBILITY, ENROLLMENTS, HEALTHCARE, PAYERS, isStediConfigured, publicStediMessage, stediFetch } from "@/lib/stedi/client";
 import { readRemits, summarizeEligibility } from "@/lib/stedi/parse";
-import { buildProfessionalClaim, compactDate, type ClaimSubmissionInput } from "@/lib/stedi/payload";
+import { buildProfessionalClaim, compactDate, productionClaimProblems, type ClaimSubmissionInput } from "@/lib/stedi/payload";
 import { recordClearinghouse } from "@/lib/stedi/record";
 
 export type StediEvent = { kind: "submit" | "277ca" | "276" | "835" | "attachment" | "paper" | "error"; summary: string };
@@ -11,7 +11,7 @@ export type StediEvent = { kind: "submit" | "277ca" | "276" | "835" | "attachmen
 async function staffGate() {
   const session = await getStaffSession();
   if (!session) return "Sign in as staff before using the clearinghouse.";
-  if (!isStediConfigured()) return "Add a Stedi Test API key as STEDI_API_KEY. Nothing was sent.";
+  if (!isStediConfigured()) return "Add the Stedi API key as STEDI_API_KEY. Nothing was sent.";
   return null;
 }
 
@@ -20,62 +20,12 @@ export async function clearinghouseStatus() {
   return { signedIn: Boolean(session), configured: isStediConfigured() };
 }
 
-const mockEligibilityBody = {
-  payerId: "60054",
-  provider: { name: { organization: "The Alignment Clinic" }, npi: "1999999984" },
-  subscriber: {
-    name: { person: { firstName: "Jane", lastName: "Doe" } },
-    memberId: "AETNA12345",
-    dateOfBirth: "2004-04-04",
-  },
-  encounter: { services: [{ value: "30", system: "STC" }] },
-};
-
 export async function proveTestKey() {
-  const blocked = await staffGate();
-  if (blocked) return { ok: false, message: blocked };
-  const response = await stediFetch(`${ELIGIBILITY}/eligibility-check`, {
-    method: "POST",
-    body: JSON.stringify(mockEligibilityBody),
-  });
-  if (!response.ok) return { ok: false, message: publicStediMessage(response.body, response.status) };
-  const summary = summarizeEligibility(response.body);
-  return { ok: true, message: `The test key reached Stedi. ${summary.summary}` };
+  return { ok: false, message: "The production key cannot run a test persona. Check connection only looks up a payer name, and nothing is sent to a payer." };
 }
 
 export async function submitMockEligibilityBatch() {
-  const blocked = await staffGate();
-  if (blocked) return { ok: false, message: blocked, batchId: "" };
-  const response = await stediFetch(`${MANAGER}/eligibility-manager/batch-eligibility`, {
-    method: "POST",
-    body: JSON.stringify({
-      name: `alignment-jane-doe-${Date.now()}`,
-      items: [
-        {
-          encounter: { serviceTypeCodes: ["30"] },
-          provider: { npi: "1999999984", organizationName: "The Alignment Clinic" },
-          submitterTransactionIdentifier: "JANEDOE30",
-          subscriber: {
-            dateOfBirth: "20040404",
-            firstName: "Jane",
-            lastName: "Doe",
-            memberId: "AETNA12345",
-          },
-          tradingPartnerServiceId: "60054",
-        },
-      ],
-    }),
-  });
-  const record = asRecord(response.body);
-  const batchId = typeof record?.batchId === "string" ? record.batchId : "";
-  if (!response.ok) return { ok: false, message: publicStediMessage(response.body, response.status), batchId };
-  return {
-    ok: true,
-    batchId,
-    message: batchId
-      ? `Batch ${batchId} was accepted. Results arrive later. This used Stedi’s published Jane Doe persona.`
-      : "Stedi accepted the batch. This used Stedi’s published Jane Doe persona.",
-  };
+  return { ok: false, message: "The production key cannot batch Stedi’s test persona. Nothing was sent.", batchId: "" };
 }
 
 function shiftDay(value: string, days: number) {
@@ -98,7 +48,11 @@ export async function checkEligibility(input: {
 }) {
   const blocked = await staffGate();
   if (blocked) return { ok: false, message: blocked, active: null, copay: null, coinsurance: null, deductibleRemaining: null, summary: blocked };
-  const npi = /^\d{10}$/.test(input.npi) ? input.npi : "1999999984";
+  if (!/^\d{10}$/.test(input.npi)) {
+    const message = "Enter the practice NPI before checking eligibility. Nothing was sent.";
+    return { ok: false, message, active: null, copay: null, coinsurance: null, deductibleRemaining: null, summary: message };
+  }
+  const npi = input.npi;
   const response = await stediFetch(`${ELIGIBILITY}/eligibility-check`, {
     method: "POST",
     body: JSON.stringify({
@@ -134,7 +88,8 @@ export async function discoverCoverage(input: {
 }) {
   const blocked = await staffGate();
   if (blocked) return { ok: false, message: blocked, payers: [] as string[] };
-  const npi = /^\d{10}$/.test(input.npi) ? input.npi : "1999999984";
+  if (!/^\d{10}$/.test(input.npi)) return { ok: false, message: "Enter the practice NPI before looking up coverage. Nothing was sent.", payers: [] as string[] };
+  const npi = input.npi;
   const response = await stediFetch(`${HEALTHCARE}/insurance-discovery/check/v1`, {
     method: "POST",
     body: JSON.stringify({
@@ -202,8 +157,9 @@ export async function submitProfessionalClaim(input: ClaimSubmissionInput) {
   if (input.stediClaimId) {
     return { ok: true, message: "This claim was already sent.", stediClaimId: input.stediClaimId, alreadySent: true };
   }
-  if (!input.tradingPartnerId) {
-    const message = "This claim has no Stedi payer id. Demo claims use the test payer STEDI.";
+  const problems = productionClaimProblems(input);
+  if (problems.length) {
+    const message = problems[0];
     return { ok: false, message, event: { kind: "error" as const, summary: message } };
   }
   const built = buildProfessionalClaim(input);
@@ -224,8 +180,7 @@ export async function submitProfessionalClaim(input: ClaimSubmissionInput) {
     : typeof record?.controlNumber === "string"
       ? record.controlNumber
       : undefined;
-  const message = rejected ? publicStediMessage(response.body, response.status) : "Stedi accepted the test claim. That is not payer payment.";
-  const providerNote = built.usedTestProvider ? " Practice NPI or tax id was blank, so the test provider values from Stedi’s docs were used." : "";
+  const message = rejected ? publicStediMessage(response.body, response.status) : "Stedi accepted the claim. That is not payer payment.";
   await recordClearinghouse({
     controlNumber: input.controlNumber,
     idempotencyKey: `submit:${input.idempotencyKey}`,
@@ -241,11 +196,11 @@ export async function submitProfessionalClaim(input: ClaimSubmissionInput) {
   });
   return {
     ok: !rejected,
-    message: `${message}${providerNote}`,
+    message,
     status: rejected ? ("rejected" as const) : ("submitted" as const),
     stediClaimId,
     stediSubmissionId: typeof record?.claimReference === "object" && record.claimReference ? (record.claimReference as { rhclaimNumber?: string }).rhclaimNumber : undefined,
-    event: { kind: rejected ? "error" as const : "277ca" as const, summary: `${message}${providerNote}` },
+    event: { kind: rejected ? "error" as const : "277ca" as const, summary: message },
     stored: true,
   };
 }
@@ -253,11 +208,13 @@ export async function submitProfessionalClaim(input: ClaimSubmissionInput) {
 export async function checkClaimStatus(input: ClaimSubmissionInput) {
   const blocked = await staffGate();
   if (blocked) return { ok: false, message: blocked, event: { kind: "error" as const, summary: blocked } };
+  const problems = productionClaimProblems(input);
+  if (problems.length) return { ok: false, message: problems[0], event: { kind: "error" as const, summary: problems[0] } };
   const billing = buildProfessionalClaim(input);
   const response = await stediFetch(`${HEALTHCARE}/change/medicalnetwork/claimstatus/v2`, {
     method: "POST",
     body: JSON.stringify({
-      tradingPartnerServiceId: input.tradingPartnerId || "STEDI",
+      tradingPartnerServiceId: input.tradingPartnerId,
       providers: [{ npi: billing.body.billing.npi, organizationName: billing.body.billing.organizationName, providerType: "BillingProvider" }],
       subscriber: {
         firstName: input.patient.firstName,
@@ -273,48 +230,14 @@ export async function checkClaimStatus(input: ClaimSubmissionInput) {
     }),
   });
   const message = response.ok
-    ? "Claim status returned. A test claim often has no payer status yet. Use the acknowledgment and the remit to track the demo."
+    ? "Claim status returned. That is the payer’s status, not a new payment."
     : publicStediMessage(response.body, response.status);
   return { ok: response.ok, message, event: { kind: "276" as const, summary: message } };
 }
 
-export async function attachDemoNote(input: { controlNumber: string; idempotencyKey: string }) {
-  const blocked = await staffGate();
-  if (blocked) return { ok: false, message: blocked, event: { kind: "error" as const, summary: blocked } };
-  const created = await stediFetch(`${CLAIMS}/claim-attachments/file`, {
-    method: "POST",
-    body: JSON.stringify({ contentType: "text/plain" }),
-  });
-  const record = asRecord(created.body);
-  const uploadUrl = typeof record?.uploadUrl === "string" ? record.uploadUrl : "";
-  const attachmentId = typeof record?.attachmentId === "string" ? record.attachmentId : "";
-  if (!created.ok || !uploadUrl || !attachmentId) {
-    const message = publicStediMessage(created.body, created.status);
-    return { ok: false, message, event: { kind: "error" as const, summary: message } };
-  }
-  const uploaded = await fetch(uploadUrl, {
-    method: "PUT",
-    headers: { "Content-Type": "text/plain" },
-    body: "Demo note for a test claim. Not a clinical record.",
-  });
-  if (!uploaded.ok) {
-    const message = "Stedi created an attachment id, but the file upload was refused.";
-    return { ok: false, message, attachmentId, event: { kind: "error" as const, summary: message } };
-  }
-  await recordClearinghouse({
-    controlNumber: input.controlNumber,
-    idempotencyKey: `275:${input.idempotencyKey}:${attachmentId}`,
-    stediTransactionId: attachmentId,
-    kind: "275",
-    status: "uploaded",
-    snapshot: { attachment: "text" },
-  });
-  return {
-    ok: true,
-    message: "Test attachment uploaded. It is not mailed and it is not a clinical note.",
-    attachmentId,
-    event: { kind: "attachment" as const, summary: "Test attachment uploaded." },
-  };
+export async function attachDemoNote(_input: { controlNumber: string; idempotencyKey: string }) {
+  const message = "Upload the chart note from the record. A placeholder file was not sent.";
+  return { ok: false, message, event: { kind: "error" as const, summary: message } };
 }
 
 export async function pullRemits(controlNumbers: string[]) {
@@ -339,7 +262,7 @@ export async function pullRemits(controlNumbers: string[]) {
   const remits = matches.filter((remit) => wanted.has(remit.controlNumber));
   return {
     ok: true,
-    message: remits.length ? `Matched ${remits.length} test remit${remits.length === 1 ? "" : "s"}.` : "No matching remit is waiting. Test remits need the Stedi test payer, and the billing provider enrolled for claim payment.",
+    message: remits.length ? `Matched ${remits.length} remit${remits.length === 1 ? "" : "s"}.` : "No matching remit is waiting. ERA enrollment is completed in the Stedi portal.",
     remits,
   };
 }
@@ -426,7 +349,8 @@ export async function checkCoordination(input: {
   const blocked = await staffGate();
   if (blocked) return { ok: false, message: blocked };
   if (!input.payerId) return { ok: false, message: "This patient has no Stedi payer id." };
-  const npi = /^\d{10}$/.test(input.npi) ? input.npi : "1999999984";
+  if (!/^\d{10}$/.test(input.npi)) return { ok: false, message: "Enter the practice NPI before checking coordination. Nothing was sent." };
+  const npi = input.npi;
   const response = await stediFetch(`${HEALTHCARE}/coordination-of-benefits`, {
     method: "POST",
     body: JSON.stringify({

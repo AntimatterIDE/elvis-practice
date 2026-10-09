@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
 import { applyPrimaryCoverage, emptyVitals, normalizeAppointment, normalizeLine, normalizePatient, normalizeState, withChart } from "@/lib/rcm/chart";
-import { buildDemoDay } from "@/lib/rcm/demo-day";
 import { STORAGE_KEY, createSeedState } from "@/lib/rcm/seed";
 import type {
   Appointment,
@@ -34,7 +33,6 @@ type RcmContextValue = DeskSnapshot & {
   removeAppointment: (id: string) => void;
   addEligibility: (result: Omit<EligibilityResult, "id" | "createdAt">) => EligibilityResult;
   updatePractice: (patch: Partial<PracticeProfile>) => void;
-  loadDemoDay: () => void;
 };
 
 const RcmContext = createContext<RcmContextValue | null>(null);
@@ -352,19 +350,6 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
       updatePractice: (patch) => {
         const current = getSnapshot();
         commit({ ...current, practice: { ...current.practice, ...patch } });
-      },
-      loadDemoDay: () => {
-        const current = getSnapshot();
-        const demo = buildDemoDay(current.practice);
-        const incoming = new Set(demo.patients.map((patient) => patient.id));
-        const drop = new Set(current.patients.filter((patient) => patient.flags.includes("demo") || incoming.has(patient.id)).map((patient) => patient.id));
-        commit({
-          ...current,
-          patients: [...demo.patients, ...current.patients.filter((patient) => !drop.has(patient.id))],
-          appointments: [...demo.appointments, ...current.appointments.filter((appointment) => !drop.has(appointment.patientId))],
-          claims: [...demo.claims, ...current.claims.filter((claim) => !drop.has(claim.patientId))],
-          eligibility: current.eligibility.filter((check) => !drop.has(check.patientId)),
-        });
       },
     };
   }, [state]);

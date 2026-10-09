@@ -44,14 +44,14 @@ export function ClaimsDesk() {
       <PageHeader
         kicker="Billing"
         title="Coding"
-        lede="Treated visits wait here until the charges are reviewed. Ready for Bill only moves a case to review. Test claims go to Stedi’s test payer after you enroll that payer for remits in the Stedi portal."
+        lede="Treated visits wait here until the charges are reviewed. Ready for Bill only moves a case to review. Submit claim files a real claim with the production key."
         action={<DemoBilling />}
       />
 
       <section className="mt-8">
         <h2 className="font-display text-2xl">Worklist</h2>
         <ul className="mt-4 grid gap-3">
-          {codingVisits.length === 0 ? <li className="text-sm text-muted">No visits are waiting to be coded. Load a demo day to practice the path.</li> : null}
+          {codingVisits.length === 0 ? <li className="text-sm text-muted">No visits are waiting to be coded.</li> : null}
           {codingVisits.map((visit) => {
             const patient = byId.get(visit.patientId);
             const related = claims.find((claim) => sameDay(claim, visit) && (claim.status === "draft" || claim.status === "held"));
