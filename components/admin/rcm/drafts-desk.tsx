@@ -18,7 +18,7 @@ export function DraftsDesk() {
       <PageHeader
         kicker="Practice"
         title="Agent drafts"
-        lede="Claims waiting for a person to review. Approving one marks it submitted here. It is not sent to a payer."
+        lede="Drafts waiting for a person. Moving one to review does not send it."
       />
       <ul className="mt-8 grid gap-4">
         {drafts.length === 0 ? <li className="text-sm text-muted">No drafts. Create a claim or import a CSV.</li> : null}
@@ -35,8 +35,8 @@ export function DraftsDesk() {
               <StatusPill status={claim.status} />
             </div>
             <div className="mt-4 flex flex-wrap gap-3">
-              <Button type="button" onClick={() => updateClaim(claim.id, { status: "submitted" })}>
-                Approve and submit
+              <Button type="button" onClick={() => updateClaim(claim.id, { status: "ready" })}>
+                Move to review
               </Button>
               <Button asChild variant="secondary">
                 <Link href={`/admin/operations/claims/${claim.id}`}>Open claim</Link>

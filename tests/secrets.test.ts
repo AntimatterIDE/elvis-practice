@@ -6,6 +6,8 @@ const allowed = new Set([
   "lib/supabase/admin.ts",
   "lib/env.ts",
   "lib/portal/supabase-store.ts",
+  "lib/stedi/record.ts",
+  "app/admin/actions.ts",
   "scripts/seed-content.ts",
 ]);
 
@@ -29,6 +31,20 @@ describe("service role boundary", () => {
         source.includes("SUPABASE_SERVICE_ROLE_KEY") || source.includes("createSupabaseAdminClient");
       if (!mentionsSecret) continue;
       expect(allowed.has(relative)).toBe(true);
+      expect(source.includes('"use client"') || source.includes("'use client'")).toBe(false);
+    }
+  });
+
+  it("keeps the Stedi key on the server", () => {
+    const files = ["app", "components", "lib"].flatMap((directory) => walk(directory));
+    const allowedStedi = new Set(["lib/env.ts", "lib/stedi/client.ts"]);
+    for (const file of files) {
+      if (!file.endsWith(".ts") && !file.endsWith(".tsx")) continue;
+      const source = readFileSync(file, "utf8");
+      const readsKey = /readServerEnv\(\)\.STEDI_API_KEY|source\.STEDI_API_KEY|process\.env\.STEDI_API_KEY/.test(source);
+      if (!readsKey) continue;
+      const relative = file.split(path.sep).join("/");
+      expect(allowedStedi.has(relative)).toBe(true);
       expect(source.includes('"use client"') || source.includes("'use client'")).toBe(false);
     }
   });

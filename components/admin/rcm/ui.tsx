@@ -57,6 +57,8 @@ export function Field({
 }
 
 const statusTone: Record<ClaimStatus, string> = {
+  held: "bg-mist text-ink",
+  ready: "bg-mint text-oxide-deep",
   draft: "bg-mist text-ink",
   submitted: "bg-mist text-ink",
   processing: "bg-mist text-oxide-deep",

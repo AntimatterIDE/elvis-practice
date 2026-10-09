@@ -1,10 +1,12 @@
 import type {
   Appointment,
   ChartDocument,
+  Claim,
   Coverage,
   Patient,
   PatientInput,
   RcmState,
+  ServiceLine,
   Vitals,
 } from "@/lib/rcm/types";
 
@@ -83,6 +85,7 @@ export function withChart(input: PatientInput, extra: Partial<Patient> = {}): Pa
     allergies: [],
     medications: [],
     documents: defaultDocuments(),
+    accountNotes: [],
     ...extra,
   };
 }
@@ -98,6 +101,7 @@ export function normalizePatient(patient: Patient): Patient {
     medications: next.medications ?? [],
     documents: next.documents?.length ? next.documents : defaultDocuments(),
     intakeAnswers: next.intakeAnswers ?? [],
+    accountNotes: next.accountNotes ?? [],
   };
 }
 
@@ -120,6 +124,40 @@ export function normalizeAppointment(appointment: Appointment): Appointment {
     plan: stored.plan ?? "",
     copayCollected: stored.copayCollected ?? null,
     vitals: { ...emptyVitals(), ...stored.vitals },
+    scheduledProcedures: stored.scheduledProcedures ?? [],
+    opNoteStatus: stored.opNoteStatus ?? "not_required",
+    unableToCode: stored.unableToCode ?? false,
+    codingFlag: stored.codingFlag ?? "",
+  };
+}
+
+export function normalizeLine(line: Partial<ServiceLine> & { id: string }): ServiceLine {
+  const stored = line as Partial<ServiceLine>;
+  const fromModifier = stored.modifier ? stored.modifier.split(/[\s,]+/).filter(Boolean) : [];
+  const modifiers = (stored.modifiers?.length ? stored.modifiers : fromModifier).slice(0, 4);
+  const diagnoses = stored.diagnoses?.length ? stored.diagnoses : stored.icd ? [stored.icd] : [];
+  return {
+    id: line.id,
+    cpt: line.cpt ?? "",
+    description: line.description ?? "",
+    modifiers,
+    modifier: modifiers.join(" "),
+    units: Number(line.units) || 0,
+    charge: Number(line.charge) || 0,
+    diagnoses,
+    icd: diagnoses[0] ?? stored.icd ?? "",
+    includeOnBill: stored.includeOnBill !== false,
+    physician: stored.physician ?? "",
+  };
+}
+
+export function normalizeClaim(claim: Claim): Claim {
+  const stored = claim as Partial<Claim>;
+  return {
+    ...claim,
+    lines: (claim.lines ?? []).map((line) => normalizeLine(line)),
+    events: stored.events ?? [],
+    idempotencyKey: stored.idempotencyKey || claim.id,
   };
 }
 
@@ -127,6 +165,7 @@ export function normalizeState(state: RcmState): RcmState {
   return {
     ...state,
     patients: state.patients.map((patient) => normalizePatient(patient)),
+    claims: (state.claims ?? []).map((claim) => normalizeClaim(claim)),
     appointments: state.appointments.map((appointment) => normalizeAppointment(appointment)),
     tasks: state.tasks ?? [],
     eligibility: state.eligibility ?? [],

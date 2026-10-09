@@ -81,6 +81,10 @@ describe("patient intake", () => {
       plan: "secret plan",
       vitals: { bloodPressure: "", heartRate: "", weightLb: "", painScore: "" },
       copayCollected: null,
+      scheduledProcedures: [],
+      opNoteStatus: "not_required",
+      unableToCode: false,
+      codingFlag: "",
     } satisfies Appointment;
     const view = toPortalView(patient, [visit]);
     expect(JSON.stringify(view)).not.toContain("secret");

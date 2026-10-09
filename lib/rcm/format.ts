@@ -9,7 +9,7 @@ export function patientName(patient: Pick<Patient, "firstName" | "lastName">) {
 }
 
 export function claimTotal(claim: Pick<Claim, "lines">) {
-  return claim.lines.reduce((sum, line) => sum + line.charge * line.units, 0);
+  return claim.lines.reduce((sum, line) => sum + (line.includeOnBill === false ? 0 : line.charge * line.units), 0);
 }
 
 export function formatDay(value: string) {
