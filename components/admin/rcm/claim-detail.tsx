@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { attachDemoNote, checkClaimStatus, requestPaperClaim, submitProfessionalClaim } from "@/app/admin/stedi/actions";
+import { checkClaimStatus, requestPaperClaim, submitProfessionalClaim } from "@/app/admin/stedi/actions";
 import { Button } from "@/components/ui/button";
 import { claimTotal, formatDay, formatWhen, money, patientName } from "@/lib/rcm/format";
 import { claimSubmissionInput } from "@/lib/rcm/submit-input";
@@ -106,13 +106,10 @@ export function ClaimDetail({ id }: { id: string }) {
           </Button>
         ) : null}
         <Button type="button" disabled={pending || claim.status !== "ready"} onClick={() => run(() => submitProfessionalClaim(claimSubmissionInput(claim, patient, practice)))}>
-          Submit test claim
+          Submit claim
         </Button>
         <Button type="button" variant="secondary" disabled={pending || !claim.stediClaimId} onClick={() => run(() => checkClaimStatus(claimSubmissionInput(claim, patient, practice)))}>
           Check status
-        </Button>
-        <Button type="button" variant="secondary" disabled={pending} onClick={() => run(() => attachDemoNote({ controlNumber: claim.controlNumber, idempotencyKey: claim.idempotencyKey || claim.id }))}>
-          Upload test attachment
         </Button>
         <Button
           type="button"

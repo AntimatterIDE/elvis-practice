@@ -1,33 +1,68 @@
 import { describe, expect, it } from "vitest";
-import { buildDemoDay } from "@/lib/rcm/demo-day";
-import { createSeedState } from "@/lib/rcm/seed";
-import { buildProfessionalClaim } from "@/lib/stedi/payload";
-import { claimSubmissionInput } from "@/lib/rcm/submit-input";
+import { buildProfessionalClaim, productionClaimProblems, type ClaimSubmissionInput } from "@/lib/stedi/payload";
 import { summarizeEligibility } from "@/lib/stedi/parse";
 
-describe("demo billing day", () => {
-  const day = buildDemoDay(createSeedState().practice);
+const ready: ClaimSubmissionInput = {
+  claimId: "claim-1",
+  status: "ready",
+  controlNumber: "CLM1001",
+  idempotencyKey: "11111111-1111-4111-8111-111111111111",
+  tradingPartnerId: "60054",
+  payerName: "Aetna",
+  dateOfService: "2026-10-01",
+  placeOfService: "11",
+  patient: {
+    firstName: "Riley",
+    lastName: "Chen",
+    dateOfBirth: "1990-04-04",
+    sex: "female",
+    memberId: "W123456789",
+    address: "10 Main St",
+    city: "Rochester",
+    state: "NY",
+    postalCode: "14604",
+  },
+  practice: {
+    legalName: "The Alignment Clinic",
+    physicianName: "Elvis Francois, MD",
+    npi: "1234567893",
+    taxId: "98-7654321",
+    taxonomy: "207X00000X",
+    phone: "5855550100",
+    address: "20 Clinic Way, Rochester, NY 14604",
+  },
+  lines: [
+    {
+      cpt: "99213",
+      modifiers: [],
+      units: 1,
+      charge: 175,
+      diagnoses: ["M54.50"],
+      includeOnBill: true,
+      physician: "Elvis Francois, MD",
+    },
+  ],
+};
 
-  it("keeps one case in coding and three ready test claims", () => {
-    expect(day.patients.some((patient) => patient.id === "demo-coding")).toBe(true);
-    expect(day.claims.map((claim) => claim.demoScenario).sort()).toEqual(["denied", "paid", "partial"]);
-    expect(day.claims.every((claim) => claim.status === "ready")).toBe(true);
-    expect(day.claims.map((claim) => claim.tradingPartnerId)).toEqual(["STEDI", "STEDI", "STEDI"]);
-    const members = day.patients.map((patient) => patient.memberId);
-    expect(members).toContain("STEDI_PAID_HALE01");
-    expect(members).toContain("STEDI_PARTIALLY_PAID_BLAKE02");
-    expect(members).toContain("STEDI_DENIED_MOSS03");
-    expect(members).toContain("AETNA12345");
+describe("production claims", () => {
+  it("files a production claim only when the practice and patient are complete", () => {
+    expect(productionClaimProblems(ready)).toEqual([]);
+    const built = buildProfessionalClaim(ready);
+    expect(built.body.usageIndicator).toBe("P");
+    expect(built.body.billing.npi).toBe("1234567893");
+    expect(built.body.billing.address.city).toBe("Rochester");
+    expect(built.body.subscriber.memberId).toBe("W123456789");
   });
 
-  it("marks every electronic claim as test data", () => {
-    const claim = day.claims[0];
-    const patient = day.patients.find((item) => item.id === claim.patientId);
-    if (!patient) throw new Error("missing patient");
-    const built = buildProfessionalClaim(claimSubmissionInput(claim, patient, createSeedState().practice));
-    expect(built.body.usageIndicator).toBe("T");
-    expect(built.body.tradingPartnerServiceId).toBe("STEDI");
-    expect(built.body.subscriber.memberId.startsWith("STEDI_")).toBe(true);
+  it("refuses a blank practice identity and a demo member id", () => {
+    const blank = productionClaimProblems({
+      ...ready,
+      tradingPartnerId: "STEDI",
+      patient: { ...ready.patient, memberId: "STEDI_PAID_HALE01" },
+      practice: { ...ready.practice, npi: "", taxId: "", address: "" },
+    });
+    expect(blank[0]).toContain("NPI");
+    expect(blank.some((problem) => problem.includes("demo member"))).toBe(true);
   });
 });
 

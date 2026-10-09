@@ -1,6 +1,6 @@
 import type { RcmState } from "@/lib/rcm/types";
 
-export const STORAGE_KEY = "alignment-practice-v1";
+export const STORAGE_KEY = "alignment-practice-v2";
 
 export function createSeedState(): RcmState {
   return {

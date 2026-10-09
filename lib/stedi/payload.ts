@@ -39,6 +39,43 @@ const TEST_NPI = "1999999984";
 const TEST_TAX_ID = "123456789";
 const TEST_TAXONOMY = "207X00000X";
 
+function splitAddress(value: string) {
+  const parts = value.split(",").map((part) => part.trim()).filter(Boolean);
+  if (parts.length < 3) return null;
+  const street = parts.slice(0, -2).join(", ");
+  const city = parts.at(-2) ?? "";
+  const tail = (parts.at(-1) ?? "").match(/^([A-Za-z]{2})\s+(\d{5})(?:-?(\d{4}))?$/);
+  if (!street || !city || !tail) return null;
+  return {
+    address1: street,
+    city,
+    state: tail[1].toUpperCase(),
+    postalCode: `${tail[2]}${tail[3] ?? "0000"}`,
+  };
+}
+
+export function productionClaimProblems(input: ClaimSubmissionInput) {
+  const problems: string[] = [];
+  const npi = input.practice.npi.replace(/\D/g, "");
+  const taxId = input.practice.taxId.replace(/\D/g, "");
+  if (npi.length !== 10 || npi === TEST_NPI) problems.push("Enter the practice NPI on the Practice page before submitting.");
+  if (taxId.length !== 9 || taxId === TEST_TAX_ID) problems.push("Enter the practice tax id on the Practice page before submitting.");
+  if (!splitAddress(input.practice.address)) problems.push("Enter the practice address as street, city, ST ZIP.");
+  if (!input.patient.address.trim() || !input.patient.city.trim() || input.patient.state.trim().length < 2 || input.patient.postalCode.replace(/\D/g, "").length < 5) {
+    problems.push("The patient needs a street, city, state, and ZIP before a claim is submitted.");
+  }
+  if (!input.patient.memberId.trim() || input.patient.memberId.startsWith("STEDI")) {
+    problems.push("Enter the patient’s real member id. A demo member id was not sent.");
+  }
+  if (!input.tradingPartnerId.trim() || input.tradingPartnerId === "STEDI") {
+    problems.push("Choose the real payer. The test payer STEDI was not used.");
+  }
+  if (!input.lines.some((line) => line.includeOnBill && line.cpt && line.charge > 0)) {
+    problems.push("Include at least one charged line before submitting.");
+  }
+  return problems;
+}
+
 export function compactDate(value: string) {
   return value.replaceAll("-", "").slice(0, 8);
 }
@@ -57,7 +94,7 @@ function postal(value: string) {
   const digits = value.replace(/\D/g, "");
   if (digits.length >= 9) return digits.slice(0, 9);
   if (digits.length === 5) return `${digits}0000`;
-  return "123450000";
+  return digits;
 }
 
 function money(value: number) {
@@ -65,18 +102,15 @@ function money(value: number) {
 }
 
 export function billingIdentity(practice: ClaimSubmissionInput["practice"]) {
-  const npi = /^\d{10}$/.test(practice.npi) ? practice.npi : TEST_NPI;
+  const npi = practice.npi.replace(/\D/g, "");
   const taxId = practice.taxId.replace(/\D/g, "");
-  const employerId = taxId.length === 9 ? taxId : TEST_TAX_ID;
   const taxonomy = /^[A-Z0-9]{9}X$/.test(practice.taxonomy) ? practice.taxonomy : TEST_TAXONOMY;
-  const usedTestProvider = npi === TEST_NPI || employerId === TEST_TAX_ID;
   return {
     npi,
-    employerId,
+    employerId: taxId,
     taxonomy,
-    usedTestProvider,
     organizationName: practice.legalName || "The Alignment Clinic",
-    phone: practice.phone.replace(/\D/g, "").slice(0, 10) || "5552223333",
+    phone: practice.phone.replace(/\D/g, "").slice(0, 10),
   };
 }
 
@@ -90,10 +124,10 @@ export function buildProfessionalClaim(input: ClaimSubmissionInput) {
   const total = included.reduce((sum, line) => sum + line.charge * line.units, 0);
   const control = input.controlNumber.replace(/[^A-Za-z0-9]/g, "").slice(0, 20);
 
+  const practiceAddress = splitAddress(input.practice.address);
   return {
-    usedTestProvider: billing.usedTestProvider,
     body: {
-      usageIndicator: "T" as const,
+      usageIndicator: "P" as const,
       tradingPartnerServiceId: input.tradingPartnerId,
       tradingPartnerName: input.payerName,
       submitter: {
@@ -110,9 +144,9 @@ export function buildProfessionalClaim(input: ClaimSubmissionInput) {
         gender: gender(input.patient.sex),
         dateOfBirth: compactDate(input.patient.dateOfBirth),
         address: {
-          address1: input.patient.address || "2222 Random St",
-          city: input.patient.city || "A City",
-          state: (input.patient.state || "NY").slice(0, 2).toUpperCase(),
+          address1: input.patient.address,
+          city: input.patient.city,
+          state: input.patient.state.slice(0, 2).toUpperCase(),
           postalCode: postal(input.patient.postalCode),
         },
       },
@@ -122,11 +156,11 @@ export function buildProfessionalClaim(input: ClaimSubmissionInput) {
         employerId: billing.employerId,
         taxonomyCode: billing.taxonomy,
         organizationName: billing.organizationName,
-        address: {
-          address1: "123 Some St",
-          city: "A City",
-          state: "NY",
-          postalCode: "123450000",
+        address: practiceAddress ?? {
+          address1: input.practice.address,
+          city: "",
+          state: "",
+          postalCode: "",
         },
         contactInformation: { name: billing.organizationName, phoneNumber: billing.phone },
       },
