@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { clearinghouseStatus, pullRemits, submitProfessionalClaim } from "@/app/admin/stedi/actions";
+import { clearinghouseStatus, proveTestKey, pullRemits, submitProfessionalClaim } from "@/app/admin/stedi/actions";
 import { Button } from "@/components/ui/button";
 import { claimSubmissionInput } from "@/lib/rcm/submit-input";
 import type { Claim, ClaimEvent } from "@/lib/rcm/types";
@@ -16,6 +16,13 @@ export function DemoBilling() {
   const { claims, patients, practice, updateClaim, loadDemoDay } = useRcm();
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
+
+  async function checkKey() {
+    setPending(true);
+    const result = await proveTestKey();
+    setMessage(result.message);
+    setPending(false);
+  }
 
   async function submitDemos() {
     setPending(true);
@@ -93,6 +100,9 @@ export function DemoBilling() {
   return (
     <div className="grid justify-items-end gap-2">
       <div className="flex flex-wrap justify-end gap-2">
+        <Button type="button" variant="secondary" onClick={checkKey} disabled={pending}>
+          Check test key
+        </Button>
         <Button type="button" variant="secondary" onClick={() => { loadDemoDay(); setMessage("Demo day loaded. Nothing was sent."); }} disabled={pending}>
           Load demo day
         </Button>

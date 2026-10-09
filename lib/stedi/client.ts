@@ -7,6 +7,7 @@ export const CORE = "https://core.us.stedi.com/2023-08-01";
 export const ELIGIBILITY = "https://healthcare.us.stedi.com/2026-06-01";
 export const PAYERS = "https://payers.us.stedi.com/2024-04-01";
 export const ENROLLMENTS = "https://enrollments.us.stedi.com/2024-09-01";
+export const MANAGER = "https://manager.us.stedi.com/2024-04-01";
 
 export function isStediConfigured() {
   return Boolean(readServerEnv().STEDI_API_KEY);
