@@ -11,6 +11,7 @@ import {
   DEMO_ADMIN_PASSWORD,
   isDemoAdminEnabled,
 } from "@/lib/demo-admin";
+import { sendClinicEmail } from "@/lib/bird/send";
 import { isSupabaseConfigured } from "@/lib/env";
 import { canonicalOrigin } from "@/lib/site";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
@@ -91,18 +92,16 @@ export async function requestStaffPasswordReset(
   if (!email.includes("@") || email.length > 320) return { error: "Enter the email on the staff account." };
   if (!isSupabaseConfigured()) return { error: "Password reset is available once Supabase is connected." };
 
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${canonicalOrigin()}/auth/confirm?next=/admin/reset-password`,
-  });
-  if (error) {
-    if (/rate/i.test(error.message)) {
-      return { error: "Too many reset emails were just sent. Wait a few minutes and try again." };
-    }
-    return { error: "The reset email could not be sent. Try again in a few minutes." };
+  const sent = await sendStaffAuthEmail({ email, kind: "recovery" });
+  if (sent === "missing") {
+    return {
+      message: "If that email has a staff account, a reset link is on its way from hello@thealignmentclinic.com. Open it and press Continue. It expires in one hour.",
+    };
   }
+  if (sent === "rate") return { error: "Too many reset emails were just sent. Wait a few minutes and try again." };
+  if (sent !== "sent") return { error: "The reset email could not be sent. Try again in a few minutes." };
   return {
-    message: "If that email has a staff account, a reset link is on its way. It expires in one hour.",
+    message: "If that email has a staff account, a reset link is on its way from hello@thealignmentclinic.com. Open it and press Continue. It expires in one hour.",
   };
 }
 
@@ -384,15 +383,65 @@ export async function inviteEditor(_previous: AdminFormState, formData: FormData
     return { error: "The invitation was not created." };
   }
 
-  const invited = await admin.auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${canonicalOrigin()}/auth/confirm?next=/admin/reset-password`,
-    data: displayName ? { display_name: displayName } : undefined,
-  });
-  if (invited.error) {
+  const invited = await sendStaffAuthEmail({ email, kind: "invite", displayName });
+  if (invited !== "sent") {
     await admin.from("invitations").delete().eq("id", saved.data.id);
-    const already = /already|registered|exists/i.test(invited.error.message);
-    return { error: already ? "That email already has an account." : "The invitation email was not sent. Try again." };
+    return { error: invited === "exists" ? "That email already has an account." : "The invitation email was not sent. Try again." };
   }
 
-  return { message: "Invitation sent." };
+  return { message: "Invitation sent from hello@thealignmentclinic.com." };
+}
+
+async function sendStaffAuthEmail(input: { email: string; kind: "recovery" | "invite"; displayName?: string }) {
+  let admin;
+  try {
+    admin = createSupabaseAdminClient();
+  } catch {
+    return "failed" as const;
+  }
+  const redirectTo = `${canonicalOrigin()}/auth/confirm?next=/admin/reset-password`;
+  const generated = input.kind === "invite"
+    ? await admin.auth.admin.generateLink({
+        type: "invite",
+        email: input.email,
+        options: {
+          redirectTo,
+          data: input.displayName ? { display_name: input.displayName } : undefined,
+        },
+      })
+    : await admin.auth.admin.generateLink({
+        type: "recovery",
+        email: input.email,
+        options: { redirectTo },
+      });
+  const tokenHash = generated.data?.properties?.hashed_token;
+  if (generated.error || !tokenHash) {
+    const message = generated.error?.message ?? "";
+    if (/rate/i.test(message)) return "rate" as const;
+    if (/already|registered|exists/i.test(message)) return "exists" as const;
+    if (/not found|does not exist|doesn't exist/i.test(message)) return "missing" as const;
+    return "failed" as const;
+  }
+  const link = new URL("/auth/confirm", canonicalOrigin());
+  link.searchParams.set("token_hash", tokenHash);
+  link.searchParams.set("type", input.kind);
+  link.searchParams.set("next", "/admin/reset-password");
+  const subject = input.kind === "invite" ? "You're invited to The Alignment Clinic" : "Reset your password";
+  const intro = input.kind === "invite"
+    ? "You have been invited to the practice desk. Open this link and press Continue to choose a password."
+    : "Open this link and press Continue to choose a new password. The link is not used until you press Continue.";
+  const sent = await sendClinicEmail({
+    to: input.email,
+    subject,
+    text: `${intro}\n\n${link.toString()}\n\nThe Alignment Clinic`,
+    html: `<p>${escapeHtml(intro)}</p><p><a href="${escapeHtml(link.toString())}">Continue</a></p><p>The Alignment Clinic</p>`,
+  });
+  if (!sent.ok && input.kind === "invite" && generated.data.user?.id) {
+    await admin.auth.admin.deleteUser(generated.data.user.id);
+  }
+  return sent.ok ? ("sent" as const) : ("failed" as const);
+}
+
+function escapeHtml(value: string) {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 }
