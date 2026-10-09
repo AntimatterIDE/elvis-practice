@@ -1,7 +1,7 @@
 "use server";
 
 import { getStaffSession } from "@/lib/supabase/session";
-import { CLAIMS, CORE, ELIGIBILITY, ENROLLMENTS, HEALTHCARE, PAYERS, isStediConfigured, publicStediMessage, stediFetch } from "@/lib/stedi/client";
+import { CLAIMS, CORE, ELIGIBILITY, ENROLLMENTS, HEALTHCARE, MANAGER, PAYERS, isStediConfigured, publicStediMessage, stediFetch } from "@/lib/stedi/client";
 import { readRemits, summarizeEligibility } from "@/lib/stedi/parse";
 import { buildProfessionalClaim, compactDate, type ClaimSubmissionInput } from "@/lib/stedi/payload";
 import { recordClearinghouse } from "@/lib/stedi/record";
@@ -18,6 +18,64 @@ async function staffGate() {
 export async function clearinghouseStatus() {
   const session = await getStaffSession();
   return { signedIn: Boolean(session), configured: isStediConfigured() };
+}
+
+const mockEligibilityBody = {
+  payerId: "60054",
+  provider: { name: { organization: "The Alignment Clinic" }, npi: "1999999984" },
+  subscriber: {
+    name: { person: { firstName: "Jane", lastName: "Doe" } },
+    memberId: "AETNA12345",
+    dateOfBirth: "2004-04-04",
+  },
+  encounter: { services: [{ value: "30", system: "STC" }] },
+};
+
+export async function proveTestKey() {
+  const blocked = await staffGate();
+  if (blocked) return { ok: false, message: blocked };
+  const response = await stediFetch(`${ELIGIBILITY}/eligibility-check`, {
+    method: "POST",
+    body: JSON.stringify(mockEligibilityBody),
+  });
+  if (!response.ok) return { ok: false, message: publicStediMessage(response.body, response.status) };
+  const summary = summarizeEligibility(response.body);
+  return { ok: true, message: `The test key reached Stedi. ${summary.summary}` };
+}
+
+export async function submitMockEligibilityBatch() {
+  const blocked = await staffGate();
+  if (blocked) return { ok: false, message: blocked, batchId: "" };
+  const response = await stediFetch(`${MANAGER}/eligibility-manager/batch-eligibility`, {
+    method: "POST",
+    body: JSON.stringify({
+      name: `alignment-jane-doe-${Date.now()}`,
+      items: [
+        {
+          encounter: { serviceTypeCodes: ["30"] },
+          provider: { npi: "1999999984", organizationName: "The Alignment Clinic" },
+          submitterTransactionIdentifier: "JANEDOE30",
+          subscriber: {
+            dateOfBirth: "20040404",
+            firstName: "Jane",
+            lastName: "Doe",
+            memberId: "AETNA12345",
+          },
+          tradingPartnerServiceId: "60054",
+        },
+      ],
+    }),
+  });
+  const record = asRecord(response.body);
+  const batchId = typeof record?.batchId === "string" ? record.batchId : "";
+  if (!response.ok) return { ok: false, message: publicStediMessage(response.body, response.status), batchId };
+  return {
+    ok: true,
+    batchId,
+    message: batchId
+      ? `Batch ${batchId} was accepted. Results arrive later. This used Stedi’s published Jane Doe persona.`
+      : "Stedi accepted the batch. This used Stedi’s published Jane Doe persona.",
+  };
 }
 
 function shiftDay(value: string, days: number) {

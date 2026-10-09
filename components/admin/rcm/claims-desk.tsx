@@ -44,7 +44,7 @@ export function ClaimsDesk() {
       <PageHeader
         kicker="Billing"
         title="Coding"
-        lede="Treated visits wait here until the charges are reviewed. Ready for Bill moves a case to the review list. It does not send it."
+        lede="Treated visits wait here until the charges are reviewed. Ready for Bill only moves a case to review. Test claims go to Stedi’s test payer after you enroll that payer for remits in the Stedi portal."
         action={<DemoBilling />}
       />
 
