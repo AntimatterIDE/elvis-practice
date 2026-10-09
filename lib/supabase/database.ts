@@ -241,6 +241,36 @@ export type Database = {
         { token_hash: string; patient_id: string; expires_at: string },
         { expires_at?: string }
       >;
+      clearinghouse_transactions: Table<
+        {
+          id: string;
+          claim_control_number: string;
+          idempotency_key: string;
+          stedi_transaction_id: string | null;
+          stedi_claim_id: string | null;
+          kind: string;
+          status: string;
+          snapshot: Json;
+          created_at: string;
+        },
+        {
+          id?: string;
+          claim_control_number: string;
+          idempotency_key: string;
+          stedi_transaction_id?: string | null;
+          stedi_claim_id?: string | null;
+          kind: string;
+          status: string;
+          snapshot?: Json;
+          created_at?: string;
+        },
+        {
+          stedi_transaction_id?: string | null;
+          stedi_claim_id?: string | null;
+          status?: string;
+          snapshot?: Json;
+        }
+      >;
     };
     Views: { [_ in never]: never };
     Functions: { [_ in never]: never };

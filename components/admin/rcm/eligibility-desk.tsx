@@ -2,99 +2,176 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { checkCoordination, checkEligibility, discoverCoverage } from "@/app/admin/stedi/actions";
 import { Button } from "@/components/ui/button";
 import { formatWhen, money, patientName } from "@/lib/rcm/format";
 import { Field, LoadingDesk, PageHeader, fieldClass } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
+function benefit(value: number | null) {
+  return value == null ? "Unknown" : money(value);
+}
+
 export function EligibilityDesk() {
-  const { ready, patients, eligibility, addEligibility } = useRcm();
+  const { ready, patients, eligibility, practice, addEligibility } = useRcm();
   const [patientId, setPatientId] = useState("");
-  const [inactive, setInactive] = useState(false);
+  const [message, setMessage] = useState("");
+  const [pending, setPending] = useState(false);
   const names = new Map(patients.map((patient) => [patient.id, patientName(patient)]));
   const resolved = patientId || patients[0]?.id || "";
 
   if (!ready) return <LoadingDesk />;
 
+  const patient = patients.find((item) => item.id === resolved);
+
+  async function runEligibility() {
+    if (!patient) return;
+    setPending(true);
+    const coverage = patient.coverages.find((item) => item.rank === "primary");
+    const result = await checkEligibility({
+      payerId: coverage?.tradingPartnerId || "",
+      payerName: patient.payerName,
+      memberId: patient.memberId,
+      firstName: patient.firstName,
+      lastName: patient.lastName,
+      dateOfBirth: patient.dateOfBirth,
+      npi: practice.npi,
+    });
+    if (!result.ok && result.active == null && result.copay == null) {
+      setMessage(result.message);
+      setPending(false);
+      return;
+    }
+    addEligibility({
+      patientId: patient.id,
+      payerName: patient.payerName,
+      active: result.active === true,
+      copay: result.copay,
+      coinsurance: result.coinsurance,
+      deductibleRemaining: result.deductibleRemaining,
+      priorAuthRequired: false,
+      summary: result.summary,
+      source: "stedi",
+    });
+    setMessage(result.message);
+    setPending(false);
+  }
+
+  async function runDiscovery() {
+    if (!patient) return;
+    setPending(true);
+    const result = await discoverCoverage({
+      firstName: patient.firstName,
+      lastName: patient.lastName,
+      dateOfBirth: patient.dateOfBirth,
+      address: patient.address,
+      city: patient.city,
+      state: patient.state,
+      postalCode: patient.postalCode,
+      npi: practice.npi,
+      beginningDateOfService: "2026-09-23",
+      endDateOfService: "2026-09-30",
+    });
+    addEligibility({
+      patientId: patient.id,
+      payerName: result.payers[0] || "Discovery",
+      active: result.payers.length > 0,
+      copay: null,
+      coinsurance: null,
+      deductibleRemaining: null,
+      priorAuthRequired: false,
+      summary: result.payers.length ? `${result.message} ${result.payers.join(", ")}.` : result.message,
+      source: "discovery",
+    });
+    setMessage(result.message);
+    setPending(false);
+  }
+
+  async function runCoordination() {
+    if (!patient) return;
+    setPending(true);
+    const coverage = patient.coverages.find((item) => item.rank === "primary");
+    const result = await checkCoordination({
+      payerId: coverage?.tradingPartnerId || "",
+      memberId: patient.memberId,
+      firstName: patient.firstName,
+      lastName: patient.lastName,
+      dateOfBirth: patient.dateOfBirth,
+      npi: practice.npi,
+      dateOfService: "2026-09-30",
+    });
+    setMessage(result.message);
+    setPending(false);
+  }
+
   return (
     <main>
       <PageHeader
-        kicker="Practice"
+        kicker="Billing"
         title="Eligibility"
-        lede="Sample benefit estimates. These numbers are not a live 270/271 response."
+        lede="A live 270/271 check with the Stedi test key. A missing benefit stays unknown. This is not prior authorization."
       />
       <div className="mt-8 grid items-start gap-6 xl:grid-cols-[22rem_minmax(0,1fr)]">
-      <form
-        className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]"
-        onSubmit={(event) => {
-          event.preventDefault();
-          const patient = patients.find((item) => item.id === resolved);
-          if (!patient) return;
-          const priorAuth = /aetna|united/i.test(patient.payerName);
-          addEligibility({
-            patientId: patient.id,
-            payerName: patient.payerName,
-            active: !inactive,
-            copay: inactive ? 0 : 40,
-            coinsurance: inactive ? 0 : 20,
-            deductibleRemaining: inactive ? 0 : 350,
-            priorAuthRequired: !inactive && priorAuth,
-            summary: inactive
-              ? `${patient.payerName} did not return active coverage for member ${patient.memberId || "id on file"}.`
-              : `${patient.payerName} shows active coverage for ${patientName(patient)}. Office copay $40. Deductible remaining $350.${priorAuth ? " Imaging may need prior authorization." : ""}`,
-          });
-        }}
-      >
-        <Field label="Patient">
-          <select className={fieldClass} value={resolved} onChange={(event) => setPatientId(event.target.value)}>
-            {patients.map((patient) => (
-              <option key={patient.id} value={patient.id}>
-                {patientName(patient)} · {patient.payerName}
-              </option>
-            ))}
-          </select>
-        </Field>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={inactive} onChange={(event) => setInactive(event.target.checked)} />
-          Simulate inactive coverage
-        </label>
-        <Button type="submit" className="justify-self-start">
-          Run estimate
-        </Button>
-      </form>
-      <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-1">
-        {eligibility.map((check) => (
-          <li key={check.id} className="rounded-2xl border border-line bg-card p-4">
-            <div className="flex flex-wrap items-baseline justify-between gap-3">
-              <h2 className="font-display text-2xl">{names.get(check.patientId) ?? "Patient"}</h2>
-              <span className="text-sm text-muted">{formatWhen(check.createdAt)}</span>
-            </div>
-            <p className="mt-2 text-sm">{check.summary}</p>
-            <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-4">
-              <div>
-                <dt className="text-muted">Status</dt>
-                <dd>{check.active ? "Active" : "Inactive"}</dd>
+        <form
+          className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void runEligibility();
+          }}
+        >
+          <Field label="Patient">
+            <select className={fieldClass} value={resolved} onChange={(event) => setPatientId(event.target.value)}>
+              {patients.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {patientName(item)} · {item.payerName}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <p className="text-sm text-muted">Jane Doe with member AETNA12345 is Stedi’s published Aetna test persona. Other names are rejected by a test key.</p>
+          <div className="flex flex-wrap gap-2">
+            <Button type="submit" disabled={pending || !patient}>Check eligibility</Button>
+            <Button type="button" variant="secondary" disabled={pending || !patient} onClick={() => void runDiscovery()}>
+              Look up coverage
+            </Button>
+            <Button type="button" variant="secondary" disabled={pending || !patient} onClick={() => void runCoordination()}>
+              Check coordination
+            </Button>
+          </div>
+          {message ? <p className="text-sm text-muted">{message}</p> : null}
+        </form>
+        <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-1">
+          {eligibility.map((check) => (
+            <li key={check.id} className="rounded-2xl border border-line bg-card p-4">
+              <div className="flex flex-wrap items-baseline justify-between gap-3">
+                <h2 className="font-display text-2xl">{names.get(check.patientId) ?? "Patient"}</h2>
+                <span className="text-sm text-muted">{formatWhen(check.createdAt)}</span>
               </div>
-              <div>
-                <dt className="text-muted">Copay</dt>
-                <dd>{money(check.copay)}</dd>
-              </div>
-              <div>
-                <dt className="text-muted">Coinsurance</dt>
-                <dd>{check.coinsurance}%</dd>
-              </div>
-              <div>
-                <dt className="text-muted">Deductible left</dt>
-                <dd>{money(check.deductibleRemaining)}</dd>
-              </div>
-            </dl>
-            {check.priorAuthRequired ? <p className="mt-3 text-sm text-oxide">Prior authorization may be required.</p> : null}
-            <Link href={`/admin/operations/patients/${check.patientId}`} className="mt-3 inline-block text-sm underline">
-              Open patient
-            </Link>
-          </li>
-        ))}
-      </ul>
+              <p className="mt-2 text-sm">{check.summary}</p>
+              <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-4">
+                <div>
+                  <dt className="text-muted">Status</dt>
+                  <dd>{check.summary.includes("unknown") && check.copay == null && check.coinsurance == null ? "Unknown" : check.active ? "Active" : "Inactive"}</dd>
+                </div>
+                <div>
+                  <dt className="text-muted">Copay</dt>
+                  <dd>{benefit(check.copay)}</dd>
+                </div>
+                <div>
+                  <dt className="text-muted">Coinsurance</dt>
+                  <dd>{check.coinsurance == null ? "Unknown" : `${check.coinsurance}%`}</dd>
+                </div>
+                <div>
+                  <dt className="text-muted">Deductible left</dt>
+                  <dd>{benefit(check.deductibleRemaining)}</dd>
+                </div>
+              </dl>
+              <Link href={`/admin/operations/patients/${check.patientId}`} className="mt-3 inline-block text-sm underline">
+                Open patient
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </main>
   );

@@ -11,6 +11,7 @@ const serverEnvSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: optionalUrl,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().trim().min(1).optional(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().trim().min(1).optional(),
+  STEDI_API_KEY: z.string().trim().min(1).optional(),
   CANONICAL_HOST: z.string().trim().min(1).default("thealignmentclinic.com"),
   CANONICAL_ORIGIN: z.url().default("https://thealignmentclinic.com"),
   REDIRECT_HOSTS: z
@@ -28,6 +29,7 @@ export function readServerEnv(source: NodeJS.ProcessEnv = process.env): ServerEn
     NEXT_PUBLIC_SUPABASE_URL: source.NEXT_PUBLIC_SUPABASE_URL || undefined,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: source.NEXT_PUBLIC_SUPABASE_ANON_KEY || undefined,
     SUPABASE_SERVICE_ROLE_KEY: source.SUPABASE_SERVICE_ROLE_KEY || undefined,
+    STEDI_API_KEY: source.STEDI_API_KEY || undefined,
     CANONICAL_HOST: source.CANONICAL_HOST || undefined,
     CANONICAL_ORIGIN: source.CANONICAL_ORIGIN || undefined,
     REDIRECT_HOSTS: source.REDIRECT_HOSTS || undefined,

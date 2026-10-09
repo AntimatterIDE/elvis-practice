@@ -30,6 +30,7 @@ function letter(claim: Claim, name: string, practiceName: string) {
 export function DenialsDesk() {
   const { ready, claims, patients, practice, updateClaim } = useRcm();
   const denied = claims.filter((claim) => claim.status === "denied" || claim.status === "rejected");
+  const remits = claims.filter((claim) => claim.remitOutcome);
   const [selectedId, setSelectedId] = useState(denied[0]?.id ?? "");
   const selected = denied.find((claim) => claim.id === selectedId) ?? denied[0];
   const names = new Map(patients.map((patient) => [patient.id, patientName(patient)]));
@@ -41,9 +42,22 @@ export function DenialsDesk() {
       <PageHeader
         kicker="Practice"
         title="Denials"
-        lede="Review a denial, write an appeal, or mark the claim for resubmission."
+        lede="A denial and a rejection stay separate. A zero payment is not a denial until the remit says so. Appeals stay in the chart."
       />
-      {denied.length === 0 ? <p className="mt-8 text-sm text-muted">No denied or rejected claims.</p> : null}
+      {remits.length ? (
+        <section className="mt-8">
+          <h2 className="font-display text-2xl">Remits</h2>
+          <ul className="mt-4 grid gap-3 md:grid-cols-3">
+            {remits.map((claim) => (
+              <li key={claim.id} className="rounded-2xl border border-line bg-card p-4 text-sm">
+                <p className="font-semibold">{names.get(claim.patientId)}</p>
+                <p className="mt-1 text-muted">{claim.controlNumber} · {claim.remitOutcome}</p>
+                <p className="mt-2">Paid {claim.paymentAmount == null ? "unknown" : claim.paymentAmount.toFixed(2)}{claim.carc ? ` · reason ${claim.carc}` : ""}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
       <div className="mt-8 grid items-start gap-6 xl:grid-cols-[18rem_minmax(0,1fr)]">
         <ul className="grid gap-2">
           {denied.map((claim) => (
@@ -86,8 +100,8 @@ export function DenialsDesk() {
               >
                 Draft appeal
               </Button>
-              <Button type="button" variant="secondary" onClick={() => updateClaim(selected.id, { status: "submitted", resolution: "resubmit" })}>
-                Resubmit
+              <Button type="button" variant="secondary" onClick={() => updateClaim(selected.id, { status: "ready", resolution: "resubmit", returnReason: "Marked for another review. Not sent." })}>
+                Send back to review
               </Button>
               <Button type="button" variant="secondary" onClick={() => updateClaim(selected.id, { resolution: "write_off" })}>
                 Write off

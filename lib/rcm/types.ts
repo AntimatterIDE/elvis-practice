@@ -2,12 +2,20 @@ export type Sex = "female" | "male" | "other" | "unknown";
 
 export type ClaimStatus =
   | "draft"
+  | "held"
+  | "ready"
   | "submitted"
   | "processing"
   | "accepted"
   | "denied"
   | "rejected"
   | "paid";
+
+export type DemoScenario = "paid" | "partial" | "denied";
+
+export type RemitOutcome = "paid" | "partial" | "denied" | "unknown";
+
+export type OpNoteStatus = "present" | "missing" | "not_required";
 
 export type ClaimSource = "manual" | "upload" | "agent";
 
@@ -55,6 +63,7 @@ export type Coverage = {
   relationship: SubscriberRelation;
   effectiveDate: string;
   copay: number;
+  tradingPartnerId?: string;
 };
 
 export type Problem = {
@@ -118,6 +127,15 @@ export type Patient = PatientRegistration & {
   medications: Medication[];
   documents: ChartDocument[];
   intakeAnswers?: { label: string; value: string }[];
+  accountNotes: AccountNote[];
+};
+
+export type AccountNote = {
+  id: string;
+  body: string;
+  audience: "front_desk" | "billing";
+  createdAt: string;
+  resolved: boolean;
 };
 
 export type PatientInput = PatientRegistration;
@@ -127,9 +145,27 @@ export type ServiceLine = {
   cpt: string;
   description: string;
   modifier: string;
+  modifiers: string[];
   units: number;
   charge: number;
   icd: string;
+  diagnoses: string[];
+  includeOnBill: boolean;
+  physician: string;
+};
+
+export type ScheduledProcedure = {
+  id: string;
+  cpt: string;
+  description: string;
+  physician: string;
+};
+
+export type ClaimEvent = {
+  id: string;
+  at: string;
+  kind: "submit" | "277ca" | "276" | "835" | "attachment" | "paper" | "error";
+  summary: string;
 };
 
 export type Claim = {
@@ -150,6 +186,33 @@ export type Claim = {
   source: ClaimSource;
   createdAt: string;
   updatedAt: string;
+  appointmentId?: string;
+  tradingPartnerId?: string;
+  idempotencyKey?: string;
+  stediClaimId?: string;
+  stediSubmissionId?: string;
+  holdReason?: string;
+  returnReason?: string;
+  attachmentId?: string;
+  demoScenario?: DemoScenario;
+  events: ClaimEvent[];
+  paymentAmount?: number | null;
+  adjustmentAmount?: number | null;
+  patientResponsibility?: number | null;
+  remitOutcome?: RemitOutcome;
+};
+
+export type ServiceLineInput = {
+  cpt: string;
+  description: string;
+  modifier?: string;
+  modifiers?: string[];
+  units: number;
+  charge: number;
+  icd?: string;
+  diagnoses?: string[];
+  includeOnBill?: boolean;
+  physician?: string;
 };
 
 export type ClaimInput = {
@@ -157,10 +220,15 @@ export type ClaimInput = {
   payerName: string;
   dateOfService: string;
   placeOfService: string;
-  lines: Array<Omit<ServiceLine, "id">>;
+  lines: ServiceLineInput[];
   status?: ClaimStatus;
   source?: ClaimSource;
   agentNote?: string;
+  appointmentId?: string;
+  tradingPartnerId?: string;
+  holdReason?: string;
+  demoScenario?: DemoScenario;
+  idempotencyKey?: string;
 };
 
 export type Vitals = {
@@ -187,6 +255,10 @@ export type Appointment = {
   plan: string;
   vitals: Vitals;
   copayCollected: number | null;
+  scheduledProcedures: ScheduledProcedure[];
+  opNoteStatus: OpNoteStatus;
+  unableToCode: boolean;
+  codingFlag: string;
 };
 
 export type AppointmentInput = {
@@ -208,11 +280,12 @@ export type EligibilityResult = {
   payerName: string;
   createdAt: string;
   active: boolean;
-  copay: number;
-  coinsurance: number;
-  deductibleRemaining: number;
+  copay: number | null;
+  coinsurance: number | null;
+  deductibleRemaining: number | null;
   priorAuthRequired: boolean;
   summary: string;
+  source?: "stedi" | "discovery";
 };
 
 export type PracticeTask = {

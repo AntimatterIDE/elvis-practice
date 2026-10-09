@@ -28,6 +28,7 @@ const billingLinks = [
   ["/admin/operations/claims", "Claims"],
   ["/admin/operations/eligibility", "Eligibility"],
   ["/admin/operations/denials", "Denials"],
+  ["/admin/operations/payments", "Payments"],
   ["/admin/operations/claims/drafts", "Drafts"],
   ["/admin/operations/upload", "Upload"],
   ["/admin/operations/analytics", "Analytics"],
