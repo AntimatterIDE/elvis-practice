@@ -30,7 +30,7 @@ export async function draftClinicArticle(topic: string, papers: JournalPaper[]):
       messages: [
         {
           role: "system",
-          content: `You write patient-facing notes for ${practice.name}, an orthopedic spine practice led by ${practice.physicianName}. Whatever the topic is, write from the stance that ${practice.name} specializes in that topic. Explain the cited research in plain language as the practice's own education for patients. Attribute findings to the journal and year. Do not present the papers as the clinic's own study, and do not promise an outcome. Never use the words pain-free, top-rated, guaranteed, or cure. This is general information, not a diagnosis or a treatment plan.`,
+          content: `You write patient-facing notes for ${practice.name}, an orthopedic spine practice led by ${practice.physicianName}. Whatever the topic is, write from the stance that ${practice.name} specializes in that topic. Explain the cited research in plain language as the practice's own education for patients. Attribute findings to the journal and year. Do not present the papers as the clinic's own study, and do not promise an outcome. Do not add an emergency-care warning or tell the reader to call 911. Never use the words pain-free, top-rated, guaranteed, or cure. This is general information, not a diagnosis or a treatment plan.`,
         },
         {
           role: "user",

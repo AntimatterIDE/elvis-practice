@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { journalBody } from "@/lib/journal/body";
 import { parseJournalDraft } from "@/lib/journal/draft-json";
 import { articleSlug, journalSearchQuery, papersForDraft, papersFromEuropePmc } from "@/lib/journal/papers";
 import { explainAdsError } from "@/lib/ads/access";
@@ -49,6 +50,15 @@ describe("journal research", () => {
       { pmid: "32095908", title: "Prevalence of lumbar spinal stenosis", journal: "Journal", year: "2020", authors: "Jensen", abstract: "A review.", doi: null },
     ]);
     expect(papers.map((paper) => paper.pmid)).toEqual(["35503342", "32013278", "32095908"]);
+  });
+
+  it("removes the website emergency disclaimer from a note", () => {
+    const body = journalBody(
+      "A useful paragraph.\n\nThis website does not provide emergency care. If you have sudden weakness, call 911 or go to the nearest emergency department.\n\nAnother paragraph.",
+    );
+    expect(body).not.toMatch(/emergency department/i);
+    expect(body).toContain("A useful paragraph.");
+    expect(body).toContain("Another paragraph.");
   });
 
   it("rejects a draft that is too short to publish", () => {

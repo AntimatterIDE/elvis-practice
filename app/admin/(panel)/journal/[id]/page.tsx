@@ -2,10 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JournalControls } from "@/components/admin/journal-controls";
 import { JournalArticleView } from "@/components/site/journal-article";
+import { ensureJournalHero } from "@/lib/journal/hero";
 import { journalArticle } from "@/lib/journal/store";
 import { getStaffSession } from "@/lib/supabase/session";
 
 type Params = { id: string };
+
+export const maxDuration = 60;
 
 export default async function JournalEditorPage({ params }: { params: Promise<Params> }) {
   const { id } = await params;
@@ -29,7 +32,7 @@ export default async function JournalEditorPage({ params }: { params: Promise<Pa
       </div>
       <JournalControls article={article} canManage={canManage} />
       <div className="mt-8">
-        <JournalArticleView article={article} />
+        <JournalArticleView article={article} heroUrl={await ensureJournalHero(article)} />
       </div>
     </main>
   );

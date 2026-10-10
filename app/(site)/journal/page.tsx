@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageIntro } from "@/components/site/page-intro";
-import { journalCoverPath } from "@/components/site/journal-article";
+import { findJournalHero } from "@/lib/journal/hero";
 import { publishedJournalArticles } from "@/lib/journal/store";
 import { publicPageMetadata } from "@/lib/share-metadata";
 
@@ -15,6 +15,9 @@ export const dynamic = "force-dynamic";
 
 export default async function JournalIndexPage() {
   const articles = await publishedJournalArticles();
+  const cards = await Promise.all(
+    articles.map(async (article) => ({ article, hero: await findJournalHero(article.slug) })),
+  );
   return (
     <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
       <PageIntro
@@ -26,16 +29,12 @@ export default async function JournalIndexPage() {
         {articles.length === 0 ? (
           <li className="rounded-2xl border border-dashed border-line px-4 py-6 text-muted">Reviewed notes will appear here.</li>
         ) : null}
-        {articles.map((article) => (
+        {cards.map(({ article, hero }) => (
           <li key={article.id} className="overflow-hidden rounded-[1.75rem] border border-line bg-card card-shadow">
             <Link href={`/journal/${article.slug}`}>
-              <img
-                src={journalCoverPath(article.slug)}
-                alt=""
-                width={1200}
-                height={630}
-                className="aspect-[1200/630] w-full object-cover"
-              />
+              {hero ? (
+                <img src={hero} alt="" width={1536} height={1024} className="aspect-[3/2] w-full object-cover" />
+              ) : null}
               <span className="block p-6 md:p-8">
                 <span className="font-display text-3xl leading-tight">{article.title}</span>
                 <span className="mt-3 block max-w-2xl text-muted">{article.summary}</span>
