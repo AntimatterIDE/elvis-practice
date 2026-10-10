@@ -12,10 +12,10 @@ export const metadata: Metadata = publicPageMetadata({
 });
 
 const facts = [
+  { label: "Office", value: practice.addressLine },
+  { label: "Phone", value: practice.phone, href: practice.phoneHref },
+  { label: "Email", value: practice.email, href: `mailto:${practice.email}` },
   { label: "Physician", value: practice.physicianName },
-  { label: "Specialty", value: practice.specialty },
-  { label: "New patients", value: "Welcome" },
-  { label: "Appointments", value: "Request a call below" },
 ];
 
 export default function ContactPage() {
@@ -30,17 +30,18 @@ export default function ContactPage() {
         {facts.map((fact) => (
           <div key={fact.label} className="rounded-2xl border border-line bg-card p-5 card-shadow">
             <dt className="kicker text-oxide-deep">{fact.label}</dt>
-            <dd className="mt-2 text-lg font-medium">{fact.value}</dd>
+            <dd className="mt-2 text-lg font-medium">
+              {"href" in fact && fact.href ? (
+                <a className="underline decoration-oxide/40 underline-offset-4" href={fact.href}>
+                  {fact.value}
+                </a>
+              ) : (
+                fact.value
+              )}
+            </dd>
           </div>
         ))}
       </dl>
-      <p className="mt-8 max-w-3xl text-base leading-relaxed text-muted">
-        A street address and office hours are not listed, because the public listings under
-        Dr. Francois’s name belong to other practices. His National Provider Identifier record,
-        last updated August 31, 2021, shows 156 Foster Drive, Suite B, McDonough, Georgia. Later
-        profiles place him in Tulsa and in New York. None of those offices is this website’s
-        appointment line.
-      </p>
       <div className="mt-12 max-w-3xl rounded-[1.5rem] border border-line bg-card p-6 card-shadow md:p-8">
         <h2 className="font-display text-3xl font-semibold tracking-tight">Ask the practice to call</h2>
         <div className="mt-6">

@@ -7,7 +7,6 @@ import { controlClass as sharedControlClass } from "@/components/ui/control";
 import { sexLabel } from "@/lib/portal/defaults";
 import { intakeBlocks as blocks, intakeFieldSpan as span, intakeSections as sections } from "@/lib/portal/form-layout";
 import type { IntakeField, PublicIntake } from "@/lib/portal/types";
-import { emergencyNote } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const initial = { error: undefined as string | undefined, done: false };
@@ -158,7 +157,6 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
           <li className="rounded-2xl bg-mist px-4 py-3">A portal login, if the practice sends one, arrives as a separate message.</li>
           <li className="rounded-2xl bg-mist px-4 py-3">Call the practice if a phone number or pharmacy should change.</li>
         </ol>
-        <p className="mt-6 text-sm leading-relaxed text-muted">{emergencyNote}</p>
       </div>
     );
   }
@@ -272,7 +270,6 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
           </Button>
         )}
       </div>
-      <p className="text-sm leading-relaxed text-muted">{emergencyNote}</p>
     </form>
   );
 }

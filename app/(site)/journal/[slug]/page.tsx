@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { JournalArticleView } from "@/components/site/journal-article";
+import { JournalArticleView, journalCoverPath } from "@/components/site/journal-article";
 import { publishedJournalArticle } from "@/lib/journal/store";
 import { publicPageMetadata, unlistedShareMetadata } from "@/lib/share-metadata";
 
@@ -16,6 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     title: article.seoTitle,
     description: article.seoDescription,
     canonical: `/journal/${article.slug}`,
+    image: { url: journalCoverPath(article.slug), alt: article.title },
   });
 }
 

@@ -39,9 +39,33 @@ export async function AdsDesk() {
         </section>
       ) : null}
       {report.error ? (
-        <p role="alert" className="mt-8 text-sm text-emergency">
-          {report.error}
-        </p>
+        <section role="alert" className={`${panelClass} mt-8 max-w-2xl text-sm leading-relaxed`}>
+          <h2 className="font-display text-2xl">Analytics access</h2>
+          <p className="mt-3 text-emergency">{report.error}</p>
+          {/Viewer access/i.test(report.error) ? (
+            <ol className="mt-4 grid list-decimal gap-2 pl-5 text-muted">
+              <li>
+                Open{" "}
+                <a
+                  className="underline underline-offset-4"
+                  href={
+                    report.propertyId
+                      ? `https://analytics.google.com/analytics/web/#/a411547453p${report.propertyId}/admin/property/access-management`
+                      : "https://analytics.google.com/analytics/web/#/admin/property/access-management"
+                  }
+                >
+                  Property access management
+                </a>
+                .
+              </li>
+              <li>
+                Choose Add users and paste {report.accountEmail || "the service account email"}.
+              </li>
+              <li>Set the role to Viewer, leave the email notice off, and add it.</li>
+              <li>Refresh this page.</li>
+            </ol>
+          ) : null}
+        </section>
       ) : null}
       {report.configured && !report.error ? (
         <>

@@ -38,7 +38,7 @@ export async function draftClinicArticle(topic: string, papers: JournalPaper[]):
 Write one article grounded only in these papers:
 ${JSON.stringify(sources)}
 Return JSON with keys title, summary, seoTitle, seoDescription, and body.
-body is markdown. Start each section with a **bold** label, not a hash heading. Mention the journal name and year when you use a finding. End the body with one sentence that this note is general information and is not a personal treatment plan.`,
+body is the full article, at least five short sections and about 700 words. Each section starts as its own paragraph with a **bold** label, not a hash heading. Use these labels: The question, What the researchers studied, What they found, How a clinic reads this, What this note cannot decide. Mention the journal name and year when you use a finding. Cite only the papers provided. End with one sentence that this note is general information and is not a personal treatment plan.`,
         },
       ],
     }),

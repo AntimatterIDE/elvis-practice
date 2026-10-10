@@ -37,8 +37,8 @@ export default function AboutPage() {
             them does not create a physician-patient relationship.
           </p>
           <p>
-            This practice does not publish another clinic’s phone number, street address, or office
-            hours. To ask for a call, use the contact page, and leave medical details off the form.
+            The office is at {practice.addressLine}. Call {practice.phone} or write {practice.email}.
+            To ask for a visit, use the contact page, and leave medical details off the form.
           </p>
         </div>
         <PhotoPlaceholder />

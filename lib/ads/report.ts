@@ -1,5 +1,6 @@
 import "server-only";
 import { createSign } from "node:crypto";
+import { explainAdsError } from "@/lib/ads/access";
 import { ga4PropertyId, googleAdsCampaignId, googleMeasurementId } from "@/lib/ads/config";
 
 export type AdsMetric = {
@@ -19,6 +20,7 @@ export type AdsReport = {
   measurementId: string | null;
   propertyId: string | null;
   campaignId: string | null;
+  accountEmail: string | null;
   configured: boolean;
   error?: string;
   rangeLabel: string;
@@ -105,6 +107,7 @@ export async function loadAdsReport(): Promise<AdsReport> {
     measurementId,
     propertyId,
     campaignId,
+    accountEmail: account?.client_email ?? null,
     rangeLabel: "Last 28 days",
     totals: [] as AdsMetric[],
     campaigns: [] as AdsCampaignRow[],
@@ -149,7 +152,11 @@ export async function loadAdsReport(): Promise<AdsReport> {
     return {
       ...base,
       configured: true,
-      error: error instanceof Error ? error.message : "Campaign metrics could not be loaded.",
+      error: explainAdsError(
+        error instanceof Error ? error.message : "Campaign metrics could not be loaded.",
+        account.client_email,
+        propertyId,
+      ),
     };
   }
 }

@@ -28,8 +28,7 @@ export default function ConditionsIndexPage() {
       </ul>
       <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted">
         Neck fractures and spine tumors need urgent in-person care. This list explains those
-        problems. It does not mean every operation is the right one, or that this website can
-        evaluate an emergency.
+        problems. It does not mean every operation is the right one.
       </p>
     </article>
   );

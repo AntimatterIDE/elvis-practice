@@ -1,4 +1,4 @@
-import { emergencyNote, practice, publicNav } from "@/lib/site";
+import { practice, publicNav } from "@/lib/site";
 import { BrandMark } from "@/components/site/brand";
 import { SiteLink } from "@/components/site/site-link";
 
@@ -17,6 +17,15 @@ export function Footer() {
             Orthopedic spine surgery with {practice.physicianName}. Fellowship-trained at Harvard
             after an orthopedic residency at the Mayo Clinic.
           </p>
+          <address className="mt-4 max-w-sm text-sm not-italic leading-relaxed text-paper/90">
+            <span className="block">{practice.addressLine}</span>
+            <a className="mt-1 inline-flex min-h-11 items-center hover:text-foam" href={practice.phoneHref}>
+              {practice.phone}
+            </a>
+            <a className="block hover:text-foam" href={`mailto:${practice.email}`}>
+              {practice.email}
+            </a>
+          </address>
         </div>
         <nav aria-label="Footer" className="grid content-start gap-1 text-sm">
           <p className="kicker text-foam">Visit</p>
@@ -47,11 +56,6 @@ export function Footer() {
             Patient login
           </SiteLink>
         </nav>
-      </div>
-      <div className="border-t border-white/10">
-        <p className="mx-auto max-w-6xl px-5 py-5 text-sm leading-relaxed text-paper/90 md:px-8">
-          {emergencyNote}
-        </p>
       </div>
     </footer>
   );

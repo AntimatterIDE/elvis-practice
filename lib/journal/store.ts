@@ -132,6 +132,14 @@ export async function saveJournalDraft(copy: JournalDraftCopy, papers: JournalPa
   return fromRow(data);
 }
 
+export async function journalArticle(id: string) {
+  if (!journalStorageReady()) return null;
+  const supabase = createSupabaseAdminClient();
+  const { data, error } = await supabase.from("articles").select("*").eq("id", id).maybeSingle();
+  if (error) throw new Error(error.message);
+  return data ? fromRow(data) : null;
+}
+
 export async function approveJournalArticle(id: string) {
   const supabase = createSupabaseAdminClient();
   const { data, error } = await supabase
@@ -142,4 +150,25 @@ export async function approveJournalArticle(id: string) {
     .single();
   if (error || !data) throw new Error(error?.message || "The article was not published.");
   return fromRow(data);
+}
+
+export async function unpublishJournalArticle(id: string) {
+  const supabase = createSupabaseAdminClient();
+  const { data, error } = await supabase
+    .from("articles")
+    .update({ review_status: "draft", published_at: null })
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error || !data) throw new Error(error?.message || "The article was not unpublished.");
+  return fromRow(data);
+}
+
+export async function deleteJournalArticle(id: string) {
+  const existing = await journalArticle(id);
+  if (!existing) throw new Error("That article could not be found.");
+  const supabase = createSupabaseAdminClient();
+  const { error } = await supabase.from("articles").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+  return existing;
 }

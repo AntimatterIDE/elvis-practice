@@ -1,9 +1,6 @@
+import { practice } from "@/lib/site";
+
 export const faqs = [
-  {
-    question: "Is this an emergency service?",
-    answer:
-      "No. The Alignment Clinic website cannot treat an emergency. Call 911 or go to the nearest emergency department for sudden weakness, trouble walking, loss of bowel or bladder control, fever with severe spine pain, or a serious injury.",
-  },
   {
     question: "How do I make an appointment?",
     answer:
@@ -22,7 +19,7 @@ export const faqs = [
   {
     question: "Where is the office?",
     answer:
-      "This website does not list a street address for The Alignment Clinic. Public listings under Dr. Francois’s name belong to other practices, including a 2021 National Provider Identifier address in McDonough, Georgia, and later profiles in Tulsa and New York. Use the contact page to reach this practice.",
+      `${practice.name} is at ${practice.addressLine}. Call ${practice.phone} or write ${practice.email}.`,
   },
   {
     question: "Who is the physician?",

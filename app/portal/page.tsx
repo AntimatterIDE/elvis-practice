@@ -6,7 +6,6 @@ import { readPortalCookie } from "@/lib/portal/cookie";
 import { getPortalStore } from "@/lib/portal/repository";
 import type { PortalVisitView } from "@/lib/portal/types";
 import { splitPortalVisits } from "@/lib/portal/view";
-import { emergencyNote } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -133,7 +132,6 @@ export default async function PortalHomePage() {
         </section>
       ) : null}
 
-      <p className="text-sm leading-relaxed text-muted">{emergencyNote}</p>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseJournalDraft } from "@/lib/journal/draft-json";
 import { articleSlug, journalSearchQuery, papersFromEuropePmc } from "@/lib/journal/papers";
+import { explainAdsError } from "@/lib/ads/access";
 import { ga4PropertyId, googleAdsCampaignId, googleMeasurementId } from "@/lib/ads/config";
 
 describe("journal research", () => {
@@ -50,6 +51,7 @@ describe("ads config", () => {
     expect(googleMeasurementId({} as NodeJS.ProcessEnv)).toBe("G-LN3NRNLSPN");
     expect(googleAdsCampaignId({} as NodeJS.ProcessEnv)).toBe("24340110437");
     expect(ga4PropertyId({} as NodeJS.ProcessEnv)).toBeNull();
+    expect(explainAdsError("User does not have sufficient permissions for this property.", "ga4-reader@example.iam.gserviceaccount.com", "558410687")).toContain("ga4-reader@example.iam.gserviceaccount.com");
     expect(googleMeasurementId({ NEXT_PUBLIC_GA_MEASUREMENT_ID: "not-a-tag" } as unknown as NodeJS.ProcessEnv)).toBeNull();
   });
 });

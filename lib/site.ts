@@ -4,6 +4,14 @@ export const practice = {
   physicianPath: "/dr-elvis-francois",
   specialty: "Orthopedic spine surgery",
   npi: "1114306040",
+  street: "245 5th Ave",
+  city: "New York",
+  region: "NY",
+  postalCode: "10016",
+  addressLine: "245 5th Ave, New York, NY 10016",
+  phone: "407-592-9918",
+  phoneHref: "tel:+14075929918",
+  email: "admin@thealignmentclinic.com",
   description:
     "The Alignment Clinic is an orthopedic spine practice led by Elvis Francois, MD. Visits start with the problem, explain the findings in plain language, and decide the next step with you.",
 } as const;
@@ -33,9 +41,6 @@ export const clinicalFocus = [
   "Spinal deformity",
   "Motion-preserving techniques",
 ] as const;
-
-export const emergencyNote =
-  "This website does not provide emergency care. If you have sudden weakness, trouble walking, loss of bowel or bladder control, fever with severe back or neck pain, or a recent serious injury, call 911 or go to the nearest emergency department.";
 
 export const publicNav = [
   { href: "/about", label: "About" },
