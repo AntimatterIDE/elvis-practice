@@ -82,7 +82,7 @@ export function canonicalHost() {
 }
 
 export function isIndexingEnabled() {
-  return process.env.INDEXING_ENABLED === "true" && process.env.VERCEL_ENV === "production";
+  return process.env.INDEXING_ENABLED?.trim() === "true" && process.env.VERCEL_ENV === "production";
 }
 
 export function canViewDraftsWithoutAuth() {
