@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Markdown } from "@/components/site/markdown";
+import { journalBody } from "@/lib/journal/body";
 import { practice } from "@/lib/site";
 import type { JournalArticle } from "@/lib/journal/store";
 
@@ -13,25 +14,21 @@ function publishedLabel(value: string | null) {
   }).format(new Date(value));
 }
 
-export function journalCoverPath(slug: string) {
-  return `/journal/${slug}/cover`;
-}
-
-export function JournalArticleView({ article }: { article: JournalArticle }) {
+export function JournalArticleView({ article, heroUrl }: { article: JournalArticle; heroUrl?: string | null }) {
   return (
     <article>
       <header>
-        {article.reviewStatus === "approved" ? (
+        {heroUrl ? (
           <img
-            src={journalCoverPath(article.slug)}
-            alt=""
-            width={1200}
-            height={630}
-            className="aspect-[1200/630] w-full rounded-[1.75rem] object-cover shadow-[0_30px_70px_-40px_rgb(7_30_54_/_0.85)]"
+            src={heroUrl}
+            alt={article.title}
+            width={1536}
+            height={1024}
+            className="aspect-[3/2] w-full rounded-[1.75rem] object-cover shadow-[0_30px_70px_-40px_rgb(7_30_54_/_0.85)]"
           />
         ) : (
           <div className="hero-panel overflow-hidden rounded-[1.75rem] px-6 py-14 text-paper md:px-12 md:py-16">
-            <p className="kicker text-foam">Journal cover</p>
+            <p className="kicker text-foam">Journal</p>
             <p className="mt-4 max-w-3xl font-display text-4xl leading-[1.05] md:text-6xl">{article.title}</p>
             <p className="mt-4 max-w-2xl text-lg text-paper/85">{practice.name}</p>
           </div>
@@ -46,7 +43,7 @@ export function JournalArticleView({ article }: { article: JournalArticle }) {
         </div>
       </header>
       <div className="journal-prose mx-auto mt-12 max-w-3xl">
-        <Markdown source={article.body} />
+        <Markdown source={journalBody(article.body)} />
       </div>
       {article.sources.length > 0 ? (
         <section className="mx-auto mt-14 max-w-3xl border-t border-line pt-8">

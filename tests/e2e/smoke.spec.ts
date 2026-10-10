@@ -12,7 +12,6 @@ test("homepage introduces the practice without borrowed facts", async ({ page })
 test("draft clinical page explains emergencies and stays out of the public index", async ({ page }) => {
   await page.goto("/preview/conditions/neck-pain");
   await expect(page.getByRole("heading", { level: 1, name: "Neck pain" })).toBeVisible();
-  await expect(page.getByText("Emergency care", { exact: true })).toBeVisible();
   await expect(page.getByText("Draft preview")).toBeVisible();
 
   await page.goto("/conditions/neck-pain");

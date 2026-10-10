@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { draftClinicArticle } from "@/lib/journal/draft";
+import { createJournalHero } from "@/lib/journal/hero";
 import { papersForDraft } from "@/lib/journal/papers";
 import { searchSpineJournals } from "@/lib/journal/search";
 import {
@@ -56,6 +57,7 @@ export async function composeJournalDraft(
   try {
     const copy = await draftClinicArticle(topic.trim().slice(0, 180), papers);
     const article = await saveJournalDraft(copy, papers);
+    await createJournalHero(topic.trim().slice(0, 180) || copy.title, copy.title, article.slug).catch(() => null);
     revalidatePath("/admin/journal");
     return { id: article.id, title: article.title };
   } catch (error) {
