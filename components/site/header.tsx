@@ -9,7 +9,7 @@ export function Header() {
     <div className="site-bar sticky top-0 z-40 bg-card/90 backdrop-blur-md">
       <div className="bg-pine text-paper">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 text-xs md:px-8 md:text-sm">
-          <p className="truncate">
+          <p className="min-w-0 truncate">
             New patients are welcome. Orthopedic spine surgery with {practice.physicianName}.
           </p>
           <span className="flex shrink-0 gap-4">
@@ -25,7 +25,7 @@ export function Header() {
       <header>
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3.5 md:px-8">
           <Link href="/" className="flex min-h-11 min-w-0 items-center">
-            <BrandLogo priority className="h-auto w-[min(17.5rem,calc(100vw-10.5rem))] sm:w-[17.5rem]" />
+            <BrandLogo priority className="h-auto w-auto max-w-[min(17.5rem,100%)]" />
           </Link>
           <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
             {publicNav.map((item) => (

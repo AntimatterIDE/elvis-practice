@@ -26,7 +26,14 @@
   --shadow-card: 0 16px 40px -32px rgb(7 30 54 / 0.5);
 }
 
+html {
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
 body {
+  max-width: 100%;
+  overflow-x: clip;
   background:
     radial-gradient(900px 420px at 100% -10%, rgb(14 143 132 / 0.09), transparent 55%),
     var(--color-paper);
@@ -95,6 +102,11 @@ p {
   color: #0a6e66;
   text-decoration: underline;
   text-underline-offset: 0.18em;
+}
+
+.journal-prose {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .journal-prose h2 {
