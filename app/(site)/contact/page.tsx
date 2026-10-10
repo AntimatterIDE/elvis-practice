@@ -26,11 +26,11 @@ export default function ContactPage() {
         title="Request a call."
         lede="New patients are welcome. Send your name and a way to reach you. This form is for scheduling and other non-medical questions."
       />
-      <dl className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <dl className="mt-10 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {facts.map((fact) => (
-          <div key={fact.label} className="rounded-2xl border border-line bg-card p-5 card-shadow">
+          <div key={fact.label} className="min-w-0 rounded-2xl border border-line bg-card p-5 card-shadow">
             <dt className="kicker text-oxide-deep">{fact.label}</dt>
-            <dd className="mt-2 text-lg font-medium">
+            <dd className="mt-2 break-words text-lg font-medium">
               {"href" in fact && fact.href ? (
                 <a className="underline decoration-oxide/40 underline-offset-4" href={fact.href}>
                   {fact.value}
