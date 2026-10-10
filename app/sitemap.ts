@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
 import { publicClinicalDocuments, publicPath } from "@/lib/content";
+import { publishedJournalArticles } from "@/lib/journal/store";
 import { canonicalOrigin, isIndexingEnabled } from "@/lib/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!isIndexingEnabled()) return [];
+  const articles = await publishedJournalArticles();
 
   const origin = canonicalOrigin();
   const staticRoutes = [
@@ -15,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/visit",
     "/contact",
     "/questions",
+    "/journal",
     "/medical-disclaimer",
   ];
 
@@ -28,6 +31,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${origin}${publicPath(document)}`,
       changeFrequency: "monthly" as const,
       priority: 0.6,
+    })),
+    ...articles.map((article) => ({
+      url: `${origin}/journal/${article.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
     })),
   ];
 }

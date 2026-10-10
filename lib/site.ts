@@ -43,6 +43,7 @@ export const publicNav = [
   { href: "/treatments", label: "Treatments" },
   { href: "/visit", label: "Your visit" },
   { href: "/questions", label: "Questions" },
+  { href: "/journal", label: "Journal" },
   { href: "/contact", label: "Contact" },
 ] as const;
 

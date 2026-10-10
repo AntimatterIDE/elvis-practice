@@ -324,6 +324,48 @@ export type Database = {
           snapshot?: Json;
         }
       >;
+      articles: Table<
+        {
+          id: string;
+          slug: string;
+          title: string;
+          summary: string;
+          body: string;
+          seo_title: string;
+          seo_description: string;
+          sources: Json;
+          review_status: "draft" | "approved";
+          published_at: string | null;
+          created_at: string;
+          updated_at: string;
+        },
+        {
+          id?: string;
+          slug: string;
+          title: string;
+          summary: string;
+          body: string;
+          seo_title: string;
+          seo_description: string;
+          sources?: Json;
+          review_status?: "draft" | "approved";
+          published_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        },
+        {
+          slug?: string;
+          title?: string;
+          summary?: string;
+          body?: string;
+          seo_title?: string;
+          seo_description?: string;
+          sources?: Json;
+          review_status?: "draft" | "approved";
+          published_at?: string | null;
+          updated_at?: string;
+        }
+      >;
     };
     Views: { [_ in never]: never };
     Functions: { [_ in never]: never };

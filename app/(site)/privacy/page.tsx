@@ -35,7 +35,7 @@ export default function PrivacyPage() {
           insurance numbers.
         </p>
         <p>
-          The site does not run analytics in this version. It does not sell personal information.
+          The public site loads a Google tag so the practice can see visits, including visits from its Google Ads campaign. It does not sell personal information.
           Admin accounts are invitation-only and are separate from patient care. A patient intake
           link stores the answers in the practice records and opens a chart. A patient login shows
           only that patient&apos;s profile and visits.

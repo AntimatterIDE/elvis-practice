@@ -1,4 +1,5 @@
 import { Footer } from "@/components/site/footer";
+import { GoogleTag } from "@/components/site/google-tag";
 import { Header } from "@/components/site/header";
 import { StickyContact } from "@/components/site/sticky-contact";
 import { StructuredData } from "@/components/site/structured-data";
@@ -16,6 +17,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       </main>
       <Footer />
       <StickyContact />
+      <GoogleTag />
     </div>
   );
 }
