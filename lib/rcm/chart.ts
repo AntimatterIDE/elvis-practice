@@ -12,26 +12,48 @@ import type {
 
 export const DEMO_CLINIC_DAY = "2026-09-30";
 
-const requiredDocuments = ["Photo ID", "Insurance card", "Consent to treat", "New patient intake", "Privacy acknowledgment"];
+const requiredDocuments = ["Photo ID", "Insurance card", "New patient intake"];
+
+const retiredDocumentIds = new Set(["consent-to-treat", "privacy-acknowledgment"]);
 
 export function emptyVitals(): Vitals {
   return { bloodPressure: "", heartRate: "", weightLb: "", painScore: "" };
 }
 
+const documentSlots: [string, string][] = [
+  ["photo-id", "Photo ID"],
+  ["insurance-card", "Insurance card"],
+  ["new-patient-intake", "New patient intake"],
+  ["referral", "Referral or authorization"],
+  ["outside-imaging", "Imaging from another office"],
+  ["outside-records", "Records from another office"],
+  ["no-fault-comp", "No-fault or workers' compensation papers"],
+  ["medicare-form", "Medicare form"],
+  ["hospital-records", "Hospital or surgery records"],
+];
+
 export function defaultDocuments(): ChartDocument[] {
-  return [
-    "Photo ID",
-    "Insurance card",
-    "Consent to treat",
-    "New patient intake",
-    "Privacy acknowledgment",
-    "Outside records",
-  ].map((name) => ({
-    id: name.toLowerCase().replaceAll(" ", "-"),
+  return documentSlots.map(([id, name]) => ({
+    id,
     name,
     status: "missing",
     note: "",
   }));
+}
+
+export function withDocumentSlots(documents: ChartDocument[] | undefined): ChartDocument[] {
+  const current = documents ?? [];
+  const byId = new Map(current.map((item) => [item.id, item]));
+  const merged = defaultDocuments().map((slot) => {
+    const stored = byId.get(slot.id);
+    if (!stored) return slot;
+    return { ...stored, name: slot.name };
+  });
+  for (const item of current) {
+    if (retiredDocumentIds.has(item.id) && item.status === "missing" && !item.note) continue;
+    if (!merged.some((slot) => slot.id === item.id)) merged.push(item);
+  }
+  return merged;
 }
 
 export function defaultCoverage(input: Pick<PatientInput, "firstName" | "lastName" | "payerName" | "memberId">): Coverage {
@@ -99,7 +121,7 @@ export function normalizePatient(patient: Patient): Patient {
     problems: next.problems ?? [],
     allergies: next.allergies ?? [],
     medications: next.medications ?? [],
-    documents: next.documents?.length ? next.documents : defaultDocuments(),
+    documents: withDocumentSlots(next.documents),
     intakeAnswers: next.intakeAnswers ?? [],
     accountNotes: next.accountNotes ?? [],
   };

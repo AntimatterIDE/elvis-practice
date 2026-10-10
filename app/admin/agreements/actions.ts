@@ -122,9 +122,9 @@ export async function voidPracticeAgreement(id: string) {
   return { ok: true, message: "The unsigned link no longer works." };
 }
 
-export async function agreementsForChart(patientId: string) {
+export async function agreementsForChart(patientId: string, email = "") {
   if (!(await gate())) return { ok: false as const, message: "Sign in as staff before opening agreements." };
-  const [agreements, packets] = await Promise.all([listAgreements(), listPackets(patientId)]);
+  const [agreements, packets] = await Promise.all([listAgreements(), listPackets(patientId, email)]);
   if (!agreements.ok) return agreements;
   if (!packets.ok) return packets;
   return { ok: true as const, agreements: agreements.agreements.map(({ id, title }) => ({ id, title })), packets: packets.packets };

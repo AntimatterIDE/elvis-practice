@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   removePracticeAgreement,
@@ -17,25 +17,52 @@ import { Field, PageHeader, fieldClass, panelClass } from "@/components/admin/rc
 export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[]; packets: PacketSummary[] }) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(agreements[0]?.id ?? "");
-  const selected = agreements.find((item) => item.id === selectedId);
+  const selected = agreements.find((item) => item.id === selectedId) ?? null;
   const [title, setTitle] = useState(selected?.title ?? "");
   const [body, setBody] = useState(selected?.body ?? "");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [saveNote, setSaveNote] = useState("");
+  const [sendNote, setSendNote] = useState("");
   const [pending, setPending] = useState(false);
   const [openCopy, setOpenCopy] = useState<PacketDetail | null>(null);
+  const editorRef = useRef<HTMLFormElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const synced = useRef(selected ? `${selected.id}:${selected.updatedAt}` : "");
 
   useEffect(() => {
-    setTitle(selected?.title ?? "");
-    setBody(selected?.body ?? "");
-  }, [selected?.id, selected?.updatedAt, selected?.title, selected?.body]);
+    if (!selected) return;
+    const mark = `${selected.id}:${selected.updatedAt}`;
+    if (synced.current === mark) return;
+    synced.current = mark;
+    setTitle(selected.title);
+    setBody(selected.body);
+  }, [selected]);
 
-  async function run(action: () => Promise<{ ok: boolean; message: string; id?: string }>) {
+  function startNew() {
+    synced.current = "";
+    setSelectedId("");
+    setTitle("");
+    setBody("");
+    setSaveNote("Write the title and the text, then save. Nothing is stored until you do.");
+    requestAnimationFrame(() => {
+      editorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      titleRef.current?.focus();
+    });
+  }
+
+  async function run(
+    action: () => Promise<{ ok: boolean; message: string; id?: string }>,
+    kind: "save" | "send",
+  ) {
     setPending(true);
     const result = await action();
-    setMessage(result.message);
-    if (result.ok && result.id) setSelectedId(result.id);
+    if (kind === "save") setSaveNote(result.message);
+    else setSendNote(result.message);
+    if (result.ok && result.id) {
+      synced.current = "";
+      setSelectedId(result.id);
+    }
     setPending(false);
     router.refresh();
   }
@@ -45,19 +72,14 @@ export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[
       <PageHeader
         kicker="Practice"
         title="Agreements"
-        lede="Write a document here, send a signing link from the clinic email, and keep the signed copy in this database. Leave symptoms, images, and insurance numbers out of the text."
+        lede="New York orthopedic offices usually collect a consent to treat, a privacy-notice acknowledgment, an assignment of benefits, permission to text and email, and a records release. These drafts are here for a lawyer to review before you rely on them. The privacy page on the website is not that notice. Leave symptoms, images, and insurance numbers out of the text."
       />
       <div className="grid gap-6 lg:grid-cols-[16rem_1fr]">
         <div className="grid content-start gap-2">
           <Button
             type="button"
             variant="secondary"
-            onClick={() => {
-              setSelectedId("");
-              setTitle("");
-              setBody("");
-              setMessage("");
-            }}
+            onClick={startNew}
           >
             New agreement
           </Button>
@@ -74,20 +96,26 @@ export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[
           {agreements.length === 0 ? <p className="text-sm text-muted">No agreements yet.</p> : null}
         </div>
         <form
+          ref={editorRef}
           className={panelClass}
           onSubmit={(event) => {
             event.preventDefault();
-            void run(() => savePracticeAgreement({ id: selectedId || undefined, title, body }));
+            void run(() => savePracticeAgreement({ id: selectedId || undefined, title, body }), "save");
           }}
         >
-          <Field label="Title">
-            <input className={fieldClass} value={title} onChange={(event) => setTitle(event.target.value)} />
+          <h2 className="font-display text-2xl">{selected ? "Edit agreement" : "New agreement"}</h2>
+          <p className="mt-2 text-sm text-muted">
+            {selected ? "Saving changes does not rewrite a copy that was already signed." : "This draft is not saved until you click Save."}
+          </p>
+          <Field label="Title" className="mt-4">
+            <input ref={titleRef} className={fieldClass} value={title} onChange={(event) => setTitle(event.target.value)} />
           </Field>
           <Field label="Text" className="mt-4">
             <textarea className={`${fieldClass} min-h-64`} value={body} onChange={(event) => setBody(event.target.value)} />
           </Field>
           <div className="mt-4 flex flex-wrap gap-2">
             <Button type="submit" disabled={pending}>Save</Button>
+            {saveNote ? <p className="self-center text-sm text-muted">{saveNote}</p> : null}
             {selectedId ? (
               <Button
                 type="button"
@@ -95,9 +123,14 @@ export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[
                 disabled={pending}
                 onClick={() => void run(async () => {
                   const result = await removePracticeAgreement(selectedId);
-                  if (result.ok) setSelectedId("");
+                  if (result.ok) {
+                    synced.current = "";
+                    setSelectedId("");
+                    setTitle("");
+                    setBody("");
+                  }
                   return result;
-                })}
+                }, "save")}
               >
                 Delete
               </Button>
@@ -109,7 +142,7 @@ export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[
         className={panelClass}
         onSubmit={(event) => {
           event.preventDefault();
-          void run(() => sendPracticeAgreement({ agreementId: selectedId, name, email }));
+          void run(() => sendPracticeAgreement({ agreementId: selectedId, name, email }), "send");
         }}
       >
         <h2 className="font-display text-2xl">Send for signature</h2>
@@ -123,7 +156,7 @@ export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[
           </Field>
         </div>
         <Button className="mt-4" type="submit" disabled={pending || !selectedId}>Send</Button>
-        {message ? <p className="mt-3 text-sm text-muted">{message}</p> : null}
+        {sendNote ? <p className="mt-3 text-sm text-muted">{sendNote}</p> : null}
       </form>
       <section>
         <h2 className="font-display text-2xl">Sent copies</h2>
@@ -142,12 +175,12 @@ export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[
                   Open
                 </Button>
                 {packet.status === "sent" || packet.status === "expired" ? (
-                  <Button type="button" variant="secondary" disabled={pending} onClick={() => void run(() => resendPracticeAgreement(packet.id))}>
+                  <Button type="button" variant="secondary" disabled={pending} onClick={() => void run(() => resendPracticeAgreement(packet.id), "send")}>
                     Send again
                   </Button>
                 ) : null}
                 {packet.status === "sent" || packet.status === "expired" ? (
-                  <Button type="button" variant="ghost" disabled={pending} onClick={() => void run(() => voidPracticeAgreement(packet.id))}>
+                  <Button type="button" variant="ghost" disabled={pending} onClick={() => void run(() => voidPracticeAgreement(packet.id), "send")}>
                     Withdraw
                   </Button>
                 ) : null}
