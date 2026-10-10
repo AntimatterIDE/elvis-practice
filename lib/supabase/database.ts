@@ -286,6 +286,7 @@ export type Database = {
           created_at?: string;
         },
         {
+          patient_id?: string | null;
           status?: string;
           expires_at?: string;
           signed_at?: string | null;
