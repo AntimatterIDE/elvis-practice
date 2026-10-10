@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { AgreementsDesk } from "@/components/admin/agreements-desk";
-import { ensureStarterAgreements, listAgreements, listPackets } from "@/lib/agreements/store";
+import { ensureStarterAgreements, listAgreements, listPackets, readPacket } from "@/lib/agreements/store";
+import type { PacketDetail } from "@/lib/agreements/store";
 import { getStaffSession } from "@/lib/supabase/session";
 
 export const dynamic = "force-dynamic";
@@ -18,5 +19,11 @@ export default async function AgreementsPage() {
       </main>
     );
   }
-  return <AgreementsDesk agreements={agreements.agreements} packets={packets.packets} />;
+  const signedCopies: PacketDetail[] = [];
+  for (const packet of packets.packets) {
+    if (packet.status !== "signed") continue;
+    const detail = await readPacket(packet.id);
+    if (detail.ok) signedCopies.push(detail.packet);
+  }
+  return <AgreementsDesk agreements={agreements.agreements} packets={packets.packets} signedCopies={signedCopies} />;
 }

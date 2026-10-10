@@ -1,4 +1,5 @@
 import "server-only";
+import { unassignedReason } from "@/lib/agreements/match";
 import { starterAgreements } from "@/lib/agreements/starters";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
@@ -24,6 +25,7 @@ export type PacketSummary = {
   signedAt: string;
   signerName: string;
   expiresAt: string;
+  linkedBy?: "email" | "name";
 };
 
 export type PacketDetail = PacketSummary & {
@@ -149,7 +151,7 @@ export async function deleteAgreement(id: string) {
 
 const packetColumns = "id, token, patient_id, recipient_name, recipient_email, title, status, expires_at, sent_at, signed_at, signer_name";
 
-export async function listPackets(patientId = "", email = "") {
+export async function listPackets(patientId = "", email = "", name = "") {
   const supabase = client();
   if (!supabase) return { ok: false as const, message: "The practice database is not connected." };
   let query = supabase.from("agreement_packets").select(packetColumns).order("sent_at", { ascending: false }).limit(80);
@@ -157,23 +159,35 @@ export async function listPackets(patientId = "", email = "") {
   const result = await query;
   if (result.error) return { ok: false as const, message: failed(result.error) };
   const packets = ((result.data ?? []) as PacketRow[]).map(summary);
-  const address = email.trim().toLowerCase();
-  if (!patientId || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)) return { ok: true as const, packets };
+  if (!patientId || (!email.trim() && !name.trim())) return { ok: true as const, packets };
   const unassigned = await supabase
     .from("agreement_packets")
     .select(packetColumns)
     .is("patient_id", null)
-    .eq("recipient_email", address)
     .order("sent_at", { ascending: false })
     .limit(40);
   if (unassigned.error) return { ok: true as const, packets };
   const seen = new Set(packets.map((packet) => packet.id));
   for (const row of (unassigned.data ?? []) as PacketRow[]) {
     if (seen.has(row.id)) continue;
-    packets.push(summary(row));
+    const reason = unassignedReason(
+      { recipientEmail: row.recipient_email, recipientName: row.recipient_name },
+      { email, name },
+    );
+    if (!reason) continue;
+    packets.push({ ...summary(row), linkedBy: reason });
   }
   packets.sort((a, b) => b.sentAt.localeCompare(a.sentAt));
   return { ok: true as const, packets };
+}
+
+export async function attachPackets(patientId: string, ids: string[]) {
+  const supabase = client();
+  const unique = [...new Set(ids.filter(Boolean))].slice(0, 40);
+  if (!supabase || !patientId || unique.length === 0) return { ok: true as const };
+  const result = await supabase.from("agreement_packets").update({ patient_id: patientId }).in("id", unique).is("patient_id", null);
+  if (result.error) return { ok: false as const, message: failed(result.error) };
+  return { ok: true as const };
 }
 
 export async function readPacket(id: string): Promise<{ ok: true; packet: PacketDetail } | { ok: false; message: string }> {

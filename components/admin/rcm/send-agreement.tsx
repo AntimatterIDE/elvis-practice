@@ -2,36 +2,39 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { agreementsForChart, sendPracticeAgreement, signedCopy } from "@/app/admin/agreements/actions";
+import { agreementsForChart, sendPracticeAgreement } from "@/app/admin/agreements/actions";
 import type { PacketDetail, PacketSummary } from "@/lib/agreements/store";
+import { SignedDocument } from "@/components/admin/signed-document";
 import { Button } from "@/components/ui/button";
+import { formatWhen } from "@/lib/rcm/format";
 import { fieldClass } from "@/components/admin/rcm/ui";
 
 export function SendAgreement({ patientId, name, email }: { patientId: string; name: string; email: string }) {
   const [choices, setChoices] = useState<{ id: string; title: string }[]>([]);
   const [packets, setPackets] = useState<PacketSummary[]>([]);
+  const [copies, setCopies] = useState<PacketDetail[]>([]);
   const [agreementId, setAgreementId] = useState("");
   const [address, setAddress] = useState(email);
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
-  const [openCopy, setOpenCopy] = useState<PacketDetail | null>(null);
 
   function load() {
-    void agreementsForChart(patientId, email).then((result) => {
+    void agreementsForChart(patientId, email, name).then((result) => {
       if (!result.ok) {
         setMessage(result.message);
         return;
       }
       setChoices(result.agreements);
       setPackets(result.packets);
-      setAgreementId(result.agreements[0]?.id ?? "");
+      setCopies(result.copies);
+      setAgreementId((current) => current || result.agreements[0]?.id || "");
     });
   }
 
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [patientId, email]);
+  }, [patientId, email, name]);
 
   return (
     <section className="rounded-2xl border border-line bg-card p-4">
@@ -72,50 +75,33 @@ export function SendAgreement({ patientId, name, email }: { patientId: string; n
         <ul className="mt-2 divide-y divide-line border-y border-line text-sm">
           {packets.length === 0 ? <li className="py-3 text-muted">Nothing has been sent for this chart.</li> : null}
           {packets.map((packet) => (
-            <li key={packet.id} className="flex items-center justify-between gap-3 py-3">
-              <span>
-                {packet.title}
-                <span className="mt-0.5 block text-muted">{statusLabel(packet.status)}{packet.signerName ? ` · ${packet.signerName}` : ""}</span>
+            <li key={packet.id} className="py-3">
+              <span className="font-medium">{packet.title}</span>
+              <span className="mt-0.5 block text-muted">
+                {statusLabel(packet)}
+                {packet.signerName ? ` · ${packet.signerName}` : ""}
+                {packet.recipientEmail ? ` · ${packet.recipientEmail}` : ""}
               </span>
-              <Button
-                type="button"
-                variant="secondary"
-                disabled={pending}
-                onClick={() => void signedCopy(packet.id).then((result) => result.ok && setOpenCopy(result.packet))}
-              >
-                Open
-              </Button>
+              {packet.linkedBy === "name" ? (
+                <span className="mt-1 block text-muted">Added here because the name matches the person it was sent to.</span>
+              ) : null}
             </li>
           ))}
         </ul>
       </div>
-      {openCopy ? (
-        <article className="mt-4 rounded-2xl border border-line bg-paper p-4">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h3 className="font-display text-2xl">{openCopy.title}</h3>
-              <p className="mt-1 text-sm text-muted">
-                {openCopy.signerName ? `Signed by ${openCopy.signerName}` : openCopy.recipientName} · {statusLabel(openCopy.status)}
-              </p>
-            </div>
-            <Button type="button" variant="ghost" onClick={() => setOpenCopy(null)}>Close</Button>
-          </div>
-          <p className="mt-4 whitespace-pre-wrap text-sm leading-relaxed">{openCopy.body}</p>
-          {openCopy.signaturePng ? (
-            // Stored signature from this practice's signing page.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={openCopy.signaturePng} alt={`Signature of ${openCopy.signerName}`} className="mt-4 h-28 rounded-2xl border border-line bg-white" />
-          ) : null}
-        </article>
-      ) : null}
+      {copies.map((packet) => (
+        <div key={packet.id} className="mt-4">
+          <SignedDocument packet={packet} />
+        </div>
+      ))}
       {message ? <p className="mt-3 text-sm text-muted">{message}</p> : null}
     </section>
   );
 }
 
-function statusLabel(status: PacketSummary["status"]) {
-  if (status === "signed") return "Signed";
-  if (status === "expired") return "Link expired";
-  if (status === "void") return "Withdrawn";
+function statusLabel(packet: PacketSummary) {
+  if (packet.status === "signed") return packet.signedAt ? `Signed ${formatWhen(packet.signedAt)}` : "Signed";
+  if (packet.status === "expired") return "Link expired";
+  if (packet.status === "void") return "Withdrawn";
   return "Waiting for a signature";
 }
