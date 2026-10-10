@@ -14,7 +14,7 @@ function publishedLabel(value: string | null) {
 }
 
 export function journalCoverPath(slug: string) {
-  return `/journal/${slug}/opengraph-image`;
+  return `/journal/${slug}/cover`;
 }
 
 export function JournalArticleView({ article }: { article: JournalArticle }) {
