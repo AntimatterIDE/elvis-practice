@@ -7,6 +7,7 @@ const allowed = new Set([
   "lib/env.ts",
   "lib/portal/supabase-store.ts",
   "lib/stedi/record.ts",
+  "lib/agreements/store.ts",
   "app/admin/actions.ts",
   "scripts/seed-content.ts",
 ]);
