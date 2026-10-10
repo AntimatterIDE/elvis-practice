@@ -3,12 +3,10 @@ import { coverFonts } from "@/lib/journal/cover-font";
 import { publishedJournalArticle } from "@/lib/journal/store";
 import { canonicalOrigin, practice } from "@/lib/site";
 
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
-export const alt = "Journal note from The Alignment Clinic";
+const size = { width: 1200, height: 630 };
 
-export default async function JournalCoverImage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export async function GET(_request: Request, context: { params: Promise<{ slug: string }> }) {
+  const { slug } = await context.params;
   const article = await publishedJournalArticle(slug);
   const title = article?.title || practice.name;
   const fonts = await coverFonts(title);
