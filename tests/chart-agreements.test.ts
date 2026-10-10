@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { unassignedReason } from "@/lib/agreements/match";
 import { starterAgreements } from "@/lib/agreements/starters";
 import { defaultDocuments, withDocumentSlots } from "@/lib/rcm/chart";
 import type { ChartDocument } from "@/lib/rcm/types";
@@ -20,6 +21,40 @@ describe("starter agreements", () => {
       expect(item.body.length).toBeLessThanOrEqual(12000);
       expect(item.body.includes("$")).toBe(false);
     }
+  });
+});
+
+describe("chart agreement matching", () => {
+  const packet = {
+    recipientEmail: "signer@example.com",
+    recipientName: "Elena Voss",
+  };
+
+  it("keeps a signed copy on the chart when the name matches and the email does not", () => {
+    expect(
+      unassignedReason(packet, {
+        email: "chart@example.com",
+        name: "Elena Voss",
+      }),
+    ).toBe("name");
+  });
+
+  it("prefers an exact email match", () => {
+    expect(
+      unassignedReason(packet, {
+        email: "signer@example.com",
+        name: "Someone Else",
+      }),
+    ).toBe("email");
+  });
+
+  it("does not attach a copy for a different person", () => {
+    expect(
+      unassignedReason(packet, {
+        email: "other@example.com",
+        name: "Ada Lovelace",
+      }),
+    ).toBeNull();
   });
 });
 

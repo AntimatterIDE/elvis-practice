@@ -11,10 +11,20 @@ import {
   voidPracticeAgreement,
 } from "@/app/admin/agreements/actions";
 import type { Agreement, PacketDetail, PacketSummary } from "@/lib/agreements/store";
+import { SignedDocument } from "@/components/admin/signed-document";
 import { Button } from "@/components/ui/button";
+import { formatWhen } from "@/lib/rcm/format";
 import { Field, PageHeader, fieldClass, panelClass } from "@/components/admin/rcm/ui";
 
-export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[]; packets: PacketSummary[] }) {
+export function AgreementsDesk({
+  agreements,
+  packets,
+  signedCopies,
+}: {
+  agreements: Agreement[];
+  packets: PacketSummary[];
+  signedCopies: PacketDetail[];
+}) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(agreements[0]?.id ?? "");
   const selected = agreements.find((item) => item.id === selectedId) ?? null;
@@ -158,6 +168,14 @@ export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[
         <Button className="mt-4" type="submit" disabled={pending || !selectedId}>Send</Button>
         {sendNote ? <p className="mt-3 text-sm text-muted">{sendNote}</p> : null}
       </form>
+      {signedCopies.length > 0 ? (
+        <section className="grid gap-4">
+          <h2 className="font-display text-2xl">Signed copies</h2>
+          {signedCopies.map((packet) => (
+            <SignedDocument key={packet.id} packet={packet} />
+          ))}
+        </section>
+      ) : null}
       <section>
         <h2 className="font-display text-2xl">Sent copies</h2>
         <ul className="mt-4 divide-y divide-line border-y border-line">
@@ -167,11 +185,21 @@ export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[
               <div>
                 <p className="font-semibold">{packet.title}</p>
                 <p className="text-sm text-muted">
-                  {packet.recipientName} · {packet.recipientEmail} · {label(packet.status)}
+                  {packet.recipientName} · {packet.recipientEmail} · {label(packet)}
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <Button type="button" variant="secondary" disabled={pending} onClick={() => void signedCopy(packet.id).then((result) => result.ok && setOpenCopy(result.packet))}>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  disabled={pending}
+                  onClick={() =>
+                    void signedCopy(packet.id).then((result) => {
+                      if (result.ok) setOpenCopy(result.packet);
+                      else setSendNote(result.message);
+                    })
+                  }
+                >
                   Open
                 </Button>
                 {packet.status === "sent" || packet.status === "expired" ? (
@@ -189,32 +217,14 @@ export function AgreementsDesk({ agreements, packets }: { agreements: Agreement[
           ))}
         </ul>
       </section>
-      {openCopy ? (
-        <article className={panelClass}>
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className="font-display text-2xl">{openCopy.title}</h2>
-              <p className="mt-1 text-sm text-muted">
-                {openCopy.signerName ? `Signed by ${openCopy.signerName}` : openCopy.recipientName} · {label(openCopy.status)}
-              </p>
-            </div>
-            <Button type="button" variant="ghost" onClick={() => setOpenCopy(null)}>Close</Button>
-          </div>
-          <p className="mt-4 whitespace-pre-wrap text-sm leading-relaxed">{openCopy.body}</p>
-          {openCopy.signaturePng ? (
-            // Stored signature from this practice's signing page.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={openCopy.signaturePng} alt={`Signature of ${openCopy.signerName}`} className="mt-4 h-28 rounded-2xl border border-line bg-white" />
-          ) : null}
-        </article>
-      ) : null}
+      {openCopy ? <SignedDocument packet={openCopy} onClose={() => setOpenCopy(null)} /> : null}
     </main>
   );
 }
 
-function label(status: PacketSummary["status"]) {
-  if (status === "sent") return "Waiting for a signature";
-  if (status === "signed") return "Signed";
-  if (status === "expired") return "Link expired";
+function label(packet: PacketSummary) {
+  if (packet.status === "sent") return "Waiting for a signature";
+  if (packet.status === "signed") return packet.signedAt ? `Signed ${formatWhen(packet.signedAt)}` : "Signed";
+  if (packet.status === "expired") return "Link expired";
   return "Withdrawn";
 }

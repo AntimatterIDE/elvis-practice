@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { sendClinicEmail } from "@/lib/bird/send";
 import {
+  attachPackets,
   createPacket,
   deleteAgreement,
   listAgreements,
@@ -12,6 +13,7 @@ import {
   saveAgreement,
   voidPacket,
 } from "@/lib/agreements/store";
+import type { PacketDetail } from "@/lib/agreements/store";
 import { canonicalOrigin } from "@/lib/site";
 import { getStaffSession } from "@/lib/supabase/session";
 
@@ -122,12 +124,25 @@ export async function voidPracticeAgreement(id: string) {
   return { ok: true, message: "The unsigned link no longer works." };
 }
 
-export async function agreementsForChart(patientId: string, email = "") {
+export async function agreementsForChart(patientId: string, email = "", name = "") {
   if (!(await gate())) return { ok: false as const, message: "Sign in as staff before opening agreements." };
-  const [agreements, packets] = await Promise.all([listAgreements(), listPackets(patientId, email)]);
+  const [agreements, packets] = await Promise.all([listAgreements(), listPackets(patientId, email, name)]);
   if (!agreements.ok) return agreements;
   if (!packets.ok) return packets;
-  return { ok: true as const, agreements: agreements.agreements.map(({ id, title }) => ({ id, title })), packets: packets.packets };
+  const loose = packets.packets.filter((packet) => !packet.patientId).map((packet) => packet.id);
+  if (patientId && loose.length) await attachPackets(patientId, loose);
+  const copies: PacketDetail[] = [];
+  for (const packet of packets.packets) {
+    if (packet.status !== "signed") continue;
+    const detail = await readPacket(packet.id);
+    if (detail.ok) copies.push({ ...detail.packet, patientId: detail.packet.patientId || patientId });
+  }
+  return {
+    ok: true as const,
+    agreements: agreements.agreements.map(({ id, title }) => ({ id, title })),
+    packets: packets.packets.map((packet) => ({ ...packet, patientId: packet.patientId || patientId })),
+    copies,
+  };
 }
 
 export async function signedCopy(id: string) {
