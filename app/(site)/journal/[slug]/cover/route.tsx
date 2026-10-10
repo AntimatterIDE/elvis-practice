@@ -1,7 +1,9 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { coverFonts } from "@/lib/journal/cover-font";
 import { publishedJournalArticle } from "@/lib/journal/store";
-import { canonicalOrigin, practice } from "@/lib/site";
+import { practice } from "@/lib/site";
 
 const size = { width: 1200, height: 630 };
 
@@ -9,7 +11,10 @@ export async function GET(_request: Request, context: { params: Promise<{ slug: 
   const { slug } = await context.params;
   const article = await publishedJournalArticle(slug);
   const title = article?.title || practice.name;
-  const fonts = await coverFonts(title);
+  const [fonts, mark] = await Promise.all([
+    coverFonts(title).catch(() => []),
+    readFile(join(process.cwd(), "public/brand/social-avatar.png")).then((file) => `data:image/png;base64,${file.toString("base64")}`),
+  ]);
   const titleSize = title.length > 90 ? 48 : title.length > 60 ? 58 : 72;
 
   return new ImageResponse(
@@ -25,7 +30,7 @@ export async function GET(_request: Request, context: { params: Promise<{ slug: 
     >
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <img src={`${canonicalOrigin()}/brand/social-avatar.png`} width={84} height={84} alt="" />
+          <img src={mark} width={84} height={84} alt="" />
           <div style={{ display: "flex", fontFamily: "Jakarta", fontSize: 28, color: "#9fe3d8" }}>Journal</div>
         </div>
         <div

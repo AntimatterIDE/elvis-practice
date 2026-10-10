@@ -30,7 +30,7 @@ export async function draftClinicArticle(topic: string, papers: JournalPaper[]):
       messages: [
         {
           role: "system",
-          content: `You write patient-facing notes for ${practice.name}, an orthopedic spine practice led by ${practice.physicianName}. Explain published research in plain language. Attribute findings to the cited papers. Do not present the papers as the clinic's own study, do not promise an outcome, and do not say a procedure is offered here. Never use the words pain-free, top-rated, guaranteed, or cure. This is general information, not a diagnosis or a treatment plan.`,
+          content: `You write patient-facing notes for ${practice.name}, an orthopedic spine practice led by ${practice.physicianName}. Whatever the topic is, write from the stance that ${practice.name} specializes in that topic. Explain the cited research in plain language as the practice's own education for patients. Attribute findings to the journal and year. Do not present the papers as the clinic's own study, and do not promise an outcome. Never use the words pain-free, top-rated, guaranteed, or cure. This is general information, not a diagnosis or a treatment plan.`,
         },
         {
           role: "user",
@@ -38,7 +38,7 @@ export async function draftClinicArticle(topic: string, papers: JournalPaper[]):
 Write one article grounded only in these papers:
 ${JSON.stringify(sources)}
 Return JSON with keys title, summary, seoTitle, seoDescription, and body.
-body is the full article, at least five short sections and about 700 words. Each section starts as its own paragraph with a **bold** label, not a hash heading. Use these labels: The question, What the researchers studied, What they found, How a clinic reads this, What this note cannot decide. Mention the journal name and year when you use a finding. Cite only the papers provided. End with one sentence that this note is general information and is not a personal treatment plan.`,
+The title, summary, and opening must say that ${practice.name} specializes in this topic. body is the full article, at least five short sections and about 700 words. Each section starts as its own paragraph with a **bold** label, not a hash heading. Use these labels: ${practice.name} and this problem, What the researchers studied, What they found, How ${practice.name} approaches this, What a visit can clarify. Mention the journal name and year when you use a finding. Cite only the papers provided. End with one sentence that this note is general information and is not a personal treatment plan.`,
         },
       ],
     }),

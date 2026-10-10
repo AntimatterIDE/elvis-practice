@@ -40,6 +40,30 @@ export function papersFromEuropePmc(payload: unknown): JournalPaper[] {
   return papers;
 }
 
+export function papersForDraft(value: unknown): JournalPaper[] {
+  if (!Array.isArray(value)) return [];
+  const papers: JournalPaper[] = [];
+  const seen = new Set<string>();
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const row = item as Partial<JournalPaper>;
+    const pmid = String(row.pmid ?? "").trim();
+    const title = String(row.title ?? "").replace(/\s+/g, " ").trim();
+    if (!/^\d{4,12}$/.test(pmid) || title.length < 8 || seen.has(pmid)) continue;
+    seen.add(pmid);
+    papers.push({
+      pmid,
+      title: title.slice(0, 300),
+      journal: String(row.journal ?? "Journal").replace(/\s+/g, " ").trim().slice(0, 160) || "Journal",
+      year: String(row.year ?? "").trim().slice(0, 8),
+      authors: String(row.authors ?? "").replace(/\s+/g, " ").trim().slice(0, 240),
+      abstract: String(row.abstract ?? "").replace(/\s+/g, " ").trim().slice(0, 1200),
+      doi: row.doi ? String(row.doi).trim().slice(0, 80) : null,
+    });
+  }
+  return papers.slice(0, 5);
+}
+
 export function articleSlug(title: string) {
   const slug = title
     .toLowerCase()

@@ -3,7 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { draftClinicArticle } from "@/lib/journal/draft";
-import { papersByPmids, searchSpineJournals } from "@/lib/journal/search";
+import { papersForDraft } from "@/lib/journal/papers";
+import { searchSpineJournals } from "@/lib/journal/search";
 import {
   approveJournalArticle,
   deleteJournalArticle,
@@ -28,6 +29,7 @@ export type FoundPaper = {
   journal: string;
   year: string;
   authors: string;
+  abstract: string;
   doi: string | null;
 };
 
@@ -36,9 +38,7 @@ export async function findJournalPapers(topic: string): Promise<{ papers: FoundP
   if (!session) return { error: "Sign in again to draft an article." };
   try {
     const papers = await searchSpineJournals(topic.trim().slice(0, 180));
-    return {
-      papers: papers.map(({ abstract: _abstract, ...paper }) => paper),
-    };
+    return { papers };
   } catch (error) {
     return { error: error instanceof Error ? error.message : "The journal search did not finish." };
   }
@@ -46,13 +46,14 @@ export async function findJournalPapers(topic: string): Promise<{ papers: FoundP
 
 export async function composeJournalDraft(
   topic: string,
-  pmids: string[],
+  found: FoundPaper[],
 ): Promise<{ id: string; title: string } | { error: string }> {
   const session = await staff();
   if (!session) return { error: "Sign in again to draft an article." };
   if (!journalStorageReady()) return { error: "Article drafts save after Supabase is connected." };
+  const papers = papersForDraft(found);
+  if (papers.length < 3) return { error: "The search did not keep enough papers to draft from." };
   try {
-    const papers = await papersByPmids(pmids);
     const copy = await draftClinicArticle(topic.trim().slice(0, 180), papers);
     const article = await saveJournalDraft(copy, papers);
     revalidatePath("/admin/journal");
