@@ -97,10 +97,9 @@ p {
   text-underline-offset: 0.18em;
 }
 
-.journal-prose p > strong:first-child {
-  display: block;
-  margin-top: 2.25rem;
-  margin-bottom: 0.45rem;
+.journal-prose h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
   font-family: var(--font-display), Georgia, "Times New Roman", serif;
   font-size: 1.75rem;
   font-weight: 550;
@@ -109,7 +108,7 @@ p {
   color: var(--color-ink);
 }
 
-.journal-prose p:first-child > strong:first-child {
+.journal-prose section:first-child h2 {
   margin-top: 0;
 }
 

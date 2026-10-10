@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { journalBody } from "@/lib/journal/body";
+import { journalSections, readingMinutes } from "@/lib/journal/sections";
 import { parseJournalDraft } from "@/lib/journal/draft-json";
 import { articleSlug, journalSearchQuery, papersForDraft, papersFromEuropePmc } from "@/lib/journal/papers";
 import { explainAdsError } from "@/lib/ads/access";
@@ -59,6 +60,19 @@ describe("journal research", () => {
     expect(body).not.toMatch(/emergency department/i);
     expect(body).toContain("A useful paragraph.");
     expect(body).toContain("Another paragraph.");
+  });
+
+  it("splits a note into the labeled sections", () => {
+    const sections = journalSections(
+      "**The Alignment Clinic and this problem** Opening paragraph.\n\n**What they found** A finding from the papers.",
+    );
+    expect(sections.map((section) => section.title)).toEqual([
+      "The Alignment Clinic and this problem",
+      "What they found",
+    ]);
+    expect(sections[0]?.body).toBe("Opening paragraph.");
+    expect(sections[1]?.id).toBe("what-they-found");
+    expect(readingMinutes("word ".repeat(220))).toBe(1);
   });
 
   it("rejects a draft that is too short to publish", () => {
