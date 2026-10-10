@@ -26,6 +26,12 @@ const serverEnvSchema = z.object({
   CONTACT_INBOX: z.string().trim().optional(),
   INDEXING_ENABLED: z.enum(["true", "false"]).default("false"),
   CONTENT_SOURCE: z.enum(["file", "supabase"]).default("file"),
+  NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().trim().optional(),
+  GA4_PROPERTY_ID: z.string().trim().optional(),
+  GA4_SERVICE_ACCOUNT_JSON: z.string().trim().optional(),
+  GOOGLE_ADS_CAMPAIGN_ID: z.string().trim().optional(),
+  OPENAI_API_KEY: z.string().trim().min(1).optional(),
+  OPENAI_MODEL: z.string().trim().min(1).optional(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
@@ -48,6 +54,12 @@ export function readServerEnv(source: NodeJS.ProcessEnv = process.env): ServerEn
     CONTACT_INBOX: source.CONTACT_INBOX || undefined,
     INDEXING_ENABLED: source.INDEXING_ENABLED || undefined,
     CONTENT_SOURCE: source.CONTENT_SOURCE || undefined,
+    NEXT_PUBLIC_GA_MEASUREMENT_ID: source.NEXT_PUBLIC_GA_MEASUREMENT_ID || undefined,
+    GA4_PROPERTY_ID: source.GA4_PROPERTY_ID || undefined,
+    GA4_SERVICE_ACCOUNT_JSON: source.GA4_SERVICE_ACCOUNT_JSON || undefined,
+    GOOGLE_ADS_CAMPAIGN_ID: source.GOOGLE_ADS_CAMPAIGN_ID || undefined,
+    OPENAI_API_KEY: source.OPENAI_API_KEY || undefined,
+    OPENAI_MODEL: source.OPENAI_MODEL || undefined,
   });
 
   if (!parsed.success) {

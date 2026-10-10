@@ -9,6 +9,8 @@ const siteLinks = [
   ["/admin/conditions", "Conditions"],
   ["/admin/treatments", "Treatments"],
   ["/admin/faqs", "Questions"],
+  ["/admin/journal", "Journal"],
+  ["/admin/ads", "Ads"],
   ["/admin/media", "Media"],
   ["/admin/settings", "Settings"],
   ["/admin/audit", "Audit"],
