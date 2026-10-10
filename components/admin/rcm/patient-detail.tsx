@@ -12,7 +12,6 @@ import type {
   Claim,
   ContactPreference,
   Coverage,
-  DocumentStatus,
   Medication,
   Patient,
   PortalStatus,
@@ -20,6 +19,7 @@ import type {
   Sex,
 } from "@/lib/rcm/types";
 import { PatientReach } from "@/components/admin/rcm/patient-reach";
+import { ChartFiles } from "@/components/admin/rcm/chart-files";
 import { SendAgreement } from "@/components/admin/rcm/send-agreement";
 import { PortalAccess } from "@/components/admin/rcm/portal-access";
 import { Field, LoadingDesk, PageHeader, StatusPill, fieldClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
@@ -32,6 +32,7 @@ const tabs = [
   ["clinical", "Clinical"],
   ["visits", "Visits"],
   ["documents", "Documents"],
+  ["files", "Files"],
   ["billing", "Billing"],
 ] as const;
 
@@ -154,7 +155,8 @@ export function PatientDetail({ id }: { id: string }) {
         ) : null}
         {tab === "clinical" ? <Clinical patient={patient} onSave={patchPatient} /> : null}
         {tab === "visits" ? <Visits visits={relatedVisits} onUpdate={updateAppointment} /> : null}
-        {tab === "documents" ? <Documents patient={patient} onSave={patchPatient} /> : null}
+        {tab === "documents" ? <Documents patient={patient} /> : null}
+        {tab === "files" ? <ChartFiles patient={patient} onSave={patchPatient} /> : null}
         {tab === "billing" ? <Billing claims={claims.filter((claim) => claim.patientId === id)} /> : null}
       </div>
     </main>
@@ -802,36 +804,13 @@ function Visits({
   );
 }
 
-function Documents({ patient, onSave }: { patient: Patient; onSave: (id: string, patch: Partial<Patient>) => void }) {
+function Documents({ patient }: { patient: Patient }) {
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-4">
+      <p className="max-w-2xl text-sm text-muted">
+        Agreements sent to this person are listed here, including the signed copy. Photos, cards, and videos are on the Files tab.
+      </p>
       <SendAgreement patientId={patient.id} name={patientName(patient)} email={patient.email} />
-      <ul className="divide-y divide-line border-y border-line">
-      {patient.documents.map((document) => (
-        <li key={document.id} className="grid gap-3 py-4 sm:grid-cols-[1fr_12rem] sm:items-center">
-          <div>
-            <p className="font-semibold">{document.name}</p>
-            {document.note ? <p className="text-sm text-muted">{document.note}</p> : null}
-          </div>
-          <select
-            className={fieldClass}
-            value={document.status}
-            aria-label={`${document.name} status`}
-            onChange={(event) =>
-              onSave(patient.id, {
-                documents: patient.documents.map((item) =>
-                  item.id === document.id ? { ...item, status: event.target.value as DocumentStatus } : item,
-                ),
-              })
-            }
-          >
-            <option value="missing">Missing</option>
-            <option value="received">Received</option>
-            <option value="signed">Signed</option>
-          </select>
-        </li>
-      ))}
-      </ul>
     </div>
   );
 }

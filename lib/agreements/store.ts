@@ -1,4 +1,5 @@
 import "server-only";
+import { starterAgreements } from "@/lib/agreements/starters";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 const fortnight = 14 * 24 * 60 * 60 * 1000;
@@ -91,6 +92,22 @@ function summary(row: PacketRow): PacketSummary {
   };
 }
 
+export async function ensureStarterAgreements() {
+  const supabase = client();
+  if (!supabase) return;
+  const existing = await supabase.from("practice_agreements").select("id").limit(1);
+  if (existing.error || (existing.data ?? []).length > 0) return;
+  const now = Date.now();
+  await supabase.from("practice_agreements").insert(
+    starterAgreements.map((item, index) => ({
+      id: item.id,
+      title: item.title,
+      body: item.body,
+      updated_at: new Date(now - index * 1000).toISOString(),
+    })),
+  );
+}
+
 export async function listAgreements(): Promise<{ ok: true; agreements: Agreement[] } | { ok: false; message: string }> {
   const supabase = client();
   if (!supabase) return { ok: false, message: "The practice database is not connected." };
@@ -130,18 +147,33 @@ export async function deleteAgreement(id: string) {
   return { ok: true as const };
 }
 
-export async function listPackets(patientId = "") {
+const packetColumns = "id, token, patient_id, recipient_name, recipient_email, title, status, expires_at, sent_at, signed_at, signer_name";
+
+export async function listPackets(patientId = "", email = "") {
   const supabase = client();
   if (!supabase) return { ok: false as const, message: "The practice database is not connected." };
-  let query = supabase
-    .from("agreement_packets")
-    .select("id, token, patient_id, recipient_name, recipient_email, title, status, expires_at, sent_at, signed_at, signer_name")
-    .order("sent_at", { ascending: false })
-    .limit(80);
+  let query = supabase.from("agreement_packets").select(packetColumns).order("sent_at", { ascending: false }).limit(80);
   if (patientId) query = query.eq("patient_id", patientId);
   const result = await query;
   if (result.error) return { ok: false as const, message: failed(result.error) };
-  return { ok: true as const, packets: ((result.data ?? []) as PacketRow[]).map(summary) };
+  const packets = ((result.data ?? []) as PacketRow[]).map(summary);
+  const address = email.trim().toLowerCase();
+  if (!patientId || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)) return { ok: true as const, packets };
+  const unassigned = await supabase
+    .from("agreement_packets")
+    .select(packetColumns)
+    .is("patient_id", null)
+    .eq("recipient_email", address)
+    .order("sent_at", { ascending: false })
+    .limit(40);
+  if (unassigned.error) return { ok: true as const, packets };
+  const seen = new Set(packets.map((packet) => packet.id));
+  for (const row of (unassigned.data ?? []) as PacketRow[]) {
+    if (seen.has(row.id)) continue;
+    packets.push(summary(row));
+  }
+  packets.sort((a, b) => b.sentAt.localeCompare(a.sentAt));
+  return { ok: true as const, packets };
 }
 
 export async function readPacket(id: string): Promise<{ ok: true; packet: PacketDetail } | { ok: false; message: string }> {

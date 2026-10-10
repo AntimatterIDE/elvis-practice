@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { AgreementsDesk } from "@/components/admin/agreements-desk";
-import { listAgreements, listPackets } from "@/lib/agreements/store";
+import { ensureStarterAgreements, listAgreements, listPackets } from "@/lib/agreements/store";
 import { getStaffSession } from "@/lib/supabase/session";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function AgreementsPage() {
   const staff = await getStaffSession();
   if (!staff) redirect("/admin/login");
+  await ensureStarterAgreements();
   const [agreements, packets] = await Promise.all([listAgreements(), listPackets()]);
   if (!agreements.ok || !packets.ok) {
     return (
