@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { publishJournalDraft, researchAndDraft } from "@/app/admin/journal/actions";
-import { AdminStateForm } from "@/components/admin/state-form";
-import { Field, fieldClass, PageHeader, panelClass } from "@/components/admin/rcm/ui";
-import { Button } from "@/components/ui/button";
+import { JournalControls } from "@/components/admin/journal-controls";
+import { JournalResearch } from "@/components/admin/journal-research";
+import { PageHeader, panelClass } from "@/components/admin/rcm/ui";
 import { listJournalArticles } from "@/lib/journal/store";
 import { getStaffSession } from "@/lib/supabase/session";
 
@@ -15,7 +14,7 @@ export async function JournalDesk() {
   } catch (error) {
     storageError = error instanceof Error ? error.message : "Journal drafts could not be loaded.";
   }
-  const canPublish = staff?.role === "owner" || staff?.role === "admin";
+  const canManage = staff?.role === "owner" || staff?.role === "admin";
 
   return (
     <main>
@@ -24,18 +23,7 @@ export async function JournalDesk() {
         title="Journal"
         lede="Research recent orthopedic spine papers, draft a note in the clinic's voice, and leave it unpublished until you approve it."
       />
-      <section className={`${panelClass} mt-8 max-w-2xl`}>
-        <h2 className="font-display text-2xl">New draft</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted">
-          Leave the topic blank to pull a current spine question from the journals. The draft cites the papers and does not go live until Approve is pressed.
-        </p>
-        <AdminStateForm action={researchAndDraft}>
-          <Field label="Topic">
-            <input name="topic" className={fieldClass} placeholder="Lumbar spinal stenosis" maxLength={180} />
-          </Field>
-          <Button className="justify-self-start">Research journals and draft</Button>
-        </AdminStateForm>
-      </section>
+      <JournalResearch />
       <section className="mt-10 grid gap-4">
         {storageError ? <p className="text-sm text-emergency">{storageError}</p> : null}
         {articles.length === 0 ? (
@@ -43,36 +31,27 @@ export async function JournalDesk() {
         ) : null}
         {articles.map((article) => (
           <article key={article.id} className={panelClass}>
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">
-                  {article.reviewStatus === "approved" ? "Published" : "Draft"}
-                </p>
-                <h2 className="mt-2 font-display text-2xl">{article.title}</h2>
-                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">{article.summary}</p>
-              </div>
-              {article.reviewStatus === "approved" ? (
-                <Link className="text-sm font-semibold text-oxide-deep underline underline-offset-4" href={`/journal/${article.slug}`}>
-                  View
-                </Link>
-              ) : null}
-            </div>
-            <ul className="mt-4 grid gap-1 text-sm text-muted">
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">
+              {article.reviewStatus === "approved" ? "Published" : "Draft"}
+            </p>
+            <h2 className="mt-2 font-display text-2xl">
+              <Link className="underline decoration-oxide/40 underline-offset-4" href={`/admin/journal/${article.id}`}>
+                {article.title}
+              </Link>
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">{article.summary}</p>
+            <ul className="mt-4 grid gap-1 text-sm">
               {article.sources.slice(0, 4).map((source) => (
                 <li key={source.pmid}>
-                  {source.journal} {source.year} · PMID {source.pmid}
+                  <a className="underline underline-offset-4" href={`https://pubmed.ncbi.nlm.nih.gov/${source.pmid}/`}>
+                    {source.journal} {source.year} · PMID {source.pmid}
+                  </a>
                 </li>
               ))}
             </ul>
-            {article.reviewStatus === "draft" && canPublish ? (
-              <AdminStateForm action={publishJournalDraft}>
-                <input type="hidden" name="id" value={article.id} />
-                <Button className="justify-self-start">Approve and publish</Button>
-              </AdminStateForm>
-            ) : null}
-            {article.reviewStatus === "draft" && !canPublish ? (
-              <p className="mt-4 text-sm text-muted">Waiting for an admin to approve this draft.</p>
-            ) : null}
+            <div className="mt-5">
+              <JournalControls article={article} canManage={canManage} />
+            </div>
           </article>
         ))}
       </section>

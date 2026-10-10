@@ -34,8 +34,7 @@ export default function TermsPage() {
           Published pages can change after clinical or legal review.
         </p>
         <p>
-          You agree not to send protected health information through ordinary website forms. The
-          practice does not offer emergency care through this website.
+          You agree not to send protected health information through ordinary website forms.
         </p>
       </div>
     </article>

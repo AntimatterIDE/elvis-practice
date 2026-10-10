@@ -12,6 +12,16 @@ export function StructuredData() {
         url: origin,
         medicalSpecialty: practice.specialty,
         description: practice.description,
+        telephone: practice.phone,
+        email: practice.email,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: practice.street,
+          addressLocality: practice.city,
+          addressRegion: practice.region,
+          postalCode: practice.postalCode,
+          addressCountry: "US",
+        },
       },
       {
         "@type": "Physician",

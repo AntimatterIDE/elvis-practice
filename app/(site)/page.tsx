@@ -174,8 +174,8 @@ export default function HomePage() {
                 Ready when you are.
               </h2>
               <p className="mt-4 max-w-lg text-lg leading-relaxed text-paper">
-                Request a call about a visit. Leave symptoms, images, and insurance numbers off the
-                form. This website is not an emergency department.
+                Request a call about a visit. The office is at {practice.addressLine}. Leave symptoms,
+                images, and insurance numbers off the form.
               </p>
             </div>
             <Link

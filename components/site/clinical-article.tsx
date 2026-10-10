@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { EmergencyNote } from "@/components/site/emergency-note";
 import { Markdown } from "@/components/site/markdown";
 import type { ClinicalDocument } from "@/lib/content/schema";
 
@@ -27,9 +26,6 @@ export function ClinicalArticle({
         </h1>
         <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">{document.summary}</p>
       </header>
-      <div className="mt-10">
-        <EmergencyNote />
-      </div>
       <div className="mt-10 grid gap-4">
         {document.sections.map((section) => (
           <section key={section.id} className="rounded-2xl border border-line bg-card p-6 card-shadow md:p-8">

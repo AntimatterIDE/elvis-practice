@@ -38,9 +38,8 @@ export default function PhysicianPage() {
           </p>
           <p>
             He has practiced spine surgery at Resurgens Orthopaedics in metro Atlanta and at Tulsa
-            Bone and Joint in Oklahoma. Later public profiles list him with a spine practice in New
-            York. Those offices are other practices. This website does not use their phone numbers,
-            street addresses, or hours.
+            Bone and Joint in Oklahoma. He sees patients for The Alignment Clinic at {practice.addressLine}.
+            The practice phone is {practice.phone}, and the office email is {practice.email}.
           </p>
           <p>
             Outside the clinic he founded Music is Medicine, a project that brings live music into
@@ -68,9 +67,8 @@ export default function PhysicianPage() {
           </ul>
           <p className="kicker mt-6 text-oxide-deep">Registry</p>
           <p className="mt-4 text-sm leading-relaxed text-muted">
-            National Provider Identifier {practice.npi}, orthopedic surgery. The federal registry
-            entry was last updated on August 31, 2021, and it records Georgia license number 89867.
-            Hospital appointments are confirmed when surgery is scheduled.
+            National Provider Identifier {practice.npi}, orthopedic surgery. Hospital appointments
+            are confirmed when surgery is scheduled.
           </p>
         </aside>
       </div>

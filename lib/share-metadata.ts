@@ -19,9 +19,12 @@ export function publicPageMetadata(input: {
   description: string;
   canonical: string;
   robots?: Metadata["robots"];
+  image?: { url: string; alt: string };
 }): Metadata {
   const title = absoluteTitle(input.title);
-  const images = [shareImage];
+  const images = input.image
+    ? [{ url: input.image.url, width: 1200, height: 630, alt: input.image.alt }]
+    : [shareImage];
   return {
     title: input.title,
     description: input.description,

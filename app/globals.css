@@ -97,6 +97,22 @@ p {
   text-underline-offset: 0.18em;
 }
 
+.journal-prose p > strong:first-child {
+  display: block;
+  margin-top: 2.25rem;
+  margin-bottom: 0.45rem;
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-size: 1.75rem;
+  font-weight: 550;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.journal-prose p:first-child > strong:first-child {
+  margin-top: 0;
+}
+
 .hero-panel {
   background:
     radial-gradient(520px 280px at 88% 18%, rgb(159 227 216 / 0.28), transparent 60%),
