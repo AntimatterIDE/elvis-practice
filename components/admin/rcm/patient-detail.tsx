@@ -20,6 +20,7 @@ import type {
   Sex,
 } from "@/lib/rcm/types";
 import { PatientReach } from "@/components/admin/rcm/patient-reach";
+import { SendAgreement } from "@/components/admin/rcm/send-agreement";
 import { PortalAccess } from "@/components/admin/rcm/portal-access";
 import { Field, LoadingDesk, PageHeader, StatusPill, fieldClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
@@ -803,7 +804,9 @@ function Visits({
 
 function Documents({ patient, onSave }: { patient: Patient; onSave: (id: string, patch: Partial<Patient>) => void }) {
   return (
-    <ul className="divide-y divide-line border-y border-line">
+    <div className="grid gap-8">
+      <SendAgreement patientId={patient.id} name={patientName(patient)} email={patient.email} />
+      <ul className="divide-y divide-line border-y border-line">
       {patient.documents.map((document) => (
         <li key={document.id} className="grid gap-3 py-4 sm:grid-cols-[1fr_12rem] sm:items-center">
           <div>
@@ -828,7 +831,8 @@ function Documents({ patient, onSave }: { patient: Patient; onSave: (id: string,
           </select>
         </li>
       ))}
-    </ul>
+      </ul>
+    </div>
   );
 }
 

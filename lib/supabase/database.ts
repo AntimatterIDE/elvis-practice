@@ -241,6 +241,59 @@ export type Database = {
         { token_hash: string; patient_id: string; expires_at: string },
         { expires_at?: string }
       >;
+      practice_agreements: Table<
+        { id: string; title: string; body: string; created_at: string; updated_at: string },
+        { id: string; title: string; body: string; created_at?: string; updated_at?: string },
+        { title?: string; body?: string; updated_at?: string }
+      >;
+      agreement_packets: Table<
+        {
+          id: string;
+          agreement_id: string | null;
+          token: string;
+          patient_id: string | null;
+          recipient_name: string;
+          recipient_email: string;
+          title: string;
+          body: string;
+          status: string;
+          expires_at: string;
+          sent_at: string;
+          signed_at: string | null;
+          signer_name: string | null;
+          signature_png: string | null;
+          signer_ip: string | null;
+          sent_by: string | null;
+          created_at: string;
+        },
+        {
+          id: string;
+          agreement_id?: string | null;
+          token: string;
+          patient_id?: string | null;
+          recipient_name: string;
+          recipient_email: string;
+          title: string;
+          body: string;
+          status: string;
+          expires_at: string;
+          sent_at?: string;
+          signed_at?: string | null;
+          signer_name?: string | null;
+          signature_png?: string | null;
+          signer_ip?: string | null;
+          sent_by?: string | null;
+          created_at?: string;
+        },
+        {
+          status?: string;
+          expires_at?: string;
+          signed_at?: string | null;
+          signer_name?: string | null;
+          signature_png?: string | null;
+          signer_ip?: string | null;
+        }
+      >;
       clearinghouse_transactions: Table<
         {
           id: string;
