@@ -28,6 +28,23 @@ export function JournalProgress() {
 
 export function JournalRail({ sections }: { sections: { id: string; title: string }[] }) {
   const [active, setActive] = useState(sections[0]?.id ?? "");
+  const [top, setTop] = useState(168);
+
+  useEffect(() => {
+    const bar = document.querySelector(".site-bar");
+    const measure = () => {
+      const height = bar instanceof HTMLElement ? bar.offsetHeight : 0;
+      setTop(height + 20);
+    };
+    measure();
+    const watched = new ResizeObserver(measure);
+    if (bar instanceof HTMLElement) watched.observe(bar);
+    window.addEventListener("resize", measure);
+    return () => {
+      watched.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
 
   useEffect(() => {
     if (sections.length < 2) return;
@@ -49,8 +66,12 @@ export function JournalRail({ sections }: { sections: { id: string; title: strin
   if (sections.length < 2) return null;
 
   return (
-    <aside className="hidden w-56 shrink-0 lg:block">
-      <nav className="sticky top-28" aria-label="In this note">
+    <aside className="hidden w-64 shrink-0 self-start lg:block">
+      <nav
+        className="sticky z-30 overflow-y-auto overscroll-contain"
+        style={{ top, maxHeight: `calc(100vh - ${top}px - 16px)` }}
+        aria-label="In this note"
+      >
         <ul className="space-y-1 border-l-2 border-line">
           {sections.map((section) => {
             const current = active === section.id;

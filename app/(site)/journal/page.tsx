@@ -25,7 +25,7 @@ function publishedLabel(value: string | null) {
 export default async function JournalIndexPage() {
   const articles = await publishedJournalArticles();
   const cards = await Promise.all(
-    articles.map(async (article) => ({ article, hero: await findJournalHero(article.slug) })),
+    articles.map(async (article) => ({ article, hero: (await findJournalHero(article.slug))?.url ?? null })),
   );
 
   return (

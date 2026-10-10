@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { journalBody } from "@/lib/journal/body";
+import { chooseJournalPhoto, type JournalPhoto } from "@/lib/journal/photo";
 import { journalSections, readingMinutes } from "@/lib/journal/sections";
 import { parseJournalDraft } from "@/lib/journal/draft-json";
 import { articleSlug, journalSearchQuery, papersForDraft, papersFromEuropePmc } from "@/lib/journal/papers";
@@ -73,6 +74,32 @@ describe("journal research", () => {
     expect(sections[0]?.body).toBe("Opening paragraph.");
     expect(sections[1]?.id).toBe("what-they-found");
     expect(readingMinutes("word ".repeat(220))).toBe(1);
+  });
+
+  it("picks a real photograph and skips generated or illustrated files", () => {
+    const photo = (title: string, extra: Partial<JournalPhoto> = {}): JournalPhoto => ({
+      title,
+      mime: "image/jpeg",
+      width: 1400,
+      height: 900,
+      license: "CC BY 4.0",
+      categories: "",
+      credit: "Photo · Example · Wikimedia Commons",
+      thumbUrl: "https://upload.wikimedia.org/example.jpg",
+      pageUrl: "https://commons.wikimedia.org/wiki/File:Example.jpg",
+      ...extra,
+    });
+    const chosen = chooseJournalPhoto(
+      [
+        photo("3D CT reconstruction of human lumbar spine"),
+        photo("Blausen lumbar spine illustration", { mime: "image/png" }),
+        photo("Lumbar vertebrae drawing"),
+        photo("LUMBAR TREFOIL CANAL", { width: 458, categories: "Medical illustrations of skeletons and bones" }),
+        photo("Lumbar Sacralization", { categories: "X-rays of orthopaedic conditions" }),
+      ],
+      "Understanding Lumbar Spinal Stenosis at The Alignment Clinic",
+    );
+    expect(chosen?.title).toBe("Lumbar Sacralization");
   });
 
   it("rejects a draft that is too short to publish", () => {

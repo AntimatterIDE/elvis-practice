@@ -16,6 +16,7 @@ export default async function JournalEditorPage({ params }: { params: Promise<Pa
   const [article, staff] = await Promise.all([journalArticle(id), getStaffSession()]);
   if (!article) notFound();
   const canManage = staff?.role === "owner" || staff?.role === "admin";
+  const hero = await ensureJournalHero(article);
 
   return (
     <main>
@@ -32,7 +33,7 @@ export default async function JournalEditorPage({ params }: { params: Promise<Pa
       </div>
       <JournalControls article={article} canManage={canManage} />
       <div className="mt-8">
-        <JournalArticleView article={article} heroUrl={await ensureJournalHero(article)} />
+        <JournalArticleView article={article} heroUrl={hero?.url} heroCredit={hero?.credit} />
       </div>
     </main>
   );
