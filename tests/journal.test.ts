@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseJournalDraft } from "@/lib/journal/draft-json";
-import { articleSlug, journalSearchQuery, papersFromEuropePmc } from "@/lib/journal/papers";
+import { articleSlug, journalSearchQuery, papersForDraft, papersFromEuropePmc } from "@/lib/journal/papers";
 import { explainAdsError } from "@/lib/ads/access";
 import { ga4PropertyId, googleAdsCampaignId, googleMeasurementId } from "@/lib/ads/config";
 
@@ -39,6 +39,16 @@ describe("journal research", () => {
     expect(journalSearchQuery("lumbar stenosis")).toContain("lumbar stenosis");
     expect(journalSearchQuery("")).toContain("FIRST_PDATE");
     expect(articleSlug("Cervical Myelopathy, Explained")).toBe("cervical-myelopathy-explained");
+  });
+
+  it("keeps the papers already found so drafting does not search again", () => {
+    const papers = papersForDraft([
+      { pmid: "35503342", title: "Diagnosis and Management of Lumbar Spinal Stenosis", journal: "Journal", year: "2022", authors: "Lee", abstract: "A review.", doi: null },
+      { pmid: "32013278", title: "Percutaneous Endoscopic Lumbar Discectomy", journal: "Journal", year: "2020", authors: "Kim", abstract: "A review.", doi: null },
+      { pmid: "nope", title: "Dropped", journal: "Journal", year: "2021", authors: "", abstract: "", doi: null },
+      { pmid: "32095908", title: "Prevalence of lumbar spinal stenosis", journal: "Journal", year: "2020", authors: "Jensen", abstract: "A review.", doi: null },
+    ]);
+    expect(papers.map((paper) => paper.pmid)).toEqual(["35503342", "32013278", "32095908"]);
   });
 
   it("rejects a draft that is too short to publish", () => {

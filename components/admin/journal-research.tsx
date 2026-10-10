@@ -31,10 +31,7 @@ export function JournalResearch() {
     }
     setPapers(found.papers);
     setPhase(3);
-    const draft = await composeJournalDraft(
-      topic,
-      found.papers.map((paper) => paper.pmid),
-    );
+    const draft = await composeJournalDraft(topic, found.papers);
     if ("error" in draft) {
       setError(draft.error);
       setBusy(false);
