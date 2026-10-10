@@ -14,12 +14,12 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const article = await publishedJournalArticle(slug);
   if (!article) return { title: "Not published", ...unlistedShareMetadata };
-  const heroUrl = await ensureJournalHero(article);
+  const hero = await ensureJournalHero(article);
   return publicPageMetadata({
     title: article.seoTitle,
     description: article.seoDescription,
     canonical: `/journal/${article.slug}`,
-    ...(heroUrl ? { image: { url: heroUrl, alt: article.title } } : {}),
+    ...(hero ? { image: { url: hero.url, alt: article.title } } : {}),
   });
 }
 
@@ -27,6 +27,6 @@ export default async function JournalArticlePage({ params }: { params: Promise<P
   const { slug } = await params;
   const article = await publishedJournalArticle(slug);
   if (!article) notFound();
-  const heroUrl = await ensureJournalHero(article);
-  return <JournalArticleView article={article} heroUrl={heroUrl} />;
+  const hero = await ensureJournalHero(article);
+  return <JournalArticleView article={article} heroUrl={hero?.url} heroCredit={hero?.credit} />;
 }

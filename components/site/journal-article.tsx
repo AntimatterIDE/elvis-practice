@@ -17,7 +17,15 @@ function publishedLabel(value: string | null) {
   }).format(new Date(value));
 }
 
-export function JournalArticleView({ article, heroUrl }: { article: JournalArticle; heroUrl?: string | null }) {
+export function JournalArticleView({
+  article,
+  heroUrl,
+  heroCredit,
+}: {
+  article: JournalArticle;
+  heroUrl?: string | null;
+  heroCredit?: string | null;
+}) {
   const sections = journalSections(article.body);
   const minutes = readingMinutes(article.body);
 
@@ -26,10 +34,15 @@ export function JournalArticleView({ article, heroUrl }: { article: JournalArtic
       <JournalProgress />
       <div className="relative h-44 overflow-hidden sm:h-52 lg:h-60">
         {heroUrl ? (
-          <img src={heroUrl} alt={article.title} width={1536} height={1024} className="h-full w-full object-cover object-center" />
+          <img src={heroUrl} alt={article.title} width={1400} height={900} className="h-full w-full object-cover object-center" />
         ) : (
           <div className="hero-panel h-full" />
         )}
+        {heroCredit ? (
+          <p className="absolute bottom-3 right-3 max-w-[min(24rem,70%)] truncate rounded bg-pine/75 px-2 py-1 text-xs text-paper/85">
+            {heroCredit}
+          </p>
+        ) : null}
       </div>
 
       <div className="mx-auto max-w-6xl px-5 py-8 md:px-8 md:py-12">

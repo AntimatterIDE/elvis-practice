@@ -11,7 +11,7 @@ export async function GET(_request: Request, context: { params: Promise<{ slug: 
   try {
     const hero = await ensureJournalHero(article);
     if (!hero) return new Response("No image", { status: 404 });
-    return Response.redirect(hero, 302);
+    return Response.redirect(hero.url, 302);
   } catch {
     return new Response("No image", { status: 404 });
   }
