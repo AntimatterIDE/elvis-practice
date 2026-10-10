@@ -13,7 +13,6 @@ const sans = Plus_Jakarta_Sans({
 
 const display = Newsreader({
   subsets: ["latin"],
-  axes: ["opsz"],
   style: ["normal", "italic"],
   display: "swap",
   variable: "--font-display-family",

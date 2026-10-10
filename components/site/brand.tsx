@@ -29,6 +29,7 @@ export function BrandMark({
       width={64}
       height={64}
       decoding="async"
+      fetchPriority="low"
       className={cn("size-12 shrink-0", className)}
     />
   );
@@ -43,6 +44,7 @@ export function BrandIcon({ src, className }: { src: string; className?: string 
       width={48}
       height={48}
       decoding="async"
+      fetchPriority="low"
       className={cn("size-8 shrink-0", className)}
     />
   );

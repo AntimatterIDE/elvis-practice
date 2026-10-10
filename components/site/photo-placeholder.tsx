@@ -35,11 +35,13 @@ export function PhotoPlaceholder({
       )}
     >
       <img
-        src="/photos/elvis-francois.jpg"
+        src="/photos/elvis-francois.webp"
         alt={label}
         width={584}
         height={584}
         decoding="async"
+        loading="lazy"
+        fetchPriority="low"
         className="absolute inset-0 h-full w-full object-cover object-[center_18%]"
       />
       <figcaption className="sr-only">{caption}</figcaption>
