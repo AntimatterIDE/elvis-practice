@@ -1,10 +1,18 @@
 import { cn } from "@/lib/utils";
 
-export function BrandLogo({ className, priority = false }: { className?: string; priority?: boolean }) {
+export function BrandLogo({
+  className,
+  priority = false,
+  alt = "The Alignment Clinic",
+}: {
+  className?: string;
+  priority?: boolean;
+  alt?: string;
+}) {
   return (
     <img
       src="/brand/alignment-logo.svg"
-      alt="The Alignment Clinic"
+      alt={alt}
       width={635}
       height={116}
       decoding="async"

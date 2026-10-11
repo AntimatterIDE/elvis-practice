@@ -30,7 +30,11 @@ export function MobileNav() {
         <Dialog.Content className="sheet-in fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col bg-card px-6 py-6 shadow-[0_24px_80px_-32px_rgb(7_30_54_/_0.6)]">
           <div className="flex items-center justify-between gap-3">
             <Dialog.Title className="min-w-0 flex-1">
-              <BrandLogo className="h-auto w-full max-w-[220px]" />
+              <Dialog.Close asChild>
+                <Link href="/" className="inline-flex min-h-11 items-center">
+                  <BrandLogo className="h-auto w-full max-w-[220px]" />
+                </Link>
+              </Dialog.Close>
             </Dialog.Title>
             <Dialog.Close className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-line px-3 text-sm">
               <IconClose className="size-3.5" />
