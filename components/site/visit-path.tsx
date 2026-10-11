@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, type Variants } from "motion/react";
-import ContourTide from "@/components/react-bits/contour-tide";
+import { SiteVault } from "@/components/site/hexagonal-vault";
 import { IconArrow } from "@/components/site/icons";
 
 const sections = [
@@ -40,22 +40,10 @@ const rise: Variants = {
 
 export function VisitPath() {
   return (
-    <ContourTide
-      className="min-h-[40rem] w-full"
-      backgroundColor="#f3f7fb"
-      colors={["#7f97a8", "#0b1f33"]}
-      density={0.45}
-      waveHeight={0.65}
-      choppiness={0.5}
-      glow={0.2}
-      foam={0.35}
-      speed={0.55}
-      horizon={0.2}
-      clickRipples={false}
-    >
+    <SiteVault>
     <section className="px-4 py-12 md:px-8 md:py-20">
       <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-20">
-        <div className="rounded-[var(--rb-r-3xl,18px)] bg-paper/90 p-6 backdrop-blur-sm lg:sticky lg:top-32 lg:p-8">
+        <div className="lg:sticky lg:top-32">
           <p className="kicker text-oxide-deep">Visit</p>
           <h1 className="mt-3 font-display text-[clamp(2.4rem,5vw,4.25rem)] font-medium leading-[1.05] tracking-[-0.03em]">
             What to expect before the first appointment.
@@ -81,7 +69,7 @@ export function VisitPath() {
           initial="show"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
-          className="relative grid gap-8 rounded-[var(--rb-r-3xl,18px)] bg-paper/90 p-6 backdrop-blur-sm lg:p-8"
+          className="relative grid gap-8"
         >
           <span className="absolute bottom-6 left-6 top-6 w-px bg-line" aria-hidden="true" />
           {sections.map((section, index) => (
@@ -100,6 +88,6 @@ export function VisitPath() {
         </motion.ol>
       </div>
     </section>
-    </ContourTide>
+    </SiteVault>
   );
 }
