@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { JournalBrowser } from "@/components/site/journal-browser";
 import { publishedJournalCovers } from "@/lib/journal/hero";
 import { publicPageMetadata } from "@/lib/share-metadata";
 
@@ -12,18 +12,8 @@ export const metadata: Metadata = publicPageMetadata({
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-function publishedLabel(value: string | null) {
-  if (!value) return "Draft";
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "America/New_York",
-  }).format(new Date(value));
-}
-
 export default async function JournalIndexPage() {
-  let cards: { id: string; slug: string; title: string; publishedAt: string | null; hero: string | null }[] = [];
+  let cards: { id: string; slug: string; title: string; summary: string; publishedAt: string | null; hero: string | null }[] = [];
   let unavailable = false;
   try {
     const { articles, covers } = await publishedJournalCovers();
@@ -31,6 +21,7 @@ export default async function JournalIndexPage() {
       id: article.id,
       slug: article.slug,
       title: article.title,
+      summary: article.summary,
       publishedAt: article.publishedAt,
       hero: covers.get(article.slug)?.url ?? null,
     }));
@@ -48,38 +39,18 @@ export default async function JournalIndexPage() {
       </div>
       <div className="relative z-10 mx-auto -mt-10 max-w-6xl px-5 md:px-8">
         <div className="rounded-[2rem] border border-line bg-card px-6 py-10 card-shadow md:px-10 md:py-14">
-          <h2 className="font-display text-3xl md:text-4xl">Latest notes</h2>
           {unavailable ? (
-            <p className="mt-8 rounded-2xl border border-dashed border-line px-4 py-6 text-muted">The journal could not be loaded. Refresh the page.</p>
+            <>
+              <h2 className="font-display text-3xl md:text-4xl">Latest notes</h2>
+              <p className="mt-8 rounded-2xl border border-dashed border-line px-4 py-6 text-muted">The journal could not be loaded. Refresh the page.</p>
+            </>
           ) : cards.length === 0 ? (
-            <p className="mt-8 rounded-2xl border border-dashed border-line px-4 py-6 text-muted">Reviewed notes will appear here.</p>
+            <>
+              <h2 className="font-display text-3xl md:text-4xl">Latest notes</h2>
+              <p className="mt-8 rounded-2xl border border-dashed border-line px-4 py-6 text-muted">Reviewed notes will appear here.</p>
+            </>
           ) : (
-            <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {cards.map((article) => (
-                <li key={article.id}>
-                  <Link href={`/journal/${article.slug}`} className="group flex flex-col gap-3">
-                    <span className="relative block aspect-[4/3] overflow-hidden rounded-xl bg-pine">
-                      {article.hero ? (
-                        <img
-                          src={article.hero}
-                          alt=""
-                          width={1536}
-                          height={1024}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      ) : (
-                        <span className="hero-panel block h-full" />
-                      )}
-                      <span className="absolute right-3 top-3 rounded-full bg-card px-3 py-1 text-xs font-medium shadow-sm">Journal</span>
-                    </span>
-                    <span className="flex flex-col gap-1.5">
-                      <span className="line-clamp-2 text-base font-medium leading-snug group-hover:text-oxide-deep">{article.title}</span>
-                      <span className="text-xs text-muted">{publishedLabel(article.publishedAt)}</span>
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <JournalBrowser notes={cards} />
           )}
         </div>
       </div>
