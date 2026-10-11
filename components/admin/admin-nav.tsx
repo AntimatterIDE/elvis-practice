@@ -20,6 +20,7 @@ const practiceLinks = [
   ["/admin/operations", "Today"],
   ["/admin/operations/patients", "Patients"],
   ["/admin/operations/scheduling", "Schedule"],
+  ["/admin/operations/consultations", "Requests"],
   ["/admin/operations/intake", "Intake"],
   ["/admin/operations/agreements", "Agreements"],
   ["/admin/operations/tasks", "Tasks"],

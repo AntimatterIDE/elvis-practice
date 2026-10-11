@@ -42,7 +42,8 @@ export const contactInquirySchema = z
     name: z.string().trim().min(1, "Enter your name.").max(80),
     email: z.string().trim().max(120).default(""),
     phone: z.string().trim().max(40).default(""),
-    reason: z.enum(["appointment", "general"]),
+    reason: z.enum(["consultation", "general"]),
+    preferredTime: z.string().trim().max(120, "Keep the preferred time short.").default(""),
     note: z.string().trim().max(500, "Keep the note under 500 characters.").default(""),
     website: z.string().max(0, "Leave this field blank.").optional().default(""),
   })

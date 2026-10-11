@@ -1,4 +1,5 @@
 import { Footer } from "@/components/site/footer";
+import { GuideChat } from "@/components/site/guide-chat";
 import { GoogleTag } from "@/components/site/google-tag";
 import { Header } from "@/components/site/header";
 import { StickyContact } from "@/components/site/sticky-contact";
@@ -17,6 +18,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       </main>
       <Footer />
       <StickyContact />
+      <GuideChat />
       <GoogleTag />
     </div>
   );
