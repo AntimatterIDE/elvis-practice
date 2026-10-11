@@ -1,12 +1,5 @@
 import type { Metadata } from "next";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { PageIntro } from "@/components/site/page-intro";
-import { faqs } from "@/lib/content/faqs";
+import { QuestionsBoard } from "@/components/site/questions-board";
 import { publicPageMetadata } from "@/lib/share-metadata";
 
 export const metadata: Metadata = publicPageMetadata({
@@ -16,21 +9,5 @@ export const metadata: Metadata = publicPageMetadata({
 });
 
 export default function QuestionsPage() {
-  return (
-    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
-      <PageIntro
-        kicker="Questions"
-        title="Answers we can stand behind."
-        lede="Practical answers about appointments, emergencies, and what to bring. They are not a diagnosis and they are not an insurance quote."
-      />
-      <Accordion type="single" collapsible className="mt-10 max-w-3xl">
-        {faqs.map((faq) => (
-          <AccordionItem key={faq.question} value={faq.question}>
-            <AccordionTrigger>{faq.question}</AccordionTrigger>
-            <AccordionContent>{faq.answer}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </article>
-  );
+  return <QuestionsBoard />;
 }

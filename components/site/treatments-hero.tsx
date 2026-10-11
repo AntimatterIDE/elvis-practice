@@ -1022,7 +1022,7 @@ export function TreatmentsHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate flex min-h-[calc(100svh-8rem)] w-full touch-pan-y flex-col overflow-hidden bg-paper px-5 pb-24 pt-8 md:px-8 md:pb-12 md:pt-16"
+      className="relative isolate flex w-full touch-pan-y flex-col overflow-hidden bg-paper px-4 pb-8 pt-8 md:min-h-[calc(100svh-8rem)] md:px-8 md:pb-12 md:pt-16"
     >
       <div ref={stageRef} aria-hidden="true" className="pointer-events-none absolute inset-0" />
 
@@ -1054,16 +1054,19 @@ export function TreatmentsHero() {
             <motion.span
               ref={phraseRef}
               variants={surface}
-              className="mt-2 text-balance font-display text-[clamp(3.25rem,10.5vw,8.5rem)] font-medium leading-[0.92] text-ink sm:mt-3"
+              className="mt-2 max-w-[12ch] text-balance font-display text-[clamp(2.7rem,12vw,8.5rem)] font-medium leading-[0.92] text-ink sm:mt-3 sm:max-w-none"
             >
               in plain language.
             </motion.span>
           </h1>
         </div>
 
-        <div className="min-h-16 flex-1 sm:min-h-72" />
+        <div className="min-h-48 flex-1 sm:min-h-72" />
 
-        <motion.div variants={rise} className="flex flex-col gap-7 sm:gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <motion.div
+          variants={rise}
+          className="flex flex-col gap-5 rounded-3xl border border-line/80 bg-paper/92 p-5 shadow-[0_20px_50px_-36px_rgb(7_30_54_/_0.7)] backdrop-blur-md sm:gap-8 md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none lg:flex-row lg:items-end lg:justify-between"
+        >
           <p className="max-w-md text-pretty text-[15px] leading-relaxed text-muted">
             Dr. Francois’s published clinical interests are minimally invasive spine surgery, cervical and lumbar disc
             disease, spinal deformity, and motion-preserving techniques. Whether any operation belongs in your plan is
