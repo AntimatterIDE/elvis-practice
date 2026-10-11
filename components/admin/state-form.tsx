@@ -8,13 +8,15 @@ const initial: AdminFormState = {};
 export function AdminStateForm({
   action,
   children,
+  encType,
 }: {
   action: (state: AdminFormState, formData: FormData) => Promise<AdminFormState>;
   children: React.ReactNode;
+  encType?: "multipart/form-data";
 }) {
   const [state, formAction, pending] = useActionState(action, initial);
   return (
-    <form action={formAction} className="mt-6 grid gap-4">
+    <form action={formAction} encType={encType} className="mt-6 grid gap-4">
       {children}
       {state.error ? (
         <p role="alert" className="text-sm text-emergency">
