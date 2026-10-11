@@ -105,6 +105,35 @@ describe("journal research", () => {
   it("rejects a draft that is too short to publish", () => {
     expect(() => parseJournalDraft(JSON.stringify({ title: "Too short", summary: "no", seoTitle: "no", seoDescription: "no", body: "no" }))).toThrow();
   });
+
+  it("keeps a long search title inside the saved limit", () => {
+    const body = `${"The Alignment Clinic specializes in this procedure and explains the papers in plain language. ".repeat(8)}This note is general information.`;
+    const draft = parseJournalDraft(
+      JSON.stringify({
+        title: "The Alignment Clinic specializes in unilateral laminotomy for bilateral decompression",
+        summary: "The Alignment Clinic specializes in unilateral laminotomy for bilateral decompression and explains what the cited papers found for patients.",
+        seoTitle: "The Alignment Clinic specializes in unilateral laminotomy for bilateral decompression today",
+        seoDescription: "A patient note from The Alignment Clinic on what recent papers found about recovery after this decompression procedure.",
+        body,
+      }),
+    );
+    expect(draft.seoTitle.length).toBeLessThanOrEqual(70);
+    expect(draft.seoTitle.length).toBeGreaterThanOrEqual(8);
+    expect(draft.body.length).toBeGreaterThanOrEqual(400);
+  });
+
+  it("reads a draft when a finding is wrapped in quotes", () => {
+    const body = `${"The Alignment Clinic specializes in robotic guidance. A 2021 paper said the guides were accurate enough for the cases studied. ".repeat(6)}This note is general information.`;
+    const broken = `{
+      "title": "The Alignment Clinic specializes in robotic spine guidance",
+      "summary": "The Alignment Clinic specializes in robotic spine guidance and explains what the cited papers found for patients.",
+      "seoTitle": "Robotic spine guidance",
+      "seoDescription": "A patient note from The Alignment Clinic on what recent papers found about robotic guidance.",
+      "body": "${body.replaceAll('"', "")} A review called the result "accurate" in the cases studied."
+    }`;
+    const draft = parseJournalDraft(broken);
+    expect(draft.body).toContain("accurate");
+  });
 });
 
 describe("ads config", () => {
