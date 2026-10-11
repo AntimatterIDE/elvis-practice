@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { HeroArtwork } from "@/components/site/brand";
 import { CareIndex } from "@/components/site/care-index";
+import { HomeHero } from "@/components/site/home-hero";
+import { HomeJourney } from "@/components/site/home-journey";
 import { IconArrow } from "@/components/site/icons";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
 import { Promises } from "@/components/site/promises";
@@ -15,25 +16,6 @@ export const metadata: Metadata = publicPageMetadata({
   canonical: "/",
 });
 
-const journey = [
-  {
-    label: "Conversation",
-    body: "You describe what has changed, what you have already tried, and what you need to get back to.",
-  },
-  {
-    label: "Evaluation",
-    body: "The physician examines you and explains which findings matter. Tests are ordered when they would change the plan.",
-  },
-  {
-    label: "A plan you can follow",
-    body: "Options are named in plain language, including care that does not involve an operation.",
-  },
-  {
-    label: "Follow-through",
-    body: "You leave with the next step written down: time, therapy, a test, or a procedure.",
-  },
-];
-
 const assurances = [
   { label: "Physician-led", body: "Elvis Francois, MD sees the problem with you, not through a script." },
   { label: "Fellowship-trained", body: "Spine fellowship at Harvard, after orthopedic residency at the Mayo Clinic." },
@@ -44,55 +26,22 @@ const assurances = [
 export default function HomePage() {
   return (
     <>
-      <section className="px-4 pt-4 md:px-8 md:pt-6">
-        <div className="hero-panel relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] text-paper shadow-[0_30px_70px_-40px_rgb(7_30_54_/_0.85)]">
-          <div className="relative grid gap-2 px-6 py-12 md:px-12 md:py-16 lg:grid-cols-[minmax(0,36rem)_minmax(16rem,1fr)] lg:items-center lg:gap-16">
-            <div>
-              <p className="kicker text-foam">{practice.name}</p>
-              <h1 className="mt-4 max-w-xl font-display text-4xl font-semibold leading-[1.08] md:text-6xl">
-                Spine care, <em>carefully aligned.</em>
-              </h1>
-              <p className="mt-5 max-w-xl text-lg leading-relaxed text-paper">
-                {practice.physicianName} is an orthopedic spine surgeon. The work of this practice is
-                to understand the problem, explain it clearly, and decide the next step with you.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/contact"
-                  className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-foam px-5 text-sm font-semibold text-pine hover:bg-white"
-                >
-                  Contact the practice
-                  <IconArrow className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
-                </Link>
-                <Link
-                  href="/about"
-                  className="inline-flex min-h-11 items-center rounded-full border border-white/40 bg-white/10 px-5 text-sm font-semibold text-paper hover:bg-white/15"
-                >
-                  About the clinic
-                </Link>
-              </div>
-              <p className="mt-6 max-w-md text-sm leading-relaxed text-paper">
-                New patients are welcome. Request a call from the contact page. Do not include
-                symptoms or insurance numbers.
-              </p>
-              <p className="kicker mt-5 text-foam">{practice.specialty}</p>
-            </div>
-            <HeroArtwork />
-          </div>
-        </div>
-      </section>
+      <HomeHero />
       <Promises />
 
-      <section className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-14" aria-labelledby="assurance-heading">
-        <h2 id="assurance-heading" className="sr-only">
-          How the practice works
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20" aria-labelledby="assurance-heading">
+        <div className="max-w-2xl">
+          <p className="kicker text-oxide-deep">Practice</p>
+          <h2 id="assurance-heading" className="mt-3 font-display text-3xl font-medium tracking-tight md:text-5xl">
+            How the practice works
+          </h2>
+        </div>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {assurances.map((item, index) => (
             <Reveal key={item.label} delay={index * 0.06}>
-              <article className="clinic-card h-full rounded-2xl border border-line bg-card p-5 card-shadow">
-                <p className="kicker text-oxide-deep">0{index + 1}</p>
-                <h3 className="mt-3 font-display text-xl font-medium leading-tight">{item.label}</h3>
+              <article className="h-full rounded-3xl border border-line bg-card p-6 card-shadow">
+                <p className="font-display text-4xl font-medium text-oxide-deep">0{index + 1}</p>
+                <h3 className="mt-4 font-display text-xl font-medium leading-tight">{item.label}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
               </article>
             </Reveal>
@@ -100,41 +49,38 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20" aria-labelledby="pathways-heading">
+      <section className="mx-auto max-w-6xl px-5 py-4 md:px-8 md:py-8" aria-labelledby="pathways-heading">
         <Reveal>
           <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="kicker text-oxide-deep">Care</p>
-              <h2 id="pathways-heading" className="mt-2 font-display text-3xl font-semibold tracking-tight md:text-4xl">
+              <h2 id="pathways-heading" className="mt-2 font-display text-3xl font-medium tracking-tight md:text-5xl">
                 Where people start
               </h2>
             </div>
             <p className="max-w-md leading-relaxed text-muted">
-              Neck pain, low back pain, and pain that remains after surgery are the problems people
-              most often bring to a first visit.
+              Neck pain, low back pain, and pain that remains after surgery are the problems people most often bring
+              to a first visit.
             </p>
           </div>
         </Reveal>
         <CareIndex />
       </section>
 
-      <section className="bg-mist" aria-labelledby="physician-heading">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 md:grid-cols-[16rem_1fr] md:px-8 md:py-20">
+      <section className="px-4 py-14 md:px-8 md:py-20" aria-labelledby="physician-heading">
+        <div className="mx-auto grid max-w-6xl items-center gap-8 rounded-[1.75rem] border border-line bg-card p-6 card-shadow md:grid-cols-[16rem_1fr] md:p-10">
           <Reveal>
-            <PhotoPlaceholder className="min-h-80" />
+            <PhotoPlaceholder />
           </Reveal>
           <Reveal delay={0.08}>
             <p className="kicker text-oxide-deep">Physician</p>
-            <h2
-              id="physician-heading"
-              className="mt-3 font-display text-4xl font-semibold tracking-tight text-ink md:text-5xl"
-            >
+            <h2 id="physician-heading" className="mt-3 font-display text-4xl font-medium tracking-tight md:text-5xl">
               {practice.physicianName}
             </h2>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
-              Dr. Francois trained in orthopedic surgery at the Mayo Clinic and in spine surgery at
-              Harvard. He treats disc disease, nerve compression, and spinal deformity, and he starts
-              with the care that does not require an operation when that care can solve the problem.
+              Dr. Francois trained in orthopedic surgery at the Mayo Clinic and in spine surgery at Harvard. He treats
+              disc disease, nerve compression, and spinal deformity, and he starts with the care that does not require
+              an operation when that care can solve the problem.
             </p>
             <Link
               href={practice.physicianPath}
@@ -147,40 +93,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20" aria-labelledby="journey-heading">
-        <h2 id="journey-heading" className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
-          A visit, in order
-        </h2>
-        <ol className="relative mt-10 grid gap-4 md:grid-cols-4">
-          {journey.map((step, index) => (
-            <li
-              key={step.label}
-              className="clinic-card rise-in h-full rounded-2xl border border-line bg-card p-5 card-shadow"
-              style={{ animationDelay: `${index * 0.07}s` }}
-            >
-              <span className="kicker text-oxide-deep">0{index + 1}</span>
-              <h3 className="mt-4 font-display text-xl font-medium leading-tight">{step.label}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <HomeJourney />
 
       <section className="px-4 pb-16 md:px-8 md:pb-20">
         <Reveal>
-          <div className="mx-auto flex max-w-6xl flex-col gap-6 rounded-[1.75rem] bg-pine px-6 py-12 text-paper md:flex-row md:items-end md:justify-between md:px-12 md:py-14">
+          <div className="mx-auto flex max-w-6xl flex-col gap-8 rounded-[1.75rem] bg-pine px-6 py-12 text-paper md:flex-row md:items-end md:justify-between md:px-12 md:py-16">
             <div>
-              <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
-                Ready when you are.
-              </h2>
+              <p className="kicker text-foam">New patients</p>
+              <h2 className="mt-3 font-display text-4xl font-medium tracking-tight md:text-5xl">Ready when you are.</h2>
               <p className="mt-4 max-w-lg text-lg leading-relaxed text-paper">
-                Request a call about a visit. The office is at {practice.addressLine}. Leave symptoms,
-                images, and insurance numbers off the form.
+                Request a call about a visit. The office is at {practice.addressLine}. Leave symptoms, images, and
+                insurance numbers off the form.
               </p>
             </div>
             <Link
               href="/contact"
-              className="group inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-foam px-5 text-sm font-semibold text-pine hover:bg-white"
+              className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-foam px-6 text-sm font-semibold text-pine hover:bg-white"
             >
               Contact the practice
               <IconArrow className="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" />
