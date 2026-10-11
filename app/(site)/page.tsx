@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CareIndex } from "@/components/site/care-index";
+import { SiteVault } from "@/components/site/hexagonal-vault";
 import { HomeHero } from "@/components/site/home-hero";
 import { HomeJourney } from "@/components/site/home-journey";
 import { IconArrow } from "@/components/site/icons";
@@ -25,7 +26,7 @@ const assurances = [
 
 export default function HomePage() {
   return (
-    <>
+    <SiteVault>
       <HomeHero />
       <Promises />
 
@@ -116,6 +117,6 @@ export default function HomePage() {
           </div>
         </Reveal>
       </section>
-    </>
+    </SiteVault>
   );
 }
