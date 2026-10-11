@@ -38,7 +38,7 @@ export async function ConsultationDesk() {
       <PageHeader
         kicker="Clinic"
         title="Consultation requests"
-        lede="People ask for a call from the contact page. The office reaches out separately. These notes are not a chart and should not contain symptoms."
+        lede="People leave a name and a way to reach them. Call back when you have time."
       />
       {storageError ? (
         <p role="alert" className="text-sm text-emergency">
