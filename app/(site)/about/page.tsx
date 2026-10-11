@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AboutValues } from "@/components/site/about-values";
-import { SiteVault } from "@/components/site/hexagonal-vault";
+import { SiteDapple } from "@/components/site/site-dapple";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
 import { Card } from "@/components/ui/card";
 import { publicPageMetadata } from "@/lib/share-metadata";
@@ -20,7 +20,7 @@ const notes = [
 
 export default function AboutPage() {
   return (
-    <SiteVault>
+    <SiteDapple>
       <AboutValues />
       <article className="mx-auto grid max-w-6xl gap-4 px-5 py-14 md:px-8 md:py-20 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <div className="grid gap-4">
@@ -42,6 +42,6 @@ export default function AboutPage() {
           </Card>
         </div>
       </article>
-    </SiteVault>
+    </SiteDapple>
   );
 }
