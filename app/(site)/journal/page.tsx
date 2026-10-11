@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ensureJournalHero } from "@/lib/journal/hero";
-import { publishedJournalArticles } from "@/lib/journal/store";
+import { publishedJournalCovers } from "@/lib/journal/hero";
 import { publicPageMetadata } from "@/lib/share-metadata";
 
 export const metadata: Metadata = publicPageMetadata({
@@ -24,10 +23,8 @@ function publishedLabel(value: string | null) {
 }
 
 export default async function JournalIndexPage() {
-  const articles = await publishedJournalArticles();
-  const cards = await Promise.all(
-    articles.map(async (article) => ({ article, hero: (await ensureJournalHero(article))?.url ?? null })),
-  );
+  const { articles, covers } = await publishedJournalCovers();
+  const cards = articles.map((article) => ({ article, hero: covers.get(article.slug)?.url ?? null }));
 
   return (
     <section className="pb-16">

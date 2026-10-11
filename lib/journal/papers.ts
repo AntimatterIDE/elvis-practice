@@ -27,7 +27,7 @@ export function papersFromEuropePmc(payload: unknown): JournalPaper[] {
     const title = result.title?.replace(/<[^>]+>/g, "").trim();
     if (!pmid || !title || seen.has(pmid)) continue;
     seen.add(pmid);
-    papers.push({
+    const paper = {
       pmid,
       title,
       journal: result.journalTitle?.trim() || "Journal",
@@ -35,9 +35,18 @@ export function papersFromEuropePmc(payload: unknown): JournalPaper[] {
       authors: result.authorString?.trim() || "",
       abstract: (result.abstractText || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 1200),
       doi: result.doi?.trim() || null,
-    });
+    };
+    if (!isOrthopedicSpinePaper(paper)) continue;
+    papers.push(paper);
   }
   return papers;
+}
+
+const orthopedicSpine =
+  /\b(spin(?:e|al)|lumbar|thoracic|scoliosis|vertebr|myelopathy|discectomy|laminectomy|laminotomy|radiculopathy|spondyl\w*|fusion|stenosis|deformity|arthroplasty|foraminotomy|kyphosis|lordosis|interbody|disc)\b/i;
+
+export function isOrthopedicSpinePaper(paper: { title: string; abstract: string }) {
+  return orthopedicSpine.test(`${paper.title} ${paper.abstract}`);
 }
 
 export function papersForDraft(value: unknown): JournalPaper[] {
@@ -82,8 +91,74 @@ const spineQueries = [
   'TITLE_ABS:("adult spinal deformity" OR "lumbar fusion") AND FIRST_PDATE:[2022-01-01 TO 2026-12-31]',
 ];
 
-export function journalSearchQuery(topic: string) {
+const searchFiller = new Set([
+  "the",
+  "and",
+  "at",
+  "of",
+  "a",
+  "an",
+  "for",
+  "with",
+  "from",
+  "this",
+  "that",
+  "into",
+  "its",
+  "understanding",
+  "alignment",
+  "clinic",
+  "specializes",
+  "insights",
+  "based",
+  "recent",
+  "research",
+  "about",
+  "what",
+  "they",
+  "found",
+  "model",
+  "care",
+  "note",
+  "notes",
+  "patients",
+  "patient",
+]);
+
+const spineClause =
+  '(TITLE_ABS:spine OR TITLE_ABS:spinal OR TITLE_ABS:lumbar OR TITLE_ABS:scoliosis OR TITLE_ABS:vertebra OR TITLE_ABS:myelopathy OR TITLE_ABS:"spinal fusion" OR TITLE_ABS:discectomy OR TITLE_ABS:stenosis)';
+
+export function journalSearchTerms(topic: string) {
+  return topic
+    .toLowerCase()
+    .replace(/[^\w\s'-]/g, " ")
+    .split(/\s+/)
+    .filter((word) => word.length > 2 && !searchFiller.has(word))
+    .slice(0, 4);
+}
+
+function termClause(term: string) {
+  return /[^a-z0-9-]/i.test(term) ? `TITLE_ABS:"${term}"` : `TITLE_ABS:${term}`;
+}
+
+export function journalSearchAttempts(topic: string) {
   const cleaned = topic.replace(/[^\w\s,'-]/g, " ").replace(/\s+/g, " ").trim().slice(0, 180);
-  if (!cleaned) return spineQueries[new Date().getUTCDate() % spineQueries.length];
-  return `TITLE_ABS:(${cleaned}) AND TITLE_ABS:(spine OR spinal OR lumbar OR cervical) AND FIRST_PDATE:[2020-01-01 TO 2026-12-31]`;
+  const terms = journalSearchTerms(cleaned);
+  if (!cleaned || terms.length === 0) return [spineQueries[new Date().getUTCDate() % spineQueries.length]];
+  const attempts: string[] = [];
+  const smallest = Math.min(2, terms.length);
+  for (let size = terms.length; size >= smallest; size -= 1) {
+    attempts.push(
+      `${terms.slice(0, size).map(termClause).join(" AND ")} AND ${spineClause} AND FIRST_PDATE:[2016-01-01 TO 2026-12-31]`,
+    );
+  }
+  return attempts;
+}
+
+export function journalSearchQuery(topic: string) {
+  return journalSearchAttempts(topic)[0];
+}
+
+export function journalSearchFallback(topic: string) {
+  return journalSearchAttempts(topic)[1] ?? null;
 }

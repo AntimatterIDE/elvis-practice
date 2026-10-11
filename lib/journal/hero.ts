@@ -1,13 +1,27 @@
 import "server-only";
 import { cache } from "react";
-import { searchJournalPhoto } from "@/lib/journal/photo";
+import { journalCoverKind, journalPhotoIsScan, searchJournalPhoto, type JournalPhoto } from "@/lib/journal/photo";
+import { publishedJournalArticles } from "@/lib/journal/store";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 const bucket = "journal-covers";
+const maxScans = 2;
 
 export type JournalHero = {
   url: string;
   credit: string | null;
+};
+
+type CoverArticle = {
+  slug: string;
+  title: string;
+  summary: string;
+  reviewStatus?: string;
+};
+
+type StoredCover = JournalHero & {
+  source: string | null;
+  kind: "photo" | "scan" | null;
 };
 
 function objectUrl(slug: string, name: string) {
@@ -38,34 +52,39 @@ async function readyBucket() {
   return supabase;
 }
 
-async function storedCredit(slug: string) {
-  const url = objectUrl(slug, "json");
-  if (!url) return null;
-  try {
-    const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(8000) });
-    if (!response.ok) return null;
-    const payload = (await response.json()) as { credit?: string };
-    return payload.credit?.trim() || null;
-  } catch {
-    return null;
-  }
-}
-
-export async function findJournalHero(slug: string): Promise<JournalHero | null> {
+async function readStoredCover(slug: string): Promise<StoredCover | null> {
   const url = objectUrl(slug, "jpg");
-  if (!url) return null;
+  const metaUrl = objectUrl(slug, "json");
+  if (!url || !metaUrl) return null;
   try {
-    const response = await fetch(url, { method: "HEAD", cache: "no-store", signal: AbortSignal.timeout(8000) });
-    if (!response.ok) return null;
-    return { url, credit: await storedCredit(slug) };
+    const [image, meta] = await Promise.all([
+      fetch(url, { method: "HEAD", cache: "no-store", signal: AbortSignal.timeout(8000) }),
+      fetch(metaUrl, { cache: "no-store", signal: AbortSignal.timeout(8000) }),
+    ]);
+    if (!image.ok) return null;
+    let credit: string | null = null;
+    let source: string | null = null;
+    let version = "1";
+    let kind: StoredCover["kind"] = null;
+    if (meta.ok) {
+      const payload = (await meta.json()) as { credit?: string; source?: string; version?: string; kind?: string };
+      credit = payload.credit?.trim() || null;
+      source = payload.source?.trim() || null;
+      version = payload.version?.trim() || "1";
+      kind = payload.kind === "photo" || payload.kind === "scan" ? payload.kind : null;
+    }
+    return {
+      url: `${url}?v=${encodeURIComponent(version).slice(0, 48)}`,
+      credit,
+      source,
+      kind,
+    };
   } catch {
     return null;
   }
 }
 
-export async function createJournalHero(topic: string, title: string, slug: string) {
-  const photo = await searchJournalPhoto([title, topic].filter((part) => part.trim()).join(". "));
-  if (!photo) return null;
+async function saveJournalHero(slug: string, photo: JournalPhoto) {
   const file = await fetch(photo.thumbUrl, {
     headers: { "user-agent": "TheAlignmentClinic/1.0 (https://thealignmentclinic.com; admin@thealignmentclinic.com)" },
     signal: AbortSignal.timeout(15000),
@@ -80,18 +99,93 @@ export async function createJournalHero(topic: string, title: string, slug: stri
     upsert: true,
   });
   if (uploaded.error) return null;
+  const version = String(Date.now());
+  const kind = journalPhotoIsScan(photo) ? "scan" : "photo";
   await supabase.storage.from(bucket).upload(
     `${slug}.json`,
-    new TextEncoder().encode(JSON.stringify({ credit: photo.credit, source: photo.pageUrl })),
+    new TextEncoder().encode(JSON.stringify({ credit: photo.credit, source: photo.pageUrl, version, kind })),
     { contentType: "application/json", upsert: true },
   );
   await supabase.storage.from(bucket).remove([`${slug}.png`]);
   const url = objectUrl(slug, "jpg");
-  return url ? { url, credit: photo.credit } : null;
+  if (!url) return null;
+  return { url: `${url}?v=${version}`, credit: photo.credit, source: photo.pageUrl, kind };
 }
 
-export const ensureJournalHero = cache(async (article: { slug: string; title: string; summary: string }) => {
+export async function findJournalHero(slug: string): Promise<JournalHero | null> {
+  const stored = await readStoredCover(slug);
+  return stored ? { url: stored.url, credit: stored.credit } : null;
+}
+
+export async function createJournalHero(
+  topic: string,
+  title: string,
+  slug: string,
+  choice?: { used?: string[]; preferPhoto?: boolean },
+) {
+  const photo = await searchJournalPhoto([title, topic].filter((part) => part.trim()).join(". "), choice);
+  if (!photo) return null;
+  return saveJournalHero(slug, photo);
+}
+
+export async function prepareJournalCovers(articles: CoverArticle[]) {
+  const stored = await Promise.all(articles.map((article) => readStoredCover(article.slug)));
+  const used = new Set<string>();
+  let scans = 0;
+  const covers = new Map<string, JournalHero | null>();
+
+  for (let index = 0; index < articles.length; index += 1) {
+    const article = articles[index];
+    const current = stored[index];
+    const source = current?.source ?? "";
+    const kind = current?.kind;
+    const duplicate = Boolean(source) && used.has(source);
+    const keep = Boolean(current && kind && !duplicate && (kind === "photo" || (kind === "scan" && scans < maxScans)));
+    if (keep && current && kind) {
+      if (kind === "scan") scans += 1;
+      if (source) used.add(source);
+      covers.set(article.slug, { url: current.url, credit: current.credit });
+      continue;
+    }
+    try {
+      const wantScan = scans < maxScans && index % 3 === 2;
+      const photo = await searchJournalPhoto([article.title, article.summary].filter((part) => part.trim()).join(". "), {
+        used: [...used],
+        preferPhoto: !wantScan,
+      });
+      if (!photo) {
+        covers.set(article.slug, current ? { url: current.url, credit: current.credit } : null);
+        if (source) used.add(source);
+        continue;
+      }
+      const saved = await saveJournalHero(article.slug, photo);
+      if (!saved) {
+        covers.set(article.slug, current ? { url: current.url, credit: current.credit } : null);
+        continue;
+      }
+      used.add(saved.source);
+      if (saved.kind === "scan" || journalCoverKind(saved.source) === "scan") scans += 1;
+      covers.set(article.slug, { url: saved.url, credit: saved.credit });
+    } catch {
+      covers.set(article.slug, current ? { url: current.url, credit: current.credit } : null);
+    }
+  }
+
+  return covers;
+}
+
+export const publishedJournalCovers = cache(async () => {
+  const articles = await publishedJournalArticles();
+  const covers = await prepareJournalCovers(articles);
+  return { articles, covers };
+});
+
+export const ensureJournalHero = cache(async (article: CoverArticle) => {
   try {
+    if (article.reviewStatus === "approved") {
+      const { covers } = await publishedJournalCovers();
+      return covers.get(article.slug) ?? null;
+    }
     const existing = await findJournalHero(article.slug);
     if (existing) return existing;
     return await createJournalHero(article.summary, article.title, article.slug);

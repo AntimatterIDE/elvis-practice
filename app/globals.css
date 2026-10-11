@@ -172,10 +172,25 @@ body {
   animation: sheet-in 0.38s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.guide-sheet {
+  animation: guide-sheet 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @keyframes sheet-in {
   from {
     opacity: 0.4;
     transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes guide-sheet {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
