@@ -8,18 +8,18 @@ const banned = ["pain-free", "top-rated", "guaranteed", "cure"];
 
 function closeWithConsultation(reply: string) {
   if (/consult/i.test(reply)) return reply;
-  return `${reply} If you would like the office to be in touch, request a consultation on the contact page.`;
+  return `${reply} If you'd like someone from the office to call, you can request a consultation and they'll reach out when they can.`;
 }
 
 export async function answerGuide(messages: GuideTurn[], page?: string) {
   const latest = messages.at(-1);
-  if (!latest || latest.role !== "user") throw new Error("Ask a question to continue.");
+  if (!latest || latest.role !== "user") throw new Error("Ask a short question and I'll look through what we have.");
   const emergency = guideEmergencyReply(latest.content);
   if (emergency) return emergency;
 
   const apiKey = process.env.OPENAI_API_KEY?.trim();
   if (!apiKey) {
-    return "The guide is not available right now. You can request a consultation on the contact page, and the office will reach out when they can.";
+    return "I'm having a little trouble looking that up right now. If you'd like, you can request a consultation and someone from the office will be in touch.";
   }
 
   const brief = await guideBrief(page);
@@ -44,12 +44,12 @@ export async function answerGuide(messages: GuideTurn[], page?: string) {
     error?: { message?: string };
     choices?: { message?: { content?: string } }[];
   };
-  if (!response.ok) throw new Error(payload.error?.message || "The guide could not answer just now.");
+  if (!response.ok) throw new Error(payload.error?.message || "I'm having a little trouble with that. Try once more in a moment.");
   const reply = payload.choices?.[0]?.message?.content?.trim();
-  if (!reply) throw new Error("The guide could not answer just now.");
+  if (!reply) throw new Error("I'm having a little trouble with that. Try once more in a moment.");
   const lowered = reply.toLowerCase();
   if (banned.some((phrase) => lowered.includes(phrase))) {
-    return "I can only point to what the site already says, and I should not put it that way. Request a consultation on the contact page if you would like the office to be in touch.";
+    return "I hear you. Let me keep this to what we share on the site, and the office can talk it through with you if you request a consultation.";
   }
   return closeWithConsultation(reply);
 }

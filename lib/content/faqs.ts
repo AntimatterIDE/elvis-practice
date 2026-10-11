@@ -4,7 +4,7 @@ export const faqs = [
   {
     question: "How do I make an appointment?",
     answer:
-      "New patients are welcome. Use the contact page to request a consultation. There is no online scheduler. The form accepts a name, a phone number or email, and a preferred time for a call. It does not accept symptoms or insurance numbers. The office keeps the request and reaches out separately.",
+      "New patients are welcome. Use the contact page to request a consultation and leave a name and the best way to reach you. There is no online scheduler. The office keeps the request and calls when they can.",
   },
   {
     question: "Which insurance plans do you accept?",
@@ -14,7 +14,7 @@ export const faqs = [
   {
     question: "Can I describe my symptoms in the contact form?",
     answer:
-      "No. The form is for scheduling and other administrative questions. It asks you not to include symptoms, history, images, or insurance details, and it refuses notes that look clinical.",
+      "The form is so the office knows how to reach you. How you've been feeling is better saved for the call itself.",
   },
   {
     question: "Where is the office?",

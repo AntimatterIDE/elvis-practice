@@ -30,10 +30,11 @@ describe("consultation requests", () => {
 
 describe("site guide", () => {
   it("stays a helper and sends emergencies away from the chat", () => {
-    expect(guideDisclaimer.toLowerCase()).toContain("not a spine expert");
-    expect(guideInstructions).toContain("definitive answer");
+    expect(guideDisclaimer.toLowerCase()).toContain("consultation");
+    expect(guideInstructions).toContain("I hear you");
+    expect(guideInstructions).toContain("definite answer");
     expect(guideInstructions).toContain("based on what this article says");
-    expect(guideInstructions).toContain("request a consultation");
+    expect(guideInstructions).toContain("offer a consultation");
     expect(guideEmergencyReply("I have sudden weakness and cannot walk")).toMatch(/911/);
     expect(guideEmergencyReply("Where is the office?")).toBeNull();
   });

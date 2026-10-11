@@ -7,7 +7,7 @@ import { practice } from "@/lib/site";
 export const metadata: Metadata = publicPageMetadata({
   title: "Contact",
   description:
-    "Request a consultation with The Alignment Clinic. The form is for scheduling questions only and does not accept medical information.",
+    "Request a consultation with The Alignment Clinic. Leave your name and the best way for the office to reach you.",
   canonical: "/contact",
 });
 
@@ -24,7 +24,7 @@ export default function ContactPage() {
       <PageIntro
         kicker="Contact"
         title="Request a consultation."
-        lede="New patients are welcome. Send your name and a way to reach you. The office keeps the request and calls when they can. This form is for scheduling and other non-medical questions."
+        lede="New patients are welcome. Leave your name and the best way to reach you, and someone from the office will be in touch."
       />
       <dl className="mt-10 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {facts.map((fact) => (

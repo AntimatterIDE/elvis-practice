@@ -50,7 +50,7 @@ export async function submitInquiry(_previous: ContactState, formData: FormData)
     return {
       status: "error",
       message:
-        "Please remove symptoms, history, test results, and insurance details. This form cannot accept medical information.",
+        "Thanks for writing. The details of how you've been feeling are better saved for the call. A name and the best way to reach you is all we need here.",
     };
   }
 

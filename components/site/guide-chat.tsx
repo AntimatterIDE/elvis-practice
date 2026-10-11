@@ -20,7 +20,7 @@ export function GuideChat() {
     {
       role: "assistant",
       content:
-        "I can help you find what this site and the journal say. I am not a spine expert, and I will not give a definite answer about your health. If you want the office to call, request a consultation.",
+        "Hey, how can I help you? I can look through what we share on the site and in the journal.",
     },
   ]);
 
@@ -51,13 +51,13 @@ export function GuideChat() {
       });
       const payload = (await response.json()) as { reply?: string; message?: string };
       if (!response.ok || !payload.reply) {
-        setError(payload.message || "The guide could not answer just now.");
+        setError(payload.message || "I'm having a little trouble with that. Try once more, or request a consultation and the office will call.");
         return;
       }
       const reply = payload.reply;
       setTurns((current) => [...current, { role: "assistant" as const, content: reply }].slice(-8));
     } catch {
-      setError("The guide could not answer just now.");
+      setError("I'm having a little trouble with that. Try once more, or request a consultation and the office will call.");
     } finally {
       setPending(false);
     }
@@ -97,7 +97,7 @@ export function GuideChat() {
                 {turn.content}
               </p>
             ))}
-            {pending ? <p className="text-sm text-muted">Looking through the notes…</p> : null}
+            {pending ? <p className="text-sm text-muted">Let me look through what we have…</p> : null}
             {error ? (
               <p role="alert" className="text-sm text-emergency">
                 {error}

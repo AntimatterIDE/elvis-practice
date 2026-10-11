@@ -17,10 +17,6 @@ export function ContactForm() {
 
   return (
     <form action={formAction} className="grid gap-5" noValidate>
-      <p className="rounded-2xl border border-oxide/20 bg-mint px-4 py-3 text-sm leading-relaxed text-ink">
-        Do not include medical information. That means no symptoms, history, images, medicines, or
-        insurance numbers. This form is an administrative inquiry only.
-      </p>
       <div className="grid gap-5 md:grid-cols-2">
         <div className="grid gap-2">
           <Label htmlFor="name">Name</Label>
@@ -74,7 +70,7 @@ export function ContactForm() {
           id="note"
           name="note"
           maxLength={500}
-          placeholder="A short non-medical note, such as the best time for a call."
+          placeholder="Anything that would help us reach you at a good time."
           aria-invalid={state.fieldErrors?.note ? true : undefined}
           aria-describedby={state.fieldErrors?.note ? "note-error" : undefined}
         />
