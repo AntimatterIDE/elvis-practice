@@ -24,10 +24,10 @@ export function Header() {
       </div>
       <header>
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3.5 md:px-8">
-          <Link href="/" className="hidden min-h-11 shrink-0 items-center lg:flex">
-            <BrandLogo priority className="h-11 w-auto max-w-[15rem]" />
+          <Link href="/" className="hidden min-h-11 min-w-0 items-center lg:flex">
+            <BrandLogo priority className="h-11 w-auto max-w-full" />
           </Link>
-          <nav aria-label="Primary" className="hidden items-center gap-4 lg:flex xl:gap-6">
+          <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
             {publicNav.map((item) => (
               <SiteLink
                 key={item.href}
@@ -39,12 +39,12 @@ export function Header() {
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-3">
-            <Link href="/" aria-label="Home" className="inline-flex min-h-11 shrink-0 items-center">
-              <BrandLogo alt="" className="h-8 w-auto max-w-[10rem] lg:h-9 lg:max-w-[8.5rem]" />
+            <Link href="/" aria-label="Home" className="inline-flex min-h-11 shrink-0 items-center lg:hidden">
+              <BrandLogo alt="" className="h-8 w-auto max-w-[10rem]" />
             </Link>
             <Link
               href="/contact"
-              className="hidden min-h-11 items-center rounded-full bg-oxide-deep px-4 text-sm font-semibold text-paper card-shadow hover:bg-oxide-ink xl:inline-flex"
+              className="hidden min-h-11 shrink-0 items-center whitespace-nowrap rounded-full bg-oxide-deep px-4 text-sm font-semibold text-paper card-shadow hover:bg-oxide-ink lg:inline-flex"
             >
               Contact the practice
             </Link>
