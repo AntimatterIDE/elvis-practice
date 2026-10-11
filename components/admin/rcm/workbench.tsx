@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { DaySheet } from "@/components/admin/rcm/day-sheet";
 import { chartGaps, focusClinicDay } from "@/lib/rcm/chart";
 import { formatClinicDay, formatTime, patientName } from "@/lib/rcm/format";
+import { MetricTile } from "@/components/admin/bits/surface";
 import { LoadingDesk, PageHeader, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 import { cn } from "@/lib/utils";
@@ -99,40 +100,34 @@ export function Workbench() {
           </div>
         }
       />
-      <section className="mt-6 grid overflow-hidden rounded-3xl border border-line bg-card shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] sm:grid-cols-2 xl:grid-cols-4">
+      <section className="mt-6 grid overflow-hidden rounded-[var(--rb-r-2xl,14px)] border border-neutral-200/80 bg-white sm:grid-cols-2 xl:grid-cols-4">
         {pulse.map((item, index) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            className={cn("px-5 py-4 transition hover:bg-mist/50", index > 0 && "border-line sm:border-l", index > 1 && "border-t xl:border-t-0")}
-          >
-            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">{item.label}</p>
-            <p className="mt-2 font-display text-3xl tracking-tight">{item.value}</p>
-            <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">{item.detail}</p>
-          </Link>
+          <div key={item.label} className={cn(index > 0 && "border-neutral-200 sm:border-l", index > 1 && "border-t xl:border-t-0")}>
+            <MetricTile href={item.href} label={item.label} value={item.value} detail={item.detail} />
+          </div>
         ))}
       </section>
       <div className="mt-6 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <DaySheet visits={dayVisits} names={names} empty="The schedule is clear." />
-        <aside className="overflow-hidden rounded-3xl border border-line bg-card shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
-          <div className="flex items-end justify-between gap-3 border-b border-line px-5 py-4">
+        <aside className="overflow-hidden rounded-[var(--rb-r-2xl,14px)] border border-neutral-200/80 bg-white">
+          <div className="flex items-end justify-between gap-3 border-b border-neutral-200 px-5 py-4">
             <div>
-              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Front desk</p>
-              <h2 className="mt-1 font-display text-2xl tracking-tight">Needs you</h2>
+              <p className="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Front desk</p>
+              <h2 className="mt-1 text-sm font-medium text-neutral-900">Needs you</h2>
             </div>
-            <Link href="/admin/operations/tasks" className="text-sm underline">
+            <Link href="/admin/operations/tasks" className="text-[13px] text-neutral-700 underline decoration-neutral-300 underline-offset-4">
               All tasks
             </Link>
           </div>
           <ul className="grid">
-            {queue.length === 0 ? <li className="px-5 py-6 text-sm text-muted">Calls, tasks, and charts are caught up.</li> : null}
+            {queue.length === 0 ? <li className="px-5 py-6 text-sm text-neutral-500">Calls, tasks, and charts are caught up.</li> : null}
             {queue.map((item) => (
-              <li key={item.key} className="border-t border-line first:border-t-0">
-                <Link href={item.href} className="grid grid-cols-[4.5rem_1fr] gap-3 px-5 py-4 hover:bg-mist/40">
-                  <span className="pt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-oxide">{item.kicker}</span>
+              <li key={item.key} className="border-t border-neutral-100 first:border-t-0">
+                <Link href={item.href} className="grid grid-cols-[4.5rem_1fr] gap-3 px-5 py-4 hover:bg-neutral-50">
+                  <span className="pt-0.5 text-[11px] font-medium uppercase tracking-wider text-neutral-500">{item.kicker}</span>
                   <span>
-                    <span className="block font-semibold">{item.title}</span>
-                    <span className="mt-0.5 block text-sm text-muted">{item.detail}</span>
+                    <span className="block text-[13px] font-medium text-neutral-900">{item.title}</span>
+                    <span className="mt-0.5 block text-[13px] text-neutral-500">{item.detail}</span>
                   </span>
                 </Link>
               </li>

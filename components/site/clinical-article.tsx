@@ -67,7 +67,7 @@ export function ClinicalArticle({
         <p className="max-w-xl text-muted">
           This page is general information. It does not say whether the care is right for you.
         </p>
-        <Link href="/contact" className="inline-flex min-h-11 items-center justify-center rounded-full bg-oxide-deep px-5 text-center text-sm font-semibold text-paper hover:bg-oxide-ink">
+        <Link href="/contact" className="inline-flex min-h-11 items-center justify-center rounded-[var(--rb-r-lg,10px)] bg-[var(--rb-accent,#0a6e66)] px-5 text-center text-sm font-medium text-[var(--rb-accent-fg,#f3f7fb)] hover:bg-oxide-ink">
           Contact the practice
         </Link>
       </section>

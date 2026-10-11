@@ -13,28 +13,30 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
   if (!staff) redirect("/admin/login");
 
   return (
-    <div className="min-h-full lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
-      <aside className="hidden bg-pine text-paper lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:overflow-y-auto">
-        <div className="flex items-center gap-3 px-4 py-5">
-          <BrandMark tone="reverse" className="size-11" />
+    <div className="min-h-full bg-white lg:grid lg:grid-cols-[16rem_minmax(0,1fr)]">
+      <aside className="hidden border-r border-neutral-200 bg-neutral-50 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:overflow-y-auto">
+        <div className="flex h-14 shrink-0 items-center gap-2.5 px-3">
+          <BrandMark className="size-8" />
           <div className="min-w-0">
-            <p className="truncate font-display text-lg leading-tight">{practice.name}</p>
-            <p className="text-xs text-foam/70">Practice desk</p>
+            <p className="truncate text-[13px] font-medium text-neutral-900">{practice.name}</p>
+            <p className="text-xs text-neutral-500">Practice desk</p>
           </div>
         </div>
-        <div className="px-3 pb-4 md:flex-1">
+        <div className="min-h-0 flex-1 overflow-y-auto px-2 pb-3">
           <AdminNav />
         </div>
-        <div className="border-t border-white/10 px-4 py-4">
-          <p className="text-sm font-semibold">{staff.displayName}</p>
-          <p className="mt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-foam/70">{staff.role}</p>
+        <div className="shrink-0 space-y-2 bg-neutral-100/70 p-3">
+          <p className="truncate text-[13px] font-medium text-neutral-900">{staff.displayName}</p>
+          <p className="text-xs text-neutral-500">{staff.role}</p>
           {staff.userId === "demo-admin" ? (
-            <p className="mt-3 text-xs leading-relaxed text-paper/60">
+            <p className="text-xs leading-relaxed text-neutral-500">
               Demo desk. Intake and portal logins are saved on the server. Other charts stay in this browser until a patient login is created.
             </p>
           ) : null}
-          <form action={signOut} className="mt-4">
-            <button className="text-sm text-paper/70 underline decoration-white/30 underline-offset-4 hover:text-paper">Sign out</button>
+          <form action={signOut}>
+            <button className="text-[13px] text-neutral-600 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900">
+              Sign out
+            </button>
           </form>
         </div>
       </aside>

@@ -151,7 +151,7 @@ export function GuideChat() {
                   : "inset-x-3 bottom-3 max-h-[calc(100%-1.5rem)] rounded-[1.75rem]",
               )}
             >
-              <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-4">
+              <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-5 py-4">
                 <h2 id={titleId} className="min-w-0 font-display text-2xl leading-none">
                   The Alignment Clinic
                 </h2>
@@ -215,7 +215,7 @@ export function GuideChat() {
                     maxLength={800}
                     rows={1}
                     placeholder="Type a question"
-                    className="max-h-24 min-h-12 min-w-0 flex-1 resize-none rounded-full border border-line bg-paper px-4 py-3 text-base outline-none focus:border-oxide"
+                    className="max-h-24 min-h-12 min-w-0 flex-1 resize-none rounded-[var(--rb-r-lg,10px)] border border-neutral-200 bg-white px-4 py-3 text-base outline-none hover:border-neutral-300 focus:border-neutral-900"
                     onChange={(event) => setDraft(event.target.value)}
                     onKeyDown={(event) => {
                       if (event.key === "Enter" && !event.shiftKey) {
@@ -228,14 +228,14 @@ export function GuideChat() {
                     type="submit"
                     aria-label="Send"
                     disabled={pending || draft.trim().length === 0}
-                    className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-oxide-deep text-paper hover:bg-oxide-ink disabled:opacity-50"
+                    className="inline-flex size-12 shrink-0 items-center justify-center rounded-[var(--rb-r-lg,10px)] bg-[var(--rb-accent,#0a6e66)] text-[var(--rb-accent-fg,#f3f7fb)] hover:bg-oxide-ink disabled:opacity-50"
                   >
                     <IconArrow className="h-3 w-5" />
                   </button>
                 </div>
                 <Link
                   href="/contact"
-                  className="flex h-11 items-center justify-center rounded-full bg-oxide-deep px-4 text-sm font-semibold text-paper hover:bg-oxide-ink"
+                  className="flex h-11 items-center justify-center rounded-[var(--rb-r-lg,10px)] bg-[var(--rb-accent,#0a6e66)] px-4 text-sm font-medium text-[var(--rb-accent-fg,#f3f7fb)] hover:bg-oxide-ink"
                   onClick={() => setOpen(false)}
                 >
                   Request a consultation

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ageFromDob, chartGaps, primaryCoverage, visitTypeLabel } from "@/lib/rcm/chart";
-import { claimTotal, formatDay, formatWhen, money, patientName } from "@/lib/rcm/format";
+import { claimTotal, formatDay, formatTime, formatWhen, money, patientName } from "@/lib/rcm/format";
 import type {
   Allergy,
   Appointment,
@@ -22,7 +22,8 @@ import { PatientReach } from "@/components/admin/rcm/patient-reach";
 import { ChartFiles } from "@/components/admin/rcm/chart-files";
 import { SendAgreement } from "@/components/admin/rcm/send-agreement";
 import { PortalAccess } from "@/components/admin/rcm/portal-access";
-import { Field, LoadingDesk, PageHeader, StatusPill, fieldClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
+import { ChartMast, ChartTabs } from "@/components/admin/bits/surface";
+import { Field, LoadingDesk, StatusPill, fieldClass, panelClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
 const tabs = [
@@ -71,46 +72,53 @@ export function PatientDetail({ id }: { id: string }) {
   const gaps = chartGaps(patient);
   const severeAllergy = patient.allergies.some((allergy) => allergy.severity === "severe" || allergy.severity === "moderate");
 
+  const initials = `${patient.firstName.slice(0, 1)}${patient.lastName.slice(0, 1)}`.toUpperCase();
+  const reach = [
+    patient.phone ? { href: `tel:${patient.phone}`, label: patient.phone } : null,
+    patient.email ? { href: `mailto:${patient.email}`, label: "Email" } : null,
+    { href: `/admin/operations/scheduling?patient=${patient.id}`, label: "Schedule" },
+  ].filter((item): item is { href: string; label: string } => Boolean(item));
+
   return (
     <main>
-      <PageHeader
-        kicker={`MRN ${patient.mrn || "new"}`}
-        title={patientName(patient)}
-        lede={patient.preferredName && patient.preferredName !== patient.firstName ? `Goes by ${patient.preferredName}` : undefined}
-        meta={
-          <dl className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-            <Identity label="Date of birth" value={formatDay(patient.dateOfBirth)} />
-            <Identity label="Age" value={age !== null ? `${age} yrs` : ""} />
-            <Identity label="Phone" value={patient.phone || "No phone on file"} />
-            <Identity label="Language" value={patient.language} />
-            <Identity label="Pronouns" value={patient.pronouns} />
-          </dl>
+      <ChartMast
+        initials={initials}
+        status={!patient.allergiesReviewed ? "Allergies not reviewed" : gaps.length ? "Chart still open" : "Chart in order"}
+        live={patient.allergiesReviewed && gaps.length === 0}
+        name={patientName(patient)}
+        handle={`MRN ${patient.mrn || "new"} · ${patient.pronouns || "pronouns not set"}`}
+        line={
+          patient.preferredName && patient.preferredName !== patient.firstName
+            ? `Goes by ${patient.preferredName}. Born ${formatDay(patient.dateOfBirth)}. ${patient.language || "Language not set"}.`
+            : `Born ${formatDay(patient.dateOfBirth)}. ${patient.language || "Language not set"}.`
         }
-        action={
-          <Button asChild>
-            <Link href={`/admin/operations/scheduling?patient=${patient.id}`}>Schedule visit</Link>
-          </Button>
-        }
+        stats={[
+          { value: age !== null ? String(age) : "—", label: "Age" },
+          { value: nextVisit ? formatTime(nextVisit.start) : "None", label: "Next visit" },
+          { value: String(openTasks.length), label: "Open tasks" },
+          { value: coverage ? coverage.payerName : "Self-pay", label: "Coverage" },
+        ]}
+        links={reach}
       />
       {patient.flags.length ? (
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap justify-center gap-2">
           {patient.flags.map((flag) => (
-            <span key={flag} className="rounded-full bg-mist px-2.5 py-1 text-xs uppercase tracking-[0.12em]">
+            <span key={flag} className="rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-xs text-neutral-600">
               {flag}
             </span>
           ))}
         </div>
       ) : null}
       <div
-        className={`mt-5 rounded-2xl border px-4 py-3 text-sm ${
+        className={`mt-4 rounded-[var(--rb-r-2xl,14px)] border px-4 py-3 text-sm ${
           !patient.allergiesReviewed
             ? "border-amber-200 bg-amber-50"
             : severeAllergy
               ? "border-emergency/30 bg-red-50"
-              : "border-line bg-mint/50"
+              : "border-neutral-200 bg-neutral-50"
         }`}
       >
-        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-muted">Allergies</p>
+        <p className="text-[11px] font-medium uppercase tracking-wider text-neutral-500">Allergies</p>
         <p className="mt-1 font-medium">
           {!patient.allergiesReviewed
             ? "Not reviewed. Confirm before prescribing or injecting."
@@ -118,23 +126,10 @@ export function PatientDetail({ id }: { id: string }) {
               ? patient.allergies.map((allergy) => `${allergy.substance} (${allergy.reaction})`).join(" · ")
               : "No known drug allergies."}
         </p>
-        {coverage ? <p className="mt-1 text-muted">{coverage.payerName} · copay {money(coverage.copay)}</p> : null}
+        {coverage ? <p className="mt-1 text-neutral-500">{coverage.payerName} · copay {money(coverage.copay)}</p> : null}
       </div>
       <PatientReach email={patient.email} phone={patient.phone} />
-      <div className="sticky top-14 z-20 mt-6 flex gap-1 overflow-x-auto rounded-2xl border border-line bg-paper/95 p-1 backdrop-blur lg:top-0" role="tablist" aria-label="Chart">
-        {tabs.map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            role="tab"
-            onClick={() => setTab(key)}
-            className={`shrink-0 rounded-xl px-3 py-2 text-sm ${tab === key ? "bg-card font-semibold text-ink shadow-sm" : "text-muted"}`}
-            aria-selected={tab === key}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <ChartTabs tabs={tabs} active={tab} onChange={(key) => setTab(key as Tab)} />
       <div className="mt-6">
         {tab === "overview" ? (
           <Overview
@@ -163,16 +158,6 @@ export function PatientDetail({ id }: { id: string }) {
   );
 }
 
-function Identity({ label, value }: { label: string; value: string }) {
-  if (!value) return null;
-  return (
-    <div>
-      <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-muted">{label}</dt>
-      <dd className="mt-0.5">{value}</dd>
-    </div>
-  );
-}
-
 function Overview({
   patient,
   nextVisit,
@@ -191,7 +176,7 @@ function Overview({
     <div className="grid gap-4 lg:grid-cols-2">
       <PortalAccess patient={patient} />
       {patient.intakeAnswers?.length ? (
-        <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] lg:col-span-2">
+        <section className={`${panelClass} lg:col-span-2`}>
           <h2 className="font-display text-2xl">Intake answers</h2>
           <dl className="mt-3 grid gap-3">
             {patient.intakeAnswers.map((answer) => (
@@ -203,7 +188,7 @@ function Overview({
           </dl>
         </section>
       ) : null}
-      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
+      <section className={panelClass}>
         <h2 className="font-display text-2xl">Next visit</h2>
         {nextVisit ? (
           <p className="mt-3 text-sm">
@@ -219,7 +204,7 @@ function Overview({
           Visit history
         </button>
       </section>
-      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
+      <section className={panelClass}>
         <h2 className="font-display text-2xl">Coverage</h2>
         {coverage ? (
           <p className="mt-3 text-sm">
@@ -238,7 +223,7 @@ function Overview({
           Insurance
         </button>
       </section>
-      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
+      <section className={panelClass}>
         <h2 className="font-display text-2xl">Clinical snapshot</h2>
         <p className="mt-3 text-sm">
           <span className="block font-semibold">Problems</span>
@@ -259,7 +244,7 @@ function Overview({
           Open the clinical chart
         </button>
       </section>
-      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
+      <section className={panelClass}>
         <h2 className="font-display text-2xl">Front desk</h2>
         {gaps.length ? (
           <ul className="mt-3 grid gap-1 text-sm text-muted">
@@ -306,7 +291,7 @@ function Demographics({
 
   return (
     <form
-      className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] sm:grid-cols-2"
+      className={`${panelClass} grid gap-4 sm:grid-cols-2`}
       onSubmit={(event) => {
         event.preventDefault();
         onSave(patient.id, {
@@ -473,7 +458,7 @@ function CoverageDesk({
       {patient.coverages.map((coverage) => (
         <form
           key={coverage.id}
-          className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] sm:grid-cols-2"
+          className={`${panelClass} grid gap-4 sm:grid-cols-2`}
           onSubmit={(event) => {
             event.preventDefault();
             const data = new FormData(event.currentTarget);
@@ -554,7 +539,7 @@ function CoverageDesk({
         </Button>
       ) : null}
       {eligibility.length ? (
-        <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
+        <section className={panelClass}>
           <h2 className="font-display text-2xl">Latest eligibility</h2>
           <ul className="mt-3 grid gap-2 text-sm">
             {eligibility.map((item) => (
@@ -583,7 +568,7 @@ function Clinical({ patient, onSave }: { patient: Patient; onSave: (id: string, 
 
   return (
     <div className="grid gap-4">
-      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
+      <section className={panelClass}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-display text-2xl">Allergies</h2>
           <label className="flex items-center gap-2 text-sm">
@@ -627,7 +612,7 @@ function Clinical({ patient, onSave }: { patient: Patient; onSave: (id: string, 
           </Button>
         </form>
       </section>
-      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
+      <section className={panelClass}>
         <h2 className="font-display text-2xl">Problems</h2>
         <List
           empty="No problems recorded."
@@ -654,7 +639,7 @@ function Clinical({ patient, onSave }: { patient: Patient; onSave: (id: string, 
           </Button>
         </form>
       </section>
-      <section className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
+      <section className={panelClass}>
         <h2 className="font-display text-2xl">Medications</h2>
         <List
           empty="No medications recorded."
@@ -699,7 +684,7 @@ function History({ patient, onSave }: { patient: Patient; onSave: (patch: Partia
   const [surgical, setSurgical] = useState(patient.surgicalHistory);
   return (
     <form
-      className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]"
+      className={`${panelClass} grid gap-4`}
       onSubmit={(event) => {
         event.preventDefault();
         onSave({ medicalHistory: medical, surgicalHistory: surgical });
@@ -755,7 +740,7 @@ function Visits({
   return (
     <ul className="grid gap-4">
       {visits.map((visit) => (
-        <li key={visit.id} className="rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
+        <li key={visit.id} className={panelClass}>
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="font-semibold">{formatWhen(visit.start)}</p>

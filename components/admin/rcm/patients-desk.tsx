@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ageFromDob, chartGaps } from "@/lib/rcm/chart";
 import { formatDay, formatTime, patientName } from "@/lib/rcm/format";
 import type { PatientInput, Sex } from "@/lib/rcm/types";
-import { Field, LoadingDesk, PageHeader, fieldClass, useClinicToday } from "@/components/admin/rcm/ui";
+import { MemberCard } from "@/components/admin/bits/surface";
+import { Field, LoadingDesk, PageHeader, fieldClass, panelClass, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
 const emptyForm: PatientInput = {
@@ -88,9 +89,9 @@ export function PatientsDesk() {
             className={fieldClass}
             aria-label="Search patients"
           />
-          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+          <ul className="mt-4 grid gap-4 sm:grid-cols-2">
             {rows.length === 0 ? (
-              <li className="px-4 py-5 text-sm text-muted">{query.trim() ? "No charts match that search." : "No charts yet. Send an intake link, or add a walk-in."}</li>
+              <li className="px-4 py-5 text-sm text-neutral-500">{query.trim() ? "No charts match that search." : "No charts yet. Send an intake link, or add a walk-in."}</li>
             ) : null}
             {rows.map((patient) => {
               const upcoming = appointments
@@ -105,29 +106,20 @@ export function PatientsDesk() {
               const age = ageFromDob(patient.dateOfBirth, today);
               const initials = `${patient.firstName.slice(0, 1)}${patient.lastName.slice(0, 1)}`.toUpperCase();
               return (
-                <li key={patient.id}>
-                  <Link href={`/admin/operations/patients/${patient.id}`} className="flex h-full items-center gap-4 rounded-2xl border border-line bg-card px-4 py-4 hover:border-oxide/40">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-mist text-xs font-semibold tracking-wide text-pine" aria-hidden>
-                      {initials}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-semibold">{patientName(patient)}</span>
-                      <span className="text-sm text-muted">
-                        DOB {formatDay(patient.dateOfBirth)}
-                        {age !== null ? ` · ${age} yrs` : ""} · MRN {patient.mrn || "new"} · {patient.phone || "No phone"}
-                      </span>
-                    </span>
-                    <span className="hidden text-right text-sm text-muted sm:block">
-                      <span className="block text-ink">{upcoming ? `${formatDay(upcoming.start)} ${formatTime(upcoming.start)}` : "No visit booked"}</span>
-                      <span className="block">{gaps.length ? `${gaps.length} items still open on the chart` : patient.payerName}</span>
-                    </span>
-                  </Link>
-                </li>
+                <MemberCard
+                  key={patient.id}
+                  href={`/admin/operations/patients/${patient.id}`}
+                  initials={initials}
+                  name={patientName(patient)}
+                  meta={`MRN ${patient.mrn || "new"} · ${patient.phone || "No phone"}`}
+                  note={`${formatDay(patient.dateOfBirth)}${age !== null ? ` · ${age} yrs` : ""} · ${upcoming ? `Next ${formatDay(upcoming.start)} ${formatTime(upcoming.start)}` : "No visit booked"}`}
+                  live={gaps.length === 0}
+                />
               );
             })}
           </ul>
         </section>
-        <form onSubmit={onSubmit} className="grid h-fit gap-4 rounded-2xl border border-line bg-card p-5">
+        <form onSubmit={onSubmit} className={`${panelClass} grid h-fit gap-4`}>
           <div>
             <h2 className="font-display text-2xl tracking-tight">Walk-in chart</h2>
             <p className="mt-1 text-sm leading-relaxed text-muted">Use this when the patient is here. Send an intake link when they can fill it out first.</p>

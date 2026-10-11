@@ -1,5 +1,6 @@
 "use client";
 
+import { SiteVault } from "@/components/site/hexagonal-vault";
 import { IconArrow } from "@/components/site/icons";
 import { faqs } from "@/lib/content/faqs";
 import { practice } from "@/lib/site";
@@ -33,7 +34,8 @@ export function QuestionsBoard() {
   };
 
   return (
-    <section className="w-full bg-paper px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <SiteVault>
+    <section className="w-full px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto w-full max-w-6xl">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-10">
           <motion.aside
@@ -137,5 +139,6 @@ export function QuestionsBoard() {
         </div>
       </div>
     </section>
+    </SiteVault>
   );
 }
