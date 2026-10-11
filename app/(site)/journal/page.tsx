@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { findJournalHero } from "@/lib/journal/hero";
+import { ensureJournalHero } from "@/lib/journal/hero";
 import { publishedJournalArticles } from "@/lib/journal/store";
 import { publicPageMetadata } from "@/lib/share-metadata";
 
@@ -11,6 +11,7 @@ export const metadata: Metadata = publicPageMetadata({
 });
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 function publishedLabel(value: string | null) {
   if (!value) return "Draft";
@@ -25,7 +26,7 @@ function publishedLabel(value: string | null) {
 export default async function JournalIndexPage() {
   const articles = await publishedJournalArticles();
   const cards = await Promise.all(
-    articles.map(async (article) => ({ article, hero: (await findJournalHero(article.slug))?.url ?? null })),
+    articles.map(async (article) => ({ article, hero: (await ensureJournalHero(article))?.url ?? null })),
   );
 
   return (

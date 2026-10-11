@@ -102,6 +102,33 @@ describe("journal research", () => {
     expect(chosen?.title).toBe("Lumbar Sacralization");
   });
 
+  it("uses a spine photograph for a note that is not about an x-ray, and still keeps an x-ray when that is the only real photo", () => {
+    const photo = (title: string, extra: Partial<JournalPhoto> = {}): JournalPhoto => ({
+      title,
+      mime: "image/jpeg",
+      width: 1400,
+      height: 900,
+      license: "CC BY 4.0",
+      categories: "",
+      credit: "Photo · Example · Wikimedia Commons",
+      thumbUrl: "https://upload.wikimedia.org/example.jpg",
+      pageUrl: "https://commons.wikimedia.org/wiki/File:Example.jpg",
+      ...extra,
+    });
+    const topic = "The Alignment Clinic's Expertise in Robotics and 3D-Printed Navigation";
+    const mixed = chooseJournalPhoto(
+      [
+        photo("Lateral lumbar x ray", { categories: "X-rays of the spine" }),
+        photo("Human spine vertebrae"),
+        photo("3D CT reconstruction of human lumbar spine"),
+      ],
+      topic,
+    );
+    expect(mixed?.title).toBe("Human spine vertebrae");
+    const onlyScan = chooseJournalPhoto([photo("Lateral lumbar x ray", { categories: "X-rays of the spine" })], topic);
+    expect(onlyScan?.title).toBe("Lateral lumbar x ray");
+  });
+
   it("rejects a draft that is too short to publish", () => {
     expect(() => parseJournalDraft(JSON.stringify({ title: "Too short", summary: "no", seoTitle: "no", seoDescription: "no", body: "no" }))).toThrow();
   });
