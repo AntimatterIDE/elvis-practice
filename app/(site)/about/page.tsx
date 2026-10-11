@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import InterferenceRibbons from "@/components/react-bits/interference-ribbons";
 import { AboutValues } from "@/components/site/about-values";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
 import { Card } from "@/components/ui/card";
@@ -19,7 +20,23 @@ const notes = [
 
 export default function AboutPage() {
   return (
-    <>
+    <InterferenceRibbons
+      backgroundColor="#f3f7fb"
+      colors={["#0a6e66", "#0b1f33"]}
+      mode="ink"
+      wires={72}
+      lineWidth={2}
+      ribbonWidth={0.34}
+      amplitude={0.85}
+      angle={12}
+      intensity={1.15}
+      glow={0.28}
+      speed={0.45}
+      clickPulse={false}
+      hoverPulses={false}
+      hoverBoost={0}
+      className="h-auto"
+    >
       <AboutValues />
       <article className="mx-auto grid max-w-6xl gap-4 px-5 py-14 md:px-8 md:py-20 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <div className="grid gap-4">
@@ -41,6 +58,6 @@ export default function AboutPage() {
           </Card>
         </div>
       </article>
-    </>
+    </InterferenceRibbons>
   );
 }

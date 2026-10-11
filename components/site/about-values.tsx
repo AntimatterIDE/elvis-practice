@@ -907,10 +907,10 @@ export function AboutValues() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-paper px-4 py-12 text-ink sm:px-6 lg:px-8 lg:py-24">
+    <section className="relative w-full overflow-hidden px-4 py-12 text-ink sm:px-6 lg:px-8 lg:py-24">
       <motion.div
         variants={sequence}
-        initial={reduceMotion ? false : "hidden"}
+        initial="show"
         whileInView="show"
         viewport={{ once: true, amount: 0.3 }}
         className="mx-auto w-full max-w-6xl"
