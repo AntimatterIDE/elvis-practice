@@ -39,7 +39,7 @@ export function JournalBrowser({ notes }: { notes: Note[] }) {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search notes"
-            className="min-h-12 w-full rounded-full border border-line bg-paper px-4 text-base text-ink outline-none placeholder:text-muted focus:border-oxide"
+            className="min-h-12 w-full rounded-[var(--rb-r-md,8px)] border border-neutral-200 bg-white px-3 text-base text-ink outline-none placeholder:text-neutral-400 hover:border-neutral-300 focus:border-neutral-900"
           />
         </label>
       </div>

@@ -54,7 +54,7 @@ export function VisitPath() {
           </p>
           <Link
             href="/contact"
-            className="group mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-oxide-deep px-6 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-oxide-ink"
+            className="group mt-8 inline-flex h-12 items-center gap-2 rounded-[var(--rb-r-lg,10px)] bg-[var(--rb-accent,#0a6e66)] px-6 text-sm font-medium text-[var(--rb-accent-fg,#f3f7fb)] transition-colors duration-200 hover:bg-oxide-ink"
           >
             Contact the practice
             <IconArrow className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />

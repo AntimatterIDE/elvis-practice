@@ -17,16 +17,16 @@ export function AdminMobileBar({ name, role }: { name: string; role: string }) {
   }, [pathname]);
 
   return (
-    <div className="sticky top-0 z-30 border-b border-line bg-paper/95 backdrop-blur lg:hidden">
-      <div className="flex items-center gap-3 px-4 py-3">
-        <BrandMark className="size-9" />
+    <div className="sticky top-0 z-30 border-b border-neutral-200 bg-white lg:hidden">
+      <div className="flex h-14 items-center gap-3 px-3">
+        <BrandMark className="size-8" />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-xs text-muted">{practice.name}</p>
-          <p className="truncate font-display text-lg leading-tight">{label}</p>
+          <p className="truncate text-xs text-neutral-500">{practice.name}</p>
+          <p className="truncate text-[13px] font-medium text-neutral-900">{label}</p>
         </div>
         <button
           type="button"
-          className="rounded-full border border-line bg-card px-3 py-2 text-sm font-semibold"
+          className="inline-flex h-9 items-center rounded-[var(--rb-r-md,8px)] bg-neutral-100 px-3 text-[13px] font-medium text-neutral-800"
           aria-expanded={open}
           onClick={() => setOpen((current) => !current)}
         >
@@ -34,13 +34,13 @@ export function AdminMobileBar({ name, role }: { name: string; role: string }) {
         </button>
       </div>
       {open ? (
-        <div className="max-h-[70vh] overflow-y-auto border-t border-white/10 bg-pine px-3 py-4 text-paper">
+        <div className="max-h-[70vh] overflow-y-auto border-t border-neutral-200 bg-neutral-50 px-2 py-3 text-neutral-900">
           <AdminNav onNavigate={() => setOpen(false)} />
-          <div className="mt-6 border-t border-white/10 px-3 pt-4">
-            <p className="text-sm font-semibold">{name}</p>
-            <p className="mt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-foam/70">{role}</p>
+          <div className="mt-4 border-t border-neutral-200 px-3 pt-4">
+            <p className="text-[13px] font-medium text-neutral-900">{name}</p>
+            <p className="mt-0.5 text-xs text-neutral-500">{role}</p>
             <form action={signOut} className="mt-3">
-              <button className="text-sm text-paper/70 underline decoration-white/30 underline-offset-4">Sign out</button>
+              <button className="text-[13px] text-neutral-600 underline decoration-neutral-300 underline-offset-4">Sign out</button>
             </form>
           </div>
         </div>

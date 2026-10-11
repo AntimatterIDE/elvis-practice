@@ -79,7 +79,7 @@ export function ContactPanel() {
             viewport={{ once: true }}
             transition={{ duration: 0.45, delay: 0.12 }}
           >
-            <ContactForm appearance="line" />
+            <ContactForm />
           </motion.div>
         </div>
       </div>

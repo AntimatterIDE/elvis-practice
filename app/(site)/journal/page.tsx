@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JournalBrowser } from "@/components/site/journal-browser";
+import { SiteVault } from "@/components/site/hexagonal-vault";
 import { publishedJournalCovers } from "@/lib/journal/hero";
 import { publicPageMetadata } from "@/lib/share-metadata";
 
@@ -30,6 +31,7 @@ export default async function JournalIndexPage() {
   }
 
   return (
+    <SiteVault>
     <section className="pb-16">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 pb-20 pt-14 md:px-8 md:pt-20 lg:flex-row lg:items-end lg:justify-between">
         <h1 className="font-display text-6xl font-medium tracking-tight md:text-7xl">Journal</h1>
@@ -55,5 +57,6 @@ export default async function JournalIndexPage() {
         </div>
       </div>
     </section>
+    </SiteVault>
   );
 }

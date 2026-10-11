@@ -1071,14 +1071,14 @@ export function TreatmentsHero() {
           <motion.div variants={rise} className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
             <Link
               href="#operations"
-              className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-oxide-deep px-6 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-oxide-ink"
+              className="group inline-flex h-12 items-center justify-center gap-2 rounded-[var(--rb-r-lg,10px)] bg-[var(--rb-accent,#0a6e66)] px-6 text-sm font-medium text-[var(--rb-accent-fg,#f3f7fb)] transition-colors duration-200 hover:bg-oxide-ink"
             >
               See the operations
               <IconArrow className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />
             </Link>
             <Link
               href="/visit"
-              className="inline-flex h-12 items-center justify-center rounded-full border border-line bg-card px-6 text-sm font-semibold text-ink transition-colors duration-200 hover:border-oxide/40"
+              className="inline-flex h-12 items-center justify-center rounded-[var(--rb-r-lg,10px)] border border-neutral-200 bg-white px-6 text-sm font-medium text-ink transition-colors duration-200 hover:bg-neutral-50"
             >
               How a visit works
             </Link>
