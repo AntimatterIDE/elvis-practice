@@ -10,17 +10,21 @@ import { Textarea } from "@/components/ui/textarea";
 
 const initialState: ContactState = { status: "idle", message: "" };
 
-export function ContactForm() {
+const lineField =
+  "min-h-12 rounded-none border-x-0 border-t-0 border-b border-line bg-transparent px-0 shadow-none focus-visible:border-ink";
+
+export function ContactForm({ appearance = "field" }: { appearance?: "field" | "line" }) {
   const [state, formAction, pending] = useActionState(submitInquiry, initialState);
   const emailDescribedBy = state.fieldErrors?.email ? "email-error reach-hint" : "reach-hint";
   const phoneDescribedBy = "reach-hint";
+  const fieldClass = appearance === "line" ? lineField : undefined;
 
   return (
     <form action={formAction} className="grid gap-5" noValidate>
       <div className="grid gap-5 md:grid-cols-2">
         <div className="grid gap-2">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" name="name" autoComplete="name" required aria-invalid={state.fieldErrors?.name ? true : undefined} aria-describedby={state.fieldErrors?.name ? "name-error" : undefined} />
+          <Input id="name" name="name" autoComplete="name" required className={fieldClass} aria-invalid={state.fieldErrors?.name ? true : undefined} aria-describedby={state.fieldErrors?.name ? "name-error" : undefined} />
           {state.fieldErrors?.name ? (
             <p id="name-error" className="text-sm text-emergency" role="alert">
               {state.fieldErrors.name}
@@ -29,7 +33,7 @@ export function ContactForm() {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="reason">Reason</Label>
-          <Select id="reason" name="reason" defaultValue="consultation">
+          <Select id="reason" name="reason" defaultValue="consultation" className={fieldClass}>
             <option value="consultation">Request a consultation</option>
             <option value="general">General question</option>
           </Select>
@@ -48,6 +52,7 @@ export function ContactForm() {
             autoComplete="email"
             aria-describedby={emailDescribedBy}
             aria-invalid={state.fieldErrors?.email ? true : undefined}
+            className={fieldClass}
           />
           {state.fieldErrors?.email ? (
             <p id="email-error" className="text-sm text-emergency" role="alert">
@@ -57,12 +62,12 @@ export function ContactForm() {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="phone">Phone</Label>
-          <Input id="phone" name="phone" type="tel" autoComplete="tel" aria-describedby={phoneDescribedBy} />
+          <Input id="phone" name="phone" type="tel" autoComplete="tel" aria-describedby={phoneDescribedBy} className={fieldClass} />
         </div>
       </div>
       <div className="grid gap-2">
         <Label htmlFor="preferredTime">Best time for a call, optional</Label>
-        <Input id="preferredTime" name="preferredTime" maxLength={120} autoComplete="off" placeholder="For example, weekday mornings" />
+        <Input id="preferredTime" name="preferredTime" maxLength={120} autoComplete="off" placeholder="For example, weekday mornings" className={fieldClass} />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="note">Note, optional</Label>
@@ -71,6 +76,7 @@ export function ContactForm() {
           name="note"
           maxLength={500}
           placeholder="Anything that would help us reach you at a good time."
+          className={fieldClass ? `${fieldClass} min-h-24` : undefined}
           aria-invalid={state.fieldErrors?.note ? true : undefined}
           aria-describedby={state.fieldErrors?.note ? "note-error" : undefined}
         />

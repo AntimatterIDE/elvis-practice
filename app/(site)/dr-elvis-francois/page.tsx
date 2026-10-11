@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/site/page-intro";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
+import { Card } from "@/components/ui/card";
 import { publicPageMetadata } from "@/lib/share-metadata";
 import { clinicalFocus, physicianTraining, practice } from "@/lib/site";
 
@@ -21,35 +22,40 @@ export default function PhysicianPage() {
       />
       <div className="mt-12 grid gap-8 lg:grid-cols-[16rem_1fr_18rem] lg:items-start">
         <PhotoPlaceholder lockup="physician" />
-        <div className="max-w-xl space-y-6 text-lg leading-relaxed text-muted">
-          <p>
-            Dr. Francois is an orthopedic spine surgeon. He completed a spine surgery fellowship at
-            Harvard Medical School’s Beth Israel Deaconess Medical Center after an orthopedic surgery
-            residency at the Mayo Clinic in Rochester, Minnesota. He earned his medical degree at
-            Meharry Medical College in Nashville and a bachelor’s degree in neuroscience and biology
-            at Oberlin College.
-          </p>
-          <p>
-            His clinical work follows the problems people bring to a spine visit: neck and low-back
-            pain, cervical and lumbar disc disease, nerve compression, and spinal deformity. In
-            published interviews he has described the same order of care this practice uses. Therapy
-            and other nonoperative treatment come first when they fit. Surgery is discussed when
-            those measures have not helped and the anatomy explains the symptoms.
-          </p>
-          <p>
-            He has practiced spine surgery at Resurgens Orthopaedics in metro Atlanta and at Tulsa
-            Bone and Joint in Oklahoma. He sees patients for The Alignment Clinic at {practice.addressLine}.
-            The practice phone is {practice.phone}, and the office email is {practice.email}.
-          </p>
-          <p>
-            Outside the clinic he founded Music is Medicine, a project that brings live music into
-            hospitals. In 2020, during the pandemic, a recording of “Imagine” that he made with
-            Dr. William Robinson was widely shared. He has appeared on Good Morning America, the
-            Today show, and The Ellen DeGeneres Show, and in 2024 he released an original song,
-            “Difference.” He is the son of Haitian immigrants.
-          </p>
+        <div className="grid max-w-xl gap-4">
+          <Card>
+            <p className="text-lg leading-relaxed text-muted">
+              Dr. Francois is an orthopedic spine surgeon. He completed a spine surgery fellowship at Harvard Medical
+              School’s Beth Israel Deaconess Medical Center after an orthopedic surgery residency at the Mayo Clinic in
+              Rochester, Minnesota. He earned his medical degree at Meharry Medical College in Nashville and a
+              bachelor’s degree in neuroscience and biology at Oberlin College.
+            </p>
+          </Card>
+          <Card>
+            <p className="text-lg leading-relaxed text-muted">
+              His clinical work follows the problems people bring to a spine visit: neck and low-back pain, cervical
+              and lumbar disc disease, nerve compression, and spinal deformity. In published interviews he has described
+              the same order of care this practice uses. Therapy and other nonoperative treatment come first when they
+              fit. Surgery is discussed when those measures have not helped and the anatomy explains the symptoms.
+            </p>
+          </Card>
+          <Card>
+            <p className="text-lg leading-relaxed text-muted">
+              He has practiced spine surgery at Resurgens Orthopaedics in metro Atlanta and at Tulsa Bone and Joint in
+              Oklahoma. He sees patients for The Alignment Clinic at {practice.addressLine}. The practice phone is{" "}
+              {practice.phone}, and the office email is {practice.email}.
+            </p>
+          </Card>
+          <Card>
+            <p className="text-lg leading-relaxed text-muted">
+              Outside the clinic he founded Music is Medicine, a project that brings live music into hospitals. In
+              2020, during the pandemic, a recording of “Imagine” that he made with Dr. William Robinson was widely
+              shared. He has appeared on Good Morning America, the Today show, and The Ellen DeGeneres Show, and in
+              2024 he released an original song, “Difference.” He is the son of Haitian immigrants.
+            </p>
+          </Card>
         </div>
-        <aside className="rounded-2xl border border-line bg-mist p-5">
+        <Card className="bg-mist">
           <p className="kicker text-oxide-deep">Training</p>
           <dl className="mt-4 space-y-4">
             {physicianTraining.map((item) => (
@@ -70,7 +76,7 @@ export default function PhysicianPage() {
             National Provider Identifier {practice.npi}, orthopedic surgery. Hospital appointments
             are confirmed when surgery is scheduled.
           </p>
-        </aside>
+        </Card>
       </div>
     </article>
   );

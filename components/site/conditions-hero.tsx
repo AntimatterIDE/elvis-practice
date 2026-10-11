@@ -475,6 +475,7 @@ function createOcean(root: HTMLElement, stage: HTMLElement, anchor: HTMLElement,
     width = nextWidth;
     height = nextHeight;
     pixelRatio = Math.min(view.devicePixelRatio || 1, 1.5);
+    uniforms.uIntensity.value = nextWidth < 720 ? 0.72 : 1.7;
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height, false);
     measure();
@@ -725,7 +726,7 @@ export function ConditionsHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate flex min-h-[calc(100svh-8rem)] w-full touch-pan-y flex-col overflow-hidden bg-paper px-5 pb-24 pt-6 text-ink md:px-8 md:pb-14 md:pt-16"
+      className="relative isolate flex w-full touch-pan-y flex-col overflow-hidden bg-paper px-4 pb-10 pt-6 text-ink md:min-h-[calc(100svh-8rem)] md:px-8 md:pb-14 md:pt-16"
     >
       <div ref={stageRef} aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10" />
       <motion.div
@@ -733,16 +734,16 @@ export function ConditionsHero() {
         initial={reduceMotion ? false : "hidden"}
         whileInView="show"
         viewport={{ once: true }}
-        className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-between gap-5 [text-shadow:0_0_24px_rgb(243_247_251)] md:gap-12"
+        className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-between gap-6 md:gap-12 md:[text-shadow:0_0_24px_rgb(243_247_251)]"
       >
-        <div className="max-w-3xl">
+        <div className="max-w-3xl rounded-3xl border border-line/80 bg-paper/92 p-5 shadow-[0_20px_50px_-36px_rgb(7_30_54_/_0.7)] backdrop-blur-md md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
           <motion.p variants={rise} className="kicker text-oxide-deep">
             Conditions
           </motion.p>
           <motion.h1
             ref={anchorRef}
             variants={rise}
-            className="mt-3 grid items-end font-display text-[clamp(2.6rem,5.8vw,5rem)] font-semibold leading-[1.05] md:mt-4"
+            className="mt-3 grid items-end font-display text-[clamp(2.15rem,8vw,5rem)] font-semibold leading-[1.02] md:mt-4"
           >
             {topics.map((item, index) => (
               <span
@@ -752,22 +753,22 @@ export function ConditionsHero() {
                   index === active ? "opacity-100" : "opacity-0"
                 }`}
               >
-                {item.name}
-                <span className="text-oxide-deep">, explained.</span>
+                <span className="block">{item.name}</span>
+                <span className="block text-oxide-deep">explained.</span>
               </span>
             ))}
           </motion.h1>
           <motion.p
             variants={rise}
             aria-live="polite"
-            className="mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted md:mt-5 md:text-lg"
+            className="mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted md:mt-5 md:text-lg"
           >
             {current.detail}
           </motion.p>
           <motion.p variants={rise} className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
             These notes are general education. A visit is where the cause, and the next step, are decided.
           </motion.p>
-          <motion.div variants={rise} className="mt-6 flex flex-row flex-wrap items-center gap-x-6 gap-y-3 md:mt-8">
+          <motion.div variants={rise} className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
             <Link
               href="/contact"
               className="inline-flex h-12 items-center justify-center rounded-full bg-oxide-deep px-7 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-oxide-ink"
@@ -776,7 +777,7 @@ export function ConditionsHero() {
             </Link>
             <Link
               href={`#${current.slug}`}
-              className="group inline-flex h-12 items-center gap-2 rounded-full text-sm font-semibold text-ink"
+              className="group inline-flex h-12 items-center justify-center gap-2 rounded-full text-sm font-semibold text-ink sm:justify-start"
             >
               Read about {current.name}
               <IconArrow className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />
@@ -788,7 +789,7 @@ export function ConditionsHero() {
           variants={rise}
           role="radiogroup"
           aria-label="Conditions"
-          className="grid w-full grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4 lg:max-w-3xl"
+          className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 lg:max-w-3xl lg:grid-cols-4 lg:gap-x-6"
         >
           {topics.map((item, index) => {
             const selected = index === active;
@@ -810,16 +811,18 @@ export function ConditionsHero() {
                   intentRef.current = window.setTimeout(() => setActive(index), 160);
                 }}
                 onPointerLeave={() => window.clearTimeout(intentRef.current)}
-                className="group flex cursor-pointer flex-col items-start rounded-md text-left outline-none"
+                className={`group flex min-h-16 cursor-pointer flex-col items-start rounded-2xl border px-4 py-3 text-left outline-none backdrop-blur-sm ${
+                  selected ? "border-oxide/50 bg-card" : "border-line/80 bg-card/75"
+                }`}
               >
                 <span
-                  className={`font-display text-2xl font-medium leading-tight transition-colors duration-300 motion-reduce:transition-none sm:text-3xl ${
+                  className={`font-display text-xl font-medium leading-tight transition-colors duration-300 motion-reduce:transition-none sm:text-2xl ${
                     selected ? "text-oxide-deep" : "text-muted group-hover:text-ink"
                   }`}
                 >
                   {item.name}
                 </span>
-                <span className={`mt-1 text-sm transition-colors duration-300 motion-reduce:transition-none ${selected ? "text-ink" : "text-muted"}`}>
+                <span className={`mt-1 text-sm leading-snug transition-colors duration-300 motion-reduce:transition-none ${selected ? "text-ink" : "text-muted"}`}>
                   {item.note}
                 </span>
               </button>

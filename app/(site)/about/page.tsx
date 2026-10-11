@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { PageIntro } from "@/components/site/page-intro";
+import { AboutValues } from "@/components/site/about-values";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
+import { Card } from "@/components/ui/card";
 import { publicPageMetadata } from "@/lib/share-metadata";
 import { practice } from "@/lib/site";
 
@@ -10,39 +11,36 @@ export const metadata: Metadata = publicPageMetadata({
   canonical: "/about",
 });
 
+const notes = [
+  `${practice.physicianName} is the physician. He is an orthopedic spine surgeon who trained at Meharry Medical College, the Mayo Clinic, and Harvard. The visit is his: a history, an examination, and a plan explained in ordinary language.`,
+  "People come for neck pain, low back pain, pain that travels into an arm or a leg, and pain that remains after an earlier spine operation. Many of those problems improve without surgery. An operation is one option among others, chosen when the symptoms and the imaging agree.",
+  "The condition and treatment notes on this site are general education. They prepare you for a conversation. They do not diagnose you, and they do not promise a result. Reading them does not create a physician-patient relationship.",
+];
+
 export default function AboutPage() {
   return (
-    <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
-      <PageIntro
-        kicker="Practice"
-        title="A clinic built around a clear conversation."
-        lede="The Alignment Clinic takes its name from two kinds of alignment: the structure of the spine, and a plan that fits the person who has to live with it."
-      />
-      <div className="mt-12 grid gap-12 md:grid-cols-[1fr_16rem]">
-        <div className="max-w-2xl space-y-6 text-lg leading-relaxed text-muted">
-          <p>
-            {practice.physicianName} is the physician. He is an orthopedic spine surgeon who trained
-            at Meharry Medical College, the Mayo Clinic, and Harvard. The visit is his: a history,
-            an examination, and a plan explained in ordinary language.
-          </p>
-          <p>
-            People come for neck pain, low back pain, pain that travels into an arm or a leg, and
-            pain that remains after an earlier spine operation. Many of those problems improve
-            without surgery. An operation is one option among others, chosen when the symptoms and
-            the imaging agree.
-          </p>
-          <p>
-            The condition and treatment notes on this site are general education. They prepare you
-            for a conversation. They do not diagnose you, and they do not promise a result. Reading
-            them does not create a physician-patient relationship.
-          </p>
-          <p>
-            The office is at {practice.addressLine}. Call {practice.phone} or write {practice.email}.
-            To ask for a visit, use the contact page, and leave medical details off the form.
-          </p>
+    <>
+      <AboutValues />
+      <article className="mx-auto grid max-w-6xl gap-4 px-5 py-14 md:px-8 md:py-20 lg:grid-cols-[minmax(0,1fr)_18rem]">
+        <div className="grid gap-4">
+          {notes.map((note) => (
+            <Card key={note.slice(0, 32)}>
+              <p className="text-lg leading-relaxed text-muted">{note}</p>
+            </Card>
+          ))}
         </div>
-        <PhotoPlaceholder />
-      </div>
-    </article>
+        <div className="grid content-start gap-4">
+          <PhotoPlaceholder />
+          <Card>
+            <p className="kicker text-oxide-deep">Office</p>
+            <p className="mt-3 font-display text-2xl font-medium leading-tight">{practice.addressLine}</p>
+            <p className="mt-4 text-sm leading-relaxed text-muted">
+              Call {practice.phone} or write {practice.email}. To ask for a visit, use the contact page, and leave
+              medical details off the form.
+            </p>
+          </Card>
+        </div>
+      </article>
+    </>
   );
 }
