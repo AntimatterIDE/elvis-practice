@@ -95,9 +95,11 @@ async function saveJournalHero(slug: string, photo: JournalPhoto) {
   if (!file.ok) return null;
   const bytes = new Uint8Array(await file.arrayBuffer());
   if (bytes.byteLength < 8000 || bytes.byteLength > 7_000_000) return null;
+  const png = bytes[0] === 0x89 && bytes[1] === 0x50;
+  const ext = png ? "png" : "jpg";
   const supabase = await readyBucket();
-  const uploaded = await supabase.storage.from(bucket).upload(`${slug}.jpg`, bytes, {
-    contentType: "image/jpeg",
+  const uploaded = await supabase.storage.from(bucket).upload(`${slug}.${ext}`, bytes, {
+    contentType: png ? "image/png" : "image/jpeg",
     cacheControl: "31536000",
     upsert: true,
   });
@@ -106,11 +108,11 @@ async function saveJournalHero(slug: string, photo: JournalPhoto) {
   const kind = journalPhotoIsScan(photo) ? "scan" : "photo";
   await supabase.storage.from(bucket).upload(
     `${slug}.json`,
-    new TextEncoder().encode(JSON.stringify({ credit: photo.credit, source: photo.pageUrl, version, kind })),
+    new TextEncoder().encode(JSON.stringify({ credit: photo.credit, source: photo.pageUrl, version, kind, ext })),
     { contentType: "application/json", upsert: true },
   );
-  await supabase.storage.from(bucket).remove([`${slug}.png`]);
-  const url = objectUrl(slug, "jpg");
+  await supabase.storage.from(bucket).remove([png ? `${slug}.jpg` : `${slug}.png`]);
+  const url = objectUrl(slug, ext);
   if (!url) return null;
   return { url: `${url}?v=${version}`, credit: photo.credit, source: photo.pageUrl, kind };
 }
@@ -124,7 +126,7 @@ export async function createJournalHero(
   topic: string,
   title: string,
   slug: string,
-  choice?: { used?: string[]; preferPhoto?: boolean },
+  choice?: { used?: string[]; preferPhoto?: boolean; scenesOnly?: boolean },
 ) {
   const photo = await searchJournalPhoto([title, topic].filter((part) => part.trim()).join(". "), choice);
   if (!photo) return null;

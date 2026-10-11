@@ -2,6 +2,7 @@ import Link from "next/link";
 import { JournalControls } from "@/components/admin/journal-controls";
 import { JournalResearch } from "@/components/admin/journal-research";
 import { PageHeader, panelClass } from "@/components/admin/rcm/ui";
+import { uncoveredThemes } from "@/lib/journal/search-desk";
 import { listJournalArticles } from "@/lib/journal/store";
 import { getStaffSession } from "@/lib/supabase/session";
 
@@ -15,6 +16,7 @@ export async function JournalDesk() {
     storageError = error instanceof Error ? error.message : "Journal drafts could not be loaded.";
   }
   const canManage = staff?.role === "owner" || staff?.role === "admin";
+  const gaps = uncoveredThemes(articles);
 
   return (
     <main>
@@ -24,6 +26,26 @@ export async function JournalDesk() {
         lede="Research recent orthopedic spine papers, draft a note in the clinic's voice, and leave it unpublished until you approve it."
       />
       <JournalResearch />
+      <section className={`${panelClass} mt-8`}>
+        <h2 className="font-display text-2xl">What to publish next</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+          These are the conditions and operations the site already explains that do not yet have a published note. Ads should land on a page that answers the search, then offer a consultation.
+        </p>
+        {gaps.length === 0 ? (
+          <p className="mt-4 text-sm text-muted">Every current practice topic has a published note.</p>
+        ) : (
+          <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+            {gaps.map((theme) => (
+              <li key={theme.href} className="rounded-xl border border-line px-3 py-2 text-sm">
+                <Link className="font-semibold text-oxide-deep underline underline-offset-4" href={theme.href}>
+                  {theme.label}
+                </Link>
+                <span className="mt-1 block text-muted">{theme.intent}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
       <section className="mt-10 grid gap-4">
         {storageError ? <p className="text-sm text-emergency">{storageError}</p> : null}
         {articles.length === 0 ? (

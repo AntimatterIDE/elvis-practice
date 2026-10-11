@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JournalControls } from "@/components/admin/journal-controls";
 import { JournalCoverForm } from "@/components/admin/journal-cover-form";
+import { JournalSearchTools } from "@/components/admin/journal-search-tools";
 import { JournalArticleView } from "@/components/site/journal-article";
 import { ensureJournalHero } from "@/lib/journal/hero";
 import { journalArticle } from "@/lib/journal/store";
@@ -34,6 +35,7 @@ export default async function JournalEditorPage({ params }: { params: Promise<Pa
       </div>
       <JournalControls article={article} canManage={canManage} />
       {canManage ? <JournalCoverForm articleId={article.id} heroUrl={hero?.url ?? null} /> : null}
+      <JournalSearchTools article={article} />
       <div className="mt-8">
         <JournalArticleView article={article} heroUrl={hero?.url} heroCredit={hero?.credit} />
       </div>
