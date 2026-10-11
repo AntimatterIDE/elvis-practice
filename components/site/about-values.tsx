@@ -876,9 +876,9 @@ export function AboutValues() {
   const reduceMotion = useReducedMotion();
   const wordRef = useRef<HTMLSpanElement>(null);
   const morphRef = useRef<Morph | null>(null);
-  const settingsRef = useRef<Settings>({ held: false, reduced: false, onChange: () => {} });
+  const settingsRef = useRef<Settings>({ held: true, reduced: false, onChange: () => {} });
   const [active, setActive] = useState(0);
-  const [held, setHeld] = useState(false);
+  const [held, setHeld] = useState(true);
   const [drawn, setDrawn] = useState(false);
 
   useEffect(() => {
@@ -906,8 +906,6 @@ export function AboutValues() {
     morphRef.current?.goTo(index);
   };
 
-  const still = held || Boolean(reduceMotion);
-
   return (
     <section className="relative w-full overflow-hidden bg-paper px-4 py-12 text-ink sm:px-6 lg:px-8 lg:py-24">
       <motion.div
@@ -917,15 +915,15 @@ export function AboutValues() {
         viewport={{ once: true, amount: 0.3 }}
         className="mx-auto w-full max-w-6xl"
       >
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] lg:items-end lg:gap-12">
+        <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] md:items-end md:gap-10 lg:gap-16">
           <h1 className="font-display font-medium">
-            <motion.span variants={rise} className="block text-[clamp(2rem,5vw,4.25rem)] leading-none">
+            <motion.span variants={rise} className="block text-[clamp(2rem,5vw,3.5rem)] leading-none">
               Care stays
             </motion.span>
             <span
               ref={wordRef}
               aria-hidden="true"
-              className="relative -ml-[0.04em] mt-1 inline-grid align-baseline text-[clamp(3.1rem,16vw,11rem)] leading-[0.9] text-oxide-deep"
+              className="relative -ml-[0.04em] mt-1 inline-grid align-baseline text-[clamp(3.1rem,14vw,8.5rem)] leading-[0.9] text-oxide-deep"
             >
               {VALUES.map((value, index) => (
                 <span
@@ -939,54 +937,40 @@ export function AboutValues() {
             </span>
             <span className="sr-only">{VALUES[active].word}</span>
           </h1>
-          <motion.p variants={rise} className="max-w-[32ch] text-pretty text-base leading-relaxed text-muted sm:text-lg lg:pb-4">
-            Four ways a visit at this practice is handled. The notes below are general education, not a diagnosis.
-          </motion.p>
+          <motion.div variants={rise} className="max-w-md lg:pb-3">
+            <p aria-live="polite" className="text-pretty text-lg leading-relaxed text-ink">
+              {VALUES[active].line}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              Four ways a visit at this practice is handled. General education, not a diagnosis.
+            </p>
+          </motion.div>
         </div>
 
-        <motion.ul
-          variants={rise}
-          aria-label="How a visit is handled"
-          onPointerLeave={() => setHeld(false)}
-          className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4"
-        >
-          {VALUES.map((value, index) => {
-            const on = index === active;
-            return (
-              <li key={value.name}>
-                <button
-                  type="button"
-                  aria-pressed={on}
-                  onPointerEnter={(event) => {
-                    if (event.pointerType === "mouse") choose(index);
-                  }}
-                  onFocus={() => choose(index)}
-                  onBlur={() => setHeld(false)}
-                  onClick={() => choose(index)}
-                  className="block w-full cursor-pointer rounded-sm text-left outline-none"
-                >
-                  <span className="relative block h-px w-full overflow-hidden bg-line">
-                    {on ? (
-                      <motion.span
-                        key={`${index}-${still ? "still" : "run"}`}
-                        className="absolute inset-0 origin-left bg-ink"
-                        initial={{ scaleX: still ? 1 : 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{ duration: still ? 0 : INTERVAL, ease: "linear" }}
-                      />
-                    ) : null}
-                  </span>
-                  <span className={`mt-4 block font-display text-xl font-medium ${on ? "text-ink" : "text-muted"}`}>
+        <motion.div variants={rise} className="mt-10 border-t border-line pt-4 lg:mt-16">
+          <p id="visit-values" className="text-sm text-muted">
+            Choose a way the visit is handled
+          </p>
+          <ul aria-labelledby="visit-values" className="mt-3 flex flex-wrap gap-2">
+            {VALUES.map((value, index) => {
+              const on = index === active;
+              return (
+                <li key={value.name}>
+                  <button
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => choose(index)}
+                    className={`min-h-11 cursor-pointer rounded-full border px-4 font-display text-lg outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-oxide focus-visible:ring-offset-2 focus-visible:ring-offset-paper motion-reduce:transition-none ${
+                      on ? "border-oxide/40 bg-card text-oxide-deep" : "border-transparent text-muted hover:text-ink"
+                    }`}
+                  >
                     {value.name}
-                  </span>
-                  <span className={`mt-2 block max-w-[32ch] text-sm leading-relaxed ${on ? "text-muted" : "text-muted/80"}`}>
-                    {value.line}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </motion.ul>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </motion.div>
       </motion.div>
     </section>
   );

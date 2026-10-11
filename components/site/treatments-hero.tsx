@@ -1022,7 +1022,7 @@ export function TreatmentsHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate flex w-full touch-pan-y flex-col overflow-hidden bg-paper px-4 pb-8 pt-8 md:min-h-[calc(100svh-8rem)] md:px-8 md:pb-12 md:pt-16"
+      className="relative isolate flex w-full touch-pan-y flex-col overflow-hidden bg-paper pt-8 md:pt-14"
     >
       <div ref={stageRef} aria-hidden="true" className="pointer-events-none absolute inset-0" />
 
@@ -1031,63 +1031,59 @@ export function TreatmentsHero() {
         initial={reduceMotion ? false : "hidden"}
         whileInView="show"
         viewport={{ once: true }}
-        className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col"
+        className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col px-5 md:px-8"
       >
         <div className="flex flex-col items-center text-center">
-          <motion.div variants={rise}>
-            <Link
-              href="#operations"
-              className="group inline-flex cursor-pointer items-center gap-2 rounded-full bg-mint py-1.5 pl-3.5 pr-3 text-[13px] font-medium text-oxide-ink transition-colors duration-200 hover:bg-foam"
-            >
-              Treatments
-              <IconArrow className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />
-            </Link>
-          </motion.div>
+          <motion.p variants={rise} className="kicker text-oxide-deep">
+            Treatments
+          </motion.p>
 
-          <h1 className="mt-8 flex flex-col items-center sm:mt-10">
-            <motion.span
-              variants={rise}
-              className="max-w-xl text-balance text-[1.0625rem] leading-snug text-muted sm:text-xl"
-            >
+          <h1 className="mt-5 flex flex-col items-center">
+            <motion.span variants={rise} className="max-w-xl text-balance text-lg leading-snug text-muted sm:text-xl">
               Operations a visit may discuss
             </motion.span>
             <motion.span
               ref={phraseRef}
               variants={surface}
-              className="mt-2 max-w-[12ch] text-balance font-display text-[clamp(2.7rem,12vw,8.5rem)] font-medium leading-[0.92] text-ink sm:mt-3 sm:max-w-none"
+              className="mt-2 max-w-[12ch] text-balance font-display text-[clamp(2.6rem,10vw,7rem)] font-medium leading-[0.92] text-ink sm:mt-3 sm:max-w-none"
             >
               in plain language.
             </motion.span>
           </h1>
         </div>
 
-        <div className="min-h-48 flex-1 sm:min-h-72" />
+        <div className="min-h-28 flex-1 sm:min-h-40 lg:min-h-56" />
+      </motion.div>
 
-        <motion.div
-          variants={rise}
-          className="flex flex-col gap-5 rounded-3xl border border-line/80 bg-paper/92 p-5 shadow-[0_20px_50px_-36px_rgb(7_30_54_/_0.7)] backdrop-blur-md sm:gap-8 md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none lg:flex-row lg:items-end lg:justify-between"
-        >
-          <p className="max-w-md text-pretty text-[15px] leading-relaxed text-muted">
+      <motion.div
+        variants={sequence}
+        initial={reduceMotion ? false : "hidden"}
+        whileInView="show"
+        viewport={{ once: true }}
+        className="relative z-10 border-t border-line bg-paper"
+      >
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 py-8 pb-28 md:flex-row md:items-end md:justify-between md:px-8 md:pb-10">
+          <motion.p variants={rise} className="max-w-xl text-pretty text-base leading-relaxed text-ink/80 md:text-lg">
             Dr. Francois’s published clinical interests are minimally invasive spine surgery, cervical and lumbar disc
             disease, spinal deformity, and motion-preserving techniques. Whether any operation belongs in your plan is
             decided after an examination.
-          </p>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          </motion.p>
+          <motion.div variants={rise} className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
             <Link
-              href="/contact"
-              className="group inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-full bg-oxide-deep px-5 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-oxide-ink"
+              href="#operations"
+              className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-oxide-deep px-6 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-oxide-ink"
             >
-              Contact the practice
-              <IconArrow className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />
+              See the operations
+              <IconArrow className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />
             </Link>
             <Link
               href="/visit"
-              className="inline-flex h-11 cursor-pointer items-center justify-center rounded-full bg-white/80 px-5 text-sm font-semibold text-ink backdrop-blur-sm transition-colors duration-200 hover:bg-white"
+              className="inline-flex h-12 items-center justify-center rounded-full border border-line bg-card px-6 text-sm font-semibold text-ink transition-colors duration-200 hover:border-oxide/40"
             >
               How a visit works
             </Link>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </motion.div>
     </section>
   );

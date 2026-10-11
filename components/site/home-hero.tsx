@@ -20,23 +20,21 @@ export function HomeHero() {
   const reduce = useReducedMotion();
 
   return (
-    <section className="px-4 pb-2 pt-8 md:px-8 md:pt-16">
+    <section className="px-5 pb-4 pt-8 md:px-8 md:pt-14">
       <motion.div
         variants={sequence}
         initial={reduce ? false : "hidden"}
         animate="show"
-        className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-14"
+        className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-[minmax(0,1fr)_14rem] md:gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16"
       >
         <div>
-          <motion.p variants={rise} className="kicker text-oxide-deep">
-            {practice.name}
-          </motion.p>
-          <motion.div variants={rise} className="mt-4 lg:hidden">
-            <HeroArtwork className="mx-auto h-28 w-36" />
+          <motion.div variants={rise} className="flex items-center gap-4">
+            <HeroArtwork className="h-14 w-[4.5rem] shrink-0 md:hidden" />
+            <p className="kicker text-oxide-deep">{practice.name}</p>
           </motion.div>
           <motion.h1
             variants={rise}
-            className="mt-4 max-w-3xl font-display text-[clamp(2.6rem,7vw,5.4rem)] font-medium leading-[0.98] tracking-[-0.035em]"
+            className="mt-5 max-w-3xl font-display text-[clamp(2.5rem,6vw,4.75rem)] font-medium leading-[0.98] tracking-[-0.035em]"
           >
             Spine care, <em className="text-oxide-deep">carefully aligned.</em>
           </motion.h1>
@@ -64,12 +62,9 @@ export function HomeHero() {
             numbers.
           </motion.p>
         </div>
-        <motion.div
-          variants={rise}
-          className="hidden rounded-[1.75rem] border border-line bg-mist px-6 py-8 shadow-[0_24px_50px_-36px_rgb(7_30_54_/_0.65)] lg:block"
-        >
-          <HeroArtwork className="h-56 sm:h-64 lg:h-80" />
-          <p className="kicker mt-2 text-center text-ink">{practice.specialty}</p>
+        <motion.div variants={rise} className="hidden md:block">
+          <HeroArtwork className="mx-auto h-52 lg:h-72" />
+          <p className="kicker mt-3 text-center text-ink">{practice.specialty}</p>
         </motion.div>
       </motion.div>
     </section>
