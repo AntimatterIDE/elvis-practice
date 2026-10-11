@@ -2,7 +2,7 @@
 
 import { ContactForm } from "@/components/site/contact-form";
 import { BrandMark } from "@/components/site/brand";
-import DappledLight from "@/components/react-bits/dappled-light";
+import { SiteDapple } from "@/components/site/site-dapple";
 import { practice } from "@/lib/site";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -15,19 +15,7 @@ const details = [
 
 export function ContactPanel() {
   return (
-    <DappledLight
-      plant="olive"
-      placement="top-left"
-      backgroundColor="#f3f7fb"
-      lightColor="#fffaf3"
-      shadowColor="#c5d0dc"
-      window="off"
-      wind={0.4}
-      shadowStrength={0.8}
-      softness={1.2}
-      grain={0.12}
-      className="h-auto w-full px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24"
-    >
+    <SiteDapple className="px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-16">
         <div className="flex flex-col justify-between gap-10">
           <motion.h2
@@ -97,6 +85,6 @@ export function ContactPanel() {
           </motion.div>
         </div>
       </div>
-    </DappledLight>
+    </SiteDapple>
   );
 }

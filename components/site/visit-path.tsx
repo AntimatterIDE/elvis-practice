@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, type Variants } from "motion/react";
-import { SiteVault } from "@/components/site/hexagonal-vault";
+import { SiteDapple } from "@/components/site/site-dapple";
 import { IconArrow } from "@/components/site/icons";
 
 const sections = [
@@ -40,7 +40,7 @@ const rise: Variants = {
 
 export function VisitPath() {
   return (
-    <SiteVault>
+    <SiteDapple>
     <section className="px-4 py-12 md:px-8 md:py-20">
       <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-20">
         <div className="lg:sticky lg:top-32">
@@ -88,6 +88,6 @@ export function VisitPath() {
         </motion.ol>
       </div>
     </section>
-    </SiteVault>
+    </SiteDapple>
   );
 }
