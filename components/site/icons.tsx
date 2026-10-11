@@ -25,6 +25,14 @@ export function IconMenu({ className }: { className?: string }) {
   );
 }
 
+export function IconChat({ className }: { className?: string }) {
+  return (
+    <Line className={className} viewBox="0 0 24 24">
+      <path d="M6 6.5h12A1.5 1.5 0 0 1 19.5 8v6.5A1.5 1.5 0 0 1 18 16H10l-3.5 2.8V16H6A1.5 1.5 0 0 1 4.5 14.5V8A1.5 1.5 0 0 1 6 6.5Z" />
+    </Line>
+  );
+}
+
 export function IconClose({ className }: { className?: string }) {
   return (
     <Line className={className} viewBox="0 0 14 14">
