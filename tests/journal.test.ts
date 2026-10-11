@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { journalNotesMatching } from "@/lib/journal/browse";
 import { journalBody } from "@/lib/journal/body";
 import { articleSlug, journalSearchFallback, journalSearchQuery, papersForDraft, papersFromEuropePmc } from "@/lib/journal/papers";
 import { chooseJournalPhoto, journalCoverKind, type JournalPhoto } from "@/lib/journal/photo";
@@ -181,6 +182,20 @@ describe("journal research", () => {
     }`;
     const draft = parseJournalDraft(broken);
     expect(draft.body).toContain("accurate");
+  });
+});
+
+describe("journal search on the page", () => {
+  const notes = [
+    { title: "Lumbar stenosis and walking", summary: "What papers say about neurogenic claudication." },
+    { title: "Cervical disc replacement", summary: "A note on motion-preserving surgery in the neck." },
+  ];
+
+  it("matches a title or a summary and keeps every note when the box is empty", () => {
+    expect(journalNotesMatching(notes, "")).toHaveLength(2);
+    expect(journalNotesMatching(notes, "  claudication ")).toEqual([notes[0]]);
+    expect(journalNotesMatching(notes, "neck")).toEqual([notes[1]]);
+    expect(journalNotesMatching(notes, "hip replacement")).toEqual([]);
   });
 });
 
