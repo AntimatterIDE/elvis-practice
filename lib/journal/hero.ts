@@ -1,11 +1,10 @@
 import "server-only";
 import { cache } from "react";
-import { journalCoverKind, journalPhotoIsScan, searchJournalPhoto, type JournalPhoto } from "@/lib/journal/photo";
+import { journalCoverKind, journalPhotoIsScan, journalSourceRejected, searchJournalPhoto, type JournalPhoto } from "@/lib/journal/photo";
 import { publishedJournalArticles } from "@/lib/journal/store";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 const bucket = "journal-covers";
-const maxScans = 2;
 
 export type JournalHero = {
   url: string;
@@ -131,27 +130,25 @@ export async function createJournalHero(
 export async function prepareJournalCovers(articles: CoverArticle[]) {
   const stored = await Promise.all(articles.map((article) => readStoredCover(article.slug)));
   const used = new Set<string>();
-  let scans = 0;
   const covers = new Map<string, JournalHero | null>();
 
   for (let index = 0; index < articles.length; index += 1) {
     const article = articles[index];
     const current = stored[index];
     const source = current?.source ?? "";
-    const kind = current?.kind;
     const duplicate = Boolean(source) && used.has(source);
-    const keep = Boolean(current && kind && !duplicate && (kind === "photo" || (kind === "scan" && scans < maxScans)));
-    if (keep && current && kind) {
-      if (kind === "scan") scans += 1;
-      if (source) used.add(source);
+    const rejected = !source || journalSourceRejected(source);
+    const keep = Boolean(
+      current && source && !duplicate && !rejected && (journalCoverKind(source) === "scan" || current.kind === "scan"),
+    );
+    if (keep && current) {
+      used.add(source);
       covers.set(article.slug, { url: current.url, credit: current.credit });
       continue;
     }
     try {
-      const wantScan = scans < maxScans && index % 3 === 2;
       const photo = await searchJournalPhoto([article.title, article.summary].filter((part) => part.trim()).join(". "), {
         used: [...used],
-        preferPhoto: !wantScan,
       });
       if (!photo) {
         covers.set(article.slug, current ? { url: current.url, credit: current.credit } : null);
@@ -164,7 +161,6 @@ export async function prepareJournalCovers(articles: CoverArticle[]) {
         continue;
       }
       used.add(saved.source);
-      if (saved.kind === "scan" || journalCoverKind(saved.source) === "scan") scans += 1;
       covers.set(article.slug, { url: saved.url, credit: saved.credit });
     } catch {
       covers.set(article.slug, current ? { url: current.url, credit: current.credit } : null);

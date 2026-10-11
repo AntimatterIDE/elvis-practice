@@ -40,6 +40,8 @@ const stopWords = new Set([
 ]);
 
 const spineContext = /spin(e|al)|vertebr|lumbar|cervical|thoracic|scoliosis|disc/;
+const amateur =
+  /grass|lawn|\bpark\b|garden|outdoor|gym|fitness|corpsman|\bnavy\b|soldier|military|sasebo|physical therapy|spine model|exercise class|fleet fitness/;
 const banned =
   /3d|render|reconstruction|blender|\bcgi\b|animation|diagram|drawing|illustration|schematic|blausen|generated|midjourney|dall-?e|engraving|painting|cartoon|malignant|tumou?r|\bblood\b|fracture|tulip|wolf|urchin|fossil|nude|portrait|plant|animal|horse|mallard|taxus|acer|dinosaur|puncture|abscess|tuberculosis|treatise|zoology|wellcome|suffering|operate on|child|pediatric|infant|toddler|tomograph|\bct\b/;
 const radiograph = /x[\s-]?ray|radiograph|\bmri\b|fluoroscop/;
@@ -53,10 +55,6 @@ export function journalPhotoWords(topic: string) {
     .slice(0, 6);
 }
 
-function prefersRadiograph(topic: string) {
-  return /x-ray|radiograph|mri|fusion|stenosis|screw|implant|hardware/.test(topic.toLowerCase());
-}
-
 function topicHash(topic: string) {
   let hash = 2166136261;
   for (const character of topic) hash = Math.imul(hash ^ character.charCodeAt(0), 16777619) >>> 0;
@@ -68,11 +66,16 @@ export function journalPhotoIsScan(photo: Pick<JournalPhoto, "title" | "categori
   return radiograph.test(label) && !banned.test(label);
 }
 
-export function journalCoverKind(source: string) {
+export function journalSourceRejected(source: string) {
   const label = decodeURIComponent(source).replace(/[_+]/g, " ").toLowerCase();
-  if (banned.test(label)) return "skip" as const;
+  return amateur.test(label) || banned.test(label);
+}
+
+export function journalCoverKind(source: string) {
+  if (journalSourceRejected(source)) return "skip" as const;
+  const label = decodeURIComponent(source).replace(/[_+]/g, " ").toLowerCase();
   if (radiograph.test(label)) return "scan" as const;
-  return "photo" as const;
+  return "skip" as const;
 }
 
 export function chooseJournalPhoto(
@@ -81,7 +84,6 @@ export function chooseJournalPhoto(
   options?: { used?: string[]; preferPhoto?: boolean },
 ) {
   const words = journalPhotoWords(topic);
-  const imaging = prefersRadiograph(topic) && !options?.preferPhoto;
   const topicLabel = topic.toLowerCase();
   const used = new Set(options?.used ?? []);
   const seen = new Set<string>();
@@ -91,12 +93,12 @@ export function chooseJournalPhoto(
     const title = candidate.title.toLowerCase();
     const label = `${title} ${candidate.categories.toLowerCase()} ${(candidate.description ?? "").toLowerCase()}`;
     const license = candidate.license.toLowerCase();
-    if (!/jpe?g/.test(candidate.mime) || banned.test(label)) continue;
+    if (!/jpe?g/.test(candidate.mime) || banned.test(label) || amateur.test(label)) continue;
     if (/performs a|intraoperative|open surgery/.test(label)) continue;
-    if (!spineContext.test(title)) continue;
+    if (!spineContext.test(label) || !radiograph.test(label)) continue;
     if (/non-?commercial|\bnc\b|no derivatives/.test(license)) continue;
     if (!/cc0|cc by|public domain|no restrictions/.test(license)) continue;
-    if (candidate.width < 1000 || !candidate.thumbUrl) continue;
+    if (candidate.width < 800 || !candidate.thumbUrl) continue;
     if (seen.has(candidate.pageUrl)) continue;
     seen.add(candidate.pageUrl);
     const hits = words.filter((word) => label.includes(word)).length;
@@ -106,16 +108,12 @@ export function chooseJournalPhoto(
     if (/cervical/.test(topicLabel) && /cervical|c-spine|c1-c2/.test(label)) score += 8;
     if (candidate.width >= candidate.height) score += 3;
     if (candidate.height > 0 && candidate.width / candidate.height >= 1.2) score += 2;
-    if (isRadiograph) score += imaging ? 6 : 1;
-    else score += imaging ? 2 : 8;
-    if (/model|skeleton|therapy|exercise/.test(label) && !isRadiograph) score += 4;
+    if (isRadiograph) score += 6;
     ranked.push({ photo: candidate, score, radiograph: isRadiograph });
   }
   ranked.sort((a, b) => b.score - a.score || a.photo.title.localeCompare(b.photo.title));
-  const preferred = ranked.filter((item) => (imaging ? item.radiograph : !item.radiograph));
-  const pool = (preferred.length > 0 ? preferred : ranked).slice(0, 8);
+  const pool = ranked.slice(0, 8);
   if (pool.length === 0) return null;
-  if (imaging) return pool[0]?.photo ?? null;
   return pool[topicHash(topic) % pool.length]?.photo ?? null;
 }
 
@@ -202,15 +200,13 @@ export async function searchJournalPhoto(topic: string, options?: { used?: strin
   const words = journalPhotoWords(topic);
   const region = words.find((word) => /lumbar|cervical|thoracic|scoliosis|disc/.test(word));
   const queries = [
-    'intitle:"spine model" filetype:bitmap',
-    'intitle:"physical therapy" lumbar filetype:bitmap',
-    'intitle:"human spine" filetype:bitmap',
-    'intitle:"lumbar spine" OR intitle:"lumbar x" filetype:bitmap',
-    region ? `intitle:${region} spine filetype:bitmap` : "intitle:spine x-ray filetype:bitmap",
+    'intitle:"lumbar" (x-ray OR xray OR radiograph OR mri) filetype:bitmap',
+    'intitle:"cervical" (x-ray OR xray OR radiograph OR mri) filetype:bitmap',
+    region ? `intitle:${region} (x-ray OR radiograph OR mri) filetype:bitmap` : 'intitle:spine (x-ray OR radiograph OR mri) filetype:bitmap',
   ];
   const batches = await Promise.all([
     ...queries.map((query) => searchCommons(query).catch(() => [])),
-    ...["X-rays of the spine", "Human vertebral column"].map((category) => categoryPhotos(category).catch(() => [])),
+    categoryPhotos("X-rays of the spine").catch(() => []),
   ]);
   return chooseJournalPhoto(batches.flat(), topic || "lumbar spine", options);
 }
