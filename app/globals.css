@@ -44,8 +44,10 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-p {
-  text-wrap: pretty;
+@layer base {
+  p {
+    text-wrap: pretty;
+  }
 }
 
 .font-display {
