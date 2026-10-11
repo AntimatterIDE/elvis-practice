@@ -1,6 +1,6 @@
 "use client";
 
-import { guideDisclaimer } from "@/lib/guide/prompt";
+import { guideDisclaimer, welcomeMessage } from "@/lib/guide/prompt";
 import { cn } from "@/lib/utils";
 import { IconArrow, IconChat, IconClose } from "@/components/site/icons";
 import Link from "next/link";
@@ -19,6 +19,8 @@ const infoLinks = [
 ] as const;
 
 const starterPrompts = ["Where is the office?", "What happens at a visit?", "What is in the journal?"] as const;
+
+const opening: Turn[] = [{ role: "assistant", content: welcomeMessage }];
 
 type Frame = { left: number; top: number; width: number; height: number; desktop: boolean };
 
@@ -44,12 +46,7 @@ export function GuideChat() {
   const [draft, setDraft] = useState("");
   const [error, setError] = useState("");
   const [frame, setFrame] = useState<Frame>({ left: 0, top: 0, width: 0, height: 0, desktop: false });
-  const [turns, setTurns] = useState<Turn[]>([
-    {
-      role: "assistant",
-      content: "Hey, how can I help you? I can look through what we share on the site and in the journal.",
-    },
-  ]);
+  const [turns, setTurns] = useState<Turn[]>(opening);
 
   useEffect(() => {
     setMounted(true);
@@ -150,17 +147,14 @@ export function GuideChat() {
               className={cn(
                 "guide-sheet absolute flex min-w-0 flex-col overflow-hidden border border-line bg-card shadow-[0_24px_80px_-24px_rgb(7_30_54_/_0.55)]",
                 frame.desktop
-                  ? "right-6 bottom-6 w-[24rem] max-h-[min(36rem,calc(100%-3rem))] rounded-[1.75rem]"
+                  ? "right-6 bottom-6 w-[26rem] max-h-[min(40rem,calc(100%-3rem))] rounded-[1.75rem]"
                   : "inset-x-3 bottom-3 max-h-[calc(100%-1.5rem)] rounded-[1.75rem]",
               )}
             >
-              <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
-                <div className="min-w-0">
-                  <h2 id={titleId} className="font-display text-2xl leading-none">
-                    Ask
-                  </h2>
-                  <p className="mt-1 text-xs text-muted">About the site and the journal</p>
-                </div>
+              <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-4">
+                <h2 id={titleId} className="min-w-0 font-display text-2xl leading-none">
+                  The Alignment Clinic
+                </h2>
                 <button
                   type="button"
                   aria-label="Close"
@@ -170,31 +164,37 @@ export function GuideChat() {
                   <IconClose className="size-3.5" />
                 </button>
               </div>
-              <div ref={threadRef} className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4">
-                {turns.map((turn, index) => (
-                  <p
-                    key={`${turn.role}-${index}`}
-                    className={cn(
-                      "max-w-[85%] rounded-3xl px-3.5 py-2.5 text-sm leading-relaxed",
-                      turn.role === "user" ? "ml-auto bg-pine text-paper" : "bg-paper text-ink",
-                    )}
-                  >
-                    {turn.content}
-                  </p>
-                ))}
-                {pending ? <p className="text-sm text-muted">Let me look through what we have…</p> : null}
+              <div ref={threadRef} className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain px-5 py-5">
+                {turns.map((turn, index) =>
+                  index === 0 && turn.role === "assistant" ? (
+                    <p key="welcome" className="font-display text-[1.65rem] leading-tight text-ink">
+                      {turn.content}
+                    </p>
+                  ) : (
+                    <p
+                      key={`${turn.role}-${index}`}
+                      className={cn(
+                        "max-w-[88%] rounded-3xl px-3.5 py-2.5 text-sm leading-relaxed",
+                        turn.role === "user" ? "ml-auto bg-pine text-paper" : "bg-paper text-ink",
+                      )}
+                    >
+                      {turn.content}
+                    </p>
+                  ),
+                )}
+                {pending ? <p className="text-sm text-muted">One moment.</p> : null}
                 {error ? (
                   <p role="alert" className="text-sm text-emergency">
                     {error}
                   </p>
                 ) : null}
                 {turns.length === 1 && !pending ? (
-                  <div className="flex flex-wrap gap-2 pt-1">
+                  <div className="grid gap-2 pt-2">
                     {starterPrompts.map((prompt) => (
                       <button
                         key={prompt}
                         type="button"
-                        className="rounded-full border border-line bg-paper px-3 py-2 text-left text-sm leading-snug"
+                        className="rounded-2xl border border-line bg-paper px-4 py-3 text-left text-sm leading-snug hover:border-oxide"
                         onClick={() => void ask(prompt)}
                       >
                         {prompt}
@@ -203,26 +203,7 @@ export function GuideChat() {
                   </div>
                 ) : null}
               </div>
-              <form onSubmit={submit} className="grid min-w-0 gap-2 border-t border-line px-3 py-3">
-                <Link
-                  href="/contact"
-                  className="flex h-11 items-center justify-center rounded-full bg-oxide-deep px-4 text-sm font-semibold text-paper hover:bg-oxide-ink"
-                  onClick={() => setOpen(false)}
-                >
-                  Request a consultation
-                </Link>
-                <div className="flex min-w-0 gap-2 overflow-x-auto overscroll-x-contain pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  {infoLinks.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="inline-flex h-9 shrink-0 items-center rounded-full border border-line px-3 text-xs font-semibold text-ink"
-                      onClick={() => setOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
+              <form onSubmit={submit} className="grid min-w-0 gap-3 border-t border-line px-4 py-4">
                 <div className="flex min-w-0 items-end gap-2">
                   <label htmlFor="guide-question" className="sr-only">
                     Your question
@@ -233,8 +214,8 @@ export function GuideChat() {
                     value={draft}
                     maxLength={800}
                     rows={1}
-                    placeholder="Ask a question"
-                    className="max-h-24 min-h-11 min-w-0 flex-1 resize-none rounded-full border border-line bg-paper px-4 py-2.5 text-base outline-none focus:border-oxide"
+                    placeholder="Type a question"
+                    className="max-h-24 min-h-12 min-w-0 flex-1 resize-none rounded-full border border-line bg-paper px-4 py-3 text-base outline-none focus:border-oxide"
                     onChange={(event) => setDraft(event.target.value)}
                     onKeyDown={(event) => {
                       if (event.key === "Enter" && !event.shiftKey) {
@@ -247,10 +228,29 @@ export function GuideChat() {
                     type="submit"
                     aria-label="Send"
                     disabled={pending || draft.trim().length === 0}
-                    className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-oxide-deep text-paper hover:bg-oxide-ink disabled:opacity-50"
+                    className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-oxide-deep text-paper hover:bg-oxide-ink disabled:opacity-50"
                   >
                     <IconArrow className="h-3 w-5" />
                   </button>
+                </div>
+                <Link
+                  href="/contact"
+                  className="flex h-11 items-center justify-center rounded-full bg-oxide-deep px-4 text-sm font-semibold text-paper hover:bg-oxide-ink"
+                  onClick={() => setOpen(false)}
+                >
+                  Request a consultation
+                </Link>
+                <div className="flex flex-wrap gap-x-3 gap-y-1">
+                  {infoLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="text-sm text-ink underline-offset-4 hover:underline"
+                      onClick={() => setOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
                 <p className="text-xs leading-snug text-muted">{guideDisclaimer}</p>
               </form>
