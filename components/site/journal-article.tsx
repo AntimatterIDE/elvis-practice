@@ -3,6 +3,7 @@ import { Clock } from "lucide-react";
 import { BrandMark } from "@/components/site/brand";
 import { JournalProgress, JournalRail } from "@/components/site/journal-rail";
 import { Markdown } from "@/components/site/markdown";
+import { themesInText } from "@/lib/journal/search-desk";
 import { journalSections, readingMinutes } from "@/lib/journal/sections";
 import { practice } from "@/lib/site";
 import type { JournalArticle } from "@/lib/journal/store";
@@ -28,6 +29,7 @@ export function JournalArticleView({
 }) {
   const sections = journalSections(article.body);
   const minutes = readingMinutes(article.body);
+  const related = themesInText(`${article.title}\n${article.summary}\n${article.body}`).slice(0, 4);
 
   return (
     <article>
@@ -79,6 +81,21 @@ export function JournalArticleView({
                 </section>
               ))}
             </div>
+
+            {related.length > 0 ? (
+              <section className="mt-12">
+                <h2 className="font-display text-2xl">Read next</h2>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {related.map((theme) => (
+                    <li key={theme.href}>
+                      <Link className="inline-flex min-h-11 items-center rounded-full border border-line px-4 text-sm font-semibold hover:border-oxide" href={theme.href}>
+                        {theme.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
 
             {article.sources.length > 0 ? (
               <section className="mt-12">

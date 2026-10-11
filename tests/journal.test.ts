@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { journalNotesMatching } from "@/lib/journal/browse";
+import { journalKeywords, uncoveredThemes } from "@/lib/journal/search-desk";
 import { journalBody } from "@/lib/journal/body";
 import { articleSlug, journalSearchFallback, journalSearchQuery, papersForDraft, papersFromEuropePmc } from "@/lib/journal/papers";
 import { chooseJournalPhoto, journalCoverKind, type JournalPhoto } from "@/lib/journal/photo";
 import { journalSections, readingMinutes } from "@/lib/journal/sections";
 import { parseJournalDraft } from "@/lib/journal/draft-json";
+import { referenceNotes } from "@/lib/journal/reference-notes";
 import { explainAdsError } from "@/lib/ads/access";
 import { ga4PropertyId, googleAdsCampaignId, googleMeasurementId } from "@/lib/ads/config";
 
@@ -151,6 +153,31 @@ describe("journal research", () => {
     expect(journalCoverKind("https://commons.wikimedia.org/wiki/File:US_Navy_lumbar_physical_therapy.jpg")).toBe("skip");
   });
 
+  it("prefers a vertebrae photograph over another x-ray", () => {
+    const photo = (title: string, extra: Partial<JournalPhoto> = {}): JournalPhoto => ({
+      title,
+      mime: "image/jpeg",
+      width: 1400,
+      height: 900,
+      license: "CC BY 4.0",
+      categories: "",
+      credit: "Photo · Example · Wikimedia Commons",
+      thumbUrl: "https://upload.wikimedia.org/example.jpg",
+      pageUrl: `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(title)}.jpg`,
+      ...extra,
+    });
+    const chosen = chooseJournalPhoto(
+      [
+        photo("Lateral lumbar x ray", { categories: "X-rays of the spine" }),
+        photo("Lumbar vertebrae anatomy", { categories: "Bones of the human vertebral column" }),
+        photo("Spine model on the grass", { description: "outdoor lawn" }),
+      ],
+      "Lumbar microdiscectomy",
+    );
+    expect(chosen?.title).toBe("Lumbar vertebrae anatomy");
+    expect(journalCoverKind("https://commons.wikimedia.org/wiki/File:Lumbar_vertebrae_anatomy.jpg")).toBe("photo");
+  });
+
   it("rejects a draft that is too short to publish", () => {
     expect(() => parseJournalDraft(JSON.stringify({ title: "Too short", summary: "no", seoTitle: "no", seoDescription: "no", body: "no" }))).toThrow();
   });
@@ -196,6 +223,33 @@ describe("journal search on the page", () => {
     expect(journalNotesMatching(notes, "  claudication ")).toEqual([notes[0]]);
     expect(journalNotesMatching(notes, "neck")).toEqual([notes[1]]);
     expect(journalNotesMatching(notes, "hip replacement")).toEqual([]);
+  });
+
+  it("names the search phrases a note can support and the topics still missing", () => {
+    const keywords = journalKeywords({
+      title: "Sciatica and the lumbar nerve",
+      summary: "A note on sciatica for patients of The Alignment Clinic.",
+      seoTitle: "Sciatica",
+    });
+    expect(keywords).toContain("Sciatica");
+    const gaps = uncoveredThemes([
+      { title: "Sciatica", summary: "A note on sciatica.", body: "sciatica", reviewStatus: "approved" },
+      { title: "Draft only", summary: "microdiscectomy is mentioned here.", body: "microdiscectomy", reviewStatus: "draft" },
+    ]);
+    expect(gaps.some((theme) => theme.phrase === "sciatica")).toBe(false);
+    expect(gaps.some((theme) => theme.phrase === "microdiscectomy")).toBe(true);
+  });
+
+  it("keeps the ten reference notes inside the publishing rules", () => {
+    const banned = ["pain-free", "top-rated", "guaranteed", "cure", "arutyunyan", "big apple"];
+    expect(referenceNotes).toHaveLength(10);
+    for (const note of referenceNotes) {
+      const parsed = parseJournalDraft(JSON.stringify(note.copy));
+      const haystack = `${parsed.title}\n${parsed.summary}\n${parsed.body}`.toLowerCase();
+      for (const phrase of banned) expect(haystack).not.toContain(phrase);
+      expect(note.papers.length).toBeGreaterThanOrEqual(3);
+      expect(parsed.seoDescription.length).toBeGreaterThanOrEqual(40);
+    }
   });
 });
 
