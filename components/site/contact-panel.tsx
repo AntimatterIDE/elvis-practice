@@ -2,6 +2,7 @@
 
 import { ContactForm } from "@/components/site/contact-form";
 import { BrandMark } from "@/components/site/brand";
+import DappledLight from "@/components/react-bits/dappled-light";
 import { practice } from "@/lib/site";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -14,7 +15,19 @@ const details = [
 
 export function ContactPanel() {
   return (
-    <section className="w-full bg-paper px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+    <DappledLight
+      plant="olive"
+      placement="top-left"
+      backgroundColor="#f3f7fb"
+      lightColor="#fffaf3"
+      shadowColor="#c5d0dc"
+      window="off"
+      wind={0.4}
+      shadowStrength={0.8}
+      softness={1.2}
+      grain={0.12}
+      className="h-auto w-full px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24"
+    >
       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-16">
         <div className="flex flex-col justify-between gap-10">
           <motion.h2
@@ -78,11 +91,12 @@ export function ContactPanel() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.45, delay: 0.12 }}
+            className="rounded-[var(--rb-r-3xl,18px)] border border-line bg-card/95 p-5 shadow-sm sm:p-7"
           >
             <ContactForm />
           </motion.div>
         </div>
       </div>
-    </section>
+    </DappledLight>
   );
 }
