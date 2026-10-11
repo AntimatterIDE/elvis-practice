@@ -367,6 +367,34 @@ export type Database = {
           updated_at?: string;
         }
       >;
+      consultation_requests: Table<
+        {
+          id: string;
+          name: string;
+          email: string;
+          phone: string;
+          preferred_time: string;
+          note: string;
+          kind: "consultation" | "general";
+          status: "new" | "reached" | "closed";
+          created_at: string;
+        },
+        {
+          id?: string;
+          name: string;
+          email?: string;
+          phone?: string;
+          preferred_time?: string;
+          note?: string;
+          kind?: "consultation" | "general";
+          status?: "new" | "reached" | "closed";
+          created_at?: string;
+        },
+        {
+          status?: "new" | "reached" | "closed";
+          note?: string;
+        }
+      >;
     };
     Views: { [_ in never]: never };
     Functions: { [_ in never]: never };

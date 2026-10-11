@@ -33,8 +33,8 @@ export function ContactForm() {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="reason">Reason</Label>
-          <Select id="reason" name="reason" defaultValue="appointment">
-            <option value="appointment">Request a call about scheduling</option>
+          <Select id="reason" name="reason" defaultValue="consultation">
+            <option value="consultation">Request a consultation</option>
             <option value="general">General question</option>
           </Select>
         </div>
@@ -65,6 +65,10 @@ export function ContactForm() {
         </div>
       </div>
       <div className="grid gap-2">
+        <Label htmlFor="preferredTime">Best time for a call, optional</Label>
+        <Input id="preferredTime" name="preferredTime" maxLength={120} autoComplete="off" placeholder="For example, weekday mornings" />
+      </div>
+      <div className="grid gap-2">
         <Label htmlFor="note">Note, optional</Label>
         <Textarea
           id="note"
@@ -85,7 +89,7 @@ export function ContactForm() {
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
       <Button type="submit" disabled={pending} className="justify-self-start">
-        {pending ? "Checking…" : "Submit inquiry"}
+        {pending ? "Checking…" : "Request a consultation"}
       </Button>
       {state.message ? (
         <p

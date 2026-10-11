@@ -7,7 +7,7 @@ import { practice } from "@/lib/site";
 export const metadata: Metadata = publicPageMetadata({
   title: "Contact",
   description:
-    "Request a call from The Alignment Clinic. The form is for scheduling questions only and does not accept medical information.",
+    "Request a consultation with The Alignment Clinic. The form is for scheduling questions only and does not accept medical information.",
   canonical: "/contact",
 });
 
@@ -23,8 +23,8 @@ export default function ContactPage() {
     <article className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
       <PageIntro
         kicker="Contact"
-        title="Request a call."
-        lede="New patients are welcome. Send your name and a way to reach you. This form is for scheduling and other non-medical questions."
+        title="Request a consultation."
+        lede="New patients are welcome. Send your name and a way to reach you. The office keeps the request and calls when they can. This form is for scheduling and other non-medical questions."
       />
       <dl className="mt-10 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {facts.map((fact) => (
@@ -43,7 +43,7 @@ export default function ContactPage() {
         ))}
       </dl>
       <div className="mt-12 max-w-3xl rounded-[1.5rem] border border-line bg-card p-6 card-shadow md:p-8">
-        <h2 className="font-display text-3xl font-semibold tracking-tight">Ask the practice to call</h2>
+        <h2 className="font-display text-3xl font-semibold tracking-tight">Ask the office to reach out</h2>
         <div className="mt-6">
           <ContactForm />
         </div>

@@ -4,7 +4,7 @@ export const faqs = [
   {
     question: "How do I make an appointment?",
     answer:
-      "New patients are welcome. Use the contact page to request a call. There is no online scheduler. The form accepts a name and a phone number or email. It does not accept symptoms or insurance numbers, and it says so if the note was not delivered.",
+      "New patients are welcome. Use the contact page to request a consultation. There is no online scheduler. The form accepts a name, a phone number or email, and a preferred time for a call. It does not accept symptoms or insurance numbers. The office keeps the request and reaches out separately.",
   },
   {
     question: "Which insurance plans do you accept?",

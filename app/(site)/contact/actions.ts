@@ -3,12 +3,14 @@
 import { headers } from "next/headers";
 import { sendClinicEmail } from "@/lib/bird/send";
 import { noteLooksClinical } from "@/lib/contact/guard";
+import { consultationStorageReady, saveConsultationRequest } from "@/lib/consultations/store";
 import { contactInquirySchema } from "@/lib/content/schema";
 import { readServerEnv } from "@/lib/env";
 import { rateLimit } from "@/lib/rate-limit";
+import { practice } from "@/lib/site";
 
 export type ContactState = {
-  status: "idle" | "error" | "not_sent";
+  status: "idle" | "error" | "not_sent" | "saved";
   message: string;
   fieldErrors?: Record<string, string>;
 };
@@ -19,6 +21,7 @@ export async function submitInquiry(_previous: ContactState, formData: FormData)
     email: formData.get("email") ?? "",
     phone: formData.get("phone") ?? "",
     reason: formData.get("reason"),
+    preferredTime: formData.get("preferredTime") ?? "",
     note: formData.get("note") ?? "",
     website: formData.get("website") ?? "",
   });
@@ -60,25 +63,46 @@ export async function submitInquiry(_previous: ContactState, formData: FormData)
     };
   }
 
-  const env = readServerEnv();
-  if (!env.CONTACT_INBOX || !env.BIRD_API_KEY) {
+  if (!consultationStorageReady()) {
     return {
       status: "not_sent",
-      message:
-        "This message was not sent and was not saved. Do not add symptoms, records, or insurance numbers and try again.",
+      message: `This request was not saved. Please call the clinic at ${practice.phone}.`,
     };
   }
 
-  const sent = await sendClinicEmail({
-    to: env.CONTACT_INBOX,
-    subject: `Website inquiry: ${parsed.data.reason}`,
-    text: [`From: ${parsed.data.name}`, parsed.data.email, parsed.data.phone, "", parsed.data.note].filter(Boolean).join("\n"),
-    html: `<p>From ${escapeHtml(parsed.data.name)}</p><p>${escapeHtml(parsed.data.email)} ${escapeHtml(parsed.data.phone)}</p><p>${escapeHtml(parsed.data.note)}</p>`,
-  });
-  if (!sent.ok) {
-    return { status: "not_sent", message: "This message was not sent and was not saved. Please call the clinic." };
+  try {
+    await saveConsultationRequest(parsed.data);
+  } catch {
+    return {
+      status: "not_sent",
+      message: `This request was not saved. Please call the clinic at ${practice.phone}.`,
+    };
   }
-  return { status: "idle", message: "Your message was sent. It was not saved on this site." };
+
+  const env = readServerEnv();
+  if (env.CONTACT_INBOX && env.BIRD_API_KEY) {
+    await sendClinicEmail({
+      to: env.CONTACT_INBOX,
+      subject: `Consultation request: ${parsed.data.name}`,
+      text: [
+        `From: ${parsed.data.name}`,
+        parsed.data.email,
+        parsed.data.phone,
+        parsed.data.preferredTime ? `Preferred time: ${parsed.data.preferredTime}` : "",
+        parsed.data.reason,
+        "",
+        parsed.data.note,
+      ]
+        .filter(Boolean)
+        .join("\n"),
+      html: `<p>From ${escapeHtml(parsed.data.name)}</p><p>${escapeHtml(parsed.data.email)} ${escapeHtml(parsed.data.phone)}</p><p>${escapeHtml(parsed.data.preferredTime)}</p><p>${escapeHtml(parsed.data.note)}</p>`,
+    }).catch(() => null);
+  }
+
+  return {
+    status: "saved",
+    message: "The office has your request and will reach out when they can. This does not schedule the visit.",
+  };
 }
 
 function escapeHtml(value: string) {
