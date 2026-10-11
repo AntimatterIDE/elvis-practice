@@ -70,3 +70,5 @@ next-env.d.ts
 
 # agent scratch (never commit runner paths)
 tmp/
+.env*.local
+supabase/.temp/
