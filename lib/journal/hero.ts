@@ -64,7 +64,7 @@ export async function findJournalHero(slug: string): Promise<JournalHero | null>
 }
 
 export async function createJournalHero(topic: string, title: string, slug: string) {
-  const photo = await searchJournalPhoto(topic.trim() || title);
+  const photo = await searchJournalPhoto([title, topic].filter((part) => part.trim()).join(". "));
   if (!photo) return null;
   const file = await fetch(photo.thumbUrl, {
     headers: { "user-agent": "TheAlignmentClinic/1.0 (https://thealignmentclinic.com; admin@thealignmentclinic.com)" },
