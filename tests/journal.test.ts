@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { journalBody } from "@/lib/journal/body";
-import { chooseJournalPhoto, type JournalPhoto } from "@/lib/journal/photo";
+import { articleSlug, journalSearchFallback, journalSearchQuery, papersForDraft, papersFromEuropePmc } from "@/lib/journal/papers";
+import { chooseJournalPhoto, journalCoverKind, type JournalPhoto } from "@/lib/journal/photo";
 import { journalSections, readingMinutes } from "@/lib/journal/sections";
 import { parseJournalDraft } from "@/lib/journal/draft-json";
-import { articleSlug, journalSearchQuery, papersForDraft, papersFromEuropePmc } from "@/lib/journal/papers";
 import { explainAdsError } from "@/lib/ads/access";
 import { ga4PropertyId, googleAdsCampaignId, googleMeasurementId } from "@/lib/ads/config";
 
@@ -22,6 +22,7 @@ describe("journal research", () => {
           },
           { title: "Missing id" },
           { pmid: "123", title: "Duplicate" },
+          { pmid: "456", title: "Cervical cancer screening rates among women", abstractText: "Pap smear disparities." },
         ],
       },
     });
@@ -39,7 +40,15 @@ describe("journal research", () => {
   });
 
   it("builds a spine search from a topic and a fallback without one", () => {
-    expect(journalSearchQuery("lumbar stenosis")).toContain("lumbar stenosis");
+    expect(journalSearchQuery("lumbar stenosis")).toContain("TITLE_ABS:lumbar");
+    expect(journalSearchQuery("lumbar stenosis")).toContain("TITLE_ABS:stenosis");
+    expect(journalSearchQuery("lumbar stenosis")).not.toContain("TITLE_ABS:cervical");
+    expect(journalSearchQuery("Medicare Bundled Payments (TEAM Model)")).toContain(
+      "TITLE_ABS:medicare AND TITLE_ABS:bundled AND TITLE_ABS:payments AND TITLE_ABS:team",
+    );
+    expect(journalSearchFallback("Medicare Bundled Payments (TEAM Model)")).toContain(
+      "TITLE_ABS:medicare AND TITLE_ABS:bundled AND TITLE_ABS:payments AND",
+    );
     expect(journalSearchQuery("")).toContain("FIRST_PDATE");
     expect(articleSlug("Cervical Myelopathy, Explained")).toBe("cervical-myelopathy-explained");
   });
@@ -86,7 +95,7 @@ describe("journal research", () => {
       categories: "",
       credit: "Photo · Example · Wikimedia Commons",
       thumbUrl: "https://upload.wikimedia.org/example.jpg",
-      pageUrl: "https://commons.wikimedia.org/wiki/File:Example.jpg",
+      pageUrl: `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(title)}.jpg`,
       ...extra,
     });
     const chosen = chooseJournalPhoto(
@@ -112,7 +121,7 @@ describe("journal research", () => {
       categories: "",
       credit: "Photo · Example · Wikimedia Commons",
       thumbUrl: "https://upload.wikimedia.org/example.jpg",
-      pageUrl: "https://commons.wikimedia.org/wiki/File:Example.jpg",
+      pageUrl: `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(title)}.jpg`,
       ...extra,
     });
     const topic = "The Alignment Clinic's Expertise in Robotics and 3D-Printed Navigation";
@@ -127,6 +136,32 @@ describe("journal research", () => {
     expect(mixed?.title).toBe("Human spine vertebrae");
     const onlyScan = chooseJournalPhoto([photo("Lateral lumbar x ray", { categories: "X-rays of the spine" })], topic);
     expect(onlyScan?.title).toBe("Lateral lumbar x ray");
+  });
+
+  it("skips a cover already used, a ct, and a child photo", () => {
+    const photo = (title: string, extra: Partial<JournalPhoto> = {}): JournalPhoto => ({
+      title,
+      mime: "image/jpeg",
+      width: 1600,
+      height: 1000,
+      license: "CC BY 4.0",
+      categories: "",
+      credit: "Photo · Example · Wikimedia Commons",
+      thumbUrl: "https://upload.wikimedia.org/example.jpg",
+      pageUrl: `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(title)}.jpg`,
+      ...extra,
+    });
+    const model = photo("Spine model 1");
+    const second = photo("Lumbar physical therapy session");
+    const chosen = chooseJournalPhoto(
+      [model, second, photo("Sagittal CT of the cervical spine"), photo("Child spine physical therapy")],
+      "Wearable technology in spine recovery",
+      { preferPhoto: true, used: [model.pageUrl] },
+    );
+    expect(chosen?.title).toBe("Lumbar physical therapy session");
+    expect(journalCoverKind("https://commons.wikimedia.org/wiki/File:Lateral_lumbar_x_ray.jpg")).toBe("scan");
+    expect(journalCoverKind("https://commons.wikimedia.org/wiki/File:Cervical_spine_CT.jpg")).toBe("skip");
+    expect(journalCoverKind("https://commons.wikimedia.org/wiki/File:Spine_model_1.jpg")).toBe("photo");
   });
 
   it("rejects a draft that is too short to publish", () => {
