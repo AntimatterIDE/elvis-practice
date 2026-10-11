@@ -25,12 +25,15 @@ export function HomeHero() {
         variants={sequence}
         initial={reduce ? false : "hidden"}
         animate="show"
-        className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-16"
+        className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-14"
       >
         <div>
           <motion.p variants={rise} className="kicker text-oxide-deep">
             {practice.name}
           </motion.p>
+          <motion.div variants={rise} className="mt-4 lg:hidden">
+            <HeroArtwork className="mx-auto h-28 w-36" />
+          </motion.div>
           <motion.h1
             variants={rise}
             className="mt-4 max-w-3xl font-display text-[clamp(2.6rem,7vw,5.4rem)] font-medium leading-[0.98] tracking-[-0.035em]"
@@ -61,9 +64,12 @@ export function HomeHero() {
             numbers.
           </motion.p>
         </div>
-        <motion.div variants={rise} className="rounded-[1.75rem] border border-line bg-card p-5 card-shadow">
-          <HeroArtwork className="h-44 sm:h-52 lg:h-72" />
-          <p className="kicker mt-1 text-center text-oxide-deep">{practice.specialty}</p>
+        <motion.div
+          variants={rise}
+          className="hidden rounded-[1.75rem] border border-line bg-mist px-6 py-8 shadow-[0_24px_50px_-36px_rgb(7_30_54_/_0.65)] lg:block"
+        >
+          <HeroArtwork className="h-56 sm:h-64 lg:h-80" />
+          <p className="kicker mt-2 text-center text-ink">{practice.specialty}</p>
         </motion.div>
       </motion.div>
     </section>

@@ -62,7 +62,7 @@ export function HeroArtwork({ className }: { className?: string }) {
   return (
     <div aria-hidden="true" className={cn("pointer-events-none relative h-48 sm:h-56 lg:h-[30rem]", className)}>
       <img
-        src="/brand/alignment-hero-graphic.svg"
+        src="/brand/alignment-hero-graphic.svg?v=3"
         alt=""
         width={440}
         height={520}
