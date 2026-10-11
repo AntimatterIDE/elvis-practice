@@ -111,7 +111,7 @@ describe("journal research", () => {
     expect(chosen?.title).toBe("Lumbar Sacralization");
   });
 
-  it("uses a spine photograph for a note that is not about an x-ray, and still keeps an x-ray when that is the only real photo", () => {
+  it("uses a clinical film, and skips backyard models, gym photos, and a film already used", () => {
     const photo = (title: string, extra: Partial<JournalPhoto> = {}): JournalPhoto => ({
       title,
       mime: "image/jpeg",
@@ -124,44 +124,30 @@ describe("journal research", () => {
       pageUrl: `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(title)}.jpg`,
       ...extra,
     });
-    const topic = "The Alignment Clinic's Expertise in Robotics and 3D-Printed Navigation";
-    const mixed = chooseJournalPhoto(
+    const topic = "Wearable technology in spine recovery";
+    const lateral = photo("Lateral lumbar x ray", { categories: "X-rays of the spine" });
+    const chosen = chooseJournalPhoto(
       [
-        photo("Lateral lumbar x ray", { categories: "X-rays of the spine" }),
-        photo("Human spine vertebrae"),
+        photo("Spine model 1", { description: "A spine model photographed on the grass" }),
+        photo("Lumbar physical therapy session", { description: "Navy gym fitness center" }),
         photo("3D CT reconstruction of human lumbar spine"),
+        lateral,
+        photo("Sagittal lumbar MRI", { categories: "MRI of the spine" }),
       ],
       topic,
+      { preferPhoto: true },
     );
-    expect(mixed?.title).toBe("Human spine vertebrae");
-    const onlyScan = chooseJournalPhoto([photo("Lateral lumbar x ray", { categories: "X-rays of the spine" })], topic);
-    expect(onlyScan?.title).toBe("Lateral lumbar x ray");
-  });
-
-  it("skips a cover already used, a ct, and a child photo", () => {
-    const photo = (title: string, extra: Partial<JournalPhoto> = {}): JournalPhoto => ({
-      title,
-      mime: "image/jpeg",
-      width: 1600,
-      height: 1000,
-      license: "CC BY 4.0",
-      categories: "",
-      credit: "Photo · Example · Wikimedia Commons",
-      thumbUrl: "https://upload.wikimedia.org/example.jpg",
-      pageUrl: `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(title)}.jpg`,
-      ...extra,
-    });
-    const model = photo("Spine model 1");
-    const second = photo("Lumbar physical therapy session");
-    const chosen = chooseJournalPhoto(
-      [model, second, photo("Sagittal CT of the cervical spine"), photo("Child spine physical therapy")],
-      "Wearable technology in spine recovery",
-      { preferPhoto: true, used: [model.pageUrl] },
+    expect(chosen?.title === "Lateral lumbar x ray" || chosen?.title === "Sagittal lumbar MRI").toBe(true);
+    const next = chooseJournalPhoto(
+      [lateral, photo("Sagittal lumbar MRI", { categories: "MRI of the spine" })],
+      topic,
+      { used: [chosen?.pageUrl ?? ""] },
     );
-    expect(chosen?.title).toBe("Lumbar physical therapy session");
+    expect(next?.pageUrl).not.toBe(chosen?.pageUrl);
     expect(journalCoverKind("https://commons.wikimedia.org/wiki/File:Lateral_lumbar_x_ray.jpg")).toBe("scan");
     expect(journalCoverKind("https://commons.wikimedia.org/wiki/File:Cervical_spine_CT.jpg")).toBe("skip");
-    expect(journalCoverKind("https://commons.wikimedia.org/wiki/File:Spine_model_1.jpg")).toBe("photo");
+    expect(journalCoverKind("https://commons.wikimedia.org/wiki/File:Spine_model_1.jpg")).toBe("skip");
+    expect(journalCoverKind("https://commons.wikimedia.org/wiki/File:US_Navy_lumbar_physical_therapy.jpg")).toBe("skip");
   });
 
   it("rejects a draft that is too short to publish", () => {
