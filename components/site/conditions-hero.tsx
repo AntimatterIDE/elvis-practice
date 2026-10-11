@@ -688,7 +688,6 @@ export function ConditionsHero() {
   const anchorRef = useRef<HTMLHeadingElement>(null);
   const oceanRef = useRef<Ocean | null>(null);
   const optionsRef = useRef<(HTMLButtonElement | null)[]>([]);
-  const intentRef = useRef(0);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -699,7 +698,6 @@ export function ConditionsHero() {
     const ocean = createOcean(section, stage, anchor, topics[0].sea);
     oceanRef.current = ocean;
     return () => {
-      window.clearTimeout(intentRef.current);
       ocean?.destroy();
       oceanRef.current = null;
     };
@@ -726,108 +724,98 @@ export function ConditionsHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate flex w-full touch-pan-y flex-col overflow-hidden bg-paper px-4 pb-10 pt-6 text-ink md:min-h-[calc(100svh-8rem)] md:px-8 md:pb-14 md:pt-16"
+      className="relative isolate flex w-full touch-pan-y flex-col overflow-hidden bg-paper px-5 pb-28 pt-8 text-ink md:px-8 md:pb-16 md:pt-14"
     >
       <div ref={stageRef} aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-paper from-0% via-paper/85 via-50% to-transparent md:bg-[linear-gradient(100deg,#f3f7fb_0%,rgb(243_247_251/0.94)_34%,rgb(243_247_251/0.4)_64%,transparent_100%)]"
+      />
       <motion.div
         variants={sequence}
         initial={reduceMotion ? false : "hidden"}
         whileInView="show"
         viewport={{ once: true }}
-        className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-between gap-6 md:gap-12 md:[text-shadow:0_0_24px_rgb(243_247_251)]"
+        className="relative z-10 mx-auto flex w-full max-w-6xl flex-col"
       >
-        <div className="max-w-3xl rounded-3xl border border-line/80 bg-paper/92 p-5 shadow-[0_20px_50px_-36px_rgb(7_30_54_/_0.7)] backdrop-blur-md md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
-          <motion.p variants={rise} className="kicker text-oxide-deep">
-            Conditions
-          </motion.p>
+        <div className="max-w-2xl">
+          <motion.div variants={rise} className="flex items-baseline justify-between gap-4">
+            <p className="kicker text-oxide-deep">Conditions</p>
+            <p className="text-sm tabular-nums text-muted">
+              {active + 1} of {topics.length}
+            </p>
+          </motion.div>
           <motion.h1
             ref={anchorRef}
             variants={rise}
-            className="mt-3 grid items-end font-display text-[clamp(2.15rem,8vw,5rem)] font-semibold leading-[1.02] md:mt-4"
+            className="mt-4 font-display text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.03em]"
           >
-            {topics.map((item, index) => (
-              <span
-                key={item.slug}
-                aria-hidden={index !== active}
-                className={`col-start-1 row-start-1 transition-opacity duration-300 motion-reduce:transition-none ${
-                  index === active ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <span className="block">{item.name}</span>
-                <span className="block text-oxide-deep">explained.</span>
-              </span>
-            ))}
+            {current.name}
           </motion.h1>
+          <motion.p variants={rise} className="mt-3 font-display text-xl text-oxide-deep">
+            {current.note}
+          </motion.p>
           <motion.p
             variants={rise}
             aria-live="polite"
-            className="mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted md:mt-5 md:text-lg"
+            className="mt-4 max-w-xl text-pretty text-lg leading-relaxed text-ink/80"
           >
             {current.detail}
           </motion.p>
           <motion.p variants={rise} className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
             These notes are general education. A visit is where the cause, and the next step, are decided.
           </motion.p>
-          <motion.div variants={rise} className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
-            <Link
-              href="/contact"
-              className="inline-flex h-12 items-center justify-center rounded-full bg-oxide-deep px-7 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-oxide-ink"
-            >
-              Contact the practice
-            </Link>
+          <motion.div variants={rise} className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link
               href={`#${current.slug}`}
-              className="group inline-flex h-12 items-center justify-center gap-2 rounded-full text-sm font-semibold text-ink sm:justify-start"
+              className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-oxide-deep px-6 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-oxide-ink"
             >
               Read about {current.name}
               <IconArrow className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />
             </Link>
+            <Link
+              href="/contact"
+              className="hidden h-12 items-center justify-center rounded-full px-4 text-sm font-semibold text-ink sm:inline-flex"
+            >
+              Contact the practice
+            </Link>
           </motion.div>
         </div>
 
-        <motion.div
-          variants={rise}
-          role="radiogroup"
-          aria-label="Conditions"
-          className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 lg:max-w-3xl lg:grid-cols-4 lg:gap-x-6"
-        >
-          {topics.map((item, index) => {
-            const selected = index === active;
-            return (
-              <button
-                key={item.slug}
-                ref={(element) => {
-                  optionsRef.current[index] = element;
-                }}
-                type="button"
-                role="radio"
-                aria-checked={selected}
-                tabIndex={selected ? 0 : -1}
-                onClick={() => setActive(index)}
-                onKeyDown={onKeyDown}
-                onPointerEnter={(event) => {
-                  if (event.pointerType !== "mouse") return;
-                  window.clearTimeout(intentRef.current);
-                  intentRef.current = window.setTimeout(() => setActive(index), 160);
-                }}
-                onPointerLeave={() => window.clearTimeout(intentRef.current)}
-                className={`group flex min-h-16 cursor-pointer flex-col items-start rounded-2xl border px-4 py-3 text-left outline-none backdrop-blur-sm ${
-                  selected ? "border-oxide/50 bg-card" : "border-line/80 bg-card/75"
-                }`}
-              >
-                <span
-                  className={`font-display text-xl font-medium leading-tight transition-colors duration-300 motion-reduce:transition-none sm:text-2xl ${
-                    selected ? "text-oxide-deep" : "text-muted group-hover:text-ink"
+        <motion.div variants={rise} className="mt-8 max-w-3xl border-t border-line pt-4">
+          <p id="condition-topics" className="text-sm text-muted">
+            Choose a topic
+          </p>
+          <div
+            role="radiogroup"
+            aria-labelledby="condition-topics"
+            className="-mx-5 mt-3 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 sm:[scrollbar-width:auto] [&::-webkit-scrollbar]:hidden"
+          >
+            {topics.map((item, index) => {
+              const selected = index === active;
+              return (
+                <button
+                  key={item.slug}
+                  ref={(element) => {
+                    optionsRef.current[index] = element;
+                  }}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => setActive(index)}
+                  onKeyDown={onKeyDown}
+                  className={`min-h-11 shrink-0 cursor-pointer rounded-full border px-4 text-left font-display text-base leading-tight outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-oxide focus-visible:ring-offset-2 focus-visible:ring-offset-paper motion-reduce:transition-none sm:px-3 ${
+                    selected
+                      ? "border-oxide/40 bg-card text-oxide-deep"
+                      : "border-transparent text-muted hover:text-ink"
                   }`}
                 >
                   {item.name}
-                </span>
-                <span className={`mt-1 text-sm leading-snug transition-colors duration-300 motion-reduce:transition-none ${selected ? "text-ink" : "text-muted"}`}>
-                  {item.note}
-                </span>
-              </button>
-            );
-          })}
+                </button>
+              );
+            })}
+          </div>
         </motion.div>
       </motion.div>
     </section>
