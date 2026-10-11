@@ -3,12 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { draftClinicArticle } from "@/lib/journal/draft";
-import { createJournalHero } from "@/lib/journal/hero";
+import { createJournalHero, saveJournalCoverFile } from "@/lib/journal/hero";
 import { papersForDraft } from "@/lib/journal/papers";
 import { searchSpineJournals } from "@/lib/journal/search";
 import {
   approveJournalArticle,
   deleteJournalArticle,
+  journalArticle,
   journalStorageReady,
   saveJournalDraft,
   unpublishJournalArticle,
@@ -103,6 +104,41 @@ export async function unpublishJournalDraft(_previous: AdminFormState, formData:
     return { message: `${article.title} is back in drafts.` };
   } catch (error) {
     return { error: error instanceof Error ? error.message : "The article was not unpublished." };
+  }
+}
+
+function pictureMime(bytes: Uint8Array, reported: string) {
+  const jpeg = bytes.length > 3 && bytes[0] === 0xff && bytes[1] === 0xd8;
+  const png = bytes.length > 8 && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47;
+  if (jpeg && reported !== "image/png") return "image/jpeg" as const;
+  if (png && reported !== "image/jpeg" && reported !== "image/jpg") return "image/png" as const;
+  return null;
+}
+
+export async function uploadJournalCover(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
+  const session = await staff();
+  if (!session) return { error: "Sign in again to update the cover." };
+  if (!canPublish(session.role)) return { error: "An admin updates the cover picture." };
+  const id = articleId(formData);
+  if (!id) return { error: "That note could not be found." };
+  const file = formData.get("cover");
+  if (!(file instanceof File) || file.size < 1000) return { error: "Choose a JPEG or PNG to use as the cover." };
+  if (file.size > 7_000_000) return { error: "Use a picture smaller than 7 MB." };
+  try {
+    const article = await journalArticle(id);
+    if (!article) return { error: "That note could not be found." };
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const mime = pictureMime(bytes, file.type);
+    if (!mime) return { error: "Use a JPEG or PNG." };
+    const saved = await saveJournalCoverFile(article.slug, bytes, mime);
+    if (!saved) return { error: "The picture did not save. Try a smaller JPEG or PNG." };
+    revalidatePath("/admin/journal");
+    revalidatePath(`/admin/journal/${article.id}`);
+    revalidatePath("/journal");
+    revalidatePath(`/journal/${article.slug}`);
+    return { message: "The cover picture is updated." };
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "The picture did not save." };
   }
 }
 

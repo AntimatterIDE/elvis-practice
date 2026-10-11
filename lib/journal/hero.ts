@@ -1,6 +1,6 @@
 import "server-only";
 import { cache } from "react";
-import { journalCoverKind, journalPhotoIsScan, journalSourceRejected, searchJournalPhoto, type JournalPhoto } from "@/lib/journal/photo";
+import { journalPhotoIsScan, searchJournalPhoto, type JournalPhoto } from "@/lib/journal/photo";
 import { publishedJournalArticles } from "@/lib/journal/store";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
@@ -20,7 +20,7 @@ type CoverArticle = {
 
 type StoredCover = JournalHero & {
   source: string | null;
-  kind: "photo" | "scan" | null;
+  kind: "photo" | "scan" | "upload" | null;
 };
 
 function objectUrl(slug: string, name: string) {
@@ -52,35 +52,39 @@ async function readyBucket() {
 }
 
 async function readStoredCover(slug: string): Promise<StoredCover | null> {
-  const url = objectUrl(slug, "jpg");
   const metaUrl = objectUrl(slug, "json");
-  if (!url || !metaUrl) return null;
+  if (!metaUrl) return null;
+  let credit: string | null = null;
+  let source: string | null = null;
+  let version = "1";
+  let kind: StoredCover["kind"] = null;
+  let ext: "jpg" | "png" = "jpg";
   try {
-    const [image, meta] = await Promise.all([
-      fetch(url, { method: "HEAD", cache: "no-store", signal: AbortSignal.timeout(8000) }),
-      fetch(metaUrl, { cache: "no-store", signal: AbortSignal.timeout(8000) }),
-    ]);
-    if (!image.ok) return null;
-    let credit: string | null = null;
-    let source: string | null = null;
-    let version = "1";
-    let kind: StoredCover["kind"] = null;
+    const meta = await fetch(metaUrl, { cache: "no-store", signal: AbortSignal.timeout(8000) });
     if (meta.ok) {
-      const payload = (await meta.json()) as { credit?: string; source?: string; version?: string; kind?: string };
+      const payload = (await meta.json()) as { credit?: string; source?: string; version?: string; kind?: string; ext?: string };
       credit = payload.credit?.trim() || null;
       source = payload.source?.trim() || null;
       version = payload.version?.trim() || "1";
-      kind = payload.kind === "photo" || payload.kind === "scan" ? payload.kind : null;
+      kind = payload.kind === "photo" || payload.kind === "scan" || payload.kind === "upload" ? payload.kind : null;
+      if (payload.ext === "png") ext = "png";
     }
-    return {
-      url: `${url}?v=${encodeURIComponent(version).slice(0, 48)}`,
-      credit,
-      source,
-      kind,
-    };
   } catch {
-    return null;
+    credit = null;
   }
+  const primary = objectUrl(slug, ext);
+  const fallback = objectUrl(slug, ext === "png" ? "jpg" : "png");
+  for (const url of [primary, fallback]) {
+    if (!url) continue;
+    try {
+      const image = await fetch(url, { method: "HEAD", cache: "no-store", signal: AbortSignal.timeout(8000) });
+      if (!image.ok) continue;
+      return { url: `${url}?v=${encodeURIComponent(version).slice(0, 48)}`, credit, source, kind };
+    } catch {
+      continue;
+    }
+  }
+  return null;
 }
 
 async function saveJournalHero(slug: string, photo: JournalPhoto) {
@@ -127,63 +131,42 @@ export async function createJournalHero(
   return saveJournalHero(slug, photo);
 }
 
-export async function prepareJournalCovers(articles: CoverArticle[]) {
-  const stored = await Promise.all(articles.map((article) => readStoredCover(article.slug)));
-  const used = new Set<string>();
-  const covers = new Map<string, JournalHero | null>();
-
-  for (let index = 0; index < articles.length; index += 1) {
-    const article = articles[index];
-    const current = stored[index];
-    const source = current?.source ?? "";
-    const duplicate = Boolean(source) && used.has(source);
-    const rejected = !source || journalSourceRejected(source);
-    const keep = Boolean(
-      current && source && !duplicate && !rejected && (journalCoverKind(source) === "scan" || current.kind === "scan"),
-    );
-    if (keep && current) {
-      used.add(source);
-      covers.set(article.slug, { url: current.url, credit: current.credit });
-      continue;
-    }
-    try {
-      const photo = await searchJournalPhoto([article.title, article.summary].filter((part) => part.trim()).join(". "), {
-        used: [...used],
-      });
-      if (!photo) {
-        covers.set(article.slug, current ? { url: current.url, credit: current.credit } : null);
-        if (source) used.add(source);
-        continue;
-      }
-      const saved = await saveJournalHero(article.slug, photo);
-      if (!saved) {
-        covers.set(article.slug, current ? { url: current.url, credit: current.credit } : null);
-        continue;
-      }
-      used.add(saved.source);
-      covers.set(article.slug, { url: saved.url, credit: saved.credit });
-    } catch {
-      covers.set(article.slug, current ? { url: current.url, credit: current.credit } : null);
-    }
-  }
-
-  return covers;
+export async function saveJournalCoverFile(slug: string, bytes: Uint8Array, mime: "image/jpeg" | "image/png") {
+  if (bytes.byteLength < 1000 || bytes.byteLength > 7_000_000) return null;
+  const ext = mime === "image/png" ? "png" : "jpg";
+  const supabase = await readyBucket();
+  const uploaded = await supabase.storage.from(bucket).upload(`${slug}.${ext}`, bytes, {
+    contentType: mime,
+    cacheControl: "31536000",
+    upsert: true,
+  });
+  if (uploaded.error) return null;
+  const version = String(Date.now());
+  await supabase.storage.from(bucket).upload(
+    `${slug}.json`,
+    new TextEncoder().encode(JSON.stringify({ credit: "Photo · The Alignment Clinic", source: "upload", version, kind: "upload", ext })),
+    { contentType: "application/json", upsert: true },
+  );
+  await supabase.storage.from(bucket).remove([ext === "png" ? `${slug}.jpg` : `${slug}.png`]);
+  const url = objectUrl(slug, ext);
+  return url ? { url: `${url}?v=${version}`, credit: "Photo · The Alignment Clinic" } : null;
 }
 
 export const publishedJournalCovers = cache(async () => {
   const articles = await publishedJournalArticles();
-  const covers = await prepareJournalCovers(articles);
+  const stored = await Promise.all(articles.map((article) => readStoredCover(article.slug).catch(() => null)));
+  const covers = new Map<string, JournalHero | null>();
+  articles.forEach((article, index) => {
+    const current = stored[index];
+    covers.set(article.slug, current ? { url: current.url, credit: current.credit } : null);
+  });
   return { articles, covers };
 });
 
 export const ensureJournalHero = cache(async (article: CoverArticle) => {
   try {
-    if (article.reviewStatus === "approved") {
-      const { covers } = await publishedJournalCovers();
-      return covers.get(article.slug) ?? null;
-    }
     const existing = await findJournalHero(article.slug);
-    if (existing) return existing;
+    if (existing || article.reviewStatus === "approved") return existing;
     return await createJournalHero(article.summary, article.title, article.slug);
   } catch {
     return null;

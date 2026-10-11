@@ -66,15 +66,22 @@ export function journalPhotoIsScan(photo: Pick<JournalPhoto, "title" | "categori
   return radiograph.test(label) && !banned.test(label);
 }
 
+function coverLabel(source: string) {
+  try {
+    return decodeURIComponent(source).replace(/[_+]/g, " ").toLowerCase();
+  } catch {
+    return source.replace(/[_+]/g, " ").toLowerCase();
+  }
+}
+
 export function journalSourceRejected(source: string) {
-  const label = decodeURIComponent(source).replace(/[_+]/g, " ").toLowerCase();
+  const label = coverLabel(source);
   return amateur.test(label) || banned.test(label);
 }
 
 export function journalCoverKind(source: string) {
   if (journalSourceRejected(source)) return "skip" as const;
-  const label = decodeURIComponent(source).replace(/[_+]/g, " ").toLowerCase();
-  if (radiograph.test(label)) return "scan" as const;
+  if (radiograph.test(coverLabel(source))) return "scan" as const;
   return "skip" as const;
 }
 
