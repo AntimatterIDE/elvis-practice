@@ -10,6 +10,16 @@ import { createPortal } from "react-dom";
 
 type Turn = { role: "user" | "assistant"; content: string };
 
+const infoLinks = [
+  { href: "/about", label: "About the clinic" },
+  { href: "/visit", label: "Your visit" },
+  { href: "/conditions", label: "Conditions" },
+  { href: "/questions", label: "Questions" },
+  { href: "/journal", label: "Journal" },
+] as const;
+
+const starterPrompts = ["Where is the office?", "What happens at a visit?", "What is in the journal?"] as const;
+
 type Frame = { left: number; top: number; width: number; height: number; desktop: boolean };
 
 function readFrame(): Frame {
@@ -92,11 +102,10 @@ export function GuideChat() {
     thread.scrollTop = thread.scrollHeight;
   }, [open, turns, pending, error]);
 
-  async function submit(event: React.FormEvent) {
-    event.preventDefault();
-    const content = draft.trim();
-    if (!content || pending) return;
-    const history = [...turns, { role: "user" as const, content }].slice(-8);
+  async function ask(content: string) {
+    const trimmed = content.trim();
+    if (!trimmed || pending) return;
+    const history = [...turns, { role: "user" as const, content: trimmed }].slice(-8);
     setTurns(history);
     setDraft("");
     setError("");
@@ -119,6 +128,11 @@ export function GuideChat() {
     } finally {
       setPending(false);
     }
+  }
+
+  function submit(event: React.FormEvent) {
+    event.preventDefault();
+    void ask(draft);
   }
 
   const panel =
@@ -174,8 +188,41 @@ export function GuideChat() {
                     {error}
                   </p>
                 ) : null}
+                {turns.length === 1 && !pending ? (
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {starterPrompts.map((prompt) => (
+                      <button
+                        key={prompt}
+                        type="button"
+                        className="rounded-full border border-line bg-paper px-3 py-2 text-left text-sm leading-snug"
+                        onClick={() => void ask(prompt)}
+                      >
+                        {prompt}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
               </div>
               <form onSubmit={submit} className="grid min-w-0 gap-2 border-t border-line px-3 py-3">
+                <Link
+                  href="/contact"
+                  className="flex h-11 items-center justify-center rounded-full bg-oxide-deep px-4 text-sm font-semibold text-paper hover:bg-oxide-ink"
+                  onClick={() => setOpen(false)}
+                >
+                  Request a consultation
+                </Link>
+                <div className="flex min-w-0 gap-2 overflow-x-auto overscroll-x-contain pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  {infoLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="inline-flex h-9 shrink-0 items-center rounded-full border border-line px-3 text-xs font-semibold text-ink"
+                      onClick={() => setOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
                 <div className="flex min-w-0 items-end gap-2">
                   <label htmlFor="guide-question" className="sr-only">
                     Your question
@@ -206,9 +253,6 @@ export function GuideChat() {
                   </button>
                 </div>
                 <p className="text-xs leading-snug text-muted">{guideDisclaimer}</p>
-                <Link href="/contact" className="text-sm font-semibold text-oxide-deep underline-offset-4 hover:underline" onClick={() => setOpen(false)}>
-                  Request a consultation
-                </Link>
               </form>
             </section>
           </div>,
