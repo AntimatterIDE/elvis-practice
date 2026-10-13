@@ -103,8 +103,8 @@ export default function HomePage() {
               <p className="kicker text-foam">New patients</p>
               <h2 className="mt-3 font-display text-4xl font-medium tracking-tight md:text-5xl">Ready when you are.</h2>
               <p className="mt-4 max-w-lg text-lg leading-relaxed text-paper">
-                Request a call about a visit. The office is at {practice.addressLine}. Leave symptoms, images, and
-                insurance numbers off the form.
+                Request a call about a visit. The office is at {practice.addressLine}. Leave insurance numbers
+                and dates of birth off the form.
               </p>
             </div>
             <Link

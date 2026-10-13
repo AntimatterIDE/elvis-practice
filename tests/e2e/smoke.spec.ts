@@ -18,14 +18,19 @@ test("draft clinical page explains emergencies and stays out of the public index
   await expect(page.getByRole("heading", { level: 1, name: "This page is not on the site." })).toBeVisible();
 });
 
-test("contact form refuses medical details", async ({ page }) => {
+test("contact form accepts a short note and refuses insurance numbers", async ({ page }) => {
   await page.goto("/contact");
   await expect(page.getByRole("heading", { name: "Request a consultation." })).toBeVisible();
   await page.getByLabel("Name").fill("Ada Lovelace");
   await page.getByLabel("Email").fill("ada@example.com");
-  await page.getByLabel("Note, optional").fill("I have severe back pain after surgery");
+  await page.getByLabel("Note, optional").fill("Member ID 12345");
   await page.getByRole("button", { name: "Request a consultation" }).click();
-  await expect(page.getByRole("alert").filter({ hasText: "saved for the call" })).toBeVisible();
+  await expect(page.getByRole("alert")).toContainText("member IDs");
+
+  await page.getByLabel("Note, optional").fill("back pain");
+  await page.getByRole("button", { name: "Request a consultation" }).click();
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  await expect(page.getByRole("status")).toBeVisible();
 });
 
 test("missing pages use the custom 404", async ({ page }) => {

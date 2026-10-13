@@ -1,0 +1,5286 @@
+[
+  {
+    "code": "86152",
+    "description": "Cell enumeration &id"
+  },
+  {
+    "code": "86153",
+    "description": "Cell enumeration phys interp"
+  },
+  {
+    "code": "86890",
+    "description": "Autologous blood process"
+  },
+  {
+    "code": "86891",
+    "description": "Autologous blood op salvage"
+  },
+  {
+    "code": "86927",
+    "description": "Plasma fresh frozen"
+  },
+  {
+    "code": "86930",
+    "description": "Frozen blood prep"
+  },
+  {
+    "code": "86931",
+    "description": "Frozen blood thaw"
+  },
+  {
+    "code": "86932",
+    "description": "Frozen blood freeze/thaw"
+  },
+  {
+    "code": "86945",
+    "description": "Blood product/irradiation"
+  },
+  {
+    "code": "86950",
+    "description": "Leukacyte transfusion"
+  },
+  {
+    "code": "86960",
+    "description": "Vol reduction of blood/prod"
+  },
+  {
+    "code": "86965",
+    "description": "Pooling blood platelets"
+  },
+  {
+    "code": "86985",
+    "description": "Split blood or products"
+  },
+  {
+    "code": "0011M",
+    "description": "Onc prst8 ca mrna 12 gen alg"
+  },
+  {
+    "code": "0012M",
+    "description": "Onc mrna 5 gen rsk urthl ca"
+  },
+  {
+    "code": "0013M",
+    "description": "Onc mrna 5 gen recr urthl ca"
+  },
+  {
+    "code": "0016M",
+    "description": "Onc bladder mrna 219 gen alg"
+  },
+  {
+    "code": "0017M",
+    "description": "Onc dlbcl mrna 20 genes alg"
+  },
+  {
+    "code": "0019M",
+    "description": "Cv ds plasma alys prtn bmrk"
+  },
+  {
+    "code": "0020M",
+    "description": "Onc cns alys 30000 dna loci"
+  },
+  {
+    "code": "0640T",
+    "description": "Ncntc ifr spctrsc o/t pad 1"
+  },
+  {
+    "code": "0859T",
+    "description": "Ncntc ifr spctrsc o/t pad ea"
+  },
+  {
+    "code": "0860T",
+    "description": "Ncntc ifr spctrsc scr pad"
+  },
+  {
+    "code": "0898T",
+    "description": "N-invas prst8 cancer est map"
+  },
+  {
+    "code": "0018U",
+    "description": "Onc thyr 10 microrna seq alg"
+  },
+  {
+    "code": "0019U",
+    "description": "Onc rna tiss predict alg"
+  },
+  {
+    "code": "0021U",
+    "description": "Onc prst8 detcj 8 autoantb"
+  },
+  {
+    "code": "0022U",
+    "description": "Tgsap nsm lung neo dna&rna23"
+  },
+  {
+    "code": "0023U",
+    "description": "Onc aml dna detcj/nondetcj"
+  },
+  {
+    "code": "0024U",
+    "description": "Glyca nuc mr spectrsc quan"
+  },
+  {
+    "code": "0025U",
+    "description": "Tenofovir liq chrom ur quan"
+  },
+  {
+    "code": "0026U",
+    "description": "Onc thyr dna&mrna 112 genes"
+  },
+  {
+    "code": "0027U",
+    "description": "Jak2 gene trgt seq alys"
+  },
+  {
+    "code": "0029U",
+    "description": "Rx metab advrs trgt seq alys"
+  },
+  {
+    "code": "0030U",
+    "description": "Rx metab warf trgt seq alys"
+  },
+  {
+    "code": "0031U",
+    "description": "Cypia2 gene"
+  },
+  {
+    "code": "0032U",
+    "description": "Comt gene"
+  },
+  {
+    "code": "0033U",
+    "description": "Htr2a htr2c genes"
+  },
+  {
+    "code": "0034U",
+    "description": "Tpmt nudt15 genes"
+  },
+  {
+    "code": "0035U",
+    "description": "Neuro csf prion prtn qual"
+  },
+  {
+    "code": "0036U",
+    "description": "Xome tum & nml spec seq alys"
+  },
+  {
+    "code": "0037U",
+    "description": "Trgt gen seq rgt gen seq dna 324 genes"
+  },
+  {
+    "code": "0038U",
+    "description": "Vitamin d srm microsamp quan"
+  },
+  {
+    "code": "0039U",
+    "description": "Dna antb 2strand hi avidity"
+  },
+  {
+    "code": "0040U",
+    "description": "Bcr/abl1 gene major bp quan"
+  },
+  {
+    "code": "0041U",
+    "description": "B brgdrferi antb 5 prtn igm"
+  },
+  {
+    "code": "0042U",
+    "description": "B brgdrferi antb 12 prtn igg"
+  },
+  {
+    "code": "0043U",
+    "description": "Tbrg b grp antb 4 prtn igm"
+  },
+  {
+    "code": "0044U",
+    "description": "Tbrf b grp antb 4 prtn igg"
+  },
+  {
+    "code": "0045U",
+    "description": "Onc brst dux carc is 12 gene"
+  },
+  {
+    "code": "0046U",
+    "description": "Flt3 genie itd variants quan"
+  },
+  {
+    "code": "0047U",
+    "description": "Onc prst8 mrna 17 gene alg"
+  },
+  {
+    "code": "0048U",
+    "description": "Onc sld org neo dna 468 gene"
+  },
+  {
+    "code": "0049U",
+    "description": "Npm1 gene analysis quan"
+  },
+  {
+    "code": "0050U",
+    "description": "Trgt gen seq dna 194 genes"
+  },
+  {
+    "code": "0051U",
+    "description": "Rx mntr lc-ms/ms ur 31 pnl"
+  },
+  {
+    "code": "0052U",
+    "description": "Lpoprtn bld w/5 maj classes"
+  },
+  {
+    "code": "0054U",
+    "description": "Rx mntr 14+ drugs & sbsts"
+  },
+  {
+    "code": "0055U",
+    "description": "Card hrt trnspl 96 dna seq"
+  },
+  {
+    "code": "0058U",
+    "description": "Onc merkel cll carc srm quan"
+  },
+  {
+    "code": "0059U",
+    "description": "Onc merkel cll carc srm+/-"
+  },
+  {
+    "code": "0060U",
+    "description": "Twn zyg gen seq alys chrms2"
+  },
+  {
+    "code": "0061U",
+    "description": "Tc meas 5 bmrk sfdi m-s alys"
+  },
+  {
+    "code": "0095U",
+    "description": "Ee 2 prtn bmrk elisa est"
+  },
+  {
+    "code": "0153U",
+    "description": "Onc breast mrna 101 genes"
+  },
+  {
+    "code": "0154U",
+    "description": "Onc urthl ca rna fgfr3 gene"
+  },
+  {
+    "code": "0155U",
+    "description": "Onc brst ca dna pik3ca gene"
+  },
+  {
+    "code": "0172U",
+    "description": "Onc sld tum alys brca1 brca2"
+  },
+  {
+    "code": "0174U",
+    "description": "Onc solid tumor 30 prtn trgt"
+  },
+  {
+    "code": "0177U",
+    "description": "Onc brst ca dna pik3ca 11"
+  },
+  {
+    "code": "0179U",
+    "description": "Onc nonsm cll lng ca alys 23"
+  },
+  {
+    "code": "0202U",
+    "description": "Nfct ds 22 trgt sars-cov-2"
+  },
+  {
+    "code": "0223U",
+    "description": "Nfct ds 22 trgt sars-cov-2"
+  },
+  {
+    "code": "0224U",
+    "description": "Antibody sars-cov-2 titer(s)"
+  },
+  {
+    "code": "0225U",
+    "description": "Nfct ds dna&rna 21 sarscov2"
+  },
+  {
+    "code": "0226U",
+    "description": "Svnt sarscov2 elisa plsm srm"
+  },
+  {
+    "code": "0229U",
+    "description": "Bcat1&ikzf1 prmtr mthln alys"
+  },
+  {
+    "code": "0230U",
+    "description": "Ar full sequence analysis"
+  },
+  {
+    "code": "0231U",
+    "description": "Cacna1a full gene analysis"
+  },
+  {
+    "code": "0232U",
+    "description": "Cstb full gene analysis"
+  },
+  {
+    "code": "0233U",
+    "description": "Fxn gene analysis"
+  },
+  {
+    "code": "0234U",
+    "description": "Mecp2 full gene analysis"
+  },
+  {
+    "code": "0235U",
+    "description": "Pten full gene analysis"
+  },
+  {
+    "code": "0236U",
+    "description": "Smn1&smn2 full gene analysis"
+  },
+  {
+    "code": "0237U",
+    "description": "Car ion chnlpthy gen seq pnl"
+  },
+  {
+    "code": "0238U",
+    "description": "Onc lnch syn gen dna seq aly"
+  },
+  {
+    "code": "0239U",
+    "description": "Trgt gen seq alys pnl 311+"
+  },
+  {
+    "code": "0240U",
+    "description": "Nfct ds vir resp rna 3 trgt"
+  },
+  {
+    "code": "0241U",
+    "description": "Nfct ds vir resp rna 4 trgt"
+  },
+  {
+    "code": "0242U",
+    "description": "Trgt gen seq alys pnl 55-74"
+  },
+  {
+    "code": "0244U",
+    "description": "Onc solid orgn dna 257 genes"
+  },
+  {
+    "code": "0245U",
+    "description": "Onc thyr mut alys 10 gen&37"
+  },
+  {
+    "code": "0246U",
+    "description": "Rbc dna gnotyp 16 bld groups"
+  },
+  {
+    "code": "0248U",
+    "description": "Onc sphrd cell cul 12 rx pnl"
+  },
+  {
+    "code": "0250U",
+    "description": "Onc sld org neo dna 505 gene"
+  },
+  {
+    "code": "0258U",
+    "description": "Ai psor mrna 50-100 gen alg"
+  },
+  {
+    "code": "0260U",
+    "description": "Rare ds id opt genome mapg"
+  },
+  {
+    "code": "0261U",
+    "description": "Onc clrct ca img alys w/ai"
+  },
+  {
+    "code": "0262U",
+    "description": "Onc sld tum rtpcr 7 gen"
+  },
+  {
+    "code": "0264U",
+    "description": "Rare ds id opt genome mapg"
+  },
+  {
+    "code": "0265U",
+    "description": "Rar do whl gn&mtcdrl dna als"
+  },
+  {
+    "code": "0266U",
+    "description": "Unxpl cnst hrtbl do gn xprsn"
+  },
+  {
+    "code": "0267U",
+    "description": "Rare do id opt gen mapg&seq"
+  },
+  {
+    "code": "0268U",
+    "description": "Hem ahus gen seq alys 15 gen"
+  },
+  {
+    "code": "0269U",
+    "description": "Hem aut dm cgen trmbctpna 22"
+  },
+  {
+    "code": "0270U",
+    "description": "Hem cgen coagj do 20 genes"
+  },
+  {
+    "code": "0271U",
+    "description": "Hem cgen neutropenia 24 gen"
+  },
+  {
+    "code": "0272U",
+    "description": "Hem genetic bld do 60 genes"
+  },
+  {
+    "code": "0273U",
+    "description": "Hem gen hyprfibrnlysis 8 gen"
+  },
+  {
+    "code": "0274U",
+    "description": "Hem gen pltlt do 62 genes"
+  },
+  {
+    "code": "0276U",
+    "description": "Hem inh thrombocytopenia 42"
+  },
+  {
+    "code": "0277U",
+    "description": "Hem gen pltlt funcj do 40"
+  },
+  {
+    "code": "0278U",
+    "description": "Hem gen thrombosis 14 genes"
+  },
+  {
+    "code": "0282U",
+    "description": "Rbc dna gntyp 12 bld grp gen"
+  },
+  {
+    "code": "0287U",
+    "description": "Onc thyr dna&mrna 112 genes"
+  },
+  {
+    "code": "0288U",
+    "description": "Onc lung mrna quan pcr 11&3"
+  },
+  {
+    "code": "0305U",
+    "description": "Hem rbc fnclty&dfrm shr strs"
+  },
+  {
+    "code": "0306U",
+    "description": "Onc mrd nxt-gnrj alys 1st"
+  },
+  {
+    "code": "0307U",
+    "description": "Onc mrd nxt-gnrj alys sbsq"
+  },
+  {
+    "code": "0308U",
+    "description": "Crd cad alys 3 prtn 3 param"
+  },
+  {
+    "code": "0313U",
+    "description": "Onc pncrs dna&mrna seq 74"
+  },
+  {
+    "code": "0314U",
+    "description": "Onc cutan mlnma mrna 35 gene"
+  },
+  {
+    "code": "0315U",
+    "description": "Onc cutan sq cll ca mrna 40"
+  },
+  {
+    "code": "0317U",
+    "description": "Onc lung ca 4-prb fish assay"
+  },
+  {
+    "code": "0318U",
+    "description": "Ped whl gen mthyltn alys 50+"
+  },
+  {
+    "code": "0332U",
+    "description": "Onc pan tum gen prflg 8 dna"
+  },
+  {
+    "code": "0334U",
+    "description": "Onc sld orgn tgsa dna 84/+"
+  },
+  {
+    "code": "0335U",
+    "description": "Rare ds whl gen seq feta"
+  },
+  {
+    "code": "0336U",
+    "description": "Rare ds whl gen seq bld/slv"
+  },
+  {
+    "code": "0337U",
+    "description": "Onc plsm cell do&myeloma id"
+  },
+  {
+    "code": "0338U",
+    "description": "Onc sld tum crcg tum cl slct"
+  },
+  {
+    "code": "0339U",
+    "description": "Onc prst8 mrna hoxc6 & dlx1"
+  },
+  {
+    "code": "0340U",
+    "description": "Onc pan ca alys mrd plasma"
+  },
+  {
+    "code": "0341U",
+    "description": "Ftl aneup dna seq cmpr alys"
+  },
+  {
+    "code": "0342U",
+    "description": "Onc pncrtc ca mult ia eclia"
+  },
+  {
+    "code": "0343U",
+    "description": "Onc prst8 xom aly 442 sncrna"
+  },
+  {
+    "code": "0344U",
+    "description": "Hep nafld semiq evl 28 lipid"
+  },
+  {
+    "code": "0345U",
+    "description": "Psyc genom alys pnl 15 gen"
+  },
+  {
+    "code": "0347U",
+    "description": "Rx metab/pcx dna 16 gen alys"
+  },
+  {
+    "code": "0348U",
+    "description": "Rx metab/pcx dna 25 gen alys"
+  },
+  {
+    "code": "0349U",
+    "description": "Rx metab/pcx dna 27gen rx ia"
+  },
+  {
+    "code": "0350U",
+    "description": "Rx metab/pcx dna 27 gen alys"
+  },
+  {
+    "code": "0351U",
+    "description": "Nfct ds bct/viral trail ip10"
+  },
+  {
+    "code": "0355U",
+    "description": "Apol1 risk variants"
+  },
+  {
+    "code": "0356U",
+    "description": "Onc orop/anal 17 dna ddpcr"
+  },
+  {
+    "code": "0358U",
+    "description": "Neuro alys β-amyl 1-42&1-40"
+  },
+  {
+    "code": "0359U",
+    "description": "Onc prst8 ca alys all psa"
+  },
+  {
+    "code": "0360U",
+    "description": "Onc lung elisa 7 autoant alg"
+  },
+  {
+    "code": "0361U",
+    "description": "Neurflmnt lt chn dig ia quan"
+  },
+  {
+    "code": "0362U",
+    "description": "Onc pap thyr ca rna 82&10"
+  },
+  {
+    "code": "0363U",
+    "description": "Onc urthl mrna 5 gen alg"
+  },
+  {
+    "code": "0364U",
+    "description": "Onc hl neo gen seq alys alg"
+  },
+  {
+    "code": "0365U",
+    "description": "Onc bldr 10 ur hrbr urthl ca"
+  },
+  {
+    "code": "0366U",
+    "description": "Onc bldr 10 prb recr bldr ca"
+  },
+  {
+    "code": "0367U",
+    "description": "Onc bldr 10 flwg trurl rescj"
+  },
+  {
+    "code": "0369U",
+    "description": "Iadna gi pthgn 31 org&21 arg"
+  },
+  {
+    "code": "0370U",
+    "description": "Iadna surg wnd pthgn 34&21"
+  },
+  {
+    "code": "0371U",
+    "description": "Iadna gu pthgn semiq dna16&1"
+  },
+  {
+    "code": "0372U",
+    "description": "Nfct ds gu pthgn arg detcj"
+  },
+  {
+    "code": "0373U",
+    "description": "Iadna rsp tr nfct 17 8 13&16"
+  },
+  {
+    "code": "0374U",
+    "description": "Iadna gu pthgn 21 org&21arg"
+  },
+  {
+    "code": "0375U",
+    "description": "Onc ovrn bchm asy 7 prtn alg"
+  },
+  {
+    "code": "0376U",
+    "description": "Onc prst8 ca img alys 128"
+  },
+  {
+    "code": "0377U",
+    "description": "Cv ds quan advsrm/plsm lprtn"
+  },
+  {
+    "code": "0378U",
+    "description": "Rfc1 repeat xpnsj vrnt alys"
+  },
+  {
+    "code": "0379U",
+    "description": "Tgsap sl or neo dna523&rna55"
+  },
+  {
+    "code": "0381U",
+    "description": "Maple syrup ur ds mntr quan"
+  },
+  {
+    "code": "0382U",
+    "description": "Hyprphenylalninmia mntr quan"
+  },
+  {
+    "code": "0383U",
+    "description": "Tyrosinemia typ i mntr quan"
+  },
+  {
+    "code": "0384U",
+    "description": "Neph ckd rsk hi stg kdn ds"
+  },
+  {
+    "code": "0385U",
+    "description": "Neph ckd alg rsk dbtc kdn ds"
+  },
+  {
+    "code": "0387U",
+    "description": "Onc mlnma ambra1&amlo"
+  },
+  {
+    "code": "0388U",
+    "description": "Onc nonsm cll lng ca 37 gen"
+  },
+  {
+    "code": "0389U",
+    "description": "Ped fbrl kd ifi27&mcemp1 rna"
+  },
+  {
+    "code": "0390U",
+    "description": "Ob pe kdr eng&rbp4 ia alg"
+  },
+  {
+    "code": "0391U",
+    "description": "Onc sld tum dna&rna 437 gen"
+  },
+  {
+    "code": "0392U",
+    "description": "Rx metab genrx ia 16 genes"
+  },
+  {
+    "code": "0393U",
+    "description": "Neu prksn msfl a-syncln prtn"
+  },
+  {
+    "code": "0394U",
+    "description": "Pfas 16 pfas compnd lc ms/ms"
+  },
+  {
+    "code": "0395U",
+    "description": "Onc lng multiomics plsm alg"
+  },
+  {
+    "code": "0398U",
+    "description": "Gi baret esph dna mthyln aly"
+  },
+  {
+    "code": "0399U",
+    "description": "Neuro cere folate defncy srm"
+  },
+  {
+    "code": "0400U",
+    "description": "Ob xpnd car scr 145 genes"
+  },
+  {
+    "code": "0401U",
+    "description": "Crd c hrt ds 9 gen 12 vrnts"
+  },
+  {
+    "code": "0402U",
+    "description": "Nfct agt sti mult amp prb tq"
+  },
+  {
+    "code": "0403U",
+    "description": "Onc prst8 mrna 18 gen 1st ur"
+  },
+  {
+    "code": "0404U",
+    "description": "Onc brst semiq meas thym kn"
+  },
+  {
+    "code": "0405U",
+    "description": "Onc pncrtc 59 mthltn blk mrk"
+  },
+  {
+    "code": "0406U",
+    "description": "Onc lung flow cytmtry 5 mrk"
+  },
+  {
+    "code": "0407U",
+    "description": "Neph dbtc ckd mult eclia alg"
+  },
+  {
+    "code": "0408U",
+    "description": "Iaad blk ac wv bsnsr sarscv2"
+  },
+  {
+    "code": "0409U",
+    "description": "Onc sld tum dna 80 & rna 36"
+  },
+  {
+    "code": "0410U",
+    "description": "Onc pncrtc dna whl gn seq 5-"
+  },
+  {
+    "code": "0411U",
+    "description": "Psyc genom alys pnl 15 gen"
+  },
+  {
+    "code": "0412U",
+    "description": "Beta amyloid ab42/40 imprcip"
+  },
+  {
+    "code": "0413U",
+    "description": "Onc hl neo opt gen mapg dna"
+  },
+  {
+    "code": "0414U",
+    "description": "Onc lng aug alg aly whl sld8"
+  },
+  {
+    "code": "0415U",
+    "description": "Cv ds acs bld alg 5 yr score"
+  },
+  {
+    "code": "0417U",
+    "description": "Rare ds alys 335 nuc genes"
+  },
+  {
+    "code": "0418U",
+    "description": "Onc brst aug alg aly whl sl8"
+  },
+  {
+    "code": "0419U",
+    "description": "Nrpsyc gen seq vrnt aly 13"
+  },
+  {
+    "code": "0420U",
+    "description": "Onc urthl mrna xprsn 6 snp"
+  },
+  {
+    "code": "0421U",
+    "description": "Onc clrct scr sgl amp 8 rna"
+  },
+  {
+    "code": "0422U",
+    "description": "Onc pan solid tum alys dna"
+  },
+  {
+    "code": "0423U",
+    "description": "Psyc genomic alys pnl 26 gen"
+  },
+  {
+    "code": "0424U",
+    "description": "Onc prst8 xom alys 53 sncrna"
+  },
+  {
+    "code": "0425U",
+    "description": "Genom rpd seq alys ea cmprtr"
+  },
+  {
+    "code": "0426U",
+    "description": "Genome ultra-rapid seq alys"
+  },
+  {
+    "code": "0427U",
+    "description": "Monocyte dstrbj wdth whl bld"
+  },
+  {
+    "code": "0429U",
+    "description": "Hpv orop swab 14 hi-risk typ"
+  },
+  {
+    "code": "0430U",
+    "description": "Gi malabs aat calpro pncrtc"
+  },
+  {
+    "code": "0431U",
+    "description": "Gly rcptr alpha1 igg srm/csf"
+  },
+  {
+    "code": "0432U",
+    "description": "Klhl11 antb sr/csf asy qual"
+  },
+  {
+    "code": "0433U",
+    "description": "Onc prst8 5 dna reg mrk pcr"
+  },
+  {
+    "code": "0434U",
+    "description": "Rx metab advrs vrnt alys 25"
+  },
+  {
+    "code": "0435U",
+    "description": "Onc chemo rx cytox csc 14 rx"
+  },
+  {
+    "code": "0436U",
+    "description": "Onc lng plsm alys 388 prtn"
+  },
+  {
+    "code": "0437U",
+    "description": "Psyc anxiety do mrna 15 bmrk"
+  },
+  {
+    "code": "0438U",
+    "description": "Rx metab advrs vrnt alys 33"
+  },
+  {
+    "code": "0439U",
+    "description": "Crd chd dna alys 5 snp 3 dna"
+  },
+  {
+    "code": "0440U",
+    "description": "Crd chd dna alys 10 snp 6dna"
+  },
+  {
+    "code": "0441U",
+    "description": "Nfct ds bct fngl/viral semiq"
+  },
+  {
+    "code": "0442U",
+    "description": "Nfct ds respir nfctj mxa&crp"
+  },
+  {
+    "code": "0443U",
+    "description": "Neurflmnt lt chn ultrsens ia"
+  },
+  {
+    "code": "0444U",
+    "description": "Onc sld orgn neo tgsap 361"
+  },
+  {
+    "code": "0445U",
+    "description": "Abeta42 & ptau181 eclia csf"
+  },
+  {
+    "code": "0446U",
+    "description": "Ai ds sle alys 10 cytokine"
+  },
+  {
+    "code": "0447U",
+    "description": "Ai ds sle alys 11 cytokine"
+  },
+  {
+    "code": "0449U",
+    "description": "Car scr sev inh cond 5 genes"
+  },
+  {
+    "code": "0450U",
+    "description": "Onc mm lc-ms/ms monoc p-prtn"
+  },
+  {
+    "code": "0451U",
+    "description": "Onc mm lc-ms/ms pep ion quan"
+  },
+  {
+    "code": "0452U",
+    "description": "Onc bldr mthyl penk lte-qmsp"
+  },
+  {
+    "code": "0453U",
+    "description": "Onc clrct ca cfdna qpcr asy"
+  },
+  {
+    "code": "0454U",
+    "description": "Rare ds id opt genome mapg"
+  },
+  {
+    "code": "0455U",
+    "description": "Nfct agt sti mult amp prb ur"
+  },
+  {
+    "code": "0457U",
+    "description": "Pfas 9 cmpnd lcms/ms pls/sr"
+  },
+  {
+    "code": "0458U",
+    "description": "Onc brst ca s100 a8&a9 elisa"
+  },
+  {
+    "code": "0459U",
+    "description": "Abeta42 & ttau eclia csf"
+  },
+  {
+    "code": "0460U",
+    "description": "Onc whl bld/bucc rtpcr 24gen"
+  },
+  {
+    "code": "0461U",
+    "description": "Onc rxgenom alys rtpcr 24gen"
+  },
+  {
+    "code": "0462U",
+    "description": "Melatonin lvl tst slp std7/9"
+  },
+  {
+    "code": "0463U",
+    "description": "Onc crvx mrna genxprsn 14bmk"
+  },
+  {
+    "code": "0464U",
+    "description": "Onc clrct scr qrtsa dna mrk"
+  },
+  {
+    "code": "0465U",
+    "description": "Onc urthl carc dna qmsp 2gen"
+  },
+  {
+    "code": "0466U",
+    "description": "Crd cad dna gwas 564856 snp"
+  },
+  {
+    "code": "0467U",
+    "description": "Onc bldr dna ngs 60gen&aneup"
+  },
+  {
+    "code": "0468U",
+    "description": "Hep nash mir34a5p a2m ykl40"
+  },
+  {
+    "code": "0469U",
+    "description": "Rare ds whl gen seq ftl samp"
+  },
+  {
+    "code": "0470U",
+    "description": "Onc orop detcj mrd 8 dna hpv"
+  },
+  {
+    "code": "0471U",
+    "description": "Onc clrc ca 35 vrn kras&nras"
+  },
+  {
+    "code": "0472U",
+    "description": "Ca vi psp&sp1 antb sjogren"
+  },
+  {
+    "code": "0473U",
+    "description": "Onc sld tum bld/slv 648 gene"
+  },
+  {
+    "code": "0474U",
+    "description": "Hered pan ca gsap 88gene ngs"
+  },
+  {
+    "code": "0475U",
+    "description": "Hered prst8 ca gsap 23 genes"
+  },
+  {
+    "code": "0476U",
+    "description": "Rx metab psyc 14gen&cyp2d6"
+  },
+  {
+    "code": "0477U",
+    "description": "Rx metab psy 14&cyp2d6 gn-rx"
+  },
+  {
+    "code": "0478U",
+    "description": "Onc nsclc dna&rna dpcr 9gens"
+  },
+  {
+    "code": "0479U",
+    "description": "Tau phosphorylated ptau217"
+  },
+  {
+    "code": "0480U",
+    "description": "Nfct ds csf metag ngs alys"
+  },
+  {
+    "code": "0481U",
+    "description": "Idh1 idh2&tert promoter ngs"
+  },
+  {
+    "code": "0482U",
+    "description": "Ob pe biochem asy sflt1&plgf"
+  },
+  {
+    "code": "0483U",
+    "description": "Nfct ds ng gyra s91f pt mut"
+  },
+  {
+    "code": "0484U",
+    "description": "Nfct ds mgen 23s rrna pt mut"
+  },
+  {
+    "code": "0485U",
+    "description": "Onc sol tum cfdna&rna ngs gm"
+  },
+  {
+    "code": "0486U",
+    "description": "Onc pan sol tum ngs cfctdna"
+  },
+  {
+    "code": "0487U",
+    "description": "Onc sol tum cfcdna tgsap 84"
+  },
+  {
+    "code": "0488U",
+    "description": "Ob fetal ag nipt cfdna alys"
+  },
+  {
+    "code": "0489U",
+    "description": "Ob sgnipt cfdna seq alys 1+"
+  },
+  {
+    "code": "0490U",
+    "description": "Onc cutan/uveal mlnma cd146"
+  },
+  {
+    "code": "0491U",
+    "description": "Onc sol tum ctc slct er prtn"
+  },
+  {
+    "code": "0492U",
+    "description": "Onc sol tum ctc slctn pd-l1"
+  },
+  {
+    "code": "0493U",
+    "description": "Trnspl med quan dd-cfdna ngs"
+  },
+  {
+    "code": "0494U",
+    "description": "Rbc ag ftl rhd gene alys ngs"
+  },
+  {
+    "code": "0495U",
+    "description": "Onc prst8 alys crcg plsm prt"
+  },
+  {
+    "code": "0496U",
+    "description": "Onc clrct cfdna 8/7 genes"
+  },
+  {
+    "code": "0497U",
+    "description": "Onc prst8 mrna rt-pcr 6genes"
+  },
+  {
+    "code": "0498U",
+    "description": "Onc clrct ngs mut detc 43gen"
+  },
+  {
+    "code": "0499U",
+    "description": "Onc clrct&lng dna ngs 8genes"
+  },
+  {
+    "code": "0500U",
+    "description": "Autoinflam ds vexas synd dna"
+  },
+  {
+    "code": "0501U",
+    "description": "Onc clrc bld quan meas cfdna"
+  },
+  {
+    "code": "0502U",
+    "description": "Hpv e6/e7 mrk hirsk typ crv"
+  },
+  {
+    "code": "0503U",
+    "description": "Neuro alz ds βamyl&tau prtn"
+  },
+  {
+    "code": "0504U",
+    "description": "Nfct ds uti id 17 path orgs"
+  },
+  {
+    "code": "0505U",
+    "description": "Nfct ds vag infctj id 32orgs"
+  },
+  {
+    "code": "0506U",
+    "description": "Gi barretts esophgl cell 89"
+  },
+  {
+    "code": "0507U",
+    "description": "Onc ovr dna whole gen w/5hmc"
+  },
+  {
+    "code": "0508U",
+    "description": "Trnsplj med ddcfdna 40 snps"
+  },
+  {
+    "code": "0509U",
+    "description": "Trnsplj med ddcfdna<12 snps"
+  },
+  {
+    "code": "0510U",
+    "description": "Onc pncrtc ca alg alys 16gen"
+  },
+  {
+    "code": "0511U",
+    "description": "Onc sol tum 3dmicroenvir 36+"
+  },
+  {
+    "code": "0512U",
+    "description": "Onc prst8 alys dgtz img msi"
+  },
+  {
+    "code": "0513U",
+    "description": "Onc prst8 alg alys msi&hrd"
+  },
+  {
+    "code": "0514U",
+    "description": "Gi ibd ia quan deter adl lvl"
+  },
+  {
+    "code": "0515U",
+    "description": "Gi ibd ia quan deter ifx lvl"
+  },
+  {
+    "code": "0516U",
+    "description": "Rx metab rxgenomic gnotyp 40"
+  },
+  {
+    "code": "0517U",
+    "description": "Ther rx mntr 80+ psyactiv rx"
+  },
+  {
+    "code": "0518U",
+    "description": "Ther rx mntr 90+ pn&mtl hlth"
+  },
+  {
+    "code": "0519U",
+    "description": "Ther rx mntr meds p/d/a 110+"
+  },
+  {
+    "code": "0520U",
+    "description": "Ther rx mntr 200+ rx/sbsts"
+  },
+  {
+    "code": "0521U",
+    "description": "Rf iga&igm ccp antb sr-a ia"
+  },
+  {
+    "code": "0522U",
+    "description": "Ca vi psp&sp1 antb cl semiql"
+  },
+  {
+    "code": "0523U",
+    "description": "Onc soltum dna ngs snv 22gen"
+  },
+  {
+    "code": "0524U",
+    "description": "Ob pe sflt-1/plgf ia srm/pls"
+  },
+  {
+    "code": "0525U",
+    "description": "Onc sphrd cell cul 11-rx pnl"
+  },
+  {
+    "code": "0526U",
+    "description": "Nefro rnl trnspl quan cxcl10"
+  },
+  {
+    "code": "0527U",
+    "description": "Hsv 1&2 vzv amp prb tq pthgn"
+  },
+  {
+    "code": "0528U",
+    "description": "Lrt iad 18bct/8vir&7arg rna"
+  },
+  {
+    "code": "0529U",
+    "description": "Hem vte snp f2&f5 gen leiden"
+  },
+  {
+    "code": "0530U",
+    "description": "Onc pan-sol tum ctdna 77 gen"
+  },
+  {
+    "code": "36415",
+    "description": "Routine venipuncture"
+  },
+  {
+    "code": "78110",
+    "description": "Plasma volume single"
+  },
+  {
+    "code": "78111",
+    "description": "Plasma volume multiple"
+  },
+  {
+    "code": "78120",
+    "description": "Red cell mass single"
+  },
+  {
+    "code": "78121",
+    "description": "Red cell mass multiple"
+  },
+  {
+    "code": "78122",
+    "description": "Blood volume"
+  },
+  {
+    "code": "78130",
+    "description": "Red cell survival study"
+  },
+  {
+    "code": "78191",
+    "description": "Platelet survival"
+  },
+  {
+    "code": "78267",
+    "description": "Breath tst attain/anal c-14"
+  },
+  {
+    "code": "78268",
+    "description": "Breath test analysis c-14"
+  },
+  {
+    "code": "78725",
+    "description": "Kidney function study"
+  },
+  {
+    "code": "G0027",
+    "description": "Semen analysis"
+  },
+  {
+    "code": "G0103",
+    "description": "Psa screening"
+  },
+  {
+    "code": "G0123",
+    "description": "Screen cerv/vag thin layer"
+  },
+  {
+    "code": "G0124",
+    "description": "Screen c/v thin layer by MD"
+  },
+  {
+    "code": "G0141",
+    "description": "Scr c/v cyto,autosys and md"
+  },
+  {
+    "code": "G0143",
+    "description": "Scr c/v cyto,thinlayer,rescr"
+  },
+  {
+    "code": "G0144",
+    "description": "Scr c/v cyto,thinlayer,rescr"
+  },
+  {
+    "code": "G0145",
+    "description": "Scr c/v cyto,thinlayer,rescr"
+  },
+  {
+    "code": "G0147",
+    "description": "Scr c/v cyto, automated sys"
+  },
+  {
+    "code": "G0148",
+    "description": "Scr c/v cyto, autosys, rescr"
+  },
+  {
+    "code": "G0306",
+    "description": "CBC/diffwbc w/o platelet"
+  },
+  {
+    "code": "G0307",
+    "description": "Cbc without platelet"
+  },
+  {
+    "code": "G0327",
+    "description": "Colon ca scrn;bld-bsd bimrk"
+  },
+  {
+    "code": "G0328",
+    "description": "Fecal blood scrn immunoassay"
+  },
+  {
+    "code": "G0416",
+    "description": "Prostate biopsy, any mthd"
+  },
+  {
+    "code": "G0432",
+    "description": "Eia hiv-1/hiv-2 screen"
+  },
+  {
+    "code": "G0433",
+    "description": "Elisa hiv-1/hiv-2 screen"
+  },
+  {
+    "code": "G0435",
+    "description": "Oral hiv-1/hiv-2 screen"
+  },
+  {
+    "code": "G0475",
+    "description": "Hiv combination assay"
+  },
+  {
+    "code": "G0476",
+    "description": "Hpv combo assay ca screen"
+  },
+  {
+    "code": "G0480",
+    "description": "Drug test def 1-7 classes"
+  },
+  {
+    "code": "G0481",
+    "description": "Drug test def 8-14 classes"
+  },
+  {
+    "code": "G0482",
+    "description": "Drug test def 15-21 classes"
+  },
+  {
+    "code": "G0483",
+    "description": "Drug test def 22+ classes"
+  },
+  {
+    "code": "G0499",
+    "description": "HepB screen high risk indiv"
+  },
+  {
+    "code": "G9143",
+    "description": "Warfarin respon genetic test"
+  },
+  {
+    "code": "P2028",
+    "description": "Cephalin floculation test"
+  },
+  {
+    "code": "P2029",
+    "description": "Congo red blood test"
+  },
+  {
+    "code": "P2033",
+    "description": "Blood thymol turbidity"
+  },
+  {
+    "code": "P2038",
+    "description": "Blood mucoprotein"
+  },
+  {
+    "code": "P3000",
+    "description": "Screen pap by tech w md supv"
+  },
+  {
+    "code": "P3001",
+    "description": "Screening pap smear by phys"
+  },
+  {
+    "code": "P9612",
+    "description": "Catheterize for urine spec"
+  },
+  {
+    "code": "P9615",
+    "description": "Urine specimen collect mult"
+  },
+  {
+    "code": "Q0111",
+    "description": "Wet mounts/ w preparations"
+  },
+  {
+    "code": "Q0112",
+    "description": "Potassium hydroxide preps"
+  },
+  {
+    "code": "Q0113",
+    "description": "Pinworm examinations"
+  },
+  {
+    "code": "Q0114",
+    "description": "Fern test"
+  },
+  {
+    "code": "Q0115",
+    "description": "Post-coital mucous exam"
+  },
+  {
+    "code": "U0001",
+    "description": "2019-ncov diagnostic p"
+  },
+  {
+    "code": "U0002",
+    "description": "Covid-19 lab test non-cdc"
+  },
+  {
+    "code": "90901",
+    "description": "Biofeedback train any meth"
+  },
+  {
+    "code": "90912",
+    "description": "Bfb training 1st 15 min"
+  },
+  {
+    "code": "90913",
+    "description": "Bfb training ea addl 15 min"
+  },
+  {
+    "code": "92507",
+    "description": "Speech/hearing therapy"
+  },
+  {
+    "code": "92508",
+    "description": "Speech/hearing therapy"
+  },
+  {
+    "code": "92520",
+    "description": "Laryngeal function studies"
+  },
+  {
+    "code": "92521",
+    "description": "Evaluation of speech fluency"
+  },
+  {
+    "code": "92522",
+    "description": "Evaluate speech production"
+  },
+  {
+    "code": "92523",
+    "description": "Speech sound lang comprehen"
+  },
+  {
+    "code": "92524",
+    "description": "Behavral qualit analys voice"
+  },
+  {
+    "code": "92526",
+    "description": "Oral function therapy"
+  },
+  {
+    "code": "92597",
+    "description": "Oral speech device eval"
+  },
+  {
+    "code": "92607",
+    "description": "Ex for speech device rx 1hr"
+  },
+  {
+    "code": "92608",
+    "description": "Ex for speech device rx addl"
+  },
+  {
+    "code": "92609",
+    "description": "Use of speech device service"
+  },
+  {
+    "code": "92610",
+    "description": "Evaluate swallowing function"
+  },
+  {
+    "code": "92611",
+    "description": "Motion fluoroscopy/swallow"
+  },
+  {
+    "code": "92612",
+    "description": "Endoscopy swallow tst (fees)"
+  },
+  {
+    "code": "92614",
+    "description": "Laryngoscopic sensory test"
+  },
+  {
+    "code": "92616",
+    "description": "Fees w/laryngeal sense test"
+  },
+  {
+    "code": "93797",
+    "description": "Cardiac rehab"
+  },
+  {
+    "code": "93798",
+    "description": "Cardiac rehab/monitor"
+  },
+  {
+    "code": "95851",
+    "description": "Range of motion measurements"
+  },
+  {
+    "code": "95852",
+    "description": "Range of motion measurements"
+  },
+  {
+    "code": "95992",
+    "description": "Canalith repositioning proc"
+  },
+  {
+    "code": "96000",
+    "description": "Motion analysis video/3d"
+  },
+  {
+    "code": "96001",
+    "description": "Motion test w/ft press meas"
+  },
+  {
+    "code": "96002",
+    "description": "Dynamic surface emg"
+  },
+  {
+    "code": "96105",
+    "description": "Assessment of aphasia"
+  },
+  {
+    "code": "96125",
+    "description": "Cognitive test by HC pro"
+  },
+  {
+    "code": "97010",
+    "description": "Hot or cold packs therapy"
+  },
+  {
+    "code": "97012",
+    "description": "Mechanical traction therapy"
+  },
+  {
+    "code": "97016",
+    "description": "Vasopneumatic device therapy"
+  },
+  {
+    "code": "97018",
+    "description": "Paraffin bath therapy"
+  },
+  {
+    "code": "97022",
+    "description": "Whirlpool therapy"
+  },
+  {
+    "code": "97024",
+    "description": "Diathermy eg microwave"
+  },
+  {
+    "code": "97026",
+    "description": "Infrared therapy"
+  },
+  {
+    "code": "97028",
+    "description": "Ultraviolet therapy"
+  },
+  {
+    "code": "97032",
+    "description": "Electrical stimulation"
+  },
+  {
+    "code": "97033",
+    "description": "Electric current therapy"
+  },
+  {
+    "code": "97034",
+    "description": "Contrast bath therapy"
+  },
+  {
+    "code": "97035",
+    "description": "Ultrasound therapy"
+  },
+  {
+    "code": "97036",
+    "description": "Hydrotherapy"
+  },
+  {
+    "code": "97039",
+    "description": "Physical therapy treatment"
+  },
+  {
+    "code": "97110",
+    "description": "Therapeutic exercises"
+  },
+  {
+    "code": "97112",
+    "description": "Neuromuscular reeducation"
+  },
+  {
+    "code": "97113",
+    "description": "Aquatic therapy/exercises"
+  },
+  {
+    "code": "97116",
+    "description": "Gait training therapy"
+  },
+  {
+    "code": "97124",
+    "description": "Massage therapy"
+  },
+  {
+    "code": "97129",
+    "description": "Ther ivntj 1st 15 min"
+  },
+  {
+    "code": "97130",
+    "description": "Ther ivntj ea addl 15 min"
+  },
+  {
+    "code": "97139",
+    "description": "Physical medicine procedure"
+  },
+  {
+    "code": "97140",
+    "description": "Manual therapy"
+  },
+  {
+    "code": "97150",
+    "description": "Group therapeutic procedures"
+  },
+  {
+    "code": "97161",
+    "description": "Pt eval low complex 20 min"
+  },
+  {
+    "code": "97162",
+    "description": "Pt eval mod complex 30 min"
+  },
+  {
+    "code": "97163",
+    "description": "Pt eval high complex 45 min"
+  },
+  {
+    "code": "97164",
+    "description": "Pt re-eval est plan care"
+  },
+  {
+    "code": "97165",
+    "description": "Ot eval low complex 30 min"
+  },
+  {
+    "code": "97166",
+    "description": "Ot eval mod complex 45 min"
+  },
+  {
+    "code": "97167",
+    "description": "Ot eval high complex 60 min"
+  },
+  {
+    "code": "97168",
+    "description": "Ot re-eval est plan care"
+  },
+  {
+    "code": "97530",
+    "description": "Therapeutic activities"
+  },
+  {
+    "code": "97533",
+    "description": "Sensory integration"
+  },
+  {
+    "code": "97535",
+    "description": "Self care mngment training"
+  },
+  {
+    "code": "97537",
+    "description": "Community/work reintegration"
+  },
+  {
+    "code": "97542",
+    "description": "Wheelchair mngment training"
+  },
+  {
+    "code": "97545",
+    "description": "Work hardening"
+  },
+  {
+    "code": "97546",
+    "description": "Work hardening add-on"
+  },
+  {
+    "code": "97550",
+    "description": "Caregiver traing 1st 30 min"
+  },
+  {
+    "code": "97551",
+    "description": "Caregiver traing ea addl 15"
+  },
+  {
+    "code": "97552",
+    "description": "Group caregiver training"
+  },
+  {
+    "code": "97597",
+    "description": "RMVL devital tis 20cm/<"
+  },
+  {
+    "code": "97598",
+    "description": "RMVL devital tis addl 20 cm<"
+  },
+  {
+    "code": "97602",
+    "description": "Wound(s) care non-selective"
+  },
+  {
+    "code": "97605",
+    "description": "Neg press wound tx < 50 cm"
+  },
+  {
+    "code": "97606",
+    "description": "Neg press wound tx > 50 cm"
+  },
+  {
+    "code": "97607",
+    "description": "Neg press wnd tx </=50 sq cm"
+  },
+  {
+    "code": "97608",
+    "description": "Neg press wound tx >50 cm"
+  },
+  {
+    "code": "97610",
+    "description": "Low frequency non-thermal US"
+  },
+  {
+    "code": "97750",
+    "description": "Physical performance test"
+  },
+  {
+    "code": "97755",
+    "description": "Assistive technology assess"
+  },
+  {
+    "code": "97760",
+    "description": "Orthotic mgmt&trainj 1st enc"
+  },
+  {
+    "code": "97761",
+    "description": "Prosthetic trainj 1st enc"
+  },
+  {
+    "code": "97763",
+    "description": "Orth/prostc mgmt sbsq enc"
+  },
+  {
+    "code": "97799",
+    "description": "Physical medicine procedure"
+  },
+  {
+    "code": "98966",
+    "description": "Ph1 assmt&mgmt nqhp 5-10"
+  },
+  {
+    "code": "98967",
+    "description": "Ph1 assmt&mgmt nqhp 11-20"
+  },
+  {
+    "code": "98968",
+    "description": "Ph1 assmt&mgmt nqhp 21-30"
+  },
+  {
+    "code": "98970",
+    "description": "Nqhp ol dig assmt&mgmt 5-10"
+  },
+  {
+    "code": "98971",
+    "description": "Nqhp ol dig assmt&mgmt 11-20"
+  },
+  {
+    "code": "98972",
+    "description": "Nqhp ol dig assmt&mgmt 21+"
+  },
+  {
+    "code": "98975",
+    "description": "Rem ther mntr 1st set-up&edu"
+  },
+  {
+    "code": "98976",
+    "description": "Rem ther mntr dev sply resp"
+  },
+  {
+    "code": "98977",
+    "description": "Rem ther mntr dv sply mscskl"
+  },
+  {
+    "code": "98980",
+    "description": "Rem ther mntr 1st 20 min"
+  },
+  {
+    "code": "98981",
+    "description": "Rem ther mntr ea addl 20 min"
+  },
+  {
+    "code": "G0281",
+    "description": "Elec stim unattend for press"
+  },
+  {
+    "code": "G0283",
+    "description": "Elec stim other than wound"
+  },
+  {
+    "code": "G0329",
+    "description": "Electromagntic tx for ulcers"
+  },
+  {
+    "code": "G0451",
+    "description": "Development test interp & rep"
+  },
+  {
+    "code": "G0541",
+    "description": "No pt prsnt train initial 30"
+  },
+  {
+    "code": "G0542",
+    "description": "No pt prsnt train add 15"
+  },
+  {
+    "code": "G0543",
+    "description": "Group train w/o patient"
+  },
+  {
+    "code": "G2250",
+    "description": "Remot img sub by pt, non e/m"
+  },
+  {
+    "code": "G2251",
+    "description": "Brief chkin, 5-10, non-e/m"
+  },
+  {
+    "code": "0042T",
+    "description": "Ct perfusion w/contrast cbf"
+  },
+  {
+    "code": "0174T",
+    "description": "Cad cxr with interp"
+  },
+  {
+    "code": "0175T",
+    "description": "Cad cxr remote"
+  },
+  {
+    "code": "0330T",
+    "description": "Tear film img uni/bi w/i&r"
+  },
+  {
+    "code": "0331T",
+    "description": "Heart symp image plnr"
+  },
+  {
+    "code": "0332T",
+    "description": "Heart symp image plnr spect"
+  },
+  {
+    "code": "0422T",
+    "description": "Tactile breast img uni/bi"
+  },
+  {
+    "code": "0558T",
+    "description": "Ct scan f/biomchn ct alys"
+  },
+  {
+    "code": "0633T",
+    "description": "Ct breast w/3d uni c-"
+  },
+  {
+    "code": "0634T",
+    "description": "Ct breast w/3d uni c+"
+  },
+  {
+    "code": "0635T",
+    "description": "Ct breast w/3d uni c-/c+"
+  },
+  {
+    "code": "0636T",
+    "description": "Ct breast w/3d bi c-"
+  },
+  {
+    "code": "0637T",
+    "description": "Ct breast w/3d bi c+"
+  },
+  {
+    "code": "0638T",
+    "description": "Ct breast w/3d bi c-/c+"
+  },
+  {
+    "code": "0721T",
+    "description": "Quan ct tiss charac w/o ct"
+  },
+  {
+    "code": "0722T",
+    "description": "Quan ct tiss charac w/ct"
+  },
+  {
+    "code": "0723T",
+    "description": "Qmrcp w/o dx mri sm anat ses"
+  },
+  {
+    "code": "0724T",
+    "description": "Qmrcp w/dx mri same anatomy"
+  },
+  {
+    "code": "0815T",
+    "description": "Us rems b1 dns hips plvs/spi"
+  },
+  {
+    "code": "0857T",
+    "description": "Opto-acoustic img breast uni"
+  },
+  {
+    "code": "0865T",
+    "description": "Quan mri alys brn w/o dx mri"
+  },
+  {
+    "code": "0866T",
+    "description": "Quan mri alys brn w/dx mri"
+  },
+  {
+    "code": "0877T",
+    "description": "Augmnt alys ch ct ild w/o ct"
+  },
+  {
+    "code": "0878T",
+    "description": "Augmnt alys ch ct ild w/ct"
+  },
+  {
+    "code": "0879T",
+    "description": "Augmnt alys ch ct ild prep"
+  },
+  {
+    "code": "0880T",
+    "description": "Augmnt alys ch ct ild i&r"
+  },
+  {
+    "code": "0889T",
+    "description": "Prsnlz trgt dvl arhfcmrigtbs"
+  },
+  {
+    "code": "0898T",
+    "description": "N-invas prst8 cancer est map"
+  },
+  {
+    "code": "0899T",
+    "description": "N-invas deter aqmbf aug cmr"
+  },
+  {
+    "code": "0900T",
+    "description": "N-invas est aqmbf asstv cmr"
+  },
+  {
+    "code": "0932T",
+    "description": "N-invs det hrt fail aug echo"
+  },
+  {
+    "code": "0944T",
+    "description": "3d cntr simula trgt lvr les"
+  },
+  {
+    "code": "0946T",
+    "description": "Ortho impl mvmt alys pair ct"
+  },
+  {
+    "code": "51798",
+    "description": "Us urine capacity measure"
+  },
+  {
+    "code": "70100",
+    "description": "X-ray exam of jaw"
+  },
+  {
+    "code": "70110",
+    "description": "X-ray exam of jaw"
+  },
+  {
+    "code": "70120",
+    "description": "X-ray exam of mastoids"
+  },
+  {
+    "code": "70130",
+    "description": "X-ray exam of mastoids"
+  },
+  {
+    "code": "70134",
+    "description": "X-ray exam of middle ear"
+  },
+  {
+    "code": "70140",
+    "description": "X-ray exam of facial bones"
+  },
+  {
+    "code": "70150",
+    "description": "X-ray exam of facial bones"
+  },
+  {
+    "code": "70160",
+    "description": "X-ray exam of nasal bones"
+  },
+  {
+    "code": "70190",
+    "description": "X-ray exam of eye sockets"
+  },
+  {
+    "code": "70200",
+    "description": "X-ray exam of eye sockets"
+  },
+  {
+    "code": "70210",
+    "description": "X-ray exam of sinuses"
+  },
+  {
+    "code": "70220",
+    "description": "X-ray exam of sinuses"
+  },
+  {
+    "code": "70240",
+    "description": "X-ray exam pituitary saddle"
+  },
+  {
+    "code": "70250",
+    "description": "X-ray exam of skull"
+  },
+  {
+    "code": "70260",
+    "description": "X-ray exam of skull"
+  },
+  {
+    "code": "70300",
+    "description": "X-ray exam of teeth"
+  },
+  {
+    "code": "70310",
+    "description": "X-ray exam of teeth"
+  },
+  {
+    "code": "70320",
+    "description": "Full mouth x-ray of teeth"
+  },
+  {
+    "code": "70328",
+    "description": "X-ray exam of jaw joint"
+  },
+  {
+    "code": "70330",
+    "description": "X-ray exam of jaw joints"
+  },
+  {
+    "code": "70336",
+    "description": "Magnetic image jaw joint"
+  },
+  {
+    "code": "70350",
+    "description": "X-ray head for orthodontia"
+  },
+  {
+    "code": "70355",
+    "description": "Panoramic x-ray of jaws"
+  },
+  {
+    "code": "70360",
+    "description": "X-ray exam of neck"
+  },
+  {
+    "code": "70370",
+    "description": "Throat x-ray & fluoroscopy"
+  },
+  {
+    "code": "70371",
+    "description": "Speech evaluation complex"
+  },
+  {
+    "code": "70380",
+    "description": "X-ray exam of salivary gland"
+  },
+  {
+    "code": "70450",
+    "description": "Ct head/brain w/o dye"
+  },
+  {
+    "code": "70460",
+    "description": "Ct head/brain w/dye"
+  },
+  {
+    "code": "70470",
+    "description": "Ct head/brain w/o & w/dye"
+  },
+  {
+    "code": "70480",
+    "description": "Ct orbit/ear/fossa w/o dye"
+  },
+  {
+    "code": "70481",
+    "description": "Ct orbit/ear/fossa w/dye"
+  },
+  {
+    "code": "70482",
+    "description": "Ct orbit/ear/fossa w/o&w/dye"
+  },
+  {
+    "code": "70486",
+    "description": "Ct maxillofacial w/o dye"
+  },
+  {
+    "code": "70487",
+    "description": "Ct maxillofacial w/dye"
+  },
+  {
+    "code": "70488",
+    "description": "Ct maxillofacial w/o & w/dye"
+  },
+  {
+    "code": "70490",
+    "description": "Ct soft tissue neck w/o dye"
+  },
+  {
+    "code": "70491",
+    "description": "Ct soft tissue neck w/dye"
+  },
+  {
+    "code": "70492",
+    "description": "Ct sft tsue nck w/o & w/dye"
+  },
+  {
+    "code": "70496",
+    "description": "Ct angiography head"
+  },
+  {
+    "code": "70498",
+    "description": "Ct angiography neck"
+  },
+  {
+    "code": "70540",
+    "description": "Mri orbit/face/neck w/o dye"
+  },
+  {
+    "code": "70542",
+    "description": "Mri orbit/face/neck w/dye"
+  },
+  {
+    "code": "70543",
+    "description": "Mri orbt/fac/nck w/o & w/dye"
+  },
+  {
+    "code": "70544",
+    "description": "Mr angiography head w/o dye"
+  },
+  {
+    "code": "70545",
+    "description": "Mr angiography head w/dye"
+  },
+  {
+    "code": "70546",
+    "description": "Mr angiograph head w/o&w/dye"
+  },
+  {
+    "code": "70547",
+    "description": "Mr angiography neck w/o dye"
+  },
+  {
+    "code": "70548",
+    "description": "Mr angiography neck w/dye"
+  },
+  {
+    "code": "70549",
+    "description": "Mr angiograph neck w/o&w/dye"
+  },
+  {
+    "code": "70551",
+    "description": "Mri brain w/o dye"
+  },
+  {
+    "code": "70552",
+    "description": "Mri brain w/dye"
+  },
+  {
+    "code": "70553",
+    "description": "Mri brain w/o & w/dye"
+  },
+  {
+    "code": "70554",
+    "description": "Fmri brain by tech"
+  },
+  {
+    "code": "70555",
+    "description": "Fmri brain by phys/psych"
+  },
+  {
+    "code": "71045",
+    "description": "X-ray exam chest 1 view"
+  },
+  {
+    "code": "71046",
+    "description": "X-ray exam chest 2 views"
+  },
+  {
+    "code": "71047",
+    "description": "X-ray exam chest 3 views"
+  },
+  {
+    "code": "71048",
+    "description": "X-ray exam chest 4+ views"
+  },
+  {
+    "code": "71100",
+    "description": "X-ray exam of ribs"
+  },
+  {
+    "code": "71101",
+    "description": "X-ray exam of ribs/chest"
+  },
+  {
+    "code": "71110",
+    "description": "X-ray exam of ribs"
+  },
+  {
+    "code": "71111",
+    "description": "X-ray exam of ribs/chest"
+  },
+  {
+    "code": "71120",
+    "description": "X-ray exam of breastbone"
+  },
+  {
+    "code": "71130",
+    "description": "X-ray exam of breastbone"
+  },
+  {
+    "code": "71250",
+    "description": "Ct thorax dx c-"
+  },
+  {
+    "code": "71260",
+    "description": "Ct thorax dx c+"
+  },
+  {
+    "code": "71270",
+    "description": "Ct thorax dx c-/c+"
+  },
+  {
+    "code": "71271",
+    "description": "Ct thorax lung cancer scr c-"
+  },
+  {
+    "code": "71275",
+    "description": "Ct angiography chest"
+  },
+  {
+    "code": "71550",
+    "description": "Mri chest w/o dye"
+  },
+  {
+    "code": "71551",
+    "description": "Mri chest w/dye"
+  },
+  {
+    "code": "71552",
+    "description": "Mri chest w/o & w/dye"
+  },
+  {
+    "code": "71555",
+    "description": "Mri angio chest w or w/o dye"
+  },
+  {
+    "code": "72020",
+    "description": "X-ray exam of spine"
+  },
+  {
+    "code": "72040",
+    "description": "X-ray exam neck spine 3/<vws"
+  },
+  {
+    "code": "72050",
+    "description": "X-ray exam of neck spine"
+  },
+  {
+    "code": "72052",
+    "description": "X-ray exam of neck spine"
+  },
+  {
+    "code": "72070",
+    "description": "X-ray exam of thoracic spine"
+  },
+  {
+    "code": "72072",
+    "description": "X-ray exam of thoracic spine"
+  },
+  {
+    "code": "72074",
+    "description": "X-ray exam of thoracic spine"
+  },
+  {
+    "code": "72080",
+    "description": "X-ray exam of trunk spine"
+  },
+  {
+    "code": "72081",
+    "description": "X-ray exam entire spi 1 vw"
+  },
+  {
+    "code": "72082",
+    "description": "X-ray exam entire spi 2/3 vw"
+  },
+  {
+    "code": "72083",
+    "description": "X-ray exam entire spi 4/5 vw"
+  },
+  {
+    "code": "72084",
+    "description": "X-ray exam entire spi 6/> vw"
+  },
+  {
+    "code": "72100",
+    "description": "X-ray exam of lower spine"
+  },
+  {
+    "code": "72110",
+    "description": "X-ray exam of lower spine"
+  },
+  {
+    "code": "72114",
+    "description": "X-ray exam of lower spine"
+  },
+  {
+    "code": "72120",
+    "description": "X-ray exam of lower spine"
+  },
+  {
+    "code": "72125",
+    "description": "Ct neck spine w/o dye"
+  },
+  {
+    "code": "72126",
+    "description": "Ct neck spine w/dye"
+  },
+  {
+    "code": "72127",
+    "description": "Ct neck spine w/o & w/dye"
+  },
+  {
+    "code": "72128",
+    "description": "Ct chest spine w/o dye"
+  },
+  {
+    "code": "72129",
+    "description": "Ct chest spine w/dye"
+  },
+  {
+    "code": "72130",
+    "description": "Ct chest spine w/o & w/dye"
+  },
+  {
+    "code": "72131",
+    "description": "Ct lumbar spine w/o dye"
+  },
+  {
+    "code": "72132",
+    "description": "Ct lumbar spine w/dye"
+  },
+  {
+    "code": "72133",
+    "description": "Ct lumbar spine w/o & w/dye"
+  },
+  {
+    "code": "72141",
+    "description": "Mri neck spine w/o dye"
+  },
+  {
+    "code": "72142",
+    "description": "Mri neck spine w/dye"
+  },
+  {
+    "code": "72146",
+    "description": "Mri chest spine w/o dye"
+  },
+  {
+    "code": "72147",
+    "description": "Mri chest spine w/dye"
+  },
+  {
+    "code": "72148",
+    "description": "Mri lumbar spine w/o dye"
+  },
+  {
+    "code": "72149",
+    "description": "Mri lumbar spine w/dye"
+  },
+  {
+    "code": "72156",
+    "description": "Mri neck spine w/o & w/dye"
+  },
+  {
+    "code": "72157",
+    "description": "Mri chest spine w/o & w/dye"
+  },
+  {
+    "code": "72158",
+    "description": "Mri lumbar spine w/o & w/dye"
+  },
+  {
+    "code": "72159",
+    "description": "Mr angio spine w/o&w/dye"
+  },
+  {
+    "code": "72170",
+    "description": "X-ray exam of pelvis"
+  },
+  {
+    "code": "72190",
+    "description": "X-ray exam of pelvis"
+  },
+  {
+    "code": "72191",
+    "description": "Ct angiograph pelv w/o&w/dye"
+  },
+  {
+    "code": "72192",
+    "description": "Ct pelvis w/o dye"
+  },
+  {
+    "code": "72193",
+    "description": "Ct pelvis w/dye"
+  },
+  {
+    "code": "72194",
+    "description": "Ct pelvis w/o & w/dye"
+  },
+  {
+    "code": "72195",
+    "description": "Mri pelvis w/o dye"
+  },
+  {
+    "code": "72196",
+    "description": "Mri pelvis w/dye"
+  },
+  {
+    "code": "72197",
+    "description": "Mri pelvis w/o & w/dye"
+  },
+  {
+    "code": "72198",
+    "description": "Mr angio pelvis w/o & w/dye"
+  },
+  {
+    "code": "72200",
+    "description": "X-ray exam sacroiliac joints"
+  },
+  {
+    "code": "72202",
+    "description": "X-ray exam sacroiliac joints"
+  },
+  {
+    "code": "72220",
+    "description": "X-ray exam of tailbone"
+  },
+  {
+    "code": "73000",
+    "description": "X-ray exam of collar bone"
+  },
+  {
+    "code": "73010",
+    "description": "X-ray exam of shoulder blade"
+  },
+  {
+    "code": "73020",
+    "description": "X-ray exam of shoulder"
+  },
+  {
+    "code": "73030",
+    "description": "X-ray exam of shoulder"
+  },
+  {
+    "code": "73050",
+    "description": "X-ray exam of shoulders"
+  },
+  {
+    "code": "73060",
+    "description": "X-ray exam of humerus"
+  },
+  {
+    "code": "73070",
+    "description": "X-ray exam of elbow"
+  },
+  {
+    "code": "73080",
+    "description": "X-ray exam of elbow"
+  },
+  {
+    "code": "73090",
+    "description": "X-ray exam of forearm"
+  },
+  {
+    "code": "73092",
+    "description": "X-ray exam of arm infant"
+  },
+  {
+    "code": "73100",
+    "description": "X-ray exam of wrist"
+  },
+  {
+    "code": "73110",
+    "description": "X-ray exam of wrist"
+  },
+  {
+    "code": "73120",
+    "description": "X-ray exam of hand"
+  },
+  {
+    "code": "73130",
+    "description": "X-ray exam of hand"
+  },
+  {
+    "code": "73140",
+    "description": "X-ray exam of finger(s)"
+  },
+  {
+    "code": "73200",
+    "description": "Ct upper extremity w/o dye"
+  },
+  {
+    "code": "73201",
+    "description": "Ct upper extremity w/dye"
+  },
+  {
+    "code": "73202",
+    "description": "Ct uppr extremity w/o&w/dye"
+  },
+  {
+    "code": "73206",
+    "description": "Ct angio upr extrm w/o&w/dye"
+  },
+  {
+    "code": "73218",
+    "description": "Mri upper extremity w/o dye"
+  },
+  {
+    "code": "73219",
+    "description": "Mri upper extremity w/dye"
+  },
+  {
+    "code": "73220",
+    "description": "Mri uppr extremity w/o&w/dye"
+  },
+  {
+    "code": "73221",
+    "description": "Mri joint upr extrem w/o dye"
+  },
+  {
+    "code": "73222",
+    "description": "Mri joint upr extrem w/dye"
+  },
+  {
+    "code": "73223",
+    "description": "Mri joint upr extr w/o&w/dye"
+  },
+  {
+    "code": "73225",
+    "description": "Mr angio upr extr w/o&w/dye"
+  },
+  {
+    "code": "73501",
+    "description": "X-ray exam hip uni 1 view"
+  },
+  {
+    "code": "73502",
+    "description": "X-ray exam hip uni 2-3 views"
+  },
+  {
+    "code": "73503",
+    "description": "X-ray exam hip uni 4/> views"
+  },
+  {
+    "code": "73521",
+    "description": "X-ray exam hips bi 2 views"
+  },
+  {
+    "code": "73522",
+    "description": "X-ray exam hips bi 3-4 views"
+  },
+  {
+    "code": "73523",
+    "description": "X-ray exam hips bi 5/> views"
+  },
+  {
+    "code": "73551",
+    "description": "X-ray exam of femur 1"
+  },
+  {
+    "code": "73552",
+    "description": "X-ray exam of femur 2/>"
+  },
+  {
+    "code": "73560",
+    "description": "X-ray exam of knee 1 or 2"
+  },
+  {
+    "code": "73562",
+    "description": "X-ray exam of knee 3"
+  },
+  {
+    "code": "73564",
+    "description": "X-ray exam knee 4 or more"
+  },
+  {
+    "code": "73565",
+    "description": "X-ray exam of knees"
+  },
+  {
+    "code": "73590",
+    "description": "X-ray exam of lower leg"
+  },
+  {
+    "code": "73592",
+    "description": "X-ray exam of leg infant"
+  },
+  {
+    "code": "73600",
+    "description": "X-ray exam of ankle"
+  },
+  {
+    "code": "73610",
+    "description": "X-ray exam of ankle"
+  },
+  {
+    "code": "73620",
+    "description": "X-ray exam of foot"
+  },
+  {
+    "code": "73630",
+    "description": "X-ray exam of foot"
+  },
+  {
+    "code": "73650",
+    "description": "X-ray exam of heel"
+  },
+  {
+    "code": "73660",
+    "description": "X-ray exam of toe(s)"
+  },
+  {
+    "code": "73700",
+    "description": "Ct lower extremity w/o dye"
+  },
+  {
+    "code": "73701",
+    "description": "Ct lower extremity w/dye"
+  },
+  {
+    "code": "73702",
+    "description": "Ct lwr extremity w/o&w/dye"
+  },
+  {
+    "code": "73706",
+    "description": "Ct angio lwr extr w/o&w/dye"
+  },
+  {
+    "code": "73718",
+    "description": "Mri lower extremity w/o dye"
+  },
+  {
+    "code": "73719",
+    "description": "Mri lower extremity w/dye"
+  },
+  {
+    "code": "73720",
+    "description": "Mri lwr extremity w/o&w/dye"
+  },
+  {
+    "code": "73721",
+    "description": "Mri jnt of lwr extre w/o dye"
+  },
+  {
+    "code": "73722",
+    "description": "Mri joint of lwr extr w/dye"
+  },
+  {
+    "code": "73723",
+    "description": "Mri joint lwr extr w/o&w/dye"
+  },
+  {
+    "code": "73725",
+    "description": "Mr ang lwr ext w or w/o dye"
+  },
+  {
+    "code": "74018",
+    "description": "X-ray exam abdomen 1 view"
+  },
+  {
+    "code": "74019",
+    "description": "X-ray exam abdomen 2 views"
+  },
+  {
+    "code": "74021",
+    "description": "X-ray exam abdomen 3+ views"
+  },
+  {
+    "code": "74022",
+    "description": "X-ray exam complete abdomen"
+  },
+  {
+    "code": "74150",
+    "description": "Ct abdomen w/o dye"
+  },
+  {
+    "code": "74160",
+    "description": "Ct abdomen w/dye"
+  },
+  {
+    "code": "74170",
+    "description": "Ct abdomen w/o & w/dye"
+  },
+  {
+    "code": "74174",
+    "description": "Ct angio abd&pelv w/o&w/dye"
+  },
+  {
+    "code": "74175",
+    "description": "Ct angio abdom w/o & w/dye"
+  },
+  {
+    "code": "74176",
+    "description": "Ct abd & pelvis"
+  },
+  {
+    "code": "74177",
+    "description": "Ct abd & pelv w/contrast"
+  },
+  {
+    "code": "74178",
+    "description": "Ct abd & pelv 1/>regns"
+  },
+  {
+    "code": "74181",
+    "description": "Mri abdomen w/o dye"
+  },
+  {
+    "code": "74182",
+    "description": "Mri abdomen w/dye"
+  },
+  {
+    "code": "74183",
+    "description": "Mri abdomen w/o & w/dye"
+  },
+  {
+    "code": "74185",
+    "description": "Mri angio abdom w orw/o dye"
+  },
+  {
+    "code": "74210",
+    "description": "X-ray xm phrnx&/crv esoph c+"
+  },
+  {
+    "code": "74220",
+    "description": "X-ray xm esophagus 1cntrst"
+  },
+  {
+    "code": "74221",
+    "description": "X-ray xm esophagus 2cntrst"
+  },
+  {
+    "code": "74230",
+    "description": "X-ray xm swlng funcj c+"
+  },
+  {
+    "code": "74240",
+    "description": "X-ray xm upr gi trc 1cntrst"
+  },
+  {
+    "code": "74246",
+    "description": "X-ray xm upr gi trc 2cntrst"
+  },
+  {
+    "code": "74248",
+    "description": "X-ray sm int f-thru std"
+  },
+  {
+    "code": "74250",
+    "description": "X-ray xm sm int 1cntrst std"
+  },
+  {
+    "code": "74251",
+    "description": "X-ray xm sm int 2cntrst std"
+  },
+  {
+    "code": "74261",
+    "description": "Ct colonography dx"
+  },
+  {
+    "code": "74262",
+    "description": "Ct colonography dx w/dye"
+  },
+  {
+    "code": "74263",
+    "description": "Ct colonography screening"
+  },
+  {
+    "code": "74270",
+    "description": "X-ray xm colon 1cntrst std"
+  },
+  {
+    "code": "74280",
+    "description": "X-ray xm colon 2cntrst std"
+  },
+  {
+    "code": "74290",
+    "description": "Contrast x-ray gallbladder"
+  },
+  {
+    "code": "74712",
+    "description": "Mri fetal sngl/1st gestation"
+  },
+  {
+    "code": "75557",
+    "description": "Cardiac MRI for morph"
+  },
+  {
+    "code": "75559",
+    "description": "Cardiac MRI w/stress img"
+  },
+  {
+    "code": "75561",
+    "description": "Cardiac MRI for morph w/dye"
+  },
+  {
+    "code": "75563",
+    "description": "Card MRI w/stress img & dye"
+  },
+  {
+    "code": "75565",
+    "description": "Card MRI veloc flow mapping"
+  },
+  {
+    "code": "75571",
+    "description": "Ct hrt w/o dye w/ca test"
+  },
+  {
+    "code": "75572",
+    "description": "Ct hrt w/3d image"
+  },
+  {
+    "code": "75573",
+    "description": "Ct hrt w/3d image congen"
+  },
+  {
+    "code": "75574",
+    "description": "Ct angio hrt w/3d image"
+  },
+  {
+    "code": "75580",
+    "description": "N-invas est c ffr sw aly cta"
+  },
+  {
+    "code": "75635",
+    "description": "Ct angio abdominal arteries"
+  },
+  {
+    "code": "76000",
+    "description": "Fluoroscopy <1 hr phys/qhp"
+  },
+  {
+    "code": "76010",
+    "description": "X-ray nose to rectum"
+  },
+  {
+    "code": "76100",
+    "description": "X-ray exam of body section"
+  },
+  {
+    "code": "76120",
+    "description": "Cine/video x-rays"
+  },
+  {
+    "code": "76125",
+    "description": "Cine/video x-rays add-on"
+  },
+  {
+    "code": "76376",
+    "description": "3d render w/o postprocess"
+  },
+  {
+    "code": "76377",
+    "description": "3d rendering w/postprocess"
+  },
+  {
+    "code": "76380",
+    "description": "CAT scan follow-up study"
+  },
+  {
+    "code": "76391",
+    "description": "Mr elastography"
+  },
+  {
+    "code": "76499",
+    "description": "Radiographic procedure"
+  },
+  {
+    "code": "76506",
+    "description": "Echo exam of head"
+  },
+  {
+    "code": "76510",
+    "description": "Ophth us b & quant a"
+  },
+  {
+    "code": "76511",
+    "description": "Ophth us quant a only"
+  },
+  {
+    "code": "76512",
+    "description": "Ophth us b w/non-quant a"
+  },
+  {
+    "code": "76513",
+    "description": "Oph us dx ant sgm us uni/bi"
+  },
+  {
+    "code": "76514",
+    "description": "Echo exam of eye thickness"
+  },
+  {
+    "code": "76516",
+    "description": "Echo exam of eye"
+  },
+  {
+    "code": "76519",
+    "description": "Echo exam of eye"
+  },
+  {
+    "code": "76536",
+    "description": "Us exam of head and neck"
+  },
+  {
+    "code": "76604",
+    "description": "Us exam chest"
+  },
+  {
+    "code": "76641",
+    "description": "Ultrasound breast complete"
+  },
+  {
+    "code": "76642",
+    "description": "Ultrasound breast limited"
+  },
+  {
+    "code": "76700",
+    "description": "Us exam abdom complete"
+  },
+  {
+    "code": "76705",
+    "description": "Echo exam of abdomen"
+  },
+  {
+    "code": "76706",
+    "description": "Us abdl aorta screen aaa"
+  },
+  {
+    "code": "76770",
+    "description": "Us exam abdo back wall comp"
+  },
+  {
+    "code": "76775",
+    "description": "Us exam abdo back wall lim"
+  },
+  {
+    "code": "76776",
+    "description": "Us exam k transpl w/Doppler"
+  },
+  {
+    "code": "76800",
+    "description": "Us exam spinal canal"
+  },
+  {
+    "code": "76801",
+    "description": "Ob us < 14 wks single fetus"
+  },
+  {
+    "code": "76802",
+    "description": "Ob us < 14 wks addl fetus"
+  },
+  {
+    "code": "76805",
+    "description": "Ob us >/= 14 wks sngl fetus"
+  },
+  {
+    "code": "76810",
+    "description": "Ob us >/= 14 wks addl fetus"
+  },
+  {
+    "code": "76811",
+    "description": "Ob us detailed sngl fetus"
+  },
+  {
+    "code": "76812",
+    "description": "Ob us detailed addl fetus"
+  },
+  {
+    "code": "76815",
+    "description": "Ob us limited fetus(s)"
+  },
+  {
+    "code": "76816",
+    "description": "Ob us follow-up per fetus"
+  },
+  {
+    "code": "76818",
+    "description": "Fetal biophys profile w/nst"
+  },
+  {
+    "code": "76819",
+    "description": "Fetal biophys profil w/o nst"
+  },
+  {
+    "code": "76820",
+    "description": "Umbilical artery echo"
+  },
+  {
+    "code": "76821",
+    "description": "Middle cerebral artery echo"
+  },
+  {
+    "code": "76825",
+    "description": "Echo exam of fetal heart"
+  },
+  {
+    "code": "76826",
+    "description": "Echo exam of fetal heart"
+  },
+  {
+    "code": "76827",
+    "description": "Echo exam of fetal heart"
+  },
+  {
+    "code": "76828",
+    "description": "Echo exam of fetal heart"
+  },
+  {
+    "code": "76856",
+    "description": "Us exam pelvic complete"
+  },
+  {
+    "code": "76857",
+    "description": "Us exam pelvic limited"
+  },
+  {
+    "code": "76870",
+    "description": "Us exam scrotum"
+  },
+  {
+    "code": "76881",
+    "description": "Us compl joint r-t w/img"
+  },
+  {
+    "code": "76882",
+    "description": "Us lmtd jt/fcl evl nvasc xtr"
+  },
+  {
+    "code": "76883",
+    "description": "Us nrv&acc strux 1xtr compre"
+  },
+  {
+    "code": "76885",
+    "description": "Us exam infant hips dynamic"
+  },
+  {
+    "code": "76886",
+    "description": "Us exam infant hips static"
+  },
+  {
+    "code": "76977",
+    "description": "Us bone density measure"
+  },
+  {
+    "code": "76978",
+    "description": "Us trgt dyn mbubb 1st les"
+  },
+  {
+    "code": "76979",
+    "description": "Us trgt dyn mbubb ea addl"
+  },
+  {
+    "code": "76981",
+    "description": "Use parenchyma"
+  },
+  {
+    "code": "76982",
+    "description": "Use 1st target lesion"
+  },
+  {
+    "code": "76983",
+    "description": "Use ea addl target lesion"
+  },
+  {
+    "code": "76984",
+    "description": "Dx intraop thoracic aorta us"
+  },
+  {
+    "code": "76987",
+    "description": "Dx intraop epicar car us chd"
+  },
+  {
+    "code": "76988",
+    "description": "Dx ntrop epcr us chd img acq"
+  },
+  {
+    "code": "76989",
+    "description": "Dx intraop epcar us chd i&r"
+  },
+  {
+    "code": "76999",
+    "description": "Echo examination procedure"
+  },
+  {
+    "code": "77046",
+    "description": "Mri breast c-unilateral"
+  },
+  {
+    "code": "77047",
+    "description": "Mri breast c-bilateral"
+  },
+  {
+    "code": "77048",
+    "description": "Mri breast c-+ w/cad uni"
+  },
+  {
+    "code": "77049",
+    "description": "Mri breast c-+ w/cad bi"
+  },
+  {
+    "code": "77061",
+    "description": "Breast tomosynthesis uni"
+  },
+  {
+    "code": "77062",
+    "description": "Breast tomosynthesis bi"
+  },
+  {
+    "code": "77065",
+    "description": "Dx mammo incl cad uni"
+  },
+  {
+    "code": "77066",
+    "description": "Dx mammo incl cad bi"
+  },
+  {
+    "code": "77071",
+    "description": "X-ray stress view"
+  },
+  {
+    "code": "77072",
+    "description": "X-rays for bone age"
+  },
+  {
+    "code": "77073",
+    "description": "X-rays bone length studies"
+  },
+  {
+    "code": "77074",
+    "description": "X-rays bone survey limited"
+  },
+  {
+    "code": "77075",
+    "description": "X-rays bone survey complete"
+  },
+  {
+    "code": "77076",
+    "description": "X-rays bone survey infant"
+  },
+  {
+    "code": "77077",
+    "description": "Joint survey single view"
+  },
+  {
+    "code": "77078",
+    "description": "Ct bone density axial"
+  },
+  {
+    "code": "77080",
+    "description": "Dxa bone density axial"
+  },
+  {
+    "code": "77081",
+    "description": "Dxa bone density/peripheral"
+  },
+  {
+    "code": "77084",
+    "description": "Magnetic image bone marrow"
+  },
+  {
+    "code": "77085",
+    "description": "Dxa bone density study"
+  },
+  {
+    "code": "77086",
+    "description": "Fracture assessment via dxa"
+  },
+  {
+    "code": "77089",
+    "description": "Tbs dxa cal w/i&r fx risk"
+  },
+  {
+    "code": "78012",
+    "description": "Thyroid uptake measurement"
+  },
+  {
+    "code": "78013",
+    "description": "Thyroid imaging w/blood flow"
+  },
+  {
+    "code": "78014",
+    "description": "Thyroid imaging w/blood flow"
+  },
+  {
+    "code": "78015",
+    "description": "Thyroid met imaging"
+  },
+  {
+    "code": "78016",
+    "description": "Thyroid met imaging/studies"
+  },
+  {
+    "code": "78018",
+    "description": "Thyroid met imaging body"
+  },
+  {
+    "code": "78020",
+    "description": "Thyroid met uptake"
+  },
+  {
+    "code": "78070",
+    "description": "Parathyroid nuclear imaging"
+  },
+  {
+    "code": "78071",
+    "description": "Parathyrd planar w/wo subtrj"
+  },
+  {
+    "code": "78072",
+    "description": "Parathyrd planar w/spect&ct"
+  },
+  {
+    "code": "78075",
+    "description": "Adrenal nuclear imaging"
+  },
+  {
+    "code": "78099",
+    "description": "Endocrine nuclear procedure"
+  },
+  {
+    "code": "78102",
+    "description": "Bone marrow imaging ltd"
+  },
+  {
+    "code": "78103",
+    "description": "Bone marrow imaging mult"
+  },
+  {
+    "code": "78104",
+    "description": "Bone marrow imaging body"
+  },
+  {
+    "code": "78140",
+    "description": "Red cell sequestration"
+  },
+  {
+    "code": "78185",
+    "description": "Spleen imaging"
+  },
+  {
+    "code": "78195",
+    "description": "Lymph system imaging"
+  },
+  {
+    "code": "78199",
+    "description": "Blood/lymph nuclear exam"
+  },
+  {
+    "code": "78201",
+    "description": "Liver imaging"
+  },
+  {
+    "code": "78202",
+    "description": "Liver imaging with flow"
+  },
+  {
+    "code": "78215",
+    "description": "Liver and spleen imaging"
+  },
+  {
+    "code": "78216",
+    "description": "Liver & spleen image/flow"
+  },
+  {
+    "code": "78226",
+    "description": "Hepatobiliary system imaging"
+  },
+  {
+    "code": "78227",
+    "description": "Hepatobil syst image w/drug"
+  },
+  {
+    "code": "78230",
+    "description": "Salivary gland imaging"
+  },
+  {
+    "code": "78231",
+    "description": "Serial salivary imaging"
+  },
+  {
+    "code": "78232",
+    "description": "Salivary gland function exam"
+  },
+  {
+    "code": "78258",
+    "description": "Esophageal motility study"
+  },
+  {
+    "code": "78261",
+    "description": "Gastric mucosa imaging"
+  },
+  {
+    "code": "78262",
+    "description": "Gastroesophageal reflux exam"
+  },
+  {
+    "code": "78264",
+    "description": "Gastric emptying study"
+  },
+  {
+    "code": "78265",
+    "description": "Gastric emptying imag study"
+  },
+  {
+    "code": "78266",
+    "description": "Gastric emptying imag study"
+  },
+  {
+    "code": "78278",
+    "description": "Acute GI blood loss imaging"
+  },
+  {
+    "code": "78282",
+    "description": "GI protein loss exam"
+  },
+  {
+    "code": "78290",
+    "description": "Meckels divert exam"
+  },
+  {
+    "code": "78291",
+    "description": "Leveen/shunt patency exam"
+  },
+  {
+    "code": "78299",
+    "description": "GI nuclear procedure"
+  },
+  {
+    "code": "78300",
+    "description": "Bone imaging limited area"
+  },
+  {
+    "code": "78305",
+    "description": "Bone imaging multiple areas"
+  },
+  {
+    "code": "78306",
+    "description": "Bone imaging whole body"
+  },
+  {
+    "code": "78315",
+    "description": "Bone imaging 3 phase"
+  },
+  {
+    "code": "78399",
+    "description": "Musculoskeletal nuclear exam"
+  },
+  {
+    "code": "78428",
+    "description": "Cardiac shunt imaging"
+  },
+  {
+    "code": "78429",
+    "description": "Myocrd img pet 1 std w/ct"
+  },
+  {
+    "code": "78430",
+    "description": "Myocrd img pet rst/strs w/ct"
+  },
+  {
+    "code": "78431",
+    "description": "Myocrd img pet rst&strs ct"
+  },
+  {
+    "code": "78432",
+    "description": "Myocrd img pet 2rtracer"
+  },
+  {
+    "code": "78433",
+    "description": "Myocrd img pet 2rtracer ct"
+  },
+  {
+    "code": "78434",
+    "description": "Aqmbf pet rest & rx stress"
+  },
+  {
+    "code": "78445",
+    "description": "Vascular flow imaging"
+  },
+  {
+    "code": "78451",
+    "description": "Ht muscle image spect sing"
+  },
+  {
+    "code": "78452",
+    "description": "Ht muscle image spect mult"
+  },
+  {
+    "code": "78453",
+    "description": "Ht muscle image planar sing"
+  },
+  {
+    "code": "78454",
+    "description": "Ht musc image planar mult"
+  },
+  {
+    "code": "78456",
+    "description": "Acute venous thrombus image"
+  },
+  {
+    "code": "78457",
+    "description": "Venous thrombosis imaging"
+  },
+  {
+    "code": "78458",
+    "description": "Ven thrombosis images bilat"
+  },
+  {
+    "code": "78459",
+    "description": "Myocrd img pet single study"
+  },
+  {
+    "code": "78466",
+    "description": "Heart infarct image"
+  },
+  {
+    "code": "78468",
+    "description": "Heart infarct image (ef)"
+  },
+  {
+    "code": "78469",
+    "description": "Heart infarct image (3D)"
+  },
+  {
+    "code": "78472",
+    "description": "Gated heart planar single"
+  },
+  {
+    "code": "78473",
+    "description": "Gated heart multiple"
+  },
+  {
+    "code": "78481",
+    "description": "Heart first pass single"
+  },
+  {
+    "code": "78483",
+    "description": "Heart first pass multiple"
+  },
+  {
+    "code": "78491",
+    "description": "Myocrd img pet 1std rst/strs"
+  },
+  {
+    "code": "78492",
+    "description": "Myocrd img pet mlt rst&strs"
+  },
+  {
+    "code": "78494",
+    "description": "Heart image spect"
+  },
+  {
+    "code": "78496",
+    "description": "Heart first pass add-on"
+  },
+  {
+    "code": "78499",
+    "description": "Cardiovascular nuclear exam"
+  },
+  {
+    "code": "78579",
+    "description": "Lung ventilation imaging"
+  },
+  {
+    "code": "78580",
+    "description": "Lung perfusion imaging"
+  },
+  {
+    "code": "78582",
+    "description": "Lung ventilat&perfus imaging"
+  },
+  {
+    "code": "78597",
+    "description": "Lung perfusion differential"
+  },
+  {
+    "code": "78598",
+    "description": "Lung perf&ventilat diferentl"
+  },
+  {
+    "code": "78599",
+    "description": "Respiratory nuclear exam"
+  },
+  {
+    "code": "78600",
+    "description": "Brain image < 4 views"
+  },
+  {
+    "code": "78601",
+    "description": "Brain image w/flow < 4 views"
+  },
+  {
+    "code": "78605",
+    "description": "Brain image 4+ views"
+  },
+  {
+    "code": "78606",
+    "description": "Brain image w/flow 4 + views"
+  },
+  {
+    "code": "78608",
+    "description": "Brain imaging (PET)"
+  },
+  {
+    "code": "78610",
+    "description": "Brain flow imaging only"
+  },
+  {
+    "code": "78630",
+    "description": "Cerebrospinal fluid scan"
+  },
+  {
+    "code": "78635",
+    "description": "CSF ventriculography"
+  },
+  {
+    "code": "78645",
+    "description": "CSF shunt evaluation"
+  },
+  {
+    "code": "78650",
+    "description": "CSF leakage imaging"
+  },
+  {
+    "code": "78660",
+    "description": "Nuclear exam of tear flow"
+  },
+  {
+    "code": "78699",
+    "description": "Nervous system nuclear exam"
+  },
+  {
+    "code": "78700",
+    "description": "Kidney imaging morphol"
+  },
+  {
+    "code": "78701",
+    "description": "Kidney imaging with flow"
+  },
+  {
+    "code": "78707",
+    "description": "K flow/funct image w/o drug"
+  },
+  {
+    "code": "78708",
+    "description": "K flow/funct image w/drug"
+  },
+  {
+    "code": "78709",
+    "description": "K flow/funct image multiple"
+  },
+  {
+    "code": "78730",
+    "description": "Urinary bladder retention"
+  },
+  {
+    "code": "78740",
+    "description": "Ureteral reflux study"
+  },
+  {
+    "code": "78761",
+    "description": "Testicular imaging w/flow"
+  },
+  {
+    "code": "78799",
+    "description": "Genitourinary nuclear exam"
+  },
+  {
+    "code": "78800",
+    "description": "Rp loclzj tum 1 area 1 d img"
+  },
+  {
+    "code": "78801",
+    "description": "Rp loclzj tum 2+area 1+d img"
+  },
+  {
+    "code": "78802",
+    "description": "Rp loclzj tum whbdy 1 d img"
+  },
+  {
+    "code": "78803",
+    "description": "Rp loclzj tum spect 1 area"
+  },
+  {
+    "code": "78804",
+    "description": "Rp loclzj tum whbdy 2+d img"
+  },
+  {
+    "code": "78811",
+    "description": "PET image ltd area"
+  },
+  {
+    "code": "78812",
+    "description": "PET image skull-thigh"
+  },
+  {
+    "code": "78813",
+    "description": "PET image full body"
+  },
+  {
+    "code": "78814",
+    "description": "PET image w/ct lmtd"
+  },
+  {
+    "code": "78815",
+    "description": "PET image w/ct skull-thigh"
+  },
+  {
+    "code": "78816",
+    "description": "PET image w/ct full body"
+  },
+  {
+    "code": "78999",
+    "description": "Nuclear diagnostic exam"
+  },
+  {
+    "code": "91110",
+    "description": "Gi tract capsule endoscopy"
+  },
+  {
+    "code": "91111",
+    "description": "Esophageal capsule endoscopy"
+  },
+  {
+    "code": "92132",
+    "description": "Cptrzd oph dx img ant sgm"
+  },
+  {
+    "code": "92133",
+    "description": "Cptrzd oph dx img pst sgm on"
+  },
+  {
+    "code": "92134",
+    "description": "Cptrz oph dx img pst sgm rta"
+  },
+  {
+    "code": "92137",
+    "description": "Cptrz oph img pst sg rta oct"
+  },
+  {
+    "code": "92227",
+    "description": "Img rta detcj/mntr ds staff"
+  },
+  {
+    "code": "92228",
+    "description": "Img rta detc/mntr ds phy/qhp"
+  },
+  {
+    "code": "92229",
+    "description": "Img rta detc/mntr ds poc aly"
+  },
+  {
+    "code": "93303",
+    "description": "Echo transthoracic"
+  },
+  {
+    "code": "93304",
+    "description": "Echo transthoracic"
+  },
+  {
+    "code": "93306",
+    "description": "Tte w/doppler complete"
+  },
+  {
+    "code": "93307",
+    "description": "Tte w/o doppler complete"
+  },
+  {
+    "code": "93308",
+    "description": "Tte f-up or lmtd"
+  },
+  {
+    "code": "93320",
+    "description": "Doppler echo exam heart [if used in conjunction with 93303-93304]"
+  },
+  {
+    "code": "93321",
+    "description": "Doppler echo exam heart [if used in conjunction with 93303, 93304, 93308]"
+  },
+  {
+    "code": "93325",
+    "description": "Doppler color flow add-on [if used in conjunction with 76825, 76826, 76827,76828, 93303, 93304, 93308]"
+  },
+  {
+    "code": "93356",
+    "description": "Myocrd strain img spckl trck"
+  },
+  {
+    "code": "93880",
+    "description": "Extracranial study"
+  },
+  {
+    "code": "93882",
+    "description": "Extracranial study"
+  },
+  {
+    "code": "93886",
+    "description": "Intracranial study"
+  },
+  {
+    "code": "93888",
+    "description": "Intracranial study"
+  },
+  {
+    "code": "93892",
+    "description": "Tcd emboli detect w/o inj"
+  },
+  {
+    "code": "93893",
+    "description": "Tcd std icr art ven-art shnt"
+  },
+  {
+    "code": "93896",
+    "description": "Vsrctv std tcd icr art compl"
+  },
+  {
+    "code": "93897",
+    "description": "Emboli detcj wo iv mbubb njx"
+  },
+  {
+    "code": "93898",
+    "description": "Ven-artl shunt det mbubb njx"
+  },
+  {
+    "code": "93922",
+    "description": "Upr/l xtremity art 2 levels"
+  },
+  {
+    "code": "93923",
+    "description": "Upr/lxtr art stdy 3+ lvls"
+  },
+  {
+    "code": "93924",
+    "description": "Lwr xtr vasc stdy bilat"
+  },
+  {
+    "code": "93925",
+    "description": "Lower extremity study"
+  },
+  {
+    "code": "93926",
+    "description": "Lower extremity study"
+  },
+  {
+    "code": "93930",
+    "description": "Upper extremity study"
+  },
+  {
+    "code": "93931",
+    "description": "Upper extremity study"
+  },
+  {
+    "code": "93970",
+    "description": "Extremity study"
+  },
+  {
+    "code": "93971",
+    "description": "Extremity study"
+  },
+  {
+    "code": "93975",
+    "description": "Vascular study"
+  },
+  {
+    "code": "93976",
+    "description": "Vascular study"
+  },
+  {
+    "code": "93978",
+    "description": "Vascular study"
+  },
+  {
+    "code": "93979",
+    "description": "Vascular study"
+  },
+  {
+    "code": "93980",
+    "description": "Penile vascular study"
+  },
+  {
+    "code": "93981",
+    "description": "Penile vascular study"
+  },
+  {
+    "code": "93990",
+    "description": "Doppler flow testing"
+  },
+  {
+    "code": "93998",
+    "description": "Noninvas vasc dx study proc"
+  },
+  {
+    "code": "97610",
+    "description": "Low frequency non-thermal US"
+  },
+  {
+    "code": "A4641",
+    "description": "Radiopharm dx agent noc"
+  },
+  {
+    "code": "A4642",
+    "description": "In111 satumomab"
+  },
+  {
+    "code": "A9500",
+    "description": "Tc99m sestamibi"
+  },
+  {
+    "code": "A9501",
+    "description": "Technetium TC-99m teboroxime"
+  },
+  {
+    "code": "A9502",
+    "description": "Tc99m tetrofosmin"
+  },
+  {
+    "code": "A9503",
+    "description": "Tc99m medronate"
+  },
+  {
+    "code": "A9504",
+    "description": "Tc99m apcitide"
+  },
+  {
+    "code": "A9505",
+    "description": "TL201 thallium"
+  },
+  {
+    "code": "A9506",
+    "description": "Tc-99m graphite crucible"
+  },
+  {
+    "code": "A9507",
+    "description": "In111 capromab"
+  },
+  {
+    "code": "A9508",
+    "description": "I131 iodobenguate, dx"
+  },
+  {
+    "code": "A9509",
+    "description": "Iodine I-123 sod iodide mil"
+  },
+  {
+    "code": "A9510",
+    "description": "Tc99m disofenin"
+  },
+  {
+    "code": "A9512",
+    "description": "Tc99m pertechnetate"
+  },
+  {
+    "code": "A9515",
+    "description": "Choline c-11"
+  },
+  {
+    "code": "A9516",
+    "description": "Iodine I-123 sod iodide mic"
+  },
+  {
+    "code": "A9520",
+    "description": "Tc99 Tilmanocept diag 0.5mci"
+  },
+  {
+    "code": "A9521",
+    "description": "Tc99m exametazime"
+  },
+  {
+    "code": "A9524",
+    "description": "I131 serum albumin, dx"
+  },
+  {
+    "code": "A9526",
+    "description": "Nitrogen N-13 ammonia"
+  },
+  {
+    "code": "A9528",
+    "description": "Iodine I-131 iodide cap, dx"
+  },
+  {
+    "code": "A9529",
+    "description": "I131 iodide sol, dx"
+  },
+  {
+    "code": "A9531",
+    "description": "I131 max 100uCi"
+  },
+  {
+    "code": "A9532",
+    "description": "I125 serum albumin, dx"
+  },
+  {
+    "code": "A9536",
+    "description": "TC99m depreotide"
+  },
+  {
+    "code": "A9537",
+    "description": "Tc99m mebrofenin"
+  },
+  {
+    "code": "A9538",
+    "description": "Tc99m pyrophosphate"
+  },
+  {
+    "code": "A9539",
+    "description": "Tc99m pentetate"
+  },
+  {
+    "code": "A9540",
+    "description": "Tc99m MAA"
+  },
+  {
+    "code": "A9541",
+    "description": "Tc99m sulfur colloid"
+  },
+  {
+    "code": "A9542",
+    "description": "In111 ibritumomab, dx"
+  },
+  {
+    "code": "A9546",
+    "description": "CO57/58"
+  },
+  {
+    "code": "A9547",
+    "description": "In111 oxyquinoline"
+  },
+  {
+    "code": "A9548",
+    "description": "In111 pentetate"
+  },
+  {
+    "code": "A9550",
+    "description": "Tc99m gluceptate"
+  },
+  {
+    "code": "A9551",
+    "description": "Tc99m succimer"
+  },
+  {
+    "code": "A9552",
+    "description": "F18 fdg"
+  },
+  {
+    "code": "A9553",
+    "description": "Cr51 chromate"
+  },
+  {
+    "code": "A9554",
+    "description": "I125 iothalamate, dx"
+  },
+  {
+    "code": "A9555",
+    "description": "Rb82 rubidium"
+  },
+  {
+    "code": "A9556",
+    "description": "Ga67 gallium"
+  },
+  {
+    "code": "A9557",
+    "description": "Tc99m bicisate"
+  },
+  {
+    "code": "A9558",
+    "description": "Xe133 xenon 10mci"
+  },
+  {
+    "code": "A9559",
+    "description": "Co57 cyano"
+  },
+  {
+    "code": "A9560",
+    "description": "Tc99m labeled rbc"
+  },
+  {
+    "code": "A9561",
+    "description": "Tc99m oxidronate"
+  },
+  {
+    "code": "A9562",
+    "description": "Tc99m mertiatide"
+  },
+  {
+    "code": "A9566",
+    "description": "Tc99m fanolesomab"
+  },
+  {
+    "code": "A9567",
+    "description": "Technetium TC-99m aerosol"
+  },
+  {
+    "code": "A9568",
+    "description": "Technetium tc99m arcitumomab"
+  },
+  {
+    "code": "A9569",
+    "description": "Technetium TC-99m auto WBC"
+  },
+  {
+    "code": "A9570",
+    "description": "Indium In-111 auto WBC"
+  },
+  {
+    "code": "A9571",
+    "description": "Indium In-111 auto platelet"
+  },
+  {
+    "code": "A9572",
+    "description": "Indium In-111 pentetreotide"
+  },
+  {
+    "code": "A9573",
+    "description": "Inj, gadopiclenol, 1 ml"
+  },
+  {
+    "code": "A9576",
+    "description": "Inj prohance multipack"
+  },
+  {
+    "code": "A9577",
+    "description": "Inj multihance"
+  },
+  {
+    "code": "A9578",
+    "description": "Inj multihance multipack"
+  },
+  {
+    "code": "A9579",
+    "description": "Gad-base MR contrast NOS,1ml"
+  },
+  {
+    "code": "A9580",
+    "description": "Sodium fluoride F-18"
+  },
+  {
+    "code": "A9584",
+    "description": "Iodine I-123 ioflupane"
+  },
+  {
+    "code": "A9586",
+    "description": "Florbetapir F18"
+  },
+  {
+    "code": "A9587",
+    "description": "Gallium Ga-68"
+  },
+  {
+    "code": "A9588",
+    "description": "Fluciclovine f-18"
+  },
+  {
+    "code": "A9591",
+    "description": "Fluoroestradiol f 18"
+  },
+  {
+    "code": "A9592",
+    "description": "Copper cu 64 dotatate diag"
+  },
+  {
+    "code": "A9593",
+    "description": "Gallium ga-68 psma-11 ucsf"
+  },
+  {
+    "code": "A9594",
+    "description": "Gallium ga-68 psma-11, ucla"
+  },
+  {
+    "code": "A9595",
+    "description": "Piflu f-18, dia 1 millicurie"
+  },
+  {
+    "code": "A9596",
+    "description": "Gallium illuccix 1 millicure"
+  },
+  {
+    "code": "A9597",
+    "description": "Pet, dx, for tumor id, noc"
+  },
+  {
+    "code": "A9598",
+    "description": "Pet dx for non-tumor id, noc"
+  },
+  {
+    "code": "A9601",
+    "description": "Flortaucipir inj 1 millicuri"
+  },
+  {
+    "code": "A9602",
+    "description": "Fluorodopa f-18 diag per mci"
+  },
+  {
+    "code": "A9608",
+    "description": "Flotufolastat f18 diag 1 mci"
+  },
+  {
+    "code": "A9609",
+    "description": "F18 fdg, 15 millicuries"
+  },
+  {
+    "code": "A9610",
+    "description": "Xe129 xenon, diagnostic"
+  },
+  {
+    "code": "A9697",
+    "description": "Inj, magtrace per study dose"
+  },
+  {
+    "code": "A9700",
+    "description": "Echocardiography contrast"
+  },
+  {
+    "code": "A9800",
+    "description": "Gallium locametz 1 millicuri"
+  },
+  {
+    "code": "C8001",
+    "description": "3D anat seg imaging preop"
+  },
+  {
+    "code": "C8937",
+    "description": "Cad breast mri"
+  },
+  {
+    "code": "C9067",
+    "description": "Gallium ga-68 dotatoc"
+  },
+  {
+    "code": "C9762",
+    "description": "Cardiac mri seg dys strain"
+  },
+  {
+    "code": "C9763",
+    "description": "Cardiac mri seg dys stress"
+  },
+  {
+    "code": "C9791",
+    "description": "MRI hyperpolarized xenon129"
+  },
+  {
+    "code": "G0130",
+    "description": "Single energy x-ray study"
+  },
+  {
+    "code": "G0279",
+    "description": "Tomosynthesis, mammo screen"
+  },
+  {
+    "code": "G0288",
+    "description": "Recon, cta for surg plan"
+  },
+  {
+    "code": "Q0092",
+    "description": "Set up port xray equipment"
+  },
+  {
+    "code": "Q9950",
+    "description": "Inj sulf hexa lipid microsph"
+  },
+  {
+    "code": "Q9951",
+    "description": "LOCM>=400 mg/ml iodine,1ml"
+  },
+  {
+    "code": "Q9953",
+    "description": "Inj Fe-based MR contrast,1ml"
+  },
+  {
+    "code": "Q9954",
+    "description": "Oral MR contrast, 100ml"
+  },
+  {
+    "code": "Q9955",
+    "description": "Inj perflexane lip micros,ml"
+  },
+  {
+    "code": "Q9956",
+    "description": "Inj octafluoropropane mic,ml"
+  },
+  {
+    "code": "Q9957",
+    "description": "Inj perflutren lip micros,ml"
+  },
+  {
+    "code": "Q9958",
+    "description": "HOCM <=149 mg/ml iodine, 1ml"
+  },
+  {
+    "code": "Q9959",
+    "description": "HOCM 150-199mg/ml iodine,1ml"
+  },
+  {
+    "code": "Q9960",
+    "description": "HOCM 200-249mg/ml iodine,1ml"
+  },
+  {
+    "code": "Q9961",
+    "description": "HOCM 250-299mg/ml iodine,1ml"
+  },
+  {
+    "code": "Q9962",
+    "description": "HOCM 300-349mg/ml iodine,1ml"
+  },
+  {
+    "code": "Q9963",
+    "description": "HOCM 350-399mg/ml iodine,1ml"
+  },
+  {
+    "code": "Q9964",
+    "description": "HOCM>= 400mg/ml iodine, 1ml"
+  },
+  {
+    "code": "Q9965",
+    "description": "LOCM 100-199mg/ml iodine,1ml"
+  },
+  {
+    "code": "Q9966",
+    "description": "LOCM 200-299mg/ml iodine,1ml"
+  },
+  {
+    "code": "Q9967",
+    "description": "LOCM 300-399mg/ml iodine,1ml"
+  },
+  {
+    "code": "Q9982",
+    "description": "Flutemetamol f18 diagnostic"
+  },
+  {
+    "code": "Q9983",
+    "description": "Florbetaben f18 diagnostic"
+  },
+  {
+    "code": "R0070",
+    "description": "Transport portable x-ray"
+  },
+  {
+    "code": "R0075",
+    "description": "Transport port x-ray multipl"
+  },
+  {
+    "code": "0394T",
+    "description": "Hdr elctrnc skn surf brchytx"
+  },
+  {
+    "code": "0395T",
+    "description": "Hdr elctr ntrst/ntrcv brchtx"
+  },
+  {
+    "code": "0947T",
+    "description": "Mrgfus strtctc bl-br disrpj"
+  },
+  {
+    "code": "19296",
+    "description": "Place po breast cath for rad"
+  },
+  {
+    "code": "19297",
+    "description": "Place breast cath for rad"
+  },
+  {
+    "code": "19298",
+    "description": "Place breast rad tube/caths"
+  },
+  {
+    "code": "20555",
+    "description": "Place ndl musc/tis for rt"
+  },
+  {
+    "code": "31643",
+    "description": "Diag bronchoscope/catheter"
+  },
+  {
+    "code": "32553",
+    "description": "Ins mark thor for rt perq"
+  },
+  {
+    "code": "32701",
+    "description": "Thorax stereo rad targetw/tx"
+  },
+  {
+    "code": "41019",
+    "description": "Place needles h&n for rt"
+  },
+  {
+    "code": "49327",
+    "description": "Lap ins device for rt"
+  },
+  {
+    "code": "49411",
+    "description": "Ins mark abd/pel for rt perq"
+  },
+  {
+    "code": "49412",
+    "description": "Ins device for rt guide open"
+  },
+  {
+    "code": "51020",
+    "description": "Cystotomy/cystostomy w/fulg [only when cystotomy/cystostomy includes insertion of radioactive material]"
+  },
+  {
+    "code": "55875",
+    "description": "Transperi needle place pros"
+  },
+  {
+    "code": "55876",
+    "description": "Place rt device/marker pros"
+  },
+  {
+    "code": "55920",
+    "description": "Place needles pelvic for rt"
+  },
+  {
+    "code": "57155",
+    "description": "Insert uteri tandems/ovoids"
+  },
+  {
+    "code": "57156",
+    "description": "Ins vag brachytx device"
+  },
+  {
+    "code": "58346",
+    "description": "Insert heyman uteri capsule"
+  },
+  {
+    "code": "61715",
+    "description": "Mrgfus strtctc ablt trgt icr"
+  },
+  {
+    "code": "61770",
+    "description": "Incise skull for treatment"
+  },
+  {
+    "code": "61796",
+    "description": "SRS cranial lesion simple"
+  },
+  {
+    "code": "61797",
+    "description": "SRS cran les simple addl"
+  },
+  {
+    "code": "61798",
+    "description": "SRS cranial lesion complex"
+  },
+  {
+    "code": "61799",
+    "description": "SRS cran les complex addl"
+  },
+  {
+    "code": "61800",
+    "description": "Apply SRS headframe add-on"
+  },
+  {
+    "code": "63620",
+    "description": "SRS spinal lesion"
+  },
+  {
+    "code": "63621",
+    "description": "SRS spinal lesion addl"
+  },
+  {
+    "code": "77261",
+    "description": "Radiation therapy planning"
+  },
+  {
+    "code": "77262",
+    "description": "Radiation therapy planning"
+  },
+  {
+    "code": "77263",
+    "description": "Radiation therapy planning"
+  },
+  {
+    "code": "77280",
+    "description": "Set radiation therapy field"
+  },
+  {
+    "code": "77285",
+    "description": "Set radiation therapy field"
+  },
+  {
+    "code": "77290",
+    "description": "Set radiation therapy field"
+  },
+  {
+    "code": "77295",
+    "description": "Set radiation therapy field"
+  },
+  {
+    "code": "77299",
+    "description": "Radiation therapy planning"
+  },
+  {
+    "code": "77300",
+    "description": "Radiation therapy dose plan"
+  },
+  {
+    "code": "77301",
+    "description": "Radiotherapy dose plan imrt"
+  },
+  {
+    "code": "77306",
+    "description": "Telethx isodose plan simple"
+  },
+  {
+    "code": "77307",
+    "description": "Telethx isodose plan cplx"
+  },
+  {
+    "code": "77316",
+    "description": "Brachytx isodose plan simple"
+  },
+  {
+    "code": "77317",
+    "description": "Brachytx isodose intermed"
+  },
+  {
+    "code": "77318",
+    "description": "Brachytx isodose complex"
+  },
+  {
+    "code": "77321",
+    "description": "Special teletx port plan"
+  },
+  {
+    "code": "77331",
+    "description": "Special radiation dosimetry"
+  },
+  {
+    "code": "77332",
+    "description": "Radiation treatment aid(s)"
+  },
+  {
+    "code": "77333",
+    "description": "Radiation treatment aid(s)"
+  },
+  {
+    "code": "77334",
+    "description": "Radiation treatment aid(s)"
+  },
+  {
+    "code": "77336",
+    "description": "Radiation physics consult"
+  },
+  {
+    "code": "77338",
+    "description": "Design mlc device for imrt"
+  },
+  {
+    "code": "77370",
+    "description": "Radiation physics consult"
+  },
+  {
+    "code": "77371",
+    "description": "Srs multisource"
+  },
+  {
+    "code": "77372",
+    "description": "Srs linear based"
+  },
+  {
+    "code": "77373",
+    "description": "Sbrt delivery"
+  },
+  {
+    "code": "77385",
+    "description": "Ntsty modul rad tx dlvr smpl"
+  },
+  {
+    "code": "77386",
+    "description": "Ntsty modul rad tx dlvr cplx"
+  },
+  {
+    "code": "77399",
+    "description": "External radiation dosimetry"
+  },
+  {
+    "code": "77401",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "77402",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "77407",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "77412",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "77417",
+    "description": "Radiology port film(s)"
+  },
+  {
+    "code": "77423",
+    "description": "Neutron beam tx complex"
+  },
+  {
+    "code": "77427",
+    "description": "Radiation tx management x5"
+  },
+  {
+    "code": "77431",
+    "description": "Radiation therapy management"
+  },
+  {
+    "code": "77432",
+    "description": "Stereotactic radiation trmt"
+  },
+  {
+    "code": "77435",
+    "description": "Sbrt management"
+  },
+  {
+    "code": "77470",
+    "description": "Special radiation treatment"
+  },
+  {
+    "code": "77499",
+    "description": "Radiation therapy management"
+  },
+  {
+    "code": "77520",
+    "description": "Proton trmt simple w/o comp"
+  },
+  {
+    "code": "77522",
+    "description": "Proton trmt simple w/comp"
+  },
+  {
+    "code": "77523",
+    "description": "Proton trmt intermediate"
+  },
+  {
+    "code": "77525",
+    "description": "Proton treatment complex"
+  },
+  {
+    "code": "77600",
+    "description": "Hyperthermia treatment"
+  },
+  {
+    "code": "77605",
+    "description": "Hyperthermia treatment"
+  },
+  {
+    "code": "77610",
+    "description": "Hyperthermia treatment"
+  },
+  {
+    "code": "77615",
+    "description": "Hyperthermia treatment"
+  },
+  {
+    "code": "77620",
+    "description": "Hyperthermia treatment"
+  },
+  {
+    "code": "77750",
+    "description": "Infuse radioactive materials"
+  },
+  {
+    "code": "77761",
+    "description": "Apply intrcav radiat simple"
+  },
+  {
+    "code": "77762",
+    "description": "Apply intrcav radiat interm"
+  },
+  {
+    "code": "77763",
+    "description": "Apply intrcav radiat compl"
+  },
+  {
+    "code": "77767",
+    "description": "Hdr rdncl skn surf brachytx"
+  },
+  {
+    "code": "77768",
+    "description": "Hdr rdncl skn surf brachytx"
+  },
+  {
+    "code": "77770",
+    "description": "Hdr rdncl ntrstl/icav brchtx"
+  },
+  {
+    "code": "77771",
+    "description": "Hdr rdncl ntrstl/icav brchtx"
+  },
+  {
+    "code": "77772",
+    "description": "Hdr rdncl ntrstl/icav brchtx"
+  },
+  {
+    "code": "77778",
+    "description": "Apply interstit radiat compl"
+  },
+  {
+    "code": "77789",
+    "description": "Apply surface radiation"
+  },
+  {
+    "code": "77790",
+    "description": "Radiation handling"
+  },
+  {
+    "code": "77799",
+    "description": "Radium/radioisotope therapy"
+  },
+  {
+    "code": "78830",
+    "description": "Rp loclzj tum spect w/ct 1"
+  },
+  {
+    "code": "78831",
+    "description": "Rp loclzj tum spect 2 areas"
+  },
+  {
+    "code": "78832",
+    "description": "Rp loclzj tum spect w/ct 2"
+  },
+  {
+    "code": "78835",
+    "description": "Rp quan meas single area"
+  },
+  {
+    "code": "79005",
+    "description": "Nuclear rx oral admin"
+  },
+  {
+    "code": "79101",
+    "description": "Nuclear rx iv admin"
+  },
+  {
+    "code": "79200",
+    "description": "Nuclear rx intracav admin"
+  },
+  {
+    "code": "79300",
+    "description": "Nuclr rx interstit colloid"
+  },
+  {
+    "code": "79403",
+    "description": "Hematopoietic nuclear tx"
+  },
+  {
+    "code": "79440",
+    "description": "Nuclear rx intra-articular"
+  },
+  {
+    "code": "79445",
+    "description": "Nuclear rx intra-arterial"
+  },
+  {
+    "code": "79999",
+    "description": "Nuclear medicine therapy"
+  },
+  {
+    "code": "92974",
+    "description": "Cath place cardio brachytx"
+  },
+  {
+    "code": "A4650",
+    "description": "Implant radiation dosimeter"
+  },
+  {
+    "code": "A9513",
+    "description": "Lutetium Lu 177 dotatat ther"
+  },
+  {
+    "code": "A9517",
+    "description": "I131 iodide cap, rx"
+  },
+  {
+    "code": "A9527",
+    "description": "Iodine I-125 sodium iodide"
+  },
+  {
+    "code": "A9530",
+    "description": "I131 iodide sol, rx"
+  },
+  {
+    "code": "A9543",
+    "description": "Y90 ibritumomab, rx"
+  },
+  {
+    "code": "A9563",
+    "description": "P32 Na phosphate"
+  },
+  {
+    "code": "A9564",
+    "description": "P32 chromic phosphate"
+  },
+  {
+    "code": "A9590",
+    "description": "Iodine i-131 iobenguane 1mci"
+  },
+  {
+    "code": "A9600",
+    "description": "Sr89 strontium"
+  },
+  {
+    "code": "A9604",
+    "description": "Sm 153 lexidronam"
+  },
+  {
+    "code": "A9606",
+    "description": "Radium Ra223 dichloride ther"
+  },
+  {
+    "code": "A9607",
+    "description": "Lutetium lu 177 vipivotide"
+  },
+  {
+    "code": "A9699",
+    "description": "Radiopharm rx agent noc"
+  },
+  {
+    "code": "C1716",
+    "description": "Brachytx, non-str, Gold-198"
+  },
+  {
+    "code": "C1717",
+    "description": "Brachytx, non-str,HDR Ir-192"
+  },
+  {
+    "code": "C1719",
+    "description": "Brachytx, NS, Non-HDRIr-192"
+  },
+  {
+    "code": "C2616",
+    "description": "Brachytx, non-str,Yttrium-90"
+  },
+  {
+    "code": "C2634",
+    "description": "Brachytx, non-str, HA, I-125"
+  },
+  {
+    "code": "C2635",
+    "description": "Brachytx, non-str, HA, P-103"
+  },
+  {
+    "code": "C2636",
+    "description": "Brachy linear, non-str,P-103"
+  },
+  {
+    "code": "C2638",
+    "description": "Brachytx, stranded, I-125"
+  },
+  {
+    "code": "C2639",
+    "description": "Brachytx,non-stranded,I-125"
+  },
+  {
+    "code": "C2640",
+    "description": "Brachytx, stranded, P-103"
+  },
+  {
+    "code": "C2641",
+    "description": "Brachytx, non-stranded,P-103"
+  },
+  {
+    "code": "C2642",
+    "description": "Brachytx, stranded, C-131"
+  },
+  {
+    "code": "C2643",
+    "description": "Brachytx, non-stranded,C-131"
+  },
+  {
+    "code": "C2644",
+    "description": "Brachytx cesium-131 chloride"
+  },
+  {
+    "code": "C2645",
+    "description": "Brachytx planar, p-103"
+  },
+  {
+    "code": "C2698",
+    "description": "Brachytx, stranded, NOS"
+  },
+  {
+    "code": "C2699",
+    "description": "Brachytx, non-stranded, NOS"
+  },
+  {
+    "code": "G0339",
+    "description": "Robot lin-radsurg com, first"
+  },
+  {
+    "code": "G0340",
+    "description": "Robt lin-radsurg fractx 2-5"
+  },
+  {
+    "code": "G0562",
+    "description": "Complex simulation w/pet-ct"
+  },
+  {
+    "code": "G0563",
+    "description": "Sbrt w/positron emission del"
+  },
+  {
+    "code": "G6001",
+    "description": "Echo guidance radiotherapy"
+  },
+  {
+    "code": "G6002",
+    "description": "Stereoscopic x-ray guidance"
+  },
+  {
+    "code": "G6003",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6004",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6005",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6006",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6007",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6008",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6009",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6010",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6011",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6012",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6013",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6014",
+    "description": "Radiation treatment delivery"
+  },
+  {
+    "code": "G6015",
+    "description": "Radiation tx delivery imrt"
+  },
+  {
+    "code": "G6016",
+    "description": "Delivery comp imrt"
+  },
+  {
+    "code": "G6017",
+    "description": "Intrafraction track motion"
+  },
+  {
+    "code": "Q3001",
+    "description": "Brachytherapy Radioelements"
+  },
+  {
+    "code": "74263",
+    "description": "Ct colonography screening"
+  },
+  {
+    "code": "80061",
+    "description": "Lipid panel [only when billed with ICD-10-CM code  Z13.6]"
+  },
+  {
+    "code": "81528",
+    "description": "Oncology colorectal scr"
+  },
+  {
+    "code": "82270",
+    "description": "Occult blood feces"
+  },
+  {
+    "code": "82465",
+    "description": "Assay bld/serum cholesterol [only when billed with ICD-10-CM code Z13.6]"
+  },
+  {
+    "code": "82947",
+    "description": "Assay glucose blood quant [only when billed with ICD-10-CM code Z13.1]"
+  },
+  {
+    "code": "82950",
+    "description": "Glucose test [only when billed with ICD-10-CM code Z13.1]"
+  },
+  {
+    "code": "82951",
+    "description": "Glucose tolerance test (GTT) [only when billed with ICD-10-CM code Z13.1]"
+  },
+  {
+    "code": "83718",
+    "description": "Assay of lipoprotein [only when billed with ICD-10-CM code Z13.6]"
+  },
+  {
+    "code": "84478",
+    "description": "Assay of triglycerides [only when billed with ICD-10-CM code Z13.6]"
+  },
+  {
+    "code": "G0103",
+    "description": "PSA screening"
+  },
+  {
+    "code": "G0118",
+    "description": "Glaucoma scrn hgh risk direc"
+  },
+  {
+    "code": "G0123",
+    "description": "Screen cerv/vag thin layer"
+  },
+  {
+    "code": "G0124",
+    "description": "Screen c/v thin layer by MD"
+  },
+  {
+    "code": "G0141",
+    "description": "Scr c/v cyto,autosys and md"
+  },
+  {
+    "code": "G0143",
+    "description": "Scr c/v cyto,thinlayer,rescr"
+  },
+  {
+    "code": "G0144",
+    "description": "Scr c/v cyto,thinlayer,rescr"
+  },
+  {
+    "code": "G0145",
+    "description": "Scr c/v cyto,thinlayer,rescr"
+  },
+  {
+    "code": "G0147",
+    "description": "Scr c/v cyto, automated sys"
+  },
+  {
+    "code": "G0148",
+    "description": "Scr c/v cyto, autosys, rescr"
+  },
+  {
+    "code": "G0327",
+    "description": "Colon ca scrn;bld-bsd biomrk"
+  },
+  {
+    "code": "G0328",
+    "description": "Fecal blood scrn immunoassay"
+  },
+  {
+    "code": "G0432",
+    "description": "EIA HIV-1/HIV-2 screen"
+  },
+  {
+    "code": "G0433",
+    "description": "ELISA HIV-1/HIV-2 screen"
+  },
+  {
+    "code": "G0435",
+    "description": "Oral HIV-1/HIV-2 screen"
+  },
+  {
+    "code": "G0475",
+    "description": "HIV combination assay"
+  },
+  {
+    "code": "G0499",
+    "description": "HepB screen high risk indiv"
+  },
+  {
+    "code": "P3000",
+    "description": "Screen pap by tech w md supv"
+  },
+  {
+    "code": "P3001",
+    "description": "Screening pap smear by phys"
+  },
+  {
+    "code": "90637",
+    "description": "Vacc qirv mrna 30mcg/.5ml im"
+  },
+  {
+    "code": "90638",
+    "description": "Vacc qirv mrna 60mcg/.5ml im"
+  },
+  {
+    "code": "90653",
+    "description": "IIV adjuvant vaccine im"
+  },
+  {
+    "code": "90655",
+    "description": "IIV3 vacc no prsv 0.25 ml im"
+  },
+  {
+    "code": "90656",
+    "description": "IIV3 vacc no prsv 0.5 ml im"
+  },
+  {
+    "code": "90657",
+    "description": "IIV3 vaccine splt 0.25 ml im"
+  },
+  {
+    "code": "90658",
+    "description": "IIV3 vaccine splt 0.5 ml im"
+  },
+  {
+    "code": "90660",
+    "description": "LAIV3 vaccine intranasal"
+  },
+  {
+    "code": "90661",
+    "description": "Cciiv3 vac abx fr 0.5 ml im"
+  },
+  {
+    "code": "90662",
+    "description": "IIV no prsv increased ag im"
+  },
+  {
+    "code": "90670",
+    "description": "PCV13 vaccine im"
+  },
+  {
+    "code": "90671",
+    "description": "Pcv15 vaccine im"
+  },
+  {
+    "code": "90672",
+    "description": "LAIV4 vaccine intranasal"
+  },
+  {
+    "code": "90673",
+    "description": "RIV3 vaccine no preserv im"
+  },
+  {
+    "code": "90674",
+    "description": "CCIIV4 vac no prsv 0.5 ml im"
+  },
+  {
+    "code": "90677",
+    "description": "Pcv20 vaccine im"
+  },
+  {
+    "code": "90682",
+    "description": "RIV4 vacc recombinant dna im"
+  },
+  {
+    "code": "90684",
+    "description": "Pcv21 vaccine im"
+  },
+  {
+    "code": "90685",
+    "description": "IIV4 vacc no prsv 0.25 ml im"
+  },
+  {
+    "code": "90686",
+    "description": "IIV4 vacc no prsv 0.5 ml im"
+  },
+  {
+    "code": "90687",
+    "description": "IIV4 vacc splt 0.25 ml im"
+  },
+  {
+    "code": "90688",
+    "description": "IIV4 vacc splt 0.5 ml im"
+  },
+  {
+    "code": "90689",
+    "description": "Vacc iiv4 no prsrv 0.25ml im"
+  },
+  {
+    "code": "90694",
+    "description": "Vacc aiiv4 no prsrv 0.5ml im"
+  },
+  {
+    "code": "90695",
+    "description": "H5n8 vacc drv cll cul adj im"
+  },
+  {
+    "code": "90732",
+    "description": "PPSV23 vacc 2 yrs+ subq/im"
+  },
+  {
+    "code": "90739",
+    "description": "Hepb vacc 2/4 dose adult im"
+  },
+  {
+    "code": "90740",
+    "description": "Hepb vacc 3 dose immunsup im"
+  },
+  {
+    "code": "90743",
+    "description": "Hepb vacc 2 dose adolesc im"
+  },
+  {
+    "code": "90744",
+    "description": "Hepb vacc 3 dose ped/adol im"
+  },
+  {
+    "code": "90746",
+    "description": "Hepb vaccine 3 dose adult im"
+  },
+  {
+    "code": "90747",
+    "description": "Hepb vacc 4 dose immunsup im"
+  },
+  {
+    "code": "90749",
+    "description": "Unlisted vaccine/toxoid [only when used to identify a COVID-19 vaccine]"
+  },
+  {
+    "code": "90756",
+    "description": "Cciiv4 vacc abx free im"
+  },
+  {
+    "code": "90759",
+    "description": "Hep b vac 3ag 10mcg 3 dos im"
+  },
+  {
+    "code": "91304",
+    "description": "Sarscov2 vac 5mcg/0.5ml im"
+  },
+  {
+    "code": "91318",
+    "description": "Sarscov2 vac 3mcg trs-suc im"
+  },
+  {
+    "code": "91319",
+    "description": "Sarscv2 vac 10mcg trs-suc im"
+  },
+  {
+    "code": "91320",
+    "description": "Sarscv2 vac 30mcg trs-suc im"
+  },
+  {
+    "code": "91321",
+    "description": "Sarscov2 vac 25 mcg/.25ml im"
+  },
+  {
+    "code": "91322",
+    "description": "Sarscov2 vac 50 mcg/0.5ml im"
+  },
+  {
+    "code": "Q0220",
+    "description": "Tixagev and cilgav, 300mg"
+  },
+  {
+    "code": "Q0221",
+    "description": "Tixagev and cilgav, 600mg"
+  },
+  {
+    "code": "Q0222",
+    "description": "Bebtelovimab 175 mg"
+  },
+  {
+    "code": "Q0224",
+    "description": "Inj, pemivibart, 4500 mg"
+  },
+  {
+    "code": "Q0240",
+    "description": "Casirivi and imdevi 600 mg"
+  },
+  {
+    "code": "Q0243",
+    "description": "Casirivimab and imdevimab"
+  },
+  {
+    "code": "Q0244",
+    "description": "Casirivi and imdevi 1200 mg"
+  },
+  {
+    "code": "Q0245",
+    "description": "Bamlanivimab and etesevima"
+  },
+  {
+    "code": "Q0247",
+    "description": "Sotrovimab"
+  },
+  {
+    "code": "Q0249",
+    "description": "Tocilizumab for covid-19"
+  },
+  {
+    "code": "Q2034",
+    "description": "Agriflu vaccine"
+  },
+  {
+    "code": "Q2035",
+    "description": "Afluria vacc, 3 yrs & >, im"
+  },
+  {
+    "code": "Q2036",
+    "description": "Flulaval vacc, 3 yrs & >, im"
+  },
+  {
+    "code": "Q2037",
+    "description": "Fluvirin vacc, 3 yrs & >, im"
+  },
+  {
+    "code": "Q2038",
+    "description": "Fluzone vacc, 3 yrs & >, im"
+  },
+  {
+    "code": "Q2039",
+    "description": "Influenza virus vaccine, nos"
+  }
+]
