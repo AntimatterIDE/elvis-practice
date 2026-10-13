@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { DaySheet } from "@/components/admin/rcm/day-sheet";
 import { chartGaps, focusClinicDay } from "@/lib/rcm/chart";
 import { formatClinicDay, formatTime, patientName } from "@/lib/rcm/format";
+import { recordVisitHref } from "@/lib/rcm/record-visit";
 import { MetricTile } from "@/components/admin/bits/surface";
 import { LoadingDesk, PageHeader, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
@@ -108,7 +109,7 @@ export function Workbench() {
         ))}
       </section>
       <div className="mt-6 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <DaySheet visits={dayVisits} names={names} empty="The schedule is clear." />
+        <DaySheet visits={dayVisits} names={names} empty="The schedule is clear." recordHref={recordVisitHref} />
         <aside className="overflow-hidden rounded-[var(--rb-r-2xl,14px)] border border-neutral-200/80 bg-white">
           <div className="flex items-end justify-between gap-3 border-b border-neutral-200 px-5 py-4">
             <div>

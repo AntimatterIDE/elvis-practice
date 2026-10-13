@@ -7,6 +7,7 @@ import { focusClinicDay, visitTypeLabel } from "@/lib/rcm/chart";
 import { formatClinicDay, patientName } from "@/lib/rcm/format";
 import type { AppointmentStatus, ConfirmationStatus, VisitType } from "@/lib/rcm/types";
 import { DaySheet } from "@/components/admin/rcm/day-sheet";
+import { recordVisitHref } from "@/lib/rcm/record-visit";
 import { Field, LoadingDesk, PageHeader, fieldClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -67,6 +68,7 @@ export function ScheduleDesk() {
             names={names}
             title={formatClinicDay(focus)}
             empty="No visits on this day."
+            recordHref={recordVisitHref}
             renderExtra={(appointment) => (
                 <div className="grid min-w-0 gap-1.5">
                   {appointment.confirmation !== "confirmed" && appointment.status !== "cancelled" ? (
