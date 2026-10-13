@@ -1,4 +1,5 @@
 import "server-only";
+import { applyCodeApproval, approvalStatus } from "@/lib/encounters/approve";
 import { codeClinicalNote } from "@/lib/encounters/catalog";
 import { transcribeAudio, writeClinicalNote } from "@/lib/encounters/openai";
 import { runVisitPipeline, type VisitSnapshot } from "@/lib/encounters/pipeline";
@@ -24,6 +25,8 @@ type EncounterRow = {
   id: string;
   clinician_id: string;
   patient_label: string;
+  appointment_id: string;
+  note_approved: boolean;
   status: EncounterStatus;
   audio_path: string | null;
   audio_content_type: string;
@@ -86,6 +89,8 @@ function fromRow(row: EncounterRow): Encounter {
     id: row.id,
     clinicianId: row.clinician_id,
     patientLabel: row.patient_label,
+    appointmentId: row.appointment_id ?? "",
+    noteApproved: row.note_approved === true,
     status: asStatus(row.status),
     audioPath: row.audio_path,
     audioContentType: row.audio_content_type,
@@ -150,7 +155,13 @@ export async function getEncounter(id: string) {
   return data ? fromRow(data as EncounterRow) : null;
 }
 
-export async function createEncounter(input: { clinicianId: string; patientLabel: string; contentType: string; byteSize: number }) {
+export async function createEncounter(input: {
+  clinicianId: string;
+  patientLabel: string;
+  appointmentId?: string;
+  contentType: string;
+  byteSize: number;
+}) {
   const contentType = audioContentType(input.contentType);
   if (!acceptedAudioType(contentType)) {
     return { ok: false as const, message: "Record or choose a webm, mp3, m4a, wav, or mp4 file." };
@@ -167,6 +178,7 @@ export async function createEncounter(input: { clinicianId: string; patientLabel
     .insert({
       clinician_id: input.clinicianId,
       patient_label: label,
+      appointment_id: (input.appointmentId ?? "").trim().slice(0, 80),
       status: "uploaded",
       audio_content_type: contentType,
       progress: { step: "uploaded", started_at: new Date().toISOString() },
@@ -236,7 +248,7 @@ function snapshot(encounter: Encounter): VisitSnapshot {
 export async function processEncounter(id: string, retry = false) {
   const existing = await getEncounter(id);
   if (!existing) return { ok: false as const, status: 404, message: "That visit could not be found." };
-  if (existing.status === "review") return { ok: true as const, encounter: existing };
+  if (existing.status === "review" || existing.status === "approved") return { ok: true as const, encounter: existing };
 
   const stale = Date.now() - new Date(existing.updatedAt).getTime() > 120_000;
   const claimFrom: EncounterStatus[] = ["uploaded", "error"];
@@ -269,7 +281,7 @@ export async function processEncounter(id: string, retry = false) {
   if (claimed.error) return { ok: false as const, status: 502, message: claimed.error.message };
   if (!claimed.data) {
     const current = await getEncounter(id);
-    if (current?.status === "review") return { ok: true as const, encounter: current };
+    if (current?.status === "review" || current?.status === "approved") return { ok: true as const, encounter: current };
     return { ok: false as const, status: 409, message: "This visit is already being processed.", encounter: current };
   }
 
@@ -295,4 +307,37 @@ export async function processEncounter(id: string, retry = false) {
     const saved = await getEncounter(id);
     return { ok: false as const, status: 502, message, encounter: saved ?? undefined };
   }
+}
+
+export async function reviewEncounter(
+  id: string,
+  input: { noteApproved: boolean; icd10: string[]; billingCodes: string[] },
+) {
+  const existing = await getEncounter(id);
+  if (!existing) return { ok: false as const, status: 404, message: "That visit could not be found." };
+  if (existing.status !== "review" && existing.status !== "approved") {
+    return { ok: false as const, status: 409, message: "Approve the note after the codes are ready." };
+  }
+  const icd10 = applyCodeApproval(existing.icd10, input.icd10);
+  const billingCodes = applyCodeApproval(existing.billingCodes, input.billingCodes);
+  if (!icd10 || !billingCodes) return { ok: false as const, status: 400, message: "Those codes are not on this visit." };
+  const noteApproved = input.noteApproved === true;
+  const status = approvalStatus(noteApproved, icd10, billingCodes);
+  const supabase = client();
+  const saved = await supabase
+    .from("encounters")
+    .update({
+      note_approved: noteApproved,
+      icd10: codesJson(icd10),
+      billing_codes: codesJson(billingCodes),
+      status,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .in("status", ["review", "approved"])
+    .select("*")
+    .maybeSingle();
+  if (saved.error) return { ok: false as const, status: 502, message: saved.error.message };
+  if (!saved.data) return { ok: false as const, status: 409, message: "Approve the note after the codes are ready." };
+  return { ok: true as const, encounter: fromRow(saved.data as EncounterRow) };
 }

@@ -30,10 +30,11 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ message: "The visit could not be started." }, { status: 400 });
   }
-  const body = json as { patientLabel?: unknown; contentType?: unknown; byteSize?: unknown };
+  const body = json as { patientLabel?: unknown; appointmentId?: unknown; contentType?: unknown; byteSize?: unknown };
   const created = await createEncounter({
     clinicianId: session.userId,
     patientLabel: typeof body.patientLabel === "string" ? body.patientLabel : "",
+    appointmentId: typeof body.appointmentId === "string" ? body.appointmentId : "",
     contentType: typeof body.contentType === "string" ? body.contentType : "",
     byteSize: typeof body.byteSize === "number" ? body.byteSize : Number.NaN,
   });

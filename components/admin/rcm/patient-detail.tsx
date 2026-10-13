@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ageFromDob, chartGaps, primaryCoverage, visitTypeLabel } from "@/lib/rcm/chart";
-import { claimTotal, formatDay, formatTime, formatWhen, money, patientName } from "@/lib/rcm/format";
+import { claimTotal, formatClinicDay, formatDay, formatTime, formatWhen, money, patientName } from "@/lib/rcm/format";
 import type {
   Allergy,
   Appointment,
@@ -24,10 +24,12 @@ import { SendAgreement } from "@/components/admin/rcm/send-agreement";
 import { PortalAccess } from "@/components/admin/rcm/portal-access";
 import { ChartMast, ChartTabs } from "@/components/admin/bits/surface";
 import { Field, LoadingDesk, StatusPill, fieldClass, panelClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
+import { recordVisitHref } from "@/lib/rcm/record-visit";
 import { useRcm } from "@/components/admin/rcm/store";
 
 const tabs = [
   ["overview", "Overview"],
+  ["schedule", "Schedule"],
   ["demographics", "Demographics"],
   ["coverage", "Coverage"],
   ["clinical", "Clinical"],
@@ -73,11 +75,10 @@ export function PatientDetail({ id }: { id: string }) {
   const severeAllergy = patient.allergies.some((allergy) => allergy.severity === "severe" || allergy.severity === "moderate");
 
   const initials = `${patient.firstName.slice(0, 1)}${patient.lastName.slice(0, 1)}`.toUpperCase();
-  const reach = [
-    patient.phone ? { href: `tel:${patient.phone}`, label: patient.phone } : null,
-    patient.email ? { href: `mailto:${patient.email}`, label: "Email" } : null,
-    { href: `/admin/operations/scheduling?patient=${patient.id}`, label: "Schedule" },
-  ].filter((item): item is { href: string; label: string } => Boolean(item));
+  const reach: { href?: string; label: string; onClick?: () => void }[] = [];
+  if (patient.phone) reach.push({ href: `tel:${patient.phone}`, label: patient.phone });
+  if (patient.email) reach.push({ href: `mailto:${patient.email}`, label: "Email" });
+  reach.push({ label: "Schedule", onClick: () => setTab("schedule") });
 
   return (
     <main>
@@ -140,6 +141,7 @@ export function PatientDetail({ id }: { id: string }) {
             onOpen={setTab}
           />
         ) : null}
+        {tab === "schedule" ? <PatientSchedule visits={relatedVisits} name={patientName(patient)} today={today} /> : null}
         {tab === "demographics" ? <Demographics patient={patient} onSave={patchPatient} onRemove={removePatient} /> : null}
         {tab === "coverage" ? (
           <CoverageDesk
@@ -726,6 +728,60 @@ function List({
         </li>
       ))}
     </ul>
+  );
+}
+
+function PatientSchedule({ visits, name, today }: { visits: Appointment[]; name: string; today: string }) {
+  const upcoming = visits
+    .filter((visit) => visit.status !== "cancelled" && visit.start.slice(0, 10) >= today)
+    .sort((a, b) => a.start.localeCompare(b.start));
+  const earlier = visits
+    .filter((visit) => visit.status === "cancelled" || visit.start.slice(0, 10) < today)
+    .sort((a, b) => b.start.localeCompare(a.start));
+  if (!visits.length) return <p className="text-sm text-muted">Nothing is scheduled for this patient.</p>;
+  return (
+    <div className="grid gap-8">
+      <ScheduleGroup title="Upcoming" visits={upcoming} name={name} empty="No upcoming visits for this patient." />
+      <ScheduleGroup title="Earlier" visits={earlier} name={name} empty="No earlier visits for this patient." />
+    </div>
+  );
+}
+
+function ScheduleGroup({
+  title,
+  visits,
+  name,
+  empty,
+}: {
+  title: string;
+  visits: Appointment[];
+  name: string;
+  empty: string;
+}) {
+  return (
+    <section>
+      <h2 className="font-display text-2xl">{title}</h2>
+      {visits.length === 0 ? <p className="mt-3 text-sm text-muted">{empty}</p> : null}
+      <ul className="mt-4 grid gap-3">
+        {visits.map((visit) => (
+          <li key={visit.id} className={panelClass}>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="font-semibold">{formatClinicDay(visit.start.slice(0, 10))}</p>
+                <p className="mt-1 text-sm text-muted">
+                  {formatTime(visit.start)} · {visit.durationMinutes} min · {visit.room || "Room 1"}
+                </p>
+                <p className="mt-1 text-sm">{visit.reason}</p>
+              </div>
+              <StatusPill status={visit.status} label={visitLabel(visit.status)} />
+            </div>
+            <Link href={recordVisitHref(visit, name)} className="mt-3 inline-block text-sm underline">
+              Record
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 

@@ -5,6 +5,7 @@ export const encounterStatuses = [
   "generating_icd10",
   "generating_cpt",
   "review",
+  "approved",
   "error",
 ] as const;
 
@@ -26,6 +27,8 @@ export type Encounter = {
   id: string;
   clinicianId: string;
   patientLabel: string;
+  appointmentId: string;
+  noteApproved: boolean;
   status: EncounterStatus;
   audioPath: string | null;
   audioContentType: string;

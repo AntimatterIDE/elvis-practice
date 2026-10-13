@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { claimTotal, formatDay, money, patientName } from "@/lib/rcm/format";
 import type { Appointment, Claim, ClaimStatus } from "@/lib/rcm/types";
+import type { Encounter } from "@/lib/encounters/types";
+import { claimsHref } from "@/lib/encounters/approve";
 import { DemoBilling } from "@/components/admin/rcm/demo-billing";
 import { LoadingDesk, PageHeader, StatusPill, fieldClass, panelClass } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
@@ -15,7 +17,7 @@ function sameDay(claim: Claim, visit: Appointment) {
   return claim.appointmentId === visit.id || (claim.patientId === visit.patientId && claim.dateOfService === visit.start.slice(0, 10));
 }
 
-export function ClaimsDesk() {
+export function ClaimsDesk({ approvedVisits = [] }: { approvedVisits?: Encounter[] }) {
   const { ready, claims, patients, appointments, updateClaim } = useRcm();
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<ClaimStatus | "all">("all");
@@ -30,6 +32,8 @@ export function ClaimsDesk() {
     const related = claims.filter((claim) => sameDay(claim, visit));
     return !related.some((claim) => claim.status !== "draft" && claim.status !== "held");
   });
+  const claimedEncounters = new Set(claims.map((claim) => claim.encounterId).filter(Boolean));
+  const readyVisits = approvedVisits.filter((encounter) => !claimedEncounters.has(encounter.id));
 
   const review = claims.filter((claim) => claim.status === "ready");
   const rows = claims.filter((claim) => {
@@ -49,6 +53,35 @@ export function ClaimsDesk() {
       />
 
       <section className="mt-8">
+        <h2 className="font-display text-2xl">Approved visits</h2>
+        <p className="mt-2 max-w-2xl text-sm text-muted">A visit lands here after the doctor approves the note and the codes. Opening it starts the claim with those codes.</p>
+        <ul className="mt-4 grid gap-3">
+          {readyVisits.length === 0 ? <li className="text-sm text-muted">No approved visits are waiting.</li> : null}
+          {readyVisits.map((encounter) => {
+            const visit = appointments.find((appointment) => appointment.id === encounter.appointmentId);
+            const label = encounter.patientLabel.trim().toLowerCase();
+            const patient = (visit ? byId.get(visit.patientId) : undefined) ?? patients.find((item) => patientName(item).trim().toLowerCase() === label);
+            const href = claimsHref({
+              encounterId: encounter.id,
+              patientId: visit?.patientId || patient?.id,
+              appointmentId: encounter.appointmentId,
+            });
+            return (
+              <li key={encounter.id} className={panelClass}>
+                <p className="font-semibold">{encounter.patientLabel || (patient ? patientName(patient) : "Approved visit")}</p>
+                <p className="mt-1 text-sm text-muted">
+                  {formatDay(visit?.start || encounter.createdAt)} · {encounter.icd10.filter((code) => code.approved).map((code) => code.code).join(", ") || "No diagnosis"} · {encounter.billingCodes.filter((code) => code.approved).map((code) => code.code).join(", ") || "No procedure"}
+                </p>
+                <Button asChild className="mt-4">
+                  <Link href={href}>Open in claims</Link>
+                </Button>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      <section className="mt-10">
         <h2 className="font-display text-2xl">Worklist</h2>
         <ul className="mt-4 grid gap-3">
           {codingVisits.length === 0 ? <li className="text-sm text-muted">No visits are waiting to be coded.</li> : null}
