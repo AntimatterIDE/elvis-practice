@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import { VisitDesk } from "@/components/admin/visit-desk";
 import { listEncounters, visitStorageReady } from "@/lib/encounters/store";
 import type { Encounter } from "@/lib/encounters/types";
+import { LoadingDesk } from "@/components/admin/rcm/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -16,5 +18,9 @@ export default async function VisitsPage() {
     }
   }
 
-  return <VisitDesk ready={ready} initialEncounters={encounters} storageError={storageError} />;
+  return (
+    <Suspense fallback={<LoadingDesk />}>
+      <VisitDesk ready={ready} initialEncounters={encounters} storageError={storageError} />
+    </Suspense>
+  );
 }

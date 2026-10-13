@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useSearchParams } from "next/navigation";
 import { fieldClass, PageHeader, panelClass } from "@/components/admin/rcm/ui";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,8 @@ import {
   type EncounterStatus,
   type VisitCode,
 } from "@/lib/encounters/types";
+import { formatClinicDay, formatTime } from "@/lib/rcm/format";
+import { rememberedVisit, rememberVisit, subscribeVisitMemory } from "@/lib/rcm/record-visit";
 
 const statusLabel: Record<EncounterStatus, string> = {
   uploaded: "Recording stored",
@@ -64,9 +67,20 @@ export function VisitDesk({
   initialEncounters: Encounter[];
   storageError: string;
 }) {
+  const search = useSearchParams();
+  const appointmentId = search.get("appointment") ?? "";
+  const requestedLabel = search.get("label") ?? "";
+  const scheduledWhen = search.get("when") ?? "";
+  const scheduledReason = search.get("reason") ?? "";
   const [encounters, setEncounters] = useState(initialEncounters);
-  const [selectedId, setSelectedId] = useState(initialEncounters[0]?.id ?? "");
-  const [patientLabel, setPatientLabel] = useState("");
+  const storedId = useSyncExternalStore(subscribeVisitMemory, () => rememberedVisit(appointmentId), () => "");
+  const [pickedId, setPickedId] = useState("");
+  const selectedId =
+    pickedId ||
+    (storedId && encounters.some((encounter) => encounter.id === storedId) ? storedId : "") ||
+    encounters[0]?.id ||
+    "";
+  const [patientLabel, setPatientLabel] = useState(requestedLabel);
   const [message, setMessage] = useState(storageError);
   const [phase, setPhase] = useState<"idle" | "recording" | "uploading" | "working">("idle");
   const recorder = useRef<MediaRecorder | null>(null);
@@ -85,7 +99,7 @@ export function VisitDesk({
       if (cancelled || !payload.encounter) return;
       const next = payload.encounter;
       setEncounters((current) => [next, ...current.filter((item) => item.id !== next.id)]);
-      setSelectedId(next.id);
+      setPickedId(next.id);
     }, 2000);
     return () => {
       cancelled = true;
@@ -95,7 +109,7 @@ export function VisitDesk({
 
   function apply(encounter: Encounter) {
     setEncounters((current) => [encounter, ...current.filter((item) => item.id !== encounter.id)]);
-    setSelectedId(encounter.id);
+    setPickedId(encounter.id);
   }
 
   async function processVisit(id: string, retry: boolean) {
@@ -107,7 +121,10 @@ export function VisitDesk({
       body: JSON.stringify({ retry }),
     });
     const payload = (await response.json()) as { message?: string; encounter?: Encounter | null };
-    if (payload.encounter) apply(payload.encounter);
+    if (payload.encounter) {
+      apply(payload.encounter);
+      if (appointmentId) rememberVisit(appointmentId, payload.encounter.id);
+    }
     if (!response.ok) setMessage(payload.message || "The visit could not be processed.");
     setPhase("idle");
   }
@@ -150,6 +167,7 @@ export function VisitDesk({
       body,
     });
     apply(payload.encounter);
+    if (appointmentId) rememberVisit(appointmentId, payload.encounter.id);
     if (!uploaded.ok) {
       setMessage("That recording could not be stored.");
       setPhase("idle");
@@ -197,6 +215,18 @@ export function VisitDesk({
         title="Visits"
         lede="Record a visit. The recording stays in private storage, then this desk writes a transcript, a SOAP note, and suggested ICD-10 and CPT codes."
       />
+      {appointmentId ? (
+        <p className={`${panelClass} text-sm`}>
+          <span className="font-medium">{requestedLabel || "Scheduled visit"}</span>
+          {scheduledWhen ? (
+            <span className="text-muted">
+              {" "}
+              · {formatClinicDay(scheduledWhen.slice(0, 10))} · {formatTime(scheduledWhen)}
+            </span>
+          ) : null}
+          {scheduledReason && scheduledReason !== "n/a" ? <span className="text-muted"> · {scheduledReason}</span> : null}
+        </p>
+      ) : null}
       {message ? (
         <p role="alert" className="text-sm text-emergency">
           {message}
@@ -303,7 +333,7 @@ export function VisitDesk({
             <li key={encounter.id}>
               <button
                 type="button"
-                onClick={() => setSelectedId(encounter.id)}
+                onClick={() => setPickedId(encounter.id)}
                 className={`${panelClass} w-full text-left ${encounter.id === selectedId ? "border-neutral-900" : ""}`}
               >
                 <span className="font-medium">{encounter.patientLabel || "Untitled visit"}</span>

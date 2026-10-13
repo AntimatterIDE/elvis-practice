@@ -40,12 +40,14 @@ export function DaySheet({
   empty,
   title = "Rooms",
   renderExtra,
+  recordHref,
 }: {
   visits: Appointment[];
   names: Map<string, string>;
   empty: string;
   title?: string;
   renderExtra?: (visit: Appointment) => ReactNode;
+  recordHref?: (visit: Appointment, name: string) => string;
 }) {
   const seenRooms = [...new Set(visits.map((visit) => visit.room || "Room 1"))];
   const rooms = [...practiceRooms];
@@ -61,7 +63,7 @@ export function DaySheet({
   const windowEnd = starts.length ? Math.max(windowStart + 4 * 60, Math.ceil(latest / 60) * 60 + 60) : 12 * 60;
   const span = windowEnd - windowStart;
   const hours = Array.from({ length: span / 60 }, (_, index) => windowStart + index * 60);
-  const laneHeight = renderExtra ? 12.25 : 6.35;
+  const laneHeight = renderExtra ? (recordHref ? 13.6 : 12.25) : recordHref ? 7.6 : 6.35;
 
   const byRoom = new Map<string, { visit: Appointment; lane: number }[]>();
   for (const room of rooms) {
@@ -127,6 +129,7 @@ export function DaySheet({
                     const duration = visit.durationMinutes || 30;
                     const left = ((start - windowStart) / span) * 100;
                     const width = (duration / span) * 100;
+                    const openVisit = recordHref?.(visit, name);
                     return (
                       <div
                         key={visit.id}
@@ -146,27 +149,42 @@ export function DaySheet({
                           height: `${laneHeight - 0.7}rem`,
                         }}
                       >
-                        <div className="flex min-w-0 items-start gap-2">
+                        {openVisit ? (
+                          <Link href={openVisit} aria-label={`Record ${name}`} className="absolute inset-0 z-0 rounded-xl" />
+                        ) : null}
+                        <div className={cn("relative z-10 flex min-w-0 items-start gap-2", openVisit && "pointer-events-none")}>
                           <span className="mt-0.5 hidden size-7 shrink-0 items-center justify-center rounded-full bg-pine text-[0.65rem] font-semibold text-paper @[8rem]:flex" aria-hidden>
                             {initials(name)}
                           </span>
                           <div className="min-w-0 flex-1">
-                            <Link href={`/admin/operations/patients/${visit.patientId}`} className="block truncate font-semibold hover:text-oxide">
-                              {name}
-                            </Link>
-                            <p className="truncate text-xs whitespace-nowrap text-muted">
-                              {formatTime(visit.start)} · {duration} min
-                            </p>
+                            {openVisit ? (
+                              <>
+                                <span className="block truncate font-semibold">{name}</span>
+                                <span className="block truncate text-xs whitespace-nowrap text-muted">
+                                  {formatTime(visit.start)} · {duration} min
+                                </span>
+                                <span className="mt-1 inline-flex text-xs font-medium underline">Record</span>
+                              </>
+                            ) : (
+                              <>
+                                <Link href={`/admin/operations/patients/${visit.patientId}`} className="block truncate font-semibold hover:text-oxide">
+                                  {name}
+                                </Link>
+                                <p className="truncate text-xs whitespace-nowrap text-muted">
+                                  {formatTime(visit.start)} · {duration} min
+                                </p>
+                              </>
+                            )}
                           </div>
                         </div>
-                        <p className="mt-1 hidden truncate text-sm @[7rem]:block">{visit.reason}</p>
-                        <p className="mt-auto hidden truncate text-[0.65rem] font-semibold uppercase tracking-[0.12em] whitespace-nowrap text-muted @[11rem]:block">
+                        <p className={cn("relative z-10 mt-1 hidden truncate text-sm @[7rem]:block", openVisit && "pointer-events-none")}>{visit.reason}</p>
+                        <p className={cn("relative z-10 mt-auto hidden truncate text-[0.65rem] font-semibold uppercase tracking-[0.12em] whitespace-nowrap text-muted @[11rem]:block", openVisit && "pointer-events-none")}>
                           {visitTypeLabel[visit.visitType] ?? visit.visitType}
                           {" · "}
                           {visitLabel(visit.status)}
                           {visit.confirmation !== "confirmed" ? ` · ${visitLabel(visit.confirmation)}` : ""}
                         </p>
-                        {renderExtra ? <div className="mt-1.5 min-w-0">{renderExtra(visit)}</div> : null}
+                        {renderExtra ? <div className="relative z-10 mt-1.5 min-w-0">{renderExtra(visit)}</div> : null}
                       </div>
                     );
                   })}
