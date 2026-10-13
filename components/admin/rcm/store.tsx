@@ -276,6 +276,7 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
           source: input.source ?? "manual",
           agentNote: input.agentNote,
           appointmentId: input.appointmentId,
+          encounterId: input.encounterId,
           tradingPartnerId: input.tradingPartnerId,
           holdReason: input.holdReason,
           demoScenario: input.demoScenario,

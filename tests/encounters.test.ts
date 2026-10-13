@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { scoreCodes, levelForScore, suggestCodes } from "@/lib/encounters/codes";
+import { applyCodeApproval, approvalStatus } from "@/lib/encounters/approve";
 import { parseClinicalNote } from "@/lib/encounters/template";
 import { runVisitPipeline, type VisitSnapshot } from "@/lib/encounters/pipeline";
 
@@ -141,5 +142,19 @@ describe("visit pipeline", () => {
     ).rejects.toThrow("The recording could not be transcribed.");
     expect(saved.visit?.status).toBe("error");
     expect(saved.visit?.error).toBe("The recording could not be transcribed.");
+  });
+});
+
+describe("visit approval", () => {
+  const icd = [{ code: "M54.50", description: "Low back pain", level: 1 as const, approved: false }];
+  const cpt = [{ code: "99213", description: "Office visit", level: 1 as const, approved: false }];
+
+  it("stays in review until the note and both code lists are approved", () => {
+    const diagnoses = applyCodeApproval(icd, ["M54.50"]);
+    const procedures = applyCodeApproval(cpt, []);
+    expect(diagnoses?.[0]?.approved).toBe(true);
+    expect(approvalStatus(true, diagnoses ?? [], procedures ?? [])).toBe("review");
+    expect(approvalStatus(true, diagnoses ?? [], applyCodeApproval(cpt, ["99213"]) ?? [])).toBe("approved");
+    expect(applyCodeApproval(icd, ["Z99"])).toBeNull();
   });
 });

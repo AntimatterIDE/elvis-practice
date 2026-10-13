@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { fieldClass, PageHeader, panelClass } from "@/components/admin/rcm/ui";
+import { useRcm } from "@/components/admin/rcm/store";
 import { Button } from "@/components/ui/button";
 import {
   acceptedAudioType,
@@ -14,7 +16,8 @@ import {
   type EncounterStatus,
   type VisitCode,
 } from "@/lib/encounters/types";
-import { formatClinicDay, formatTime } from "@/lib/rcm/format";
+import { formatClinicDay, formatTime, patientName } from "@/lib/rcm/format";
+import { claimsHref } from "@/lib/encounters/approve";
 import { rememberedVisit, rememberVisit, subscribeVisitMemory } from "@/lib/rcm/record-visit";
 
 const statusLabel: Record<EncounterStatus, string> = {
@@ -24,6 +27,7 @@ const statusLabel: Record<EncounterStatus, string> = {
   generating_icd10: "Finding diagnosis codes",
   generating_cpt: "Finding procedure codes",
   review: "Ready for review",
+  approved: "Approved",
   error: "Needs another try",
 };
 
@@ -37,7 +41,17 @@ function when(value: string) {
   }).format(new Date(value));
 }
 
-function CodeList({ title, codes }: { title: string; codes: VisitCode[] }) {
+function CodeList({
+  title,
+  codes,
+  picked,
+  onToggle,
+}: {
+  title: string;
+  codes: VisitCode[];
+  picked?: (code: string, approved: boolean) => boolean;
+  onToggle?: (code: string, approved: boolean) => void;
+}) {
   return (
     <section>
       <h3 className="text-sm font-medium text-neutral-900">{title}</h3>
@@ -45,18 +59,47 @@ function CodeList({ title, codes }: { title: string; codes: VisitCode[] }) {
         <p className="mt-2 text-sm text-muted">None suggested.</p>
       ) : (
         <ul className="mt-2 grid gap-2">
-          {codes.map((code) => (
-            <li key={`${title}-${code.code}`} className="text-sm">
-              <span className="font-medium">{code.code}</span>
-              <span className="text-muted"> · {code.description}</span>
-              <span className="text-muted"> · level {code.level}</span>
-            </li>
-          ))}
+          {codes.map((code) => {
+            const approved = picked ? picked(code.code, code.approved) : code.approved;
+            return (
+              <li key={`${title}-${code.code}`} className="text-sm">
+                {onToggle ? (
+                  <label className="flex items-start gap-2">
+                    <input
+                      type="checkbox"
+                      className="mt-1"
+                      checked={approved}
+                      onChange={(event) => onToggle(code.code, event.target.checked)}
+                    />
+                    <span>
+                      <span className="font-medium">{code.code}</span>
+                      <span className="text-muted"> · {code.description}</span>
+                      <span className="text-muted"> · level {code.level}</span>
+                    </span>
+                  </label>
+                ) : (
+                  <>
+                    <span className="font-medium">{code.code}</span>
+                    <span className="text-muted"> · {code.description}</span>
+                    <span className="text-muted"> · level {code.level}</span>
+                    {approved ? <span className="text-muted"> · approved</span> : null}
+                  </>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </section>
   );
 }
+
+type ApprovalDraft = {
+  id: string;
+  note: boolean;
+  icd: Record<string, boolean>;
+  cpt: Record<string, boolean>;
+};
 
 export function VisitDesk({
   ready,
@@ -83,6 +126,9 @@ export function VisitDesk({
   const [patientLabel, setPatientLabel] = useState(requestedLabel);
   const [message, setMessage] = useState(storageError);
   const [phase, setPhase] = useState<"idle" | "recording" | "uploading" | "working">("idle");
+  const [approval, setApproval] = useState<ApprovalDraft | null>(null);
+  const [savingApproval, setSavingApproval] = useState(false);
+  const { patients, appointments } = useRcm();
   const recorder = useRef<MediaRecorder | null>(null);
   const chunks = useRef<Blob[]>([]);
   const selected = encounters.find((encounter) => encounter.id === selectedId) ?? null;
@@ -144,7 +190,7 @@ export function VisitDesk({
     const created = await fetch("/api/encounters", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ patientLabel, contentType, byteSize: file.size }),
+      body: JSON.stringify({ patientLabel, appointmentId, contentType, byteSize: file.size }),
     });
     const payload = (await created.json()) as { message?: string; encounter?: Encounter; signedUrl?: string };
     if (!created.ok || !payload.encounter || !payload.signedUrl) {
@@ -206,7 +252,83 @@ export function VisitDesk({
     setPhase("uploading");
   }
 
-  const busy = phase !== "idle";
+  const busy = phase !== "idle" || savingApproval;
+  const draft = approval?.id === selected?.id ? approval : null;
+  const canReview = selected?.status === "review" || selected?.status === "approved";
+
+  function checked(kind: "icd" | "cpt", code: string, saved: boolean) {
+    const map = draft?.[kind];
+    return map && code in map ? map[code] : saved;
+  }
+
+  function noteChecked() {
+    if (!selected) return false;
+    return draft ? draft.note : selected.noteApproved;
+  }
+
+  function ensureDraft(encounter: Encounter): ApprovalDraft {
+    if (approval?.id === encounter.id) return approval;
+    return {
+      id: encounter.id,
+      note: encounter.noteApproved,
+      icd: Object.fromEntries(encounter.icd10.map((code) => [code.code, code.approved])),
+      cpt: Object.fromEntries(encounter.billingCodes.map((code) => [code.code, code.approved])),
+    };
+  }
+
+  function toggleNote(value: boolean) {
+    if (!selected) return;
+    setApproval({ ...ensureDraft(selected), note: value });
+  }
+
+  function toggleCode(kind: "icd" | "cpt", code: string, value: boolean) {
+    if (!selected) return;
+    const next = ensureDraft(selected);
+    setApproval({ ...next, [kind]: { ...next[kind], [code]: value } });
+  }
+
+  const approvedIcd = selected?.icd10.filter((code) => checked("icd", code.code, code.approved)).map((code) => code.code) ?? [];
+  const approvedCpt = selected?.billingCodes.filter((code) => checked("cpt", code.code, code.approved)).map((code) => code.code) ?? [];
+  const approvalReady = Boolean(selected && noteChecked() && approvedIcd.length > 0 && approvedCpt.length > 0);
+  const approvalDirty = Boolean(
+    selected &&
+      (noteChecked() !== selected.noteApproved ||
+        selected.icd10.some((code) => checked("icd", code.code, code.approved) !== code.approved) ||
+        selected.billingCodes.some((code) => checked("cpt", code.code, code.approved) !== code.approved)),
+  );
+
+  async function saveApproval() {
+    if (!selected || !approvalReady) return;
+    setSavingApproval(true);
+    setMessage("");
+    const response = await fetch(`/api/encounters/${selected.id}`, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ noteApproved: true, icd10: approvedIcd, billingCodes: approvedCpt }),
+    });
+    const payload = (await response.json()) as { message?: string; encounter?: Encounter };
+    if (payload.encounter) {
+      apply(payload.encounter);
+      setApproval(null);
+    }
+    if (!response.ok) setMessage(payload.message || "The approval could not be saved.");
+    setSavingApproval(false);
+  }
+
+  const matchedPatientId = (() => {
+    if (!selected) return "";
+    const visit = appointments.find((appointment) => appointment.id === (selected.appointmentId || appointmentId));
+    if (visit) return visit.patientId;
+    const label = (selected.patientLabel || requestedLabel).trim().toLowerCase();
+    return patients.find((patient) => patientName(patient).trim().toLowerCase() === label)?.id ?? "";
+  })();
+  const claimLink = selected
+    ? claimsHref({
+        encounterId: selected.id,
+        patientId: matchedPatientId,
+        appointmentId: selected.appointmentId || appointmentId,
+      })
+    : "";
 
   return (
     <div className="grid gap-8">
@@ -317,12 +439,44 @@ export function VisitDesk({
             <section className="mt-6">
               <h3 className="text-sm font-medium text-neutral-900">Note</h3>
               <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">{selected.noteClinical}</p>
+              {canReview ? (
+                <label className="mt-4 flex items-center gap-2 text-sm">
+                  <input type="checkbox" checked={noteChecked()} onChange={(event) => toggleNote(event.target.checked)} />
+                  Approve this note
+                </label>
+              ) : null}
             </section>
           ) : null}
-          {selected.status === "review" || selected.icd10.length > 0 || selected.billingCodes.length > 0 ? (
+          {selected.status === "review" || selected.status === "approved" || selected.icd10.length > 0 || selected.billingCodes.length > 0 ? (
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              <CodeList title="ICD-10" codes={selected.icd10} />
-              <CodeList title="CPT" codes={selected.billingCodes} />
+              <CodeList
+                title="ICD-10"
+                codes={selected.icd10}
+                picked={canReview ? (code, saved) => checked("icd", code, saved) : undefined}
+                onToggle={canReview ? (code, value) => toggleCode("icd", code, value) : undefined}
+              />
+              <CodeList
+                title="CPT"
+                codes={selected.billingCodes}
+                picked={canReview ? (code, saved) => checked("cpt", code, saved) : undefined}
+                onToggle={canReview ? (code, value) => toggleCode("cpt", code, value) : undefined}
+              />
+            </div>
+          ) : null}
+          {canReview ? (
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              {selected.status !== "approved" || approvalDirty ? (
+                <Button type="button" onClick={() => void saveApproval()} disabled={busy || !approvalReady || !approvalDirty}>
+                  Approve note and codes
+                </Button>
+              ) : null}
+              {selected.status === "approved" && !approvalDirty ? (
+                <Button asChild>
+                  <Link href={claimLink}>Open in claims</Link>
+                </Button>
+              ) : (
+                <p className="text-sm text-muted">Approve the note and at least one diagnosis and one procedure code. Then this visit can open in claims.</p>
+              )}
             </div>
           ) : null}
         </article>

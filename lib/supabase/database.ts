@@ -372,7 +372,9 @@ export type Database = {
           id: string;
           clinician_id: string;
           patient_label: string;
-          status: "uploaded" | "transcribing" | "generating" | "generating_icd10" | "generating_cpt" | "review" | "error";
+          status: "uploaded" | "transcribing" | "generating" | "generating_icd10" | "generating_cpt" | "review" | "approved" | "error";
+          appointment_id: string;
+          note_approved: boolean;
           audio_path: string | null;
           audio_content_type: string;
           transcript: string;
@@ -389,7 +391,9 @@ export type Database = {
           id?: string;
           clinician_id: string;
           patient_label?: string;
-          status?: "uploaded" | "transcribing" | "generating" | "generating_icd10" | "generating_cpt" | "review" | "error";
+          status?: "uploaded" | "transcribing" | "generating" | "generating_icd10" | "generating_cpt" | "review" | "approved" | "error";
+          appointment_id?: string;
+          note_approved?: boolean;
           audio_path?: string | null;
           audio_content_type?: string;
           transcript?: string;
@@ -404,7 +408,9 @@ export type Database = {
         },
         {
           patient_label?: string;
-          status?: "uploaded" | "transcribing" | "generating" | "generating_icd10" | "generating_cpt" | "review" | "error";
+          status?: "uploaded" | "transcribing" | "generating" | "generating_icd10" | "generating_cpt" | "review" | "approved" | "error";
+          appointment_id?: string;
+          note_approved?: boolean;
           audio_path?: string | null;
           audio_content_type?: string;
           transcript?: string;

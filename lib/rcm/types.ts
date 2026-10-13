@@ -187,6 +187,7 @@ export type Claim = {
   createdAt: string;
   updatedAt: string;
   appointmentId?: string;
+  encounterId?: string;
   tradingPartnerId?: string;
   idempotencyKey?: string;
   stediClaimId?: string;
@@ -225,6 +226,7 @@ export type ClaimInput = {
   source?: ClaimSource;
   agentNote?: string;
   appointmentId?: string;
+  encounterId?: string;
   tradingPartnerId?: string;
   holdReason?: string;
   demoScenario?: DemoScenario;

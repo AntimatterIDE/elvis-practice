@@ -92,7 +92,7 @@ export function ChartMast({
   handle: string;
   line?: string;
   stats: { value: string; label: string }[];
-  links: { href: string; label: string }[];
+  links: { href?: string; label: string; onClick?: () => void }[];
 }) {
   return (
     <section className="overflow-hidden rounded-[var(--rb-r-4xl,18px)] border border-neutral-200 bg-white">
@@ -122,15 +122,26 @@ export function ChartMast({
           ))}
         </dl>
         <div className="mt-5 flex flex-wrap justify-center gap-2">
-          {links.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="inline-flex h-10 items-center rounded-full border border-neutral-200 px-4 text-[13px] font-medium text-neutral-700 hover:bg-neutral-50"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) =>
+            link.onClick ? (
+              <button
+                key={link.label}
+                type="button"
+                onClick={link.onClick}
+                className="inline-flex h-10 items-center rounded-full border border-neutral-200 px-4 text-[13px] font-medium text-neutral-700 hover:bg-neutral-50"
+              >
+                {link.label}
+              </button>
+            ) : (
+              <Link
+                key={link.label}
+                href={link.href || "#"}
+                className="inline-flex h-10 items-center rounded-full border border-neutral-200 px-4 text-[13px] font-medium text-neutral-700 hover:bg-neutral-50"
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
         </div>
       </div>
     </section>
