@@ -32,8 +32,7 @@ export function HomeHero() {
             </Link>
           </div>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-muted">
-            New patients are welcome. Request a call from the contact page. Do not include symptoms or insurance
-            numbers.
+            New patients are welcome. Request a call from the contact page. Do not include insurance numbers or dates of birth.
           </p>
         </div>
         <div className="order-1 md:order-2">

@@ -367,6 +367,56 @@ export type Database = {
           updated_at?: string;
         }
       >;
+      encounters: Table<
+        {
+          id: string;
+          clinician_id: string;
+          patient_label: string;
+          status: "uploaded" | "transcribing" | "generating" | "generating_icd10" | "generating_cpt" | "review" | "error";
+          audio_path: string | null;
+          audio_content_type: string;
+          transcript: string;
+          medical_practice: string;
+          note_clinical: string;
+          icd10: Json;
+          billing_codes: Json;
+          progress: Json;
+          error: string | null;
+          created_at: string;
+          updated_at: string;
+        },
+        {
+          id?: string;
+          clinician_id: string;
+          patient_label?: string;
+          status?: "uploaded" | "transcribing" | "generating" | "generating_icd10" | "generating_cpt" | "review" | "error";
+          audio_path?: string | null;
+          audio_content_type?: string;
+          transcript?: string;
+          medical_practice?: string;
+          note_clinical?: string;
+          icd10?: Json;
+          billing_codes?: Json;
+          progress?: Json;
+          error?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        },
+        {
+          patient_label?: string;
+          status?: "uploaded" | "transcribing" | "generating" | "generating_icd10" | "generating_cpt" | "review" | "error";
+          audio_path?: string | null;
+          audio_content_type?: string;
+          transcript?: string;
+          medical_practice?: string;
+          note_clinical?: string;
+          icd10?: Json;
+          billing_codes?: Json;
+          progress?: Json;
+          error?: string | null;
+          updated_at?: string;
+        }
+      >;
       consultation_requests: Table<
         {
           id: string;

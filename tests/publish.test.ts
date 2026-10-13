@@ -4,6 +4,7 @@ import { renderMarkdown } from "@/lib/content/markdown";
 import { canPublish, findBannedPhrases, isPubliclyVisible, retiredSlugs } from "@/lib/content/publish";
 import type { ClinicalDocument } from "@/lib/content/schema";
 import { noteLooksClinical } from "@/lib/contact/guard";
+import { consultationNotice } from "@/lib/consultations/notice";
 
 const heldSlugs = [
   "spine-tumors",
@@ -76,8 +77,30 @@ describe("markdown", () => {
 });
 
 describe("contact guard", () => {
-  it("flags clinical notes", () => {
+  it("flags identifiers and lets a short note through", () => {
     expect(noteLooksClinical("Please call after 3.")).toBe(false);
-    expect(noteLooksClinical("I have severe back pain after surgery")).toBe(true);
+    expect(noteLooksClinical("back pain")).toBe(false);
+    expect(noteLooksClinical("Member ID 12345")).toBe(true);
+  });
+});
+
+describe("consultation notice", () => {
+  it("includes every field from the form", () => {
+    const notice = consultationNotice({
+      name: "Paul Wallace",
+      email: "paul@antimatterai.com",
+      phone: "470-484-1472",
+      reason: "consultation",
+      preferredTime: "Weekday afternoons",
+      note: "back pain",
+      website: "",
+    });
+    expect(notice.subject).toBe("Consultation request: Paul Wallace");
+    expect(notice.text).toContain("Name: Paul Wallace");
+    expect(notice.text).toContain("Reason: Request a consultation");
+    expect(notice.text).toContain("Email: paul@antimatterai.com");
+    expect(notice.text).toContain("Phone: 470-484-1472");
+    expect(notice.text).toContain("Best time for a call: Weekday afternoons");
+    expect(notice.text).toContain("Note: back pain");
   });
 });

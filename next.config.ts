@@ -8,8 +8,11 @@ const redirectHosts = (
   .map((host) => host.trim())
   .filter(Boolean);
 
-const nextConfig: NextConfig = {
+  const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
+  outputFileTracingIncludes: {
+    "/api/encounters/[id]/process": ["./data/coding/**/*"],
+  },
   async redirects() {
     return redirectHosts.flatMap((host) => [
       {

@@ -26,13 +26,12 @@ export default function PrivacyPage() {
       <div className="mt-10 space-y-6 text-lg leading-relaxed text-muted">
         <p>
           The public site is informational. The contact form asks for a name, an email address or
-          phone number, a reason for writing, and an optional short note. It tells you not to
-          include medical information.
+          phone number, a reason for writing, a preferred time, and an optional short note. The
+          request is saved for the office and emailed to the practice.
         </p>
         <p>
-          Messages are not stored in the practice database. If an inbox has not been connected, the
-          message is not delivered either. Do not use the form for symptoms, records, images, or
-          insurance numbers.
+          Do not include insurance numbers, member IDs, dates of birth, records, or images. The form
+          is not a chart and it does not schedule the visit.
         </p>
         <p>
           The public site loads a Google tag so the practice can see visits, including visits from its Google Ads campaign. It does not sell personal information.

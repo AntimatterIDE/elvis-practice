@@ -27,8 +27,7 @@ export function ContactPanel() {
           >
             Request a consultation.
             <span className="mt-4 block text-base font-normal leading-relaxed text-muted sm:text-lg">
-              New patients are welcome. Leave a name and the best way to reach you. Do not include symptoms or
-              insurance numbers.
+              New patients are welcome. Leave a name and the best way to reach you. Do not include insurance numbers or dates of birth.
             </span>
           </motion.h2>
 

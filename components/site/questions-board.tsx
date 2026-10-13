@@ -72,7 +72,7 @@ export function QuestionsBoard() {
                 <IconArrow className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />
               </Link>
               <p className="mt-4 text-sm leading-relaxed text-paper/70">
-                {practice.addressLine}. Leave symptoms and insurance numbers off the form.
+                {practice.addressLine}. Leave insurance numbers and dates of birth off the form.
               </p>
             </div>
           </motion.aside>

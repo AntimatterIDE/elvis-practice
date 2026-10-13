@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { sendClinicEmail } from "@/lib/bird/send";
 import { noteLooksClinical } from "@/lib/contact/guard";
+import { consultationInboxes, consultationNotice } from "@/lib/consultations/notice";
 import { consultationStorageReady, saveConsultationRequest } from "@/lib/consultations/store";
 import { contactInquirySchema } from "@/lib/content/schema";
 import { readServerEnv } from "@/lib/env";
@@ -50,7 +51,7 @@ export async function submitInquiry(_previous: ContactState, formData: FormData)
     return {
       status: "error",
       message:
-        "Thanks for writing. The details of how you've been feeling are better saved for the call. A name and the best way to reach you is all we need here.",
+        "Thanks for writing. Leave out insurance numbers, member IDs, and dates of birth. A name, a way to reach you, and a short note is enough.",
     };
   }
 
@@ -80,23 +81,14 @@ export async function submitInquiry(_previous: ContactState, formData: FormData)
   }
 
   const env = readServerEnv();
-  if (env.CONTACT_INBOX && env.BIRD_API_KEY) {
-    await sendClinicEmail({
-      to: env.CONTACT_INBOX,
-      subject: `Consultation request: ${parsed.data.name}`,
-      text: [
-        `From: ${parsed.data.name}`,
-        parsed.data.email,
-        parsed.data.phone,
-        parsed.data.preferredTime ? `Preferred time: ${parsed.data.preferredTime}` : "",
-        parsed.data.reason,
-        "",
-        parsed.data.note,
-      ]
-        .filter(Boolean)
-        .join("\n"),
-      html: `<p>From ${escapeHtml(parsed.data.name)}</p><p>${escapeHtml(parsed.data.email)} ${escapeHtml(parsed.data.phone)}</p><p>${escapeHtml(parsed.data.preferredTime)}</p><p>${escapeHtml(parsed.data.note)}</p>`,
-    }).catch(() => null);
+  if (env.BIRD_API_KEY) {
+    const notice = consultationNotice(parsed.data);
+    await Promise.all(
+      consultationInboxes.map(async (to) => {
+        const sent = await sendClinicEmail({ to, ...notice });
+        if (!sent.ok) console.error(`Consultation email was not accepted: ${sent.message}`);
+      }),
+    );
   }
 
   return {
@@ -105,6 +97,3 @@ export async function submitInquiry(_previous: ContactState, formData: FormData)
   };
 }
 
-function escapeHtml(value: string) {
-  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-}

@@ -112,6 +112,22 @@ describe("row level security", () => {
     await expect(db.query("select email from public.portal_accounts")).rejects.toThrow();
   });
 
+  it("lets staff record their own visit and hides it from anonymous visitors", async () => {
+    const db = await database();
+    await asRole(db, "anon");
+    await expect(db.query("select id from public.encounters")).rejects.toThrow();
+    await db.exec("reset role");
+    await asRole(db, "authenticated", editorId);
+    await db.exec(
+      `insert into public.encounters (clinician_id, patient_label) values ('${editorId}', 'Morning visit')`,
+    );
+    const own = await db.query<{ patient_label: string }>("select patient_label from public.encounters");
+    expect(own.rows.map((row) => row.patient_label)).toEqual(["Morning visit"]);
+    await expect(
+      db.exec(`insert into public.encounters (clinician_id, patient_label) values ('${ownerId}', 'Someone else')`),
+    ).rejects.toThrow();
+  });
+
   it("lets staff store a portal chart", async () => {
     const db = await database();
     await asRole(db, "authenticated", editorId);

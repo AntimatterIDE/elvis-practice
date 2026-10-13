@@ -14,7 +14,7 @@ export const faqs = [
   {
     question: "Can I describe my symptoms in the contact form?",
     answer:
-      "The form is so the office knows how to reach you. How you've been feeling is better saved for the call itself.",
+      "A short note is fine, including why you are calling. Leave insurance numbers, member IDs, and dates of birth off the form. The office keeps the request and calls when they can.",
   },
   {
     question: "Where is the office?",

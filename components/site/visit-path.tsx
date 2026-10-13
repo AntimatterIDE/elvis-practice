@@ -8,7 +8,7 @@ import { IconArrow } from "@/components/site/icons";
 const sections = [
   {
     heading: "Scheduling",
-    body: "New patients are welcome. Request a call from the contact page. There is no online scheduler on this site. The form asks for a name and a way to reach you. It refuses symptoms, imaging, and insurance numbers, and it tells you if the note was not delivered.",
+    body: "New patients are welcome. Request a call from the contact page. There is no online scheduler on this site. The form asks for a name, a way to reach you, and an optional short note. The office saves the request. Leave insurance numbers, member IDs, and dates of birth off the form.",
   },
   {
     heading: "What to bring to the office",
@@ -60,7 +60,7 @@ export function VisitPath() {
             <IconArrow className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
-            Leave symptoms, images, and insurance numbers off the form.
+            Leave insurance numbers, member IDs, and dates of birth off the form.
           </p>
         </div>
 
