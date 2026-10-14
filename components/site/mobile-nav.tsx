@@ -2,7 +2,7 @@
 
 import * as Dialog from "@radix-ui/react-dialog";
 import Link from "next/link";
-import { PracticeName } from "@/components/site/brand";
+import { BrandLogo } from "@/components/site/brand";
 import { IconArrow, IconClose, IconMenu } from "@/components/site/icons";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -32,10 +32,7 @@ export function MobileNav() {
             <Dialog.Title className="min-w-0 flex-1">
               <Dialog.Close asChild>
                 <Link href="/" className="inline-flex min-h-11 items-center">
-                  <PracticeName
-                    goldClassName="font-display text-lg font-medium leading-tight"
-                    blueClassName="font-display text-xl font-semibold leading-tight"
-                  />
+                  <BrandLogo className="h-auto w-full max-w-[220px]" />
                 </Link>
               </Dialog.Close>
             </Dialog.Title>
