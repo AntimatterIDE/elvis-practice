@@ -1040,14 +1040,14 @@ export function TreatmentsHero() {
 
           <h1 className="mt-5 flex flex-col items-center">
             <motion.span variants={rise} className="max-w-xl text-balance text-lg leading-snug text-muted sm:text-xl">
-              Operations a visit may discuss
+              Spine operations, explained
             </motion.span>
             <motion.span
               ref={phraseRef}
               variants={surface}
               className="mt-2 max-w-[12ch] text-balance font-display text-[clamp(2.6rem,10vw,7rem)] font-medium leading-[0.92] text-ink sm:mt-3 sm:max-w-none"
             >
-              in plain language.
+              before you decide.
             </motion.span>
           </h1>
         </div>
