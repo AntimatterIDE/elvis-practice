@@ -37,7 +37,9 @@ export function PortalBridge() {
 
   useEffect(() => {
     let cancel = false;
-    void whenPortalIdle().then(async () => {
+    async function loadRoster() {
+      await whenPortalIdle();
+      if (cancel) return;
       const result = await loadPortalRosterAction();
       if (cancel) return;
       if (!result.ok) {
@@ -45,9 +47,12 @@ export function PortalBridge() {
         return;
       }
       mergePortalRoster(result.patients, result.appointments);
-    });
+    }
+    void loadRoster();
+    const timer = setInterval(() => void loadRoster(), 15000);
     return () => {
       cancel = true;
+      clearInterval(timer);
     };
   }, [pathname]);
 

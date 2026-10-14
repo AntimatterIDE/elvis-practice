@@ -39,7 +39,10 @@ const RcmContext = createContext<RcmContextValue | null>(null);
 const serverState = createSeedState();
 const serverSnapshot: DeskSnapshot = { ...serverState, rosterReady: false };
 const listeners = new Set<() => void>();
-const portalListeners = new Set<(snap: { patients: Patient[]; appointments: Appointment[] }) => void>();
+const portalListeners = new Set<
+  (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[] }) => void
+>();
+const removedAppointmentIds = new Set<string>();
 const removalListeners = new Set<(ids: string[]) => void>();
 let clientState: RcmState | null = null;
 let published: DeskSnapshot | null = null;
@@ -90,10 +93,12 @@ function emit() {
 
 function notifyPortalPush() {
   if (!clientState || !portalReady) return;
-  const patients = clientState.patients.filter((patient) => portalIds.has(patient.id));
-  if (!patients.length) return;
-  const appointments = clientState.appointments.filter((appointment) => portalIds.has(appointment.patientId));
-  const snap = { patients, appointments };
+  for (const patient of clientState.patients) portalIds.add(patient.id);
+  const snap = {
+    patients: clientState.patients,
+    appointments: clientState.appointments,
+    removedAppointmentIds: [...removedAppointmentIds],
+  };
   for (const listener of portalListeners) listener(snap);
 }
 
@@ -128,7 +133,9 @@ export function subscribePortalRemoval(listener: (ids: string[]) => void) {
   };
 }
 
-export function subscribePortalPush(listener: (snap: { patients: Patient[]; appointments: Appointment[] }) => void) {
+export function subscribePortalPush(
+  listener: (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[] }) => void,
+) {
   portalListeners.add(listener);
   return () => {
     portalListeners.delete(listener);
@@ -160,24 +167,32 @@ export function mergePortalRoster(patients: Patient[], appointments: Appointment
   ensureClient();
   const current = clientState!;
   const ids = new Set(patients.map((patient) => patient.id));
-  portalIds = ids;
+  const localPatients = current.patients.filter((patient) => !ids.has(patient.id));
+  portalIds = new Set([...ids, ...localPatients.map((patient) => patient.id)]);
   portalReady = true;
   rosterReady = true;
   const serverAppointmentIds = new Set(appointments.map((appointment) => appointment.id));
+  for (const id of removedAppointmentIds) {
+    if (!serverAppointmentIds.has(id)) removedAppointmentIds.delete(id);
+  }
   const pending = current.appointments.filter(
-    (appointment) => ids.has(appointment.patientId) && !serverAppointmentIds.has(appointment.id),
+    (appointment) =>
+      ids.has(appointment.patientId) && !serverAppointmentIds.has(appointment.id) && !removedAppointmentIds.has(appointment.id),
   );
+  const sharedAppointments = appointments.filter((appointment) => !removedAppointmentIds.has(appointment.id));
   commit(
     {
       ...current,
-      patients: [...patients.map((patient) => normalizePatient(patient)), ...current.patients.filter((patient) => !ids.has(patient.id))],
+      patients: [...patients.map((patient) => normalizePatient(patient)), ...localPatients],
       appointments: [
-        ...appointments.map((appointment) => normalizeAppointment(appointment)),
+        ...sharedAppointments.map((appointment) => normalizeAppointment(appointment)),
         ...pending,
-        ...current.appointments.filter((appointment) => !ids.has(appointment.patientId)),
+        ...current.appointments.filter(
+          (appointment) => !ids.has(appointment.patientId) && !removedAppointmentIds.has(appointment.id),
+        ),
       ],
     },
-    pending.length ? "local" : "merge",
+    localPatients.length || pending.length ? "local" : "merge",
   );
 }
 
@@ -337,6 +352,7 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
       },
       removeAppointment: (id) => {
         const current = getSnapshot();
+        removedAppointmentIds.add(id);
         commit({
           ...current,
           appointments: current.appointments.filter((appointment) => appointment.id !== id),

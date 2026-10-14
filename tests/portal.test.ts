@@ -2,7 +2,8 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { createInvite, createPortalDb, issueLogin, saveForm, submitIntake } from "@/lib/portal/engine";
+import { createInvite, createPortalDb, issueLogin, pushCharts, saveForm, submitIntake } from "@/lib/portal/engine";
+import { emptyVitals, withChart } from "@/lib/rcm/chart";
 import { fileStore } from "@/lib/portal/file-store";
 import { hashPassword, verifyPassword } from "@/lib/portal/password";
 import type { IntakeForm } from "@/lib/portal/types";
@@ -31,6 +32,65 @@ function answersFor(db = createPortalDb()) {
   }
   return answers;
 }
+
+describe("practice roster", () => {
+  it("adds a desk chart and its visit for every staff login", () => {
+    const chart = {
+      ...withChart({
+        firstName: "Ada",
+        lastName: "Lovelace",
+        dateOfBirth: "1990-04-02",
+        sex: "female",
+        memberId: "",
+        payerName: "Self-pay",
+        phone: "404-555-0100",
+        email: "",
+        address: "",
+        city: "",
+        state: "GA",
+        postalCode: "",
+      }),
+      id: "p_ada",
+      mrn: "100301",
+      createdAt: "2026-10-14T15:00:00.000Z",
+    };
+    const visit: Appointment = {
+      id: "a_ada",
+      patientId: chart.id,
+      providerName: "Elvis Francois, MD",
+      start: "2026-10-16T14:00:00.000Z",
+      durationMinutes: 30,
+      reason: "New patient",
+      status: "scheduled",
+      notes: "",
+      visitType: "new",
+      room: "Room 1",
+      confirmation: "unconfirmed",
+      chiefComplaint: "New patient",
+      assessment: "",
+      plan: "",
+      vitals: emptyVitals(),
+      copayCollected: null,
+      scheduledProcedures: [],
+      opNoteStatus: "not_required",
+      unableToCode: false,
+      codingFlag: "",
+    };
+    const saved = pushCharts(createPortalDb(), [chart], [visit], new Date("2026-10-14T16:00:00.000Z"));
+    expect(saved.patients.map((patient) => patient.chart.lastName)).toEqual(["Lovelace"]);
+    expect(saved.visits.map((item) => item.id)).toEqual(["a_ada"]);
+    const updated = pushCharts(saved, [{ ...chart, phone: "404-555-0199" }], [visit]);
+    expect(updated.patients).toHaveLength(1);
+    expect(updated.patients[0]?.chart.phone).toBe("404-555-0199");
+    expect(updated.visits).toHaveLength(1);
+    const fromAnotherLogin = pushCharts(updated, [{ ...chart, phone: "404-555-0199" }], []);
+    expect(fromAnotherLogin.visits.map((item) => item.id)).toEqual(["a_ada"]);
+    const removed = pushCharts(fromAnotherLogin, [chart], [], new Date(), ["a_ada"]);
+    expect(removed.visits).toHaveLength(0);
+    const skipped = pushCharts(removed, [{ ...chart, id: "p_blank", lastName: "" }], []);
+    expect(skipped.patients.map((patient) => patient.id)).toEqual(["p_ada"]);
+  });
+});
 
 describe("patient intake", () => {
   it("keeps identity questions on the form", () => {
