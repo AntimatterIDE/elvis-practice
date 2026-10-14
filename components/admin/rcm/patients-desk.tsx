@@ -4,9 +4,10 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ageFromDob, chartGaps } from "@/lib/rcm/chart";
+import { pushPortalChartsAction } from "@/app/portal/actions";
+import { ageFromDob, chartGaps, withChart } from "@/lib/rcm/chart";
 import { formatDay, formatTime, patientName } from "@/lib/rcm/format";
-import type { PatientInput, Sex } from "@/lib/rcm/types";
+import type { Patient, PatientInput, Sex } from "@/lib/rcm/types";
 import { MemberCard } from "@/components/admin/bits/surface";
 import { Field, LoadingDesk, PageHeader, fieldClass, panelClass, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
@@ -28,11 +29,12 @@ const emptyForm: PatientInput = {
 
 export function PatientsDesk() {
   const router = useRouter();
-  const { ready, patients, appointments, addPatient } = useRcm();
+  const { ready, patients, appointments, rememberPatient, syncError } = useRcm();
   const today = useClinicToday();
   const [query, setQuery] = useState("");
   const [form, setForm] = useState<PatientInput>(emptyForm);
   const [error, setError] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const rows = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -60,20 +62,33 @@ export function PatientsDesk() {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!form.firstName.trim() || !form.lastName.trim()) {
       setError("Enter a first and last name.");
       return;
     }
-    const patient = addPatient({
-      ...form,
-      firstName: form.firstName.trim(),
-      lastName: form.lastName.trim(),
-      payerName: form.payerName.trim() || "Self-pay",
-    });
-    setForm(emptyForm);
+    setSaving(true);
     setError("");
+    const patient: Patient = {
+      ...withChart({
+        ...form,
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        payerName: form.payerName.trim() || "Self-pay",
+      }),
+      id: `p_${crypto.randomUUID().slice(0, 8)}`,
+      createdAt: new Date().toISOString(),
+      mrn: "",
+    };
+    const result = await pushPortalChartsAction({ patients: [patient], appointments: [] });
+    setSaving(false);
+    if (!result.ok) {
+      setError(result.error || "That chart could not be saved for the practice.");
+      return;
+    }
+    rememberPatient(patient);
+    setForm(emptyForm);
     router.push(`/admin/operations/patients/${patient.id}`);
   }
 
@@ -82,13 +97,18 @@ export function PatientsDesk() {
       <PageHeader
         kicker="Practice"
         title="Patients"
-        lede="Find a chart by name, date of birth, phone, or MRN. Send an intake link when you want the patient to fill out their own form."
+        lede="A chart saved here is stored for every staff login. Send an intake link when the patient can fill out the form first."
         action={
           <Button asChild variant="secondary">
             <Link href="/admin/operations/intake">Intake form</Link>
           </Button>
         }
       />
+      {syncError ? (
+        <p role="alert" className="mt-4 text-sm text-emergency">
+          {syncError}
+        </p>
+      ) : null}
       <div className="mt-8 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <section>
           <input
@@ -132,7 +152,7 @@ export function PatientsDesk() {
           <div>
             <h2 className="font-display text-2xl tracking-tight">Walk-in chart</h2>
             <p className="mt-1 text-sm leading-relaxed text-muted">
-              Use this when the patient is here. Email, address, and the attorney case can be added on the chart after you save.
+              Use this when the patient is here. The chart is saved for the whole practice, and email, address, and the attorney case can be added after.
             </p>
           </div>
           <Field label="First name">
@@ -165,7 +185,9 @@ export function PatientsDesk() {
             <input className={fieldClass} type="email" value={form.email} onChange={(event) => update("email", event.target.value)} />
           </Field>
           {error ? <p className="text-sm text-emergency">{error}</p> : null}
-          <Button type="submit">Save patient</Button>
+          <Button type="submit" disabled={saving}>
+            {saving ? "Saving…" : "Save patient"}
+          </Button>
         </form>
       </div>
     </main>

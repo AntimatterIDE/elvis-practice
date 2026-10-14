@@ -83,14 +83,15 @@ export async function pushPortalChartsAction(input: {
   appointments: Appointment[];
   removedAppointmentIds?: string[];
 }) {
-  if (!(await getStaffSession())) return { ok: false as const };
+  if (!(await getStaffSession())) return { ok: false as const, error: "Sign in required." };
   const patients = Array.isArray(input?.patients) ? input.patients.slice(0, 100) : [];
   const appointments = Array.isArray(input?.appointments) ? input.appointments.slice(0, 500) : [];
   const removedAppointmentIds = Array.isArray(input?.removedAppointmentIds)
     ? input.removedAppointmentIds.filter((id) => typeof id === "string").slice(0, 500)
     : [];
   const result = await getPortalStore().pushCharts({ patients, appointments, removedAppointmentIds });
-  return { ok: result.ok as boolean };
+  if (!result.ok) return { ok: false as const, error: result.error };
+  return { ok: true as const };
 }
 
 export async function deletePortalPatientsAction(ids: string[]) {
