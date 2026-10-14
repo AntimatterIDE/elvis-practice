@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { scoreCodes, levelForScore, suggestCodes } from "@/lib/encounters/codes";
 import { applyCodeApproval, approvalStatus } from "@/lib/encounters/approve";
 import { parseClinicalNote } from "@/lib/encounters/template";
+import { filesFromChunks } from "@/lib/encounters/local-audio";
+import { audioPaths } from "@/lib/encounters/types";
 import { runVisitPipeline, type VisitSnapshot } from "@/lib/encounters/pipeline";
 
 const diabetes = [{ code: "E11.9", description: "Type 2 diabetes mellitus without complications" }];
@@ -142,6 +144,43 @@ describe("visit pipeline", () => {
     ).rejects.toThrow("The recording could not be transcribed.");
     expect(saved.visit?.status).toBe("error");
     expect(saved.visit?.error).toBe("The recording could not be transcribed.");
+  });
+
+  it("joins each saved segment into one transcript", async () => {
+    const paths: string[] = [];
+    const result = await runVisitPipeline(
+      { ...start, audioPath: "visit-1/part-0.webm\nvisit-1/part-1.webm" },
+      {
+        download: async (path) => {
+          paths.push(path);
+          return { bytes: new Uint8Array([1, 2, 3]), contentType: "audio/webm" };
+        },
+        transcribe: async (file) => `heard ${file.filename}`,
+        writeNote: async () => ({ medicalPractice: "Orthopedic surgery", noteClinical: "SUBJECTIVE:\nKnee pain" }),
+        codeNote: () => ({ icd10: [], billingCodes: [] }),
+        save: async () => {},
+      },
+    );
+    expect(paths).toEqual(["visit-1/part-0.webm", "visit-1/part-1.webm"]);
+    expect(result.transcript).toBe("heard part-0.webm\n\nheard part-1.webm");
+  });
+});
+
+describe("phone recording cache", () => {
+  it("keeps chunk order and drops an empty segment", () => {
+    expect(audioPaths("a.webm\n\nb.webm")).toEqual(["a.webm", "b.webm"]);
+    const files = filesFromChunks(
+      [
+        { part: 1, seq: 0, blob: new Blob([new Uint8Array(400)]) },
+        { part: 0, seq: 1, blob: new Blob([new Uint8Array(200)]) },
+        { part: 0, seq: 0, blob: new Blob([new Uint8Array(300)]) },
+        { part: 2, seq: 0, blob: new Blob([new Uint8Array(20)]) },
+      ],
+      "audio/webm;codecs=opus",
+    );
+    expect(files.map((file) => file.part)).toEqual([0, 1]);
+    expect(files[0]?.blob.size).toBe(500);
+    expect(files[0]?.type).toBe("audio/webm");
   });
 });
 

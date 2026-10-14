@@ -8,6 +8,7 @@ import {
   audioByteLimit,
   audioContentType,
   audioExtension,
+  audioPaths,
   encounterStatuses,
   type Encounter,
   type EncounterProgress,
@@ -155,20 +156,48 @@ export async function getEncounter(id: string) {
   return data ? fromRow(data as EncounterRow) : null;
 }
 
+type AudioPart = { contentType: string; byteSize: number };
+
+function readParts(input: { contentType: string; byteSize: number; parts?: AudioPart[] }) {
+  const source = input.parts && input.parts.length > 0 ? input.parts : [{ contentType: input.contentType, byteSize: input.byteSize }];
+  if (source.length > 12) {
+    return { ok: false as const, message: "This visit has too many segments. Generate the note, then start another visit." };
+  }
+  const parts: AudioPart[] = [];
+  for (const part of source) {
+    const contentType = audioContentType(part.contentType);
+    if (!acceptedAudioType(contentType)) {
+      return { ok: false as const, message: "Record or choose a webm, mp3, m4a, wav, or mp4 file." };
+    }
+    if (!Number.isFinite(part.byteSize) || part.byteSize < 1 || part.byteSize > audioByteLimit) {
+      return { ok: false as const, message: "Each recording segment has to be 25 MB or smaller." };
+    }
+    parts.push({ contentType, byteSize: part.byteSize });
+  }
+  return { ok: true as const, parts };
+}
+
+async function signUploads(paths: string[], upsert: boolean) {
+  const supabase = client();
+  const uploads: { path: string; signedUrl: string }[] = [];
+  for (const path of paths) {
+    const signed = await supabase.storage.from(bucket).createSignedUploadUrl(path, upsert ? { upsert: true } : undefined);
+    if (signed.error || !signed.data) return { ok: false as const, message: "That recording could not be stored." };
+    uploads.push({ path, signedUrl: signed.data.signedUrl });
+  }
+  return { ok: true as const, uploads };
+}
+
 export async function createEncounter(input: {
   clinicianId: string;
   patientLabel: string;
   appointmentId?: string;
   contentType: string;
   byteSize: number;
+  parts?: AudioPart[];
 }) {
-  const contentType = audioContentType(input.contentType);
-  if (!acceptedAudioType(contentType)) {
-    return { ok: false as const, message: "Record or choose a webm, mp3, m4a, wav, or mp4 file." };
-  }
-  if (!Number.isFinite(input.byteSize) || input.byteSize < 1 || input.byteSize > audioByteLimit) {
-    return { ok: false as const, message: "Each recording has to be 25 MB or smaller." };
-  }
+  const parsed = readParts(input);
+  if (!parsed.ok) return parsed;
   const label = input.patientLabel.trim().slice(0, 120);
   const supabase = client();
   if (!(await ready(supabase))) return { ok: false as const, message: "Visit audio is not available yet." };
@@ -180,7 +209,7 @@ export async function createEncounter(input: {
       patient_label: label,
       appointment_id: (input.appointmentId ?? "").trim().slice(0, 80),
       status: "uploaded",
-      audio_content_type: contentType,
+      audio_content_type: parsed.parts[0]?.contentType ?? "",
       progress: { step: "uploaded", started_at: new Date().toISOString() },
     })
     .select("*")
@@ -188,15 +217,17 @@ export async function createEncounter(input: {
   if (created.error || !created.data) return { ok: false as const, message: "That visit could not be started." };
 
   const encounter = fromRow(created.data as EncounterRow);
-  const path = `encounters/${encounter.id}/recording.${audioExtension(contentType)}`;
-  const signed = await supabase.storage.from(bucket).createSignedUploadUrl(path);
-  if (signed.error || !signed.data) {
+  const paths = parsed.parts.map(
+    (part, index) => `encounters/${encounter.id}/part-${index}.${audioExtension(part.contentType)}`,
+  );
+  const signed = await signUploads(paths, false);
+  if (!signed.ok) {
     await supabase.from("encounters").delete().eq("id", encounter.id);
-    return { ok: false as const, message: "That recording could not be stored." };
+    return signed;
   }
   const saved = await supabase
     .from("encounters")
-    .update({ audio_path: path, updated_at: new Date().toISOString() })
+    .update({ audio_path: paths.join("\n"), updated_at: new Date().toISOString() })
     .eq("id", encounter.id)
     .select("*")
     .single();
@@ -204,7 +235,39 @@ export async function createEncounter(input: {
     await supabase.from("encounters").delete().eq("id", encounter.id);
     return { ok: false as const, message: "That recording could not be stored." };
   }
-  return { ok: true as const, encounter: fromRow(saved.data as EncounterRow), signedUrl: signed.data.signedUrl };
+  return {
+    ok: true as const,
+    encounter: fromRow(saved.data as EncounterRow),
+    signedUrl: signed.uploads[0]?.signedUrl ?? "",
+    uploads: signed.uploads,
+  };
+}
+
+export async function resignEncounterUploads(id: string) {
+  const existing = await getEncounter(id);
+  if (!existing) return { ok: false as const, status: 404, message: "That visit could not be found." };
+  if (existing.status !== "uploaded" && existing.status !== "error") {
+    return { ok: false as const, status: 409, message: "This visit is already being processed." };
+  }
+  const paths = audioPaths(existing.audioPath);
+  if (paths.length === 0) return { ok: false as const, status: 400, message: "That recording could not be stored." };
+  const signed = await signUploads(paths, true);
+  if (!signed.ok) return { ok: false as const, status: 502, message: signed.message };
+  return { ok: true as const, uploads: signed.uploads, encounter: existing };
+}
+
+export async function deleteDraftEncounter(id: string) {
+  const existing = await getEncounter(id);
+  if (!existing) return { ok: true as const };
+  if (existing.transcript.trim() || existing.noteClinical.trim() || (existing.status !== "uploaded" && existing.status !== "error")) {
+    return { ok: false as const, status: 409, message: "This visit already has a note." };
+  }
+  const supabase = client();
+  const paths = audioPaths(existing.audioPath);
+  if (paths.length > 0) await supabase.storage.from(bucket).remove(paths);
+  const removed = await supabase.from("encounters").delete().eq("id", id);
+  if (removed.error) return { ok: false as const, status: 502, message: removed.error.message };
+  return { ok: true as const };
 }
 
 async function saveSnapshot(visit: VisitSnapshot) {

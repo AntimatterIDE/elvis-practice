@@ -1,5 +1,4 @@
-import type { EncounterProgress, EncounterStatus, VisitCode } from "@/lib/encounters/types";
-import { audioByteLimit, audioExtension } from "@/lib/encounters/types";
+import { audioByteLimit, audioExtension, audioPaths, type EncounterProgress, type EncounterStatus, type VisitCode } from "@/lib/encounters/types";
 
 export type VisitSnapshot = {
   id: string;
@@ -32,24 +31,29 @@ export async function runVisitPipeline(start: VisitSnapshot, io: VisitIo): Promi
   let visit: VisitSnapshot = { ...start, error: null };
   try {
     if (!visit.transcript.trim()) {
-      const audioPath = visit.audioPath;
-      if (!audioPath) throw new Error("The recording was not stored.");
+      const paths = audioPaths(visit.audioPath);
+      if (paths.length === 0) throw new Error("The recording was not stored.");
       visit = { ...visit, status: "transcribing", progress: stamp(io, "transcribing") };
       await io.save(visit);
-      const file = await io.download(audioPath);
-      if (file.bytes.byteLength > audioByteLimit) {
-        throw new Error("This recording is over 25 MB. Record a shorter visit.");
+      const pieces: string[] = [];
+      for (const [index, audioPath] of paths.entries()) {
+        const file = await io.download(audioPath);
+        if (file.bytes.byteLength > audioByteLimit) {
+          throw new Error("One segment of this recording is over 25 MB. Record a shorter stretch, then continue the same visit.");
+        }
+        if (file.bytes.byteLength < 1) continue;
+        const contentType = file.contentType || visit.audioContentType || "audio/webm";
+        const transcript = await io.transcribe({
+          bytes: file.bytes,
+          contentType,
+          filename: `part-${index}.${audioExtension(contentType)}`,
+        });
+        if (transcript.trim()) pieces.push(transcript.trim());
       }
-      const contentType = file.contentType || visit.audioContentType || "audio/webm";
-      const transcript = await io.transcribe({
-        bytes: file.bytes,
-        contentType,
-        filename: `visit.${audioExtension(contentType)}`,
-      });
-      if (!transcript.trim()) throw new Error("The transcript came back empty.");
+      if (pieces.length === 0) throw new Error("The transcript came back empty.");
       visit = {
         ...visit,
-        transcript: transcript.trim(),
+        transcript: pieces.join("\n\n"),
         status: "generating",
         progress: stamp(io, "generating"),
       };

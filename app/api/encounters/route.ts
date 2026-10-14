@@ -30,14 +30,32 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ message: "The visit could not be started." }, { status: 400 });
   }
-  const body = json as { patientLabel?: unknown; appointmentId?: unknown; contentType?: unknown; byteSize?: unknown };
+  const body = json as { patientLabel?: unknown; appointmentId?: unknown; contentType?: unknown; byteSize?: unknown; parts?: unknown };
+  const parts = Array.isArray(body.parts)
+    ? body.parts.flatMap((part) => {
+        if (!part || typeof part !== "object") return [];
+        const record = part as { contentType?: unknown; byteSize?: unknown };
+        return [
+          {
+            contentType: typeof record.contentType === "string" ? record.contentType : "",
+            byteSize: typeof record.byteSize === "number" ? record.byteSize : Number.NaN,
+          },
+        ];
+      })
+    : undefined;
   const created = await createEncounter({
     clinicianId: session.userId,
     patientLabel: typeof body.patientLabel === "string" ? body.patientLabel : "",
     appointmentId: typeof body.appointmentId === "string" ? body.appointmentId : "",
     contentType: typeof body.contentType === "string" ? body.contentType : "",
     byteSize: typeof body.byteSize === "number" ? body.byteSize : Number.NaN,
+    parts,
   });
   if (!created.ok) return Response.json({ message: created.message }, { status: 400 });
-  return Response.json({ encounter: created.encounter, signedUrl: created.signedUrl, byteLimit: audioByteLimit });
+  return Response.json({
+    encounter: created.encounter,
+    signedUrl: created.signedUrl,
+    uploads: created.uploads,
+    byteLimit: audioByteLimit,
+  });
 }

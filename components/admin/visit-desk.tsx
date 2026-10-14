@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { fieldClass, PageHeader, panelClass } from "@/components/admin/rcm/ui";
@@ -19,6 +19,7 @@ import {
 import { formatClinicDay, formatTime, patientName } from "@/lib/rcm/format";
 import { claimsHref } from "@/lib/encounters/approve";
 import { rememberedVisit, rememberVisit, subscribeVisitMemory } from "@/lib/rcm/record-visit";
+import { useVisitRecorder } from "@/components/admin/use-visit-recorder";
 
 const statusLabel: Record<EncounterStatus, string> = {
   uploaded: "Recording stored",
@@ -125,12 +126,11 @@ export function VisitDesk({
     "";
   const [patientLabel, setPatientLabel] = useState(requestedLabel);
   const [message, setMessage] = useState(storageError);
-  const [phase, setPhase] = useState<"idle" | "recording" | "uploading" | "working">("idle");
+  const [phase, setPhase] = useState<"uploading" | "working" | null>(null);
   const [approval, setApproval] = useState<ApprovalDraft | null>(null);
   const [savingApproval, setSavingApproval] = useState(false);
   const { patients, appointments } = useRcm();
-  const recorder = useRef<MediaRecorder | null>(null);
-  const chunks = useRef<Blob[]>([]);
+  const recorder = useVisitRecorder({ patientLabel, appointmentId });
   const selected = encounters.find((encounter) => encounter.id === selectedId) ?? null;
   const poll =
     phase === "working" || phase === "uploading" || (selected ? activeEncounter(selected.status) : false);
@@ -161,18 +161,36 @@ export function VisitDesk({
   async function processVisit(id: string, retry: boolean) {
     setPhase("working");
     setMessage("");
-    const response = await fetch(`/api/encounters/${id}/process`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ retry }),
-    });
-    const payload = (await response.json()) as { message?: string; encounter?: Encounter | null };
-    if (payload.encounter) {
-      apply(payload.encounter);
-      if (appointmentId) rememberVisit(appointmentId, payload.encounter.id);
+    try {
+      const response = await fetch(`/api/encounters/${id}/process`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ retry }),
+      });
+      const payload = (await response.json()) as { message?: string; encounter?: Encounter | null };
+      if (payload.encounter) {
+        apply(payload.encounter);
+        if (appointmentId) rememberVisit(appointmentId, payload.encounter.id);
+      }
+      if (!response.ok) setMessage(payload.message || "The visit could not be processed.");
+    } catch {
+      setMessage("The visit could not be processed. Use Try again when you have service.");
     }
-    if (!response.ok) setMessage(payload.message || "The visit could not be processed.");
-    setPhase("idle");
+    setPhase(null);
+  }
+
+  async function putAudio(signedUrl: string, file: File) {
+    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!anon) throw new Error("The practice database is not connected.");
+    const body = new FormData();
+    body.append("cacheControl", "3600");
+    body.append("", file);
+    const uploaded = await fetch(signedUrl, {
+      method: "PUT",
+      headers: { apikey: anon, authorization: `Bearer ${anon}` },
+      body,
+    });
+    if (!uploaded.ok) throw new Error("That recording could not be stored.");
   }
 
   async function storeRecording(file: File) {
@@ -195,64 +213,109 @@ export function VisitDesk({
     const payload = (await created.json()) as { message?: string; encounter?: Encounter; signedUrl?: string };
     if (!created.ok || !payload.encounter || !payload.signedUrl) {
       setMessage(payload.message || "That visit could not be started.");
-      setPhase("idle");
+      setPhase(null);
       return;
     }
-    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!anon) {
-      setMessage("The practice database is not connected.");
-      setPhase("idle");
+    try {
+      await putAudio(payload.signedUrl, new File([file], `visit.${audioExtension(contentType)}`, { type: contentType }));
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "That recording could not be stored.");
+      setPhase(null);
       return;
     }
-    const body = new FormData();
-    body.append("cacheControl", "3600");
-    body.append("", new File([file], `visit.${audioExtension(contentType)}`, { type: contentType }));
-    const uploaded = await fetch(payload.signedUrl, {
-      method: "PUT",
-      headers: { apikey: anon, authorization: `Bearer ${anon}` },
-      body,
-    });
     apply(payload.encounter);
     if (appointmentId) rememberVisit(appointmentId, payload.encounter.id);
-    if (!uploaded.ok) {
-      setMessage("That recording could not be stored.");
-      setPhase("idle");
-      return;
-    }
     await processVisit(payload.encounter.id, false);
   }
 
-  async function startRecording() {
+  async function generateNotes() {
     setMessage("");
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mimeType = MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "video/webm";
-      const media = new MediaRecorder(stream, { mimeType });
-      chunks.current = [];
-      media.ondataavailable = (event) => {
-        if (event.data.size > 0) chunks.current.push(event.data);
-      };
-      media.onstop = () => {
-        for (const track of stream.getTracks()) track.stop();
-        const blob = new Blob(chunks.current, { type: mimeType });
-        const file = new File([blob], `visit.${audioExtension(mimeType)}`, { type: mimeType });
-        void storeRecording(file);
-      };
-      recorder.current = media;
-      media.start();
-      setPhase("recording");
-    } catch {
-      setMessage("The microphone is unavailable. Choose an audio file instead.");
+    const files = await recorder.finish();
+    if (files.length === 0) {
+      setMessage("That recording is too short to transcribe.");
+      return;
     }
-  }
-
-  function stopRecording() {
-    recorder.current?.stop();
-    recorder.current = null;
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
+      setMessage("Saved on this phone. Generate notes and codes again when you have service.");
+      return;
+    }
     setPhase("uploading");
+    const parts = files.map((file) => ({ contentType: audioContentType(file.type || "audio/webm"), byteSize: file.size }));
+    let encounterId = recorder.encounterId;
+    let uploads: { signedUrl: string }[] = [];
+    const savedHere = "The audio is still saved on this phone.";
+    try {
+      if (!encounterId) {
+        const created = await fetch("/api/encounters", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ patientLabel, appointmentId, parts }),
+        });
+        const payload = (await created.json()) as {
+          message?: string;
+          encounter?: Encounter;
+          uploads?: { signedUrl: string }[];
+        };
+        if (!created.ok || !payload.encounter || !payload.uploads?.length) {
+          setMessage(payload.message || `That visit could not be started. ${savedHere}`);
+          setPhase(null);
+          return;
+        }
+        encounterId = payload.encounter.id;
+        uploads = payload.uploads;
+        await recorder.rememberEncounter(encounterId);
+        apply(payload.encounter);
+        if (appointmentId) rememberVisit(appointmentId, encounterId);
+      } else {
+        const resigned = await fetch(`/api/encounters/${encounterId}/uploads`, { method: "POST" });
+        const payload = (await resigned.json()) as { message?: string; uploads?: { signedUrl: string }[]; encounter?: Encounter };
+        if (!resigned.ok || !payload.uploads?.length) {
+          setMessage(payload.message || `That recording could not be stored. ${savedHere}`);
+          setPhase(null);
+          return;
+        }
+        uploads = payload.uploads;
+        if (payload.encounter) apply(payload.encounter);
+      }
+    } catch {
+      setMessage(`Saved on this phone. Generate notes and codes again when you have service.`);
+      setPhase(null);
+      return;
+    }
+    if (uploads.length !== files.length) {
+      setMessage("That recording could not be stored. The audio is still saved on this phone.");
+      setPhase(null);
+      return;
+    }
+    try {
+      for (let index = 0; index < files.length; index += 1) {
+        const file = files[index];
+        const upload = uploads[index];
+        if (!file || !upload) throw new Error("That recording could not be stored.");
+        await putAudio(upload.signedUrl, file);
+      }
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? `${error.message} The audio is still saved on this phone.`
+          : "That recording could not be stored. The audio is still saved on this phone.",
+      );
+      setPhase(null);
+      return;
+    }
+    await recorder.clear();
+    await processVisit(encounterId, false);
   }
 
-  const busy = phase !== "idle" || savingApproval;
+  async function discardRecording() {
+    const encounterId = recorder.encounterId;
+    if (!window.confirm("Discard this recording? The audio saved on this phone will be deleted.")) return;
+    await recorder.discard();
+    if (!encounterId) return;
+    await fetch(`/api/encounters/${encounterId}`, { method: "DELETE" });
+  }
+
+  const busy = phase !== null || savingApproval;
   const draft = approval?.id === selected?.id ? approval : null;
   const canReview = selected?.status === "review" || selected?.status === "approved";
 
@@ -335,7 +398,7 @@ export function VisitDesk({
       <PageHeader
         kicker="Clinic"
         title="Visits"
-        lede="Record a visit. The recording stays in private storage, then this desk writes a transcript, a SOAP note, and suggested ICD-10 and CPT codes."
+        lede="Record a visit on this phone. Pause keeps the same visit open, and Record adds to it. Generate notes and codes when the visit is over."
       />
       {appointmentId ? (
         <p className={`${panelClass} text-sm`}>
@@ -372,40 +435,55 @@ export function VisitDesk({
               disabled={busy}
             />
           </label>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            {phase === "recording" ? (
-              <Button type="button" onClick={stopRecording}>
-                Stop and transcribe
+          <div className="mt-4 grid gap-3 sm:flex sm:flex-wrap sm:items-center">
+            {recorder.mode === "recording" ? (
+              <Button type="button" onClick={() => void recorder.pause()} disabled={busy}>
+                Pause
               </Button>
             ) : (
-              <Button type="button" onClick={startRecording} disabled={busy}>
+              <Button type="button" onClick={() => void recorder.start()} disabled={busy || !recorder.ready}>
                 Record
               </Button>
             )}
-            <label className="text-sm">
-              <span className="sr-only">Choose an audio file</span>
-              <input
-                type="file"
-                accept="audio/*,video/webm,video/mp4,.webm,.mp3,.m4a,.wav,.mp4"
-                disabled={busy}
-                className="text-sm"
-                onChange={(event) => {
-                  const file = event.target.files?.[0];
-                  event.target.value = "";
-                  if (file) void storeRecording(file);
-                }}
-              />
-            </label>
+            {recorder.mode !== "idle" || recorder.savedOnPhone ? (
+              <Button type="button" variant="secondary" onClick={() => void generateNotes()} disabled={busy}>
+                Generate notes and codes
+              </Button>
+            ) : null}
+            {recorder.mode === "paused" && recorder.savedOnPhone ? (
+              <Button type="button" variant="ghost" onClick={() => void discardRecording()} disabled={busy}>
+                Discard
+              </Button>
+            ) : null}
+            {recorder.mode === "idle" ? (
+              <label className="text-sm">
+                <span className="sr-only">Choose an audio file</span>
+                <input
+                  type="file"
+                  accept="audio/*,video/webm,video/mp4,.webm,.mp3,.m4a,.wav,.mp4"
+                  disabled={busy}
+                  className="text-sm"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    event.target.value = "";
+                    if (file) void storeRecording(file);
+                  }}
+                />
+              </label>
+            ) : null}
           </div>
           <p className="mt-3 text-sm text-muted" aria-live="polite">
-            {phase === "recording"
-              ? "Recording. Leave this page open."
-              : phase === "uploading"
-                ? "Storing the recording."
-                : phase === "working"
-                  ? "Working through the transcript, note, and codes."
-                  : "Webm, mp3, m4a, wav, or mp4. 25 MB or smaller."}
+            {recorder.mode === "recording"
+              ? `Recording ${recorder.elapsedLabel}. This screen stays awake. Audio is saved on this phone as you go, even if service drops. Pause keeps this visit open. If the phone locks, press Record to continue.`
+              : recorder.mode === "paused"
+                ? `Paused ${recorder.elapsedLabel}. Saved on this phone. Record adds to this visit. Generate notes and codes when the visit is over.`
+                : phase === "uploading"
+                  ? "Storing the recording. It stays on this phone until the upload finishes."
+                  : phase === "working"
+                    ? "Working through the transcript, note, and codes."
+                    : "Webm, mp3, m4a, wav, or mp4. 25 MB or smaller for each segment."}
           </p>
+          {recorder.notice ? <p className="mt-2 text-sm text-neutral-900">{recorder.notice}</p> : null}
         </form>
       ) : (
         <p className={`${panelClass} text-sm text-muted`}>
@@ -422,7 +500,7 @@ export function VisitDesk({
                 {selected.medicalPractice ? ` · ${selected.medicalPractice}` : ""}
               </p>
             </div>
-            {selected.status === "error" || (activeEncounter(selected.status) && phase === "idle") ? (
+            {selected.status === "error" || (activeEncounter(selected.status) && phase === null) ? (
               <Button type="button" variant="secondary" onClick={() => void processVisit(selected.id, true)} disabled={busy}>
                 Try again
               </Button>
