@@ -9,6 +9,7 @@ const sans = Plus_Jakarta_Sans({
   weight: ["400", "500", "600"],
   variable: "--font-sans-family",
   display: "swap",
+  preload: false,
 });
 
 const display = Newsreader({
@@ -18,6 +19,7 @@ const display = Newsreader({
   variable: "--font-display-family",
   fallback: ["Georgia", "Times New Roman", "serif"],
   adjustFontFallback: true,
+  preload: false,
 });
 
 export const metadata: Metadata = {

@@ -60,14 +60,15 @@ export function BrandIcon({ src, className }: { src: string; className?: string 
 
 export function HeroArtwork({ className }: { className?: string }) {
   return (
-    <div aria-hidden="true" className={cn("pointer-events-none relative h-48 sm:h-56 lg:h-[30rem]", className)}>
+    <div aria-hidden="true" className={cn("pointer-events-none relative h-full w-full", className)} style={{ position: "relative", height: "100%", width: "100%" }}>
       <img
         src="/brand/alignment-hero-graphic.svg?v=3"
         alt=""
         width={440}
         height={520}
-        decoding="async"
+        fetchPriority="high"
         className="absolute inset-0 h-full w-full object-contain object-center"
+        style={{ position: "absolute", inset: 0, height: "100%", width: "100%", objectFit: "contain", objectPosition: "center" }}
       />
     </div>
   );
