@@ -96,6 +96,21 @@ export type ChartDocument = {
   note: string;
 };
 
+export type InjuryCase = {
+  id: string;
+  caseNumber: string;
+  claimNumber: string;
+  dateOfInjury: string;
+  description: string;
+  carrierName: string;
+  attorneyName: string;
+  attorneyFirm: string;
+  attorneyPhone: string;
+  attorneyEmail: string;
+  attorneyAddress: string;
+  notes: string;
+};
+
 export type Patient = PatientRegistration & {
   id: string;
   createdAt: string;
@@ -126,6 +141,7 @@ export type Patient = PatientRegistration & {
   allergies: Allergy[];
   medications: Medication[];
   documents: ChartDocument[];
+  cases: InjuryCase[];
   intakeAnswers?: { label: string; value: string }[];
   accountNotes: AccountNote[];
 };

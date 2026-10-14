@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ageFromDob, chartGaps, primaryCoverage, visitTypeLabel } from "@/lib/rcm/chart";
+import { ageFromDob, chartGaps, emptyInjuryCase, primaryCoverage, visitTypeLabel } from "@/lib/rcm/chart";
 import { claimTotal, formatClinicDay, formatDay, formatTime, formatWhen, money, patientName } from "@/lib/rcm/format";
 import type {
   Allergy,
@@ -12,6 +12,7 @@ import type {
   Claim,
   ContactPreference,
   Coverage,
+  InjuryCase,
   Medication,
   Patient,
   PortalStatus,
@@ -31,6 +32,7 @@ const tabs = [
   ["overview", "Overview"],
   ["schedule", "Schedule"],
   ["demographics", "Demographics"],
+  ["case", "Case"],
   ["coverage", "Coverage"],
   ["clinical", "Clinical"],
   ["visits", "Visits"],
@@ -78,6 +80,8 @@ export function PatientDetail({ id }: { id: string }) {
   const reach: { href?: string; label: string; onClick?: () => void }[] = [];
   if (patient.phone) reach.push({ href: `tel:${patient.phone}`, label: patient.phone });
   if (patient.email) reach.push({ href: `mailto:${patient.email}`, label: "Email" });
+  reach.push({ label: "Edit chart", onClick: () => setTab("demographics") });
+  reach.push({ label: "Case", onClick: () => setTab("case") });
   reach.push({ label: "Schedule", onClick: () => setTab("schedule") });
 
   return (
@@ -143,6 +147,7 @@ export function PatientDetail({ id }: { id: string }) {
         ) : null}
         {tab === "schedule" ? <PatientSchedule visits={relatedVisits} name={patientName(patient)} today={today} /> : null}
         {tab === "demographics" ? <Demographics patient={patient} onSave={patchPatient} onRemove={removePatient} /> : null}
+        {tab === "case" ? <CaseDesk patient={patient} onSave={patchPatient} /> : null}
         {tab === "coverage" ? (
           <CoverageDesk
             patient={patient}
@@ -226,6 +231,28 @@ function Overview({
         </button>
       </section>
       <section className={panelClass}>
+        <h2 className="font-display text-2xl">Personal injury</h2>
+        {patient.cases.length ? (
+          <ul className="mt-3 grid gap-3 text-sm">
+            {patient.cases.map((item) => (
+              <li key={item.id}>
+                <span className="block font-semibold">{item.attorneyName || "Attorney not set"}</span>
+                <span className="text-muted">
+                  {[item.attorneyFirm, item.caseNumber ? `Case ${item.caseNumber}` : "", item.claimNumber ? `Claim ${item.claimNumber}` : ""]
+                    .filter(Boolean)
+                    .join(" · ") || "Case and claim numbers not set"}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-3 text-sm text-muted">No attorney case on this chart.</p>
+        )}
+        <button type="button" className="mt-3 text-sm underline" onClick={() => onOpen("case")}>
+          Case details
+        </button>
+      </section>
+      <section className={panelClass}>
         <h2 className="font-display text-2xl">Clinical snapshot</h2>
         <p className="mt-3 text-sm">
           <span className="block font-semibold">Problems</span>
@@ -306,6 +333,9 @@ function Demographics({
         setSaved(true);
       }}
     >
+      <p className="text-sm text-muted sm:col-span-2">
+        Change any field on this chart, including an email or address added after the walk-in, then save.
+      </p>
       <h2 className="font-display text-2xl sm:col-span-2">Identity</h2>
       <Field label="First name">
         <input className={fieldClass} value={form.firstName} onChange={(event) => update("firstName", event.target.value)} required />
@@ -432,6 +462,113 @@ function Demographics({
           }}
         >
           Remove
+        </Button>
+        {saved ? <span className="text-sm text-oxide">Saved for the practice.</span> : null}
+      </div>
+    </form>
+  );
+}
+
+function CaseDesk({ patient, onSave }: { patient: Patient; onSave: (id: string, patch: Partial<Patient>) => void }) {
+  function write(cases: InjuryCase[]) {
+    onSave(patient.id, { cases });
+  }
+
+  return (
+    <div className="grid gap-4">
+      <p className="max-w-2xl text-sm text-muted">
+        The case number is the attorney file. The claim number is the carrier number. Add another case when this patient has more than one.
+      </p>
+      {patient.cases.length === 0 ? <p className="text-sm text-muted">No case on this chart yet.</p> : null}
+      {patient.cases.map((item) => (
+        <CaseForm
+          key={item.id}
+          item={item}
+          onSave={(next) => write(patient.cases.map((current) => (current.id === item.id ? next : current)))}
+          onRemove={() => write(patient.cases.filter((current) => current.id !== item.id))}
+        />
+      ))}
+      <div>
+        <Button type="button" variant="secondary" onClick={() => write([...patient.cases, emptyInjuryCase(nid("case"))])}>
+          Add a case
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function CaseForm({
+  item,
+  onSave,
+  onRemove,
+}: {
+  item: InjuryCase;
+  onSave: (next: InjuryCase) => void;
+  onRemove: () => void;
+}) {
+  const [form, setForm] = useState(item);
+  const [saved, setSaved] = useState(false);
+
+  function update<K extends keyof InjuryCase>(key: K, value: InjuryCase[K]) {
+    setSaved(false);
+    setForm((current) => ({ ...current, [key]: value }));
+  }
+
+  return (
+    <form
+      className={`${panelClass} grid gap-4 sm:grid-cols-2`}
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSave(form);
+        setSaved(true);
+      }}
+    >
+      <h2 className="font-display text-2xl sm:col-span-2">{form.attorneyName.trim() || "Personal injury case"}</h2>
+      <Field label="Case number">
+        <input className={fieldClass} value={form.caseNumber} onChange={(event) => update("caseNumber", event.target.value)} />
+      </Field>
+      <Field label="Claim number">
+        <input className={fieldClass} value={form.claimNumber} onChange={(event) => update("claimNumber", event.target.value)} />
+      </Field>
+      <Field label="Date of injury">
+        <input className={fieldClass} type="date" value={form.dateOfInjury} onChange={(event) => update("dateOfInjury", event.target.value)} />
+      </Field>
+      <Field label="Carrier">
+        <input className={fieldClass} value={form.carrierName} onChange={(event) => update("carrierName", event.target.value)} />
+      </Field>
+      <Field label="What happened" className="sm:col-span-2">
+        <textarea className={`${fieldClass} min-h-24`} value={form.description} onChange={(event) => update("description", event.target.value)} />
+      </Field>
+      <h2 className="font-display text-2xl sm:col-span-2">Attorney</h2>
+      <Field label="Attorney name">
+        <input className={fieldClass} value={form.attorneyName} onChange={(event) => update("attorneyName", event.target.value)} />
+      </Field>
+      <Field label="Firm">
+        <input className={fieldClass} value={form.attorneyFirm} onChange={(event) => update("attorneyFirm", event.target.value)} />
+      </Field>
+      <Field label="Phone">
+        <input className={fieldClass} value={form.attorneyPhone} onChange={(event) => update("attorneyPhone", event.target.value)} />
+      </Field>
+      <Field label="Email">
+        <input className={fieldClass} type="email" value={form.attorneyEmail} onChange={(event) => update("attorneyEmail", event.target.value)} />
+      </Field>
+      <Field label="Address" className="sm:col-span-2">
+        <input className={fieldClass} value={form.attorneyAddress} onChange={(event) => update("attorneyAddress", event.target.value)} />
+      </Field>
+      <Field label="Notes" className="sm:col-span-2">
+        <textarea className={`${fieldClass} min-h-24`} value={form.notes} onChange={(event) => update("notes", event.target.value)} />
+      </Field>
+      <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
+        <Button type="submit">Save case</Button>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => {
+            if (!window.confirm("Remove this case from the chart?")) return;
+            onRemove();
+          }}
+        >
+          Remove case
         </Button>
         {saved ? <span className="text-sm text-oxide">Saved for the practice.</span> : null}
       </div>
@@ -582,15 +719,62 @@ function Clinical({ patient, onSave }: { patient: Patient; onSave: (id: string, 
             Reviewed
           </label>
         </div>
-        <List
-          empty={patient.allergiesReviewed ? "No known drug allergies." : "Not reviewed."}
-          rows={patient.allergies.map((item) => ({
-            id: item.id,
-            title: item.substance,
-            detail: `${item.reaction} · ${item.severity}`,
-          }))}
-          onRemove={(itemId) => save({ allergies: patient.allergies.filter((item) => item.id !== itemId) })}
-        />
+        {patient.allergies.length === 0 ? (
+          <p className="mt-3 text-sm text-muted">{patient.allergiesReviewed ? "No known drug allergies." : "Not reviewed."}</p>
+        ) : (
+          <ul className="mt-4 grid gap-3">
+            {patient.allergies.map((item) => (
+              <li key={item.id} className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_9rem_auto] sm:items-end">
+                <Field label="Substance">
+                  <input
+                    className={fieldClass}
+                    defaultValue={item.substance}
+                    aria-label={`Substance for ${item.substance || "allergy"}`}
+                    onBlur={(event) => {
+                      const substance = event.target.value;
+                      if (substance === item.substance) return;
+                      save({ allergies: patient.allergies.map((row) => (row.id === item.id ? { ...row, substance } : row)) });
+                    }}
+                  />
+                </Field>
+                <Field label="Reaction">
+                  <input
+                    className={fieldClass}
+                    defaultValue={item.reaction}
+                    aria-label={`Reaction for ${item.substance || "allergy"}`}
+                    onBlur={(event) => {
+                      const reaction = event.target.value;
+                      if (reaction === item.reaction) return;
+                      save({ allergies: patient.allergies.map((row) => (row.id === item.id ? { ...row, reaction } : row)) });
+                    }}
+                  />
+                </Field>
+                <Field label="Severity">
+                  <select
+                    className={fieldClass}
+                    defaultValue={item.severity}
+                    aria-label={`Severity for ${item.substance || "allergy"}`}
+                    onChange={(event) =>
+                      save({
+                        allergies: patient.allergies.map((row) =>
+                          row.id === item.id ? { ...row, severity: event.target.value as Allergy["severity"] } : row,
+                        ),
+                      })
+                    }
+                  >
+                    <option value="mild">Mild</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="severe">Severe</option>
+                    <option value="unknown">Unknown</option>
+                  </select>
+                </Field>
+                <Button type="button" variant="secondary" onClick={() => save({ allergies: patient.allergies.filter((row) => row.id !== item.id) })}>
+                  Remove
+                </Button>
+              </li>
+            ))}
+          </ul>
+        )}
         <form
           className="mt-4 flex flex-wrap gap-2"
           onSubmit={(event) => {
@@ -616,15 +800,57 @@ function Clinical({ patient, onSave }: { patient: Patient; onSave: (id: string, 
       </section>
       <section className={panelClass}>
         <h2 className="font-display text-2xl">Problems</h2>
-        <List
-          empty="No problems recorded."
-          rows={patient.problems.map((item) => ({
-            id: item.id,
-            title: item.name,
-            detail: `${item.icd || "No code"} · ${item.status}`,
-          }))}
-          onRemove={(itemId) => save({ problems: patient.problems.filter((item) => item.id !== itemId) })}
-        />
+        {patient.problems.length === 0 ? <p className="mt-3 text-sm text-muted">No problems recorded.</p> : null}
+        <ul className="mt-4 grid gap-3">
+          {patient.problems.map((item) => (
+            <li key={item.id} className="grid gap-2 sm:grid-cols-[minmax(0,1.4fr)_8rem_9rem_auto] sm:items-end">
+              <Field label="Problem">
+                <input
+                  className={fieldClass}
+                  defaultValue={item.name}
+                  aria-label={`Problem ${item.name || "name"}`}
+                  onBlur={(event) => {
+                    const name = event.target.value;
+                    if (name === item.name) return;
+                    save({ problems: patient.problems.map((row) => (row.id === item.id ? { ...row, name } : row)) });
+                  }}
+                />
+              </Field>
+              <Field label="ICD">
+                <input
+                  className={fieldClass}
+                  defaultValue={item.icd}
+                  aria-label={`ICD for ${item.name || "problem"}`}
+                  onBlur={(event) => {
+                    const icd = event.target.value;
+                    if (icd === item.icd) return;
+                    save({ problems: patient.problems.map((row) => (row.id === item.id ? { ...row, icd } : row)) });
+                  }}
+                />
+              </Field>
+              <Field label="Status">
+                <select
+                  className={fieldClass}
+                  defaultValue={item.status}
+                  aria-label={`Status for ${item.name || "problem"}`}
+                  onChange={(event) =>
+                    save({
+                      problems: patient.problems.map((row) =>
+                        row.id === item.id ? { ...row, status: event.target.value as Problem["status"] } : row,
+                      ),
+                    })
+                  }
+                >
+                  <option value="active">Active</option>
+                  <option value="resolved">Resolved</option>
+                </select>
+              </Field>
+              <Button type="button" variant="secondary" onClick={() => save({ problems: patient.problems.filter((row) => row.id !== item.id) })}>
+                Remove
+              </Button>
+            </li>
+          ))}
+        </ul>
         <form
           className="mt-4 flex flex-wrap gap-2"
           onSubmit={(event) => {
@@ -643,15 +869,69 @@ function Clinical({ patient, onSave }: { patient: Patient; onSave: (id: string, 
       </section>
       <section className={panelClass}>
         <h2 className="font-display text-2xl">Medications</h2>
-        <List
-          empty="No medications recorded."
-          rows={patient.medications.map((item) => ({
-            id: item.id,
-            title: item.name,
-            detail: `${item.dose} · ${item.frequency} · ${item.status}`,
-          }))}
-          onRemove={(itemId) => save({ medications: patient.medications.filter((item) => item.id !== itemId) })}
-        />
+        {patient.medications.length === 0 ? <p className="mt-3 text-sm text-muted">No medications recorded.</p> : null}
+        <ul className="mt-4 grid gap-3">
+          {patient.medications.map((item) => (
+            <li key={item.id} className="grid gap-2 sm:grid-cols-[minmax(0,1.2fr)_7rem_8rem_8rem_auto] sm:items-end">
+              <Field label="Medication">
+                <input
+                  className={fieldClass}
+                  defaultValue={item.name}
+                  aria-label={`Medication ${item.name || "name"}`}
+                  onBlur={(event) => {
+                    const name = event.target.value;
+                    if (name === item.name) return;
+                    save({ medications: patient.medications.map((row) => (row.id === item.id ? { ...row, name } : row)) });
+                  }}
+                />
+              </Field>
+              <Field label="Dose">
+                <input
+                  className={fieldClass}
+                  defaultValue={item.dose}
+                  aria-label={`Dose for ${item.name || "medication"}`}
+                  onBlur={(event) => {
+                    const dose = event.target.value;
+                    if (dose === item.dose) return;
+                    save({ medications: patient.medications.map((row) => (row.id === item.id ? { ...row, dose } : row)) });
+                  }}
+                />
+              </Field>
+              <Field label="Frequency">
+                <input
+                  className={fieldClass}
+                  defaultValue={item.frequency}
+                  aria-label={`Frequency for ${item.name || "medication"}`}
+                  onBlur={(event) => {
+                    const frequency = event.target.value;
+                    if (frequency === item.frequency) return;
+                    save({ medications: patient.medications.map((row) => (row.id === item.id ? { ...row, frequency } : row)) });
+                  }}
+                />
+              </Field>
+              <Field label="Status">
+                <select
+                  className={fieldClass}
+                  defaultValue={item.status}
+                  aria-label={`Status for ${item.name || "medication"}`}
+                  onChange={(event) =>
+                    save({
+                      medications: patient.medications.map((row) =>
+                        row.id === item.id ? { ...row, status: event.target.value as Medication["status"] } : row,
+                      ),
+                    })
+                  }
+                >
+                  <option value="active">Active</option>
+                  <option value="stopped">Stopped</option>
+                </select>
+              </Field>
+              <Button type="button" variant="secondary" onClick={() => save({ medications: patient.medications.filter((row) => row.id !== item.id) })}>
+                Remove
+              </Button>
+            </li>
+          ))}
+        </ul>
         <form
           className="mt-4 flex flex-wrap gap-2"
           onSubmit={(event) => {
@@ -701,33 +981,6 @@ function History({ patient, onSave }: { patient: Patient; onSave: (patch: Partia
       </Field>
       <Button type="submit">Save history</Button>
     </form>
-  );
-}
-
-function List({
-  rows,
-  empty,
-  onRemove,
-}: {
-  rows: { id: string; title: string; detail: string }[];
-  empty: string;
-  onRemove: (id: string) => void;
-}) {
-  if (!rows.length) return <p className="mt-3 text-sm text-muted">{empty}</p>;
-  return (
-    <ul className="mt-3 divide-y divide-line border-y border-line">
-      {rows.map((row) => (
-        <li key={row.id} className="flex items-center justify-between gap-3 py-3 text-sm">
-          <span>
-            <span className="block font-semibold">{row.title}</span>
-            <span className="text-muted">{row.detail}</span>
-          </span>
-          <button type="button" className="text-sm underline" onClick={() => onRemove(row.id)}>
-            Remove
-          </button>
-        </li>
-      ))}
-    </ul>
   );
 }
 

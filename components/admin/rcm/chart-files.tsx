@@ -171,11 +171,13 @@ export function ChartFiles({
                   <div className="flex flex-wrap items-center gap-3 text-sm">
                     <span>{file.label}{file.size ? ` · ${sizeLabel(file.size)}` : ""}</span>
                     {file.url && !file.contentType.startsWith("image/") && !file.contentType.startsWith("video/") ? (
-                      <a className="underline" href={file.url} target="_blank" rel="noreferrer">Open</a>
+                      <Button variant="secondary" asChild>
+                        <a href={file.url} target="_blank" rel="noreferrer">Open</a>
+                      </Button>
                     ) : null}
                     <Button
                       type="button"
-                      variant="ghost"
+                      variant="secondary"
                       disabled={busySlot === document.id}
                       onClick={() => {
                         setBusySlot(document.id);
@@ -193,22 +195,24 @@ export function ChartFiles({
               ))}
             </ul>
             <div className="mt-4 flex flex-wrap items-end gap-3">
-              <label className="grid gap-2 text-sm">
-                <span className="font-medium">Add a photo, video, or PDF</span>
-                <input
-                  className="text-sm"
-                  type="file"
-                  accept={accept}
-                  multiple
-                  disabled={busySlot === document.id}
-                  aria-label={`Add a file to ${document.name}`}
-                  onChange={(event) => {
-                    const list = event.target.files;
-                    event.target.value = "";
-                    if (list?.length) void upload(document, list);
-                  }}
-                />
-              </label>
+              <Button variant="secondary" asChild>
+                <label className={busySlot === document.id ? "pointer-events-none opacity-50" : undefined}>
+                  {busySlot === document.id ? "Uploading…" : "Upload photo, video, or PDF"}
+                  <input
+                    className="sr-only"
+                    type="file"
+                    accept={accept}
+                    multiple
+                    disabled={busySlot === document.id}
+                    aria-label={`Add a file to ${document.name}`}
+                    onChange={(event) => {
+                      const list = event.target.files;
+                      event.target.value = "";
+                      if (list?.length) void upload(document, list);
+                    }}
+                  />
+                </label>
+              </Button>
               <label className="grid gap-2 text-sm">
                 <span className="font-medium">Note</span>
                 <input
