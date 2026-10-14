@@ -86,3 +86,11 @@ export function audioExtension(value: string) {
 export function activeEncounter(status: EncounterStatus) {
   return status === "transcribing" || status === "generating" || status === "generating_icd10" || status === "generating_cpt";
 }
+
+export function audioPaths(value: string | null) {
+  if (!value) return [];
+  return value
+    .split("\n")
+    .map((path) => path.trim())
+    .filter(Boolean);
+}

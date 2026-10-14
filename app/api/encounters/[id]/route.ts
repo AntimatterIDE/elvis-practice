@@ -1,4 +1,4 @@
-import { getEncounter, reviewEncounter, staffSession, visitStorageReady } from "@/lib/encounters/store";
+import { deleteDraftEncounter, getEncounter, reviewEncounter, staffSession, visitStorageReady } from "@/lib/encounters/store";
 
 export const dynamic = "force-dynamic";
 
@@ -47,4 +47,14 @@ export async function PATCH(request: Request, context: { params: Promise<Params>
   });
   if (!reviewed.ok) return Response.json({ message: reviewed.message }, { status: reviewed.status });
   return Response.json({ encounter: reviewed.encounter });
+}
+
+export async function DELETE(_request: Request, context: { params: Promise<Params> }) {
+  if (!(await staffSession())) return unauthorized();
+  if (!visitStorageReady()) return Response.json({ message: "Supabase is not connected." }, { status: 503 });
+  const { id } = await context.params;
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return Response.json({ message: "That visit could not be found." }, { status: 404 });
+  const removed = await deleteDraftEncounter(id);
+  if (!removed.ok) return Response.json({ message: removed.message }, { status: removed.status });
+  return Response.json({ ok: true });
 }
