@@ -16,11 +16,12 @@ import type {
   RcmState,
 } from "@/lib/rcm/types";
 
-type DeskSnapshot = RcmState & { rosterReady: boolean };
+type DeskSnapshot = RcmState & { rosterReady: boolean; syncError: string };
 
 type RcmContextValue = DeskSnapshot & {
   ready: boolean;
   addPatient: (input: PatientInput) => Patient;
+  rememberPatient: (patient: Patient) => void;
   updatePatient: (id: string, input: PatientInput) => void;
   patchPatient: (id: string, patch: Partial<Patient>) => void;
   removePatient: (id: string) => void;
@@ -37,7 +38,7 @@ type RcmContextValue = DeskSnapshot & {
 
 const RcmContext = createContext<RcmContextValue | null>(null);
 const serverState = createSeedState();
-const serverSnapshot: DeskSnapshot = { ...serverState, rosterReady: false };
+const serverSnapshot: DeskSnapshot = { ...serverState, rosterReady: false, syncError: "" };
 const listeners = new Set<() => void>();
 const portalListeners = new Set<
   (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[] }) => void
@@ -47,6 +48,7 @@ const removalListeners = new Set<(ids: string[]) => void>();
 let clientState: RcmState | null = null;
 let published: DeskSnapshot | null = null;
 let rosterReady = false;
+let syncError = "";
 let portalReady = false;
 let portalIds = new Set<string>();
 let pushChain: Promise<void> = Promise.resolve();
@@ -72,12 +74,12 @@ function ensureClient() {
   if (clientState) return;
   const stored = readStored();
   clientState = stored ? normalizeState(stored) : serverState;
-  published = { ...clientState, rosterReady };
+  published = { ...clientState, rosterReady, syncError };
 }
 
 function getSnapshot() {
   ensureClient();
-  if (!published) published = { ...clientState!, rosterReady };
+  if (!published) published = { ...clientState!, rosterReady, syncError };
   return published;
 }
 
@@ -87,8 +89,15 @@ function subscribe(listener: () => void) {
 }
 
 function emit() {
-  published = { ...clientState!, rosterReady };
+  published = { ...clientState!, rosterReady, syncError };
   for (const listener of listeners) listener();
+}
+
+export function setPortalSyncError(message: string) {
+  ensureClient();
+  if (syncError === message) return;
+  syncError = message;
+  emit();
 }
 
 function notifyPortalPush() {
@@ -167,7 +176,7 @@ export function mergePortalRoster(patients: Patient[], appointments: Appointment
   ensureClient();
   const current = clientState!;
   const ids = new Set(patients.map((patient) => patient.id));
-  const localPatients = current.patients.filter((patient) => !ids.has(patient.id));
+  const localPatients = current.patients.filter((patient) => !ids.has(patient.id)).map((patient) => normalizePatient(patient));
   portalIds = new Set([...ids, ...localPatients.map((patient) => patient.id)]);
   portalReady = true;
   rosterReady = true;
@@ -217,6 +226,11 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
         };
         commit({ ...current, patients: [patient, ...current.patients] });
         return patient;
+      },
+      rememberPatient: (patient) => {
+        const current = getSnapshot();
+        if (current.patients.some((item) => item.id === patient.id)) return;
+        commit({ ...current, patients: [normalizePatient(patient), ...current.patients] });
       },
       updatePatient: (id, input) => {
         const current = getSnapshot();

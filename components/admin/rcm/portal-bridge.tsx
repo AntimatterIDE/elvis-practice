@@ -7,6 +7,7 @@ import {
   enqueuePortalPush,
   markRosterReady,
   mergePortalRoster,
+  setPortalSyncError,
   subscribePortalPush,
   subscribePortalRemoval,
   whenPortalIdle,
@@ -19,7 +20,8 @@ export function PortalBridge() {
     () =>
       subscribePortalPush((snap) => {
         enqueuePortalPush(async () => {
-          await pushPortalChartsAction(snap);
+          const result = await pushPortalChartsAction(snap);
+          setPortalSyncError(result.ok ? "" : result.error || "Those charts could not be shared with the practice.");
         });
       }),
     [],

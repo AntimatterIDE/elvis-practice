@@ -403,8 +403,9 @@ export function pushCharts(
   const created: PortalDb["patients"] = [];
   for (const chart of accepted) {
     if (existingIds.has(chart.id)) continue;
-    const mrn = chart.mrn.trim() || String(nextMrn);
-    if (!chart.mrn.trim()) nextMrn += 1;
+    const mrnSource = typeof chart.mrn === "string" ? chart.mrn.trim() : "";
+    const mrn = mrnSource || String(nextMrn);
+    if (!mrnSource) nextMrn += 1;
     created.push({
       id: chart.id,
       mrn,
