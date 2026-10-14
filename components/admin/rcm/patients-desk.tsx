@@ -38,7 +38,16 @@ export function PatientsDesk() {
     const term = query.trim().toLowerCase();
     return patients.filter((patient) => {
       if (!term) return true;
-      return [patientName(patient), patient.preferredName, patient.mrn, patient.phone, patient.memberId, patient.payerName, patient.email]
+      return [
+        patientName(patient),
+        patient.preferredName,
+        patient.mrn,
+        patient.phone,
+        patient.memberId,
+        patient.payerName,
+        patient.email,
+        ...patient.cases.flatMap((item) => [item.caseNumber, item.claimNumber, item.attorneyName, item.attorneyFirm]),
+      ]
         .join(" ")
         .toLowerCase()
         .includes(term);
@@ -122,7 +131,9 @@ export function PatientsDesk() {
         <form onSubmit={onSubmit} className={`${panelClass} grid h-fit gap-4`}>
           <div>
             <h2 className="font-display text-2xl tracking-tight">Walk-in chart</h2>
-            <p className="mt-1 text-sm leading-relaxed text-muted">Use this when the patient is here. Send an intake link when they can fill it out first.</p>
+            <p className="mt-1 text-sm leading-relaxed text-muted">
+              Use this when the patient is here. Email, address, and the attorney case can be added on the chart after you save.
+            </p>
           </div>
           <Field label="First name">
             <input className={fieldClass} value={form.firstName} onChange={(event) => update("firstName", event.target.value)} required />

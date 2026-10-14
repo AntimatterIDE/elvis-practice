@@ -3,6 +3,7 @@ import type {
   ChartDocument,
   Claim,
   Coverage,
+  InjuryCase,
   Patient,
   PatientInput,
   RcmState,
@@ -107,9 +108,39 @@ export function withChart(input: PatientInput, extra: Partial<Patient> = {}): Pa
     allergies: [],
     medications: [],
     documents: defaultDocuments(),
+    cases: [],
     accountNotes: [],
     ...extra,
   };
+}
+
+export function emptyInjuryCase(id: string): InjuryCase {
+  return {
+    id,
+    caseNumber: "",
+    claimNumber: "",
+    dateOfInjury: "",
+    description: "",
+    carrierName: "",
+    attorneyName: "",
+    attorneyFirm: "",
+    attorneyPhone: "",
+    attorneyEmail: "",
+    attorneyAddress: "",
+    notes: "",
+  };
+}
+
+function normalizeCase(item: Partial<InjuryCase> | null | undefined, index: number): InjuryCase | null {
+  if (!item || typeof item !== "object") return null;
+  const id = typeof item.id === "string" && item.id.trim() ? item.id : `case_${index}`;
+  const next = emptyInjuryCase(id);
+  for (const key of Object.keys(next) as (keyof InjuryCase)[]) {
+    if (key === "id") continue;
+    const value = item[key];
+    if (typeof value === "string") next[key] = value;
+  }
+  return next;
 }
 
 export function normalizePatient(patient: Patient): Patient {
@@ -122,6 +153,7 @@ export function normalizePatient(patient: Patient): Patient {
     allergies: next.allergies ?? [],
     medications: next.medications ?? [],
     documents: withDocumentSlots(next.documents),
+    cases: (Array.isArray(next.cases) ? next.cases : []).map(normalizeCase).filter((item): item is InjuryCase => item !== null),
     intakeAnswers: next.intakeAnswers ?? [],
     accountNotes: next.accountNotes ?? [],
   };
