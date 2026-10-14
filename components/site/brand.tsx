@@ -1,4 +1,28 @@
+import { practiceName } from "@/lib/site";
 import { cn } from "@/lib/utils";
+
+export function PracticeName({
+  goldClassName,
+  blueClassName,
+  className,
+  tone = "paper",
+}: {
+  goldClassName?: string;
+  blueClassName?: string;
+  className?: string;
+  tone?: "paper" | "pine";
+}) {
+  return (
+    <span className={cn("block", className)}>
+      <span className={cn("block", tone === "pine" ? "text-gold-soft" : "text-gold", goldClassName)}>
+        {practiceName.gold}
+      </span>
+      <span className={cn("block", tone === "pine" ? "text-clinic-blue-soft" : "text-clinic-blue", blueClassName)}>
+        {practiceName.blue}
+      </span>
+    </span>
+  );
+}
 
 export function BrandLogo({
   className,

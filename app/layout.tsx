@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, Plus_Jakarta_Sans } from "next/font/google";
 import { shareImage } from "@/lib/share-metadata";
-import { canonicalOrigin, isIndexingEnabled, practice } from "@/lib/site";
+import { canonicalOrigin, isIndexingEnabled, practice, practiceName } from "@/lib/site";
 import "./globals.css";
 
 const sans = Plus_Jakarta_Sans({
@@ -25,7 +25,7 @@ const display = Newsreader({
 export const metadata: Metadata = {
   metadataBase: new URL(canonicalOrigin()),
   title: {
-    default: practice.name,
+    default: practiceName.full,
     template: `%s · ${practice.name}`,
   },
   description: practice.description,
@@ -43,14 +43,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: practice.name,
-    title: { absolute: practice.name },
+    title: { absolute: practiceName.full },
     description: practice.description,
     url: "/",
     images: [shareImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: { absolute: practice.name },
+    title: { absolute: practiceName.full },
     description: practice.description,
     images: [shareImage],
   },

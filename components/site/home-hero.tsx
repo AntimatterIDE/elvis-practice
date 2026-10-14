@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HeroArtwork } from "@/components/site/brand";
+import { HeroArtwork, PracticeName } from "@/components/site/brand";
 import { IconArrow } from "@/components/site/icons";
 import { practice } from "@/lib/site";
 
@@ -24,9 +24,11 @@ export function HomeHero() {
       `}</style>
       <div className="home-hero-grid mx-auto grid max-w-6xl items-center gap-2 md:grid-cols-[minmax(0,1.15fr)_minmax(13rem,0.85fr)] md:gap-8 lg:gap-12">
         <div className="home-hero-copy order-2 md:order-1">
-          <p className="kicker text-oxide-deep">{practice.name}</p>
-          <h1 className="mt-4 max-w-3xl font-display text-[clamp(2.6rem,6vw,4.75rem)] font-medium leading-[0.96] tracking-[-0.035em]">
-            Spine care, <em className="text-oxide-deep">carefully aligned.</em>
+          <h1 className="max-w-4xl">
+            <PracticeName
+              goldClassName="font-display text-[clamp(2.1rem,4.6vw,3.4rem)] font-medium leading-[0.98] tracking-[-0.03em]"
+              blueClassName="mt-2 font-display text-[clamp(2.8rem,6.8vw,5.4rem)] font-semibold leading-[0.94] tracking-[-0.035em]"
+            />
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
             {practice.physicianName} is an orthopedic spine surgeon. The work of this practice is to understand the

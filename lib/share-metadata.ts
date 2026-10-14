@@ -5,7 +5,7 @@ export const shareImage = {
   url: "/brand/og.png",
   width: 1200,
   height: 630,
-  alt: "The Alignment Clinic. Spine care, carefully aligned. Orthopedic spine surgery with Elvis Francois, MD.",
+  alt: "The Alignment Clinic of Spine Surgery & Orthopedics. Orthopedic spine surgery with Elvis Francois, MD.",
 } as const;
 
 type PageTitle = string | { absolute: string };

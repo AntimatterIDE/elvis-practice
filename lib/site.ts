@@ -1,3 +1,9 @@
+export const practiceName = {
+  gold: "The Alignment Clinic of",
+  blue: "Spine Surgery & Orthopedics",
+  full: "The Alignment Clinic of Spine Surgery & Orthopedics",
+} as const;
+
 export const practice = {
   name: "The Alignment Clinic",
   physicianName: "Elvis Francois, MD",
