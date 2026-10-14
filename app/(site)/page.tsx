@@ -8,10 +8,10 @@ import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
 import { Promises } from "@/components/site/promises";
 import { Reveal } from "@/components/site/reveal";
 import { publicPageMetadata } from "@/lib/share-metadata";
-import { practice } from "@/lib/site";
+import { practice, practiceName } from "@/lib/site";
 
 export const metadata: Metadata = publicPageMetadata({
-  title: { absolute: practice.name },
+  title: { absolute: practiceName.full },
   description: practice.description,
   canonical: "/",
 });

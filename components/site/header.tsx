@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { BrandLogo } from "@/components/site/brand";
+import { PracticeName } from "@/components/site/brand";
 import { MobileNav } from "@/components/site/mobile-nav";
 import { SiteLink } from "@/components/site/site-link";
-import { practice, publicNav } from "@/lib/site";
+import { practice, practiceName, publicNav } from "@/lib/site";
 
 export function Header() {
   return (
@@ -12,7 +12,7 @@ export function Header() {
           <p className="min-w-0 truncate">
             <span className="sm:hidden">New patients are welcome.</span>
             <span className="hidden sm:inline">
-              New patients are welcome. Orthopedic spine surgery with {practice.physicianName}.
+              New patients are welcome. {practiceName.blue} with {practice.physicianName}.
             </span>
           </p>
           <span className="flex shrink-0 gap-4">
@@ -26,12 +26,17 @@ export function Header() {
         </div>
       </div>
       <header>
-        <div className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-3 md:px-8">
+        <div className="mx-auto flex max-w-6xl items-center gap-3 px-5 pt-4 md:px-8">
           <MobileNav />
-          <Link href="/" className="hidden min-h-11 shrink-0 items-center lg:flex">
-            <BrandLogo className="h-10 w-auto" />
+          <Link href="/" aria-label={practiceName.full} className="min-w-0 py-1">
+            <PracticeName
+              goldClassName="font-display text-xl font-medium leading-tight sm:text-2xl md:text-3xl"
+              blueClassName="mt-1 font-display text-2xl font-semibold leading-tight sm:text-3xl md:text-5xl"
+            />
           </Link>
-          <nav aria-label="Primary" className="hidden min-w-0 flex-1 items-center justify-center gap-x-5 xl:gap-x-7 lg:flex">
+        </div>
+        <div className="mx-auto hidden max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8 lg:flex">
+          <nav aria-label="Primary" className="flex min-w-0 flex-1 items-center gap-x-5 xl:gap-x-7">
             {publicNav.map((item) => (
               <SiteLink
                 key={item.href}
@@ -44,12 +49,9 @@ export function Header() {
           </nav>
           <Link
             href="/contact"
-            className="hidden min-h-11 shrink-0 items-center whitespace-nowrap rounded-full bg-oxide-deep px-4 text-sm font-semibold text-paper card-shadow hover:bg-oxide-ink lg:inline-flex"
+            className="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-full bg-oxide-deep px-4 text-sm font-semibold text-paper card-shadow hover:bg-oxide-ink"
           >
             Contact the practice
-          </Link>
-          <Link href="/" aria-label="Home" className="ml-auto inline-flex min-h-11 shrink-0 items-center lg:hidden">
-            <BrandLogo alt="" className="h-8 w-auto" />
           </Link>
         </div>
       </header>

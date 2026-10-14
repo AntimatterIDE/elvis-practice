@@ -1,5 +1,5 @@
 import { practice, publicNav } from "@/lib/site";
-import { BrandMark } from "@/components/site/brand";
+import { BrandMark, PracticeName } from "@/components/site/brand";
 import { SiteLink } from "@/components/site/site-link";
 
 const linkClass = "inline-flex min-h-11 items-center text-paper/90 hover:text-foam";
@@ -11,7 +11,11 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-4">
             <BrandMark tone="reverse" className="size-16" />
-            <p className="font-display text-xl font-medium leading-tight">{practice.name}</p>
+            <PracticeName
+              tone="pine"
+              goldClassName="font-display text-2xl font-medium leading-tight"
+              blueClassName="mt-1 font-display text-3xl font-semibold leading-tight md:text-4xl"
+            />
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-paper/90">
             Orthopedic spine surgery with {practice.physicianName}. Fellowship-trained at Harvard after an orthopedic residency at the Mayo Clinic.
