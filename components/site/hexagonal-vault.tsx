@@ -997,7 +997,7 @@ export const HexagonalVault = ({
         ...style,
       }}
     >
-      <div className="absolute inset-0" aria-hidden="true">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-dvh" aria-hidden="true">
         <Canvas
           dpr={pixelRatio}
           frameloop={visible && animated ? "always" : "demand"}
