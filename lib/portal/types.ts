@@ -194,6 +194,10 @@ export type PortalStore = {
   revoke: (token: string) => Promise<void>;
   home: (patientId: string) => Promise<PatientPortalView | null>;
   roster: () => Promise<PortalResult<{ patients: Patient[]; appointments: Appointment[] }>>;
-  pushCharts: (input: { patients: Patient[]; appointments: Appointment[] }) => Promise<PortalResult<{ saved: number }>>;
+  pushCharts: (input: {
+    patients: Patient[];
+    appointments: Appointment[];
+    removedAppointmentIds?: string[];
+  }) => Promise<PortalResult<{ saved: number }>>;
   removePatients: (ids: string[]) => Promise<PortalResult<{ removed: number }>>;
 };

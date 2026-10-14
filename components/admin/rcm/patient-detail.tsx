@@ -433,7 +433,7 @@ function Demographics({
         >
           Remove
         </Button>
-        {saved ? <span className="text-sm text-oxide">Saved in this browser.</span> : null}
+        {saved ? <span className="text-sm text-oxide">Saved for the practice.</span> : null}
       </div>
     </form>
   );

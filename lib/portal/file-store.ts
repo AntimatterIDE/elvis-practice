@@ -166,10 +166,10 @@ export const fileStore: PortalStore = {
   async roster() {
     return { ok: true, value: rosterFrom(await readDb()) };
   },
-  pushCharts(input: { patients: Patient[]; appointments: Appointment[] }) {
+  pushCharts(input: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds?: string[] }) {
     return update((db) => ({
       ok: true,
-      db: pushCharts(db, input.patients, input.appointments),
+      db: pushCharts(db, input.patients, input.appointments, new Date(), input.removedAppointmentIds ?? []),
       value: { saved: input.patients.length },
     }));
   },

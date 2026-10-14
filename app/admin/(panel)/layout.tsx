@@ -30,7 +30,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
           <p className="text-xs text-neutral-500">{staff.role}</p>
           {staff.userId === "demo-admin" ? (
             <p className="text-xs leading-relaxed text-neutral-500">
-              Demo desk. Intake and portal logins are saved on the server. Other charts stay in this browser until a patient login is created.
+              Patients and scheduled visits are shared with every staff login.
             </p>
           ) : null}
           <form action={signOut}>

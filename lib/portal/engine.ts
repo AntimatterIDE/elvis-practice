@@ -388,23 +388,58 @@ export function revokeSession(db: PortalDb, tokenHash: string): PortalDb {
   return { ...db, sessions: db.sessions.filter((session) => session.tokenHash !== tokenHash) };
 }
 
-export function pushCharts(db: PortalDb, patients: Patient[], appointments: Appointment[], now = new Date()): PortalDb {
-  const ids = new Set(patients.map((patient) => patient.id));
-  const known = new Set(db.patients.filter((patient) => ids.has(patient.id)).map((patient) => patient.id));
-  if (!known.size) return db;
+export function pushCharts(
+  db: PortalDb,
+  patients: Patient[],
+  appointments: Appointment[],
+  now = new Date(),
+  removedAppointmentIds: string[] = [],
+): PortalDb {
+  const accepted = patients.filter((chart) => chart?.id && assertChart(chart, chart.id) === null).slice(0, 100);
+  if (!accepted.length) return db;
+  const acceptedIds = new Set(accepted.map((chart) => chart.id));
+  const existingIds = new Set(db.patients.map((patient) => patient.id));
+  let nextMrn = db.nextMrn;
+  const created: PortalDb["patients"] = [];
+  for (const chart of accepted) {
+    if (existingIds.has(chart.id)) continue;
+    const mrn = chart.mrn.trim() || String(nextMrn);
+    if (!chart.mrn.trim()) nextMrn += 1;
+    created.push({
+      id: chart.id,
+      mrn,
+      chart: { ...chart, id: chart.id, mrn, intakeAnswers: chart.intakeAnswers ?? [] },
+      answers: {},
+      fields: [],
+      updatedAt: now.toISOString(),
+    });
+  }
   const nextPatients = db.patients.map((patient) => {
-    if (!known.has(patient.id)) return patient;
-    const chart = patients.find((item) => item.id === patient.id);
+    if (!acceptedIds.has(patient.id)) return patient;
+    const chart = accepted.find((item) => item.id === patient.id);
     if (!chart) return patient;
     return {
       ...patient,
-      chart: { ...chart, id: patient.id, mrn: patient.mrn || chart.mrn, intakeAnswers: chart.intakeAnswers ?? patient.chart.intakeAnswers },
+      chart: {
+        ...chart,
+        id: patient.id,
+        mrn: patient.mrn || chart.mrn,
+        intakeAnswers: chart.intakeAnswers ?? patient.chart.intakeAnswers,
+      },
       updatedAt: now.toISOString(),
     };
   });
-  const kept = db.visits.filter((visit) => !known.has(visit.patientId));
-  const incoming = appointments.filter((visit) => known.has(visit.patientId)).slice(0, 500);
-  return { ...db, patients: nextPatients, visits: [...incoming, ...kept] };
+  const drop = new Set(removedAppointmentIds.filter((id) => id.length > 0 && id.length < 80));
+  const incoming = appointments
+    .filter((visit) => acceptedIds.has(visit.patientId) && visit.id && !drop.has(visit.id))
+    .slice(0, 500);
+  const incomingIds = new Set(incoming.map((visit) => visit.id));
+  const kept = db.visits.filter((visit) => {
+    if (incomingIds.has(visit.id)) return false;
+    if (drop.has(visit.id) && acceptedIds.has(visit.patientId)) return false;
+    return true;
+  });
+  return { ...db, nextMrn, patients: [...created, ...nextPatients], visits: [...incoming, ...kept] };
 }
 
 export function removePatients(db: PortalDb, ids: string[]): PortalDb {

@@ -247,30 +247,23 @@ async function persistDiff(before: PortalDb, after: PortalDb) {
     if (error) return error;
   }
 
-  const touched = new Set<string>();
   for (const visit of after.visits) {
     const prev = before.visits.find((item) => item.id === visit.id);
-    if (!prev || JSON.stringify(prev) !== JSON.stringify(visit)) touched.add(visit.patientId);
+    if (prev && JSON.stringify(prev) === JSON.stringify(visit)) continue;
+    const saved = await supabase.from("portal_visits").upsert({
+      id: visit.id,
+      patient_id: visit.patientId,
+      appointment: asJson(visit),
+      start_at: visit.start,
+    });
+    const error = failed(saved.error);
+    if (error) return error;
   }
   for (const visit of before.visits) {
-    if (!after.visits.some((item) => item.id === visit.id)) touched.add(visit.patientId);
-  }
-  for (const patientId of touched) {
-    const removed = await supabase.from("portal_visits").delete().eq("patient_id", patientId);
+    if (after.visits.some((item) => item.id === visit.id)) continue;
+    const removed = await supabase.from("portal_visits").delete().eq("id", visit.id);
     const error = failed(removed.error);
     if (error) return error;
-    const rows = after.visits.filter((visit) => visit.patientId === patientId);
-    if (!rows.length) continue;
-    const inserted = await supabase.from("portal_visits").insert(
-      rows.map((visit) => ({
-        id: visit.id,
-        patient_id: visit.patientId,
-        appointment: asJson(visit),
-        start_at: visit.start,
-      })),
-    );
-    const insertError = failed(inserted.error);
-    if (insertError) return insertError;
   }
 
   for (const session of after.sessions) {
@@ -292,14 +285,23 @@ async function persistDiff(before: PortalDb, after: PortalDb) {
   return null;
 }
 
+let mutationChain: Promise<unknown> = Promise.resolve();
+
 async function mutate<T>(run: (db: PortalDb) => Promise<Mutation<T>> | Mutation<T>): Promise<PortalResult<T>> {
-  const loaded = await loadDb();
-  if (!loaded.ok) return loaded;
-  const outcome = await run(loaded.db);
-  if (!outcome.ok) return outcome;
-  const error = await persistDiff(loaded.db, outcome.db);
-  if (error) return { ok: false, error };
-  return { ok: true, value: outcome.value };
+  const result = mutationChain.then(async () => {
+    const loaded = await loadDb();
+    if (!loaded.ok) return loaded;
+    const outcome = await run(loaded.db);
+    if (!outcome.ok) return outcome;
+    const error = await persistDiff(loaded.db, outcome.db);
+    if (error) return { ok: false as const, error };
+    return { ok: true as const, value: outcome.value };
+  });
+  mutationChain = result.then(
+    () => undefined,
+    () => undefined,
+  );
+  return result;
 }
 
 export const supabaseStore: PortalStore = {
@@ -403,7 +405,7 @@ export const supabaseStore: PortalStore = {
   pushCharts(input) {
     return mutate((db) => ({
       ok: true,
-      db: pushCharts(db, input.patients, input.appointments),
+      db: pushCharts(db, input.patients, input.appointments, new Date(), input.removedAppointmentIds ?? []),
       value: { saved: input.patients.length },
     }));
   },
