@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
 import { IconArrow } from "@/components/site/icons";
 
 const journey = [
@@ -24,8 +21,6 @@ const journey = [
 ];
 
 export function HomeJourney() {
-  const reduce = useReducedMotion();
-
   return (
     <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20" aria-labelledby="journey-heading">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -41,13 +36,9 @@ export function HomeJourney() {
         </Link>
       </div>
       <ol className="relative mt-12 grid gap-10 md:grid-cols-4 md:gap-8">
-        <motion.span
+        <span
           aria-hidden="true"
-          className="absolute left-5 top-5 hidden h-px w-[calc(75%+1.5rem)] origin-left bg-oxide/50 md:block"
-          initial={reduce ? false : { scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute left-5 top-5 hidden h-px w-[calc(75%+1.5rem)] bg-oxide/50 md:block"
         />
         {journey.map((step, index) => (
           <li key={step.label} className="relative pl-14 md:pl-0">

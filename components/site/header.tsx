@@ -29,7 +29,7 @@ export function Header() {
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-3 md:px-8">
           <MobileNav />
           <Link href="/" className="hidden min-h-11 shrink-0 items-center lg:flex">
-            <BrandLogo priority className="h-10 w-auto" />
+            <BrandLogo className="h-10 w-auto" />
           </Link>
           <nav aria-label="Primary" className="hidden min-w-0 flex-1 items-center justify-center gap-x-5 xl:gap-x-7 lg:flex">
             {publicNav.map((item) => (
