@@ -14,7 +14,7 @@ export function PracticeName({
 }) {
   return (
     <span className={cn("block", className)}>
-      <span className={cn("block", tone === "pine" ? "text-gold-soft" : "text-gold", goldClassName)}>
+      <span className={cn("block", tone === "pine" ? "text-paper" : "text-ink", goldClassName)}>
         {practiceName.gold}
       </span>
       <span className={cn("block", tone === "pine" ? "text-clinic-blue-soft" : "text-clinic-blue", blueClassName)}>
