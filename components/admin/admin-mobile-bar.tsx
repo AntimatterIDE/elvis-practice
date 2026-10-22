@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { signOut } from "@/app/admin/actions";
 import { AdminNav, currentDeskLabel } from "@/components/admin/admin-nav";
 import { BrandMark } from "@/components/site/brand";
+import { PracticeZeroCredit } from "@/components/site/practice-zero";
 import { practice } from "@/lib/site";
 
 export function AdminMobileBar({ name, role }: { name: string; role: string }) {
@@ -39,6 +40,7 @@ export function AdminMobileBar({ name, role }: { name: string; role: string }) {
           <div className="mt-4 border-t border-neutral-200 px-3 pt-4">
             <p className="text-[13px] font-medium text-neutral-900">{name}</p>
             <p className="mt-0.5 text-xs text-neutral-500">{role}</p>
+            <PracticeZeroCredit tone="light" className="mt-3" />
             <form action={signOut} className="mt-3">
               <button className="text-[13px] text-neutral-600 underline decoration-neutral-300 underline-offset-4">Sign out</button>
             </form>

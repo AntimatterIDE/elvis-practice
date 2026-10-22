@@ -5,6 +5,7 @@ import { AdminMobileBar } from "@/components/admin/admin-mobile-bar";
 import { PortalBridge } from "@/components/admin/rcm/portal-bridge";
 import { RcmProvider } from "@/components/admin/rcm/store";
 import { BrandMark } from "@/components/site/brand";
+import { PracticeZeroCredit } from "@/components/site/practice-zero";
 import { getStaffSession } from "@/lib/supabase/session";
 import { practice } from "@/lib/site";
 
@@ -28,6 +29,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
         <div className="shrink-0 space-y-2 bg-neutral-100/70 p-3">
           <p className="truncate text-[13px] font-medium text-neutral-900">{staff.displayName}</p>
           <p className="text-xs text-neutral-500">{staff.role}</p>
+          <PracticeZeroCredit tone="light" className="pt-1" />
           {staff.userId === "demo-admin" ? (
             <p className="text-xs leading-relaxed text-neutral-500">
               Patients and scheduled visits are shared with every staff login.

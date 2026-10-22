@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PracticeZeroCredit } from "@/components/site/practice-zero";
 import { cn } from "@/lib/utils";
 
 export const deskFrame =
@@ -111,6 +112,7 @@ export function ChartMast({
         <div className="mt-4 text-center">
           <h1 className="text-2xl font-medium tracking-[-0.02em] text-neutral-900 sm:text-3xl">{name}</h1>
           <p className="mt-1.5 text-sm text-neutral-500">{handle}</p>
+          <PracticeZeroCredit tone="light" className="mt-3" />
           {line ? <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-neutral-500">{line}</p> : null}
         </div>
         <dl className="mt-6 flex items-stretch justify-center divide-x divide-neutral-200 border-y border-neutral-200 py-4">
