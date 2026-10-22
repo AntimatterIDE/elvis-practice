@@ -312,6 +312,8 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
           idempotencyKey: input.idempotencyKey || crypto.randomUUID(),
           controlNumber: `AC${crypto.randomUUID().replaceAll("-", "").slice(0, 10).toUpperCase()}`,
           events: [],
+          clinicalNote: input.clinicalNote ?? "",
+          attachments: [],
           createdAt: now,
           updatedAt: now,
         };

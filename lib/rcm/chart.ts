@@ -212,6 +212,8 @@ export function normalizeClaim(claim: Claim): Claim {
     lines: (claim.lines ?? []).map((line) => normalizeLine(line)),
     events: stored.events ?? [],
     idempotencyKey: stored.idempotencyKey || claim.id,
+    clinicalNote: typeof stored.clinicalNote === "string" ? stored.clinicalNote : "",
+    attachments: Array.isArray(stored.attachments) ? stored.attachments : [],
   };
 }
 

@@ -184,6 +184,13 @@ export type ClaimEvent = {
   summary: string;
 };
 
+export type ClaimAttachment = {
+  path: string;
+  name: string;
+  contentType: string;
+  size: number;
+};
+
 export type Claim = {
   id: string;
   patientId: string;
@@ -217,6 +224,8 @@ export type Claim = {
   adjustmentAmount?: number | null;
   patientResponsibility?: number | null;
   remitOutcome?: RemitOutcome;
+  clinicalNote: string;
+  attachments: ClaimAttachment[];
 };
 
 export type ServiceLineInput = {
@@ -247,6 +256,7 @@ export type ClaimInput = {
   holdReason?: string;
   demoScenario?: DemoScenario;
   idempotencyKey?: string;
+  clinicalNote?: string;
 };
 
 export type Vitals = {

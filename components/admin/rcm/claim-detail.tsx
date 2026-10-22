@@ -8,6 +8,7 @@ import { claimTotal, formatDay, formatWhen, money, patientName } from "@/lib/rcm
 import { claimSubmissionInput } from "@/lib/rcm/submit-input";
 import type { Claim, ClaimStatus } from "@/lib/rcm/types";
 import { AccountNoteDialog } from "@/components/admin/rcm/account-note";
+import { ClaimPapers } from "@/components/admin/rcm/claim-files";
 import { applyClaimEvent } from "@/components/admin/rcm/demo-billing";
 import { LoadingDesk, PageHeader, StatusPill } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
@@ -99,6 +100,7 @@ export function ClaimDetail({ id }: { id: string }) {
           </li>
         ))}
       </ul>
+      <ClaimPapers patientId={patient.id} claim={claim} onChange={(patch) => updateClaim(claim.id, patch)} />
       <div className="mt-6 flex flex-wrap gap-2">
         {claim.status === "draft" || claim.status === "held" || claim.status === "ready" ? (
           <Button asChild variant="secondary">
