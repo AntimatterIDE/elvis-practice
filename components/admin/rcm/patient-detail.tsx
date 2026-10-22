@@ -159,7 +159,7 @@ export function PatientDetail({ id }: { id: string }) {
         {tab === "visits" ? <Visits visits={relatedVisits} onUpdate={updateAppointment} /> : null}
         {tab === "documents" ? <Documents patient={patient} /> : null}
         {tab === "files" ? <ChartFiles patient={patient} onSave={patchPatient} /> : null}
-        {tab === "billing" ? <Billing claims={claims.filter((claim) => claim.patientId === id)} /> : null}
+        {tab === "billing" ? <Billing patientId={id} claims={claims.filter((claim) => claim.patientId === id)} /> : null}
       </div>
     </main>
   );
@@ -1109,12 +1109,17 @@ function Documents({ patient }: { patient: Patient }) {
   );
 }
 
-function Billing({ claims }: { claims: Claim[] }) {
+function Billing({ patientId, claims }: { patientId: string; claims: Claim[] }) {
   return (
     <section>
-      <p className="max-w-2xl text-sm text-muted">
-        The billing team files and follows these claims. The practice keeps the chart, the schedule, and what is collected at the visit.
-      </p>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <p className="max-w-2xl text-sm text-muted">
+          Start a claim for this patient when the visit was not written in the scribe. Claims already on this chart are listed below.
+        </p>
+        <Button asChild>
+          <Link href={`/admin/operations/claims/new?patient=${encodeURIComponent(patientId)}`}>New claim</Link>
+        </Button>
+      </div>
       <ul className="mt-4 divide-y divide-line border-y border-line">
         {claims.length === 0 ? <li className="py-3 text-sm text-muted">No claims on this chart.</li> : null}
         {claims.map((claim) => (

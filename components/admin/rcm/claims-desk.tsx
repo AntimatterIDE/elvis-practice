@@ -48,13 +48,30 @@ export function ClaimsDesk({ approvedVisits = [] }: { approvedVisits?: Encounter
       <PageHeader
         kicker="Billing"
         title="Coding"
-        lede="Treated visits wait here until the charges are reviewed. Ready for Bill only moves a case to review. Submit claim files a real claim with the production key."
-        action={<DemoBilling />}
+        lede="Start a claim here when the visit was not written in the scribe. Approved scribe visits still arrive below with their codes. Ready for Bill only moves a case to review. Submit claim files a real claim with the production key."
+        action={
+          <div className="flex flex-wrap items-start justify-end gap-2">
+            <Button asChild>
+              <Link href="/admin/operations/claims/new">New claim</Link>
+            </Button>
+            <DemoBilling />
+          </div>
+        }
       />
 
       <section className="mt-8">
+        <h2 className="font-display text-2xl">New claim</h2>
+        <p className="mt-2 max-w-2xl text-sm text-muted">
+          Choose the patient, then enter the date, codes, and charge. Add the visit note and upload the papers if they were not taken in the scribe.
+        </p>
+        <Button asChild className="mt-4">
+          <Link href="/admin/operations/claims/new">Start a claim</Link>
+        </Button>
+      </section>
+
+      <section className="mt-10">
         <h2 className="font-display text-2xl">Approved visits</h2>
-        <p className="mt-2 max-w-2xl text-sm text-muted">A visit lands here after the doctor approves the note and the codes. Opening it starts the claim with those codes.</p>
+        <p className="mt-2 max-w-2xl text-sm text-muted">A scribe visit lands here after the doctor approves the note and the codes. Opening it starts the claim with those codes.</p>
         <ul className="mt-4 grid gap-3">
           {readyVisits.length === 0 ? <li className="text-sm text-muted">No approved visits are waiting.</li> : null}
           {readyVisits.map((encounter) => {
