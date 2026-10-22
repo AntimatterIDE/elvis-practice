@@ -23,6 +23,7 @@ import { PatientReach } from "@/components/admin/rcm/patient-reach";
 import { ChartFiles } from "@/components/admin/rcm/chart-files";
 import { SendAgreement } from "@/components/admin/rcm/send-agreement";
 import { PortalAccess } from "@/components/admin/rcm/portal-access";
+import { PortalMail } from "@/components/admin/rcm/portal-mail";
 import { ChartMast, ChartTabs } from "@/components/admin/bits/surface";
 import { Field, LoadingDesk, StatusPill, fieldClass, panelClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
 import { recordVisitHref } from "@/lib/rcm/record-visit";
@@ -182,6 +183,7 @@ function Overview({
   return (
     <div className="grid gap-4 lg:grid-cols-2">
       <PortalAccess patient={patient} />
+      <PortalMail patientId={patient.id} patientName={patientName(patient)} />
       {patient.intakeAnswers?.length ? (
         <section className={`${panelClass} lg:col-span-2`}>
           <h2 className="font-display text-2xl">Intake answers</h2>

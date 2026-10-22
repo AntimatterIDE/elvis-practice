@@ -8,16 +8,20 @@ import {
   createInvite,
   createSession,
   findInvite,
+  addPortalMessage,
   issueLogin,
   markPortalActive,
+  notePortalFile,
   pushCharts,
   readSession,
   revokeSession,
   saveForm,
+  seePortalMessages,
   sessionExpiry,
   submitIntake,
   type Mutation,
 } from "@/lib/portal/engine";
+import { answersWithMailbox, attachMailbox } from "@/lib/portal/mailbox";
 import { generatePassword, hashPassword, hashToken, newToken, verifyPassword } from "@/lib/portal/password";
 import type {
   IntakeField,
@@ -118,14 +122,16 @@ async function loadDb(): Promise<{ ok: true; db: PortalDb } | { ok: false; error
   for (const row of patients.data ?? []) {
     const chart = asPatient(row.chart, row.id, row.mrn);
     if (!chart) continue;
-    patientRows.push({
-      id: row.id,
-      mrn: row.mrn,
-      chart,
-      answers: asRecord(row.answers),
-      fields: asFields(row.fields),
-      updatedAt: row.updated_at,
-    });
+    patientRows.push(
+      attachMailbox({
+        id: row.id,
+        mrn: row.mrn,
+        chart,
+        answers: asRecord(row.answers),
+        fields: asFields(row.fields),
+        updatedAt: row.updated_at,
+      }),
+    );
   }
 
   const submissionRows: IntakeSubmission[] = (submissions.data ?? []).map((row) => ({
@@ -211,7 +217,7 @@ async function persistDiff(before: PortalDb, after: PortalDb) {
       id: patient.id,
       mrn: patient.mrn,
       chart: asJson(patient.chart),
-      answers: asJson(patient.answers),
+      answers: asJson(answersWithMailbox(patient.answers, patient.messages)),
       fields: asJson(patient.fields),
       created_at: patient.chart.createdAt || patient.updatedAt,
       updated_at: patient.updatedAt,
@@ -426,5 +432,19 @@ export const supabaseStore: PortalStore = {
     const patientError = failed(patients.error);
     if (patientError) return { ok: false, error: patientError };
     return { ok: true, value: { removed: unique.length } };
+  },
+  async messagesFor(patientId) {
+    const loaded = await loadDb();
+    if (!loaded.ok) return [];
+    return loaded.db.patients.find((patient) => patient.id === patientId)?.messages ?? [];
+  },
+  sendMessage(input) {
+    return mutate((db) => addPortalMessage(db, input));
+  },
+  seeMessages(patientId, side) {
+    return mutate((db) => seePortalMessages(db, patientId, side));
+  },
+  noteFile(patientId, slotId) {
+    return mutate((db) => notePortalFile(db, patientId, slotId));
   },
 };

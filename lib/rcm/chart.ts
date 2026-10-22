@@ -33,6 +33,11 @@ const documentSlots: [string, string][] = [
   ["hospital-records", "Hospital or surgery records"],
 ];
 
+export function documentName(id: string) {
+  if (id === "portal-files") return "Files from the patient portal";
+  return documentSlots.find(([slot]) => slot === id)?.[1] ?? "Document";
+}
+
 export function defaultDocuments(): ChartDocument[] {
   return documentSlots.map(([id, name]) => ({
     id,

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { portalSignOutAction } from "@/app/portal/actions";
 import { visitTypeLabel } from "@/lib/rcm/chart";
@@ -31,7 +32,8 @@ export default async function PortalHomePage() {
   if (!home) redirect("/portal/login");
 
   const { upcoming, earlier } = splitPortalVisits(home.visits);
-  const needed = home.documents.filter((document) => document.status === "missing");
+  const asked = new Set(["Photo ID", "Insurance card", "New patient intake"]);
+  const needed = home.documents.filter((document) => document.status === "missing" && asked.has(document.name));
   const onFile = home.documents.filter((document) => document.status !== "missing");
   const greeting = home.preferredName || home.firstName;
   const next = upcoming[0];
@@ -43,7 +45,7 @@ export default async function PortalHomePage() {
           <p className="kicker text-oxide-deep">Your record</p>
           <h1 className="mt-2 font-display text-4xl font-medium leading-tight sm:text-5xl">Hello, {greeting}</h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
-            This is what the practice has on file for you. Call them if a phone number, pharmacy, or insurance card should change.
+            This is what the practice has on file for you. Send them a message, or upload a card, if a phone number, pharmacy, or insurance card should change.
           </p>
         </div>
         <form action={portalSignOutAction}>
@@ -68,6 +70,17 @@ export default async function PortalHomePage() {
         )}
         {upcoming.length > 1 ? <VisitList visits={upcoming.slice(1)} tone="dark" /> : null}
       </section>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Link href="/portal/messages" className="rounded-3xl border border-line bg-card p-6">
+          <p className="kicker text-oxide-deep">Messages</p>
+          <p className="mt-2 font-display text-2xl font-medium leading-tight">Talk with the practice</p>
+        </Link>
+        <Link href="/portal/documents" className="rounded-3xl border border-line bg-card p-6">
+          <p className="kicker text-oxide-deep">Documents</p>
+          <p className="mt-2 font-display text-2xl font-medium leading-tight">Cards, IDs, and forms</p>
+        </Link>
+      </div>
 
       <section className="rounded-3xl border border-line bg-card p-6">
         <h2 className="font-display text-2xl font-medium leading-tight">On your chart</h2>
@@ -123,6 +136,9 @@ export default async function PortalHomePage() {
             ))}
           </ul>
         ) : null}
+        <Link href="/portal/documents" className="mt-4 inline-flex text-sm font-medium text-oxide-deep underline decoration-oxide-deep/30 underline-offset-4">
+          Upload a document to your profile
+        </Link>
       </section>
 
       {earlier.length ? (

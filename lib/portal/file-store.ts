@@ -8,17 +8,21 @@ import {
   createPortalDb,
   createSession,
   findInvite,
+  addPortalMessage,
   issueLogin,
   markPortalActive,
+  notePortalFile,
   pushCharts,
   readSession,
   removePatients,
   revokeSession,
   saveForm,
+  seePortalMessages,
   sessionExpiry,
   submitIntake,
   type Mutation,
 } from "@/lib/portal/engine";
+import { attachMailbox } from "@/lib/portal/mailbox";
 import { generatePassword, hashPassword, hashToken, newToken, verifyPassword } from "@/lib/portal/password";
 import type { IntakeForm, PortalDb, PortalResult, PortalStore, PublicInviteResult } from "@/lib/portal/types";
 import { rosterFrom, toAdminSnapshot, toPortalView } from "@/lib/portal/view";
@@ -41,7 +45,7 @@ async function readDb(): Promise<PortalDb> {
       form: parsed.form,
       invites: parsed.invites ?? [],
       submissions: parsed.submissions ?? [],
-      patients: parsed.patients ?? [],
+      patients: (parsed.patients ?? []).map((patient) => attachMailbox(patient)),
       accounts: parsed.accounts ?? [],
       visits: parsed.visits ?? [],
       sessions: parsed.sessions ?? [],
@@ -179,5 +183,18 @@ export const fileStore: PortalStore = {
       db: removePatients(db, ids),
       value: { removed: ids.length },
     }));
+  },
+  async messagesFor(patientId) {
+    const db = await readDb();
+    return db.patients.find((patient) => patient.id === patientId)?.messages ?? [];
+  },
+  sendMessage(input) {
+    return update((db) => addPortalMessage(db, input));
+  },
+  seeMessages(patientId, side) {
+    return update((db) => seePortalMessages(db, patientId, side));
+  },
+  noteFile(patientId, slotId) {
+    return update((db) => notePortalFile(db, patientId, slotId));
   },
 };

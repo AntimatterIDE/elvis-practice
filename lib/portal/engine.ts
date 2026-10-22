@@ -1,4 +1,4 @@
-import { defaultDocuments, withChart } from "@/lib/rcm/chart";
+import { defaultDocuments, withChart, withDocumentSlots } from "@/lib/rcm/chart";
 import type { Appointment, Patient, Sex } from "@/lib/rcm/types";
 import { CHART_FIELDS, LOCKED_FIELD_IDS, defaultIntakeForm } from "@/lib/portal/defaults";
 import { newToken } from "@/lib/portal/password";
@@ -9,6 +9,7 @@ import type {
   IntakeInvite,
   IntakeMap,
   PortalDb,
+  PortalMessage,
   PortalPatientRecord,
 } from "@/lib/portal/types";
 
@@ -262,6 +263,7 @@ export function submitIntake(db: PortalDb, token: string, raw: Record<string, st
     chart,
     answers: cleaned.answers,
     fields: db.form.fields,
+    messages: [],
     updatedAt: now.toISOString(),
   };
   return {
@@ -332,6 +334,7 @@ export function issueLogin(
     chart,
     answers: existing?.answers ?? {},
     fields: existing?.fields ?? [],
+    messages: existing?.messages ?? [],
     updatedAt: now.toISOString(),
   };
   const account = {
@@ -412,6 +415,7 @@ export function pushCharts(
       chart: { ...chart, id: chart.id, mrn, intakeAnswers: chart.intakeAnswers ?? [] },
       answers: {},
       fields: [],
+      messages: [],
       updatedAt: now.toISOString(),
     });
   }
@@ -464,4 +468,79 @@ export function accountFor(db: PortalDb, patientId: string) {
 
 export function accountByEmail(db: PortalDb, email: string) {
   return db.accounts.find((account) => account.email === email.trim().toLowerCase()) ?? null;
+}
+
+export function addPortalMessage(
+  db: PortalDb,
+  input: { patientId: string; from: PortalMessage["from"]; author: string; body: string },
+  now = new Date(),
+): Mutation<PortalMessage[]> {
+  const patient = db.patients.find((item) => item.id === input.patientId);
+  if (!patient) return fail("That record is not on the portal.");
+  const body = input.body.trim().replace(/\s+/g, " ");
+  if (!body) return fail("Write a message before sending.");
+  if (body.length > 2000) return fail("Keep the message under 2,000 characters.");
+  const from = input.from === "practice" ? "practice" : "patient";
+  const recent = (patient.messages ?? []).filter(
+    (item) => item.from === from && Date.parse(item.createdAt) > now.getTime() - 60 * 60 * 1000,
+  );
+  if (recent.length >= 30) return fail("Too many messages. Wait a little and try again.");
+  const author = input.author.trim().slice(0, 80) || (from === "patient" ? "Patient" : "The practice");
+  const message: PortalMessage = {
+    id: newId("msg"),
+    from,
+    author,
+    body,
+    createdAt: now.toISOString(),
+    seenByPatient: from === "patient",
+    seenByPractice: from === "practice",
+  };
+  const messages = [...(patient.messages ?? []), message].slice(-200);
+  return {
+    ok: true,
+    value: messages,
+    db: {
+      ...db,
+      patients: db.patients.map((item) =>
+        item.id === patient.id ? { ...item, messages, updatedAt: now.toISOString() } : item,
+      ),
+    },
+  };
+}
+
+export function seePortalMessages(db: PortalDb, patientId: string, side: "patient" | "practice"): Mutation<PortalMessage[]> {
+  const patient = db.patients.find((item) => item.id === patientId);
+  if (!patient) return fail("That record is not on the portal.");
+  const key = side === "patient" ? "seenByPatient" : "seenByPractice";
+  const messages = (patient.messages ?? []).map((item) => (item[key] ? item : { ...item, [key]: true }));
+  return {
+    ok: true,
+    value: messages,
+    db: { ...db, patients: db.patients.map((item) => (item.id === patientId ? { ...item, messages } : item)) },
+  };
+}
+
+const portalFileSlots = new Set(["photo-id", "insurance-card", "portal-files"]);
+
+export function notePortalFile(db: PortalDb, patientId: string, slotId: string, now = new Date()): Mutation<null> {
+  const patient = db.patients.find((item) => item.id === patientId);
+  if (!patient) return fail("That record is not on the portal.");
+  if (!portalFileSlots.has(slotId)) return fail("Choose a document type.");
+  const current = withDocumentSlots(patient.chart.documents);
+  const documents = (current.some((document) => document.id === slotId)
+    ? current
+    : [...current, { id: slotId, name: "Files from the patient portal", status: "missing" as const, note: "" }]
+  ).map((document) => (document.id === slotId ? { ...document, status: "received" as const } : document));
+  return {
+    ok: true,
+    value: null,
+    db: {
+      ...db,
+      patients: db.patients.map((item) =>
+        item.id === patientId
+          ? { ...item, chart: { ...item.chart, documents }, updatedAt: now.toISOString() }
+          : item,
+      ),
+    },
+  };
 }

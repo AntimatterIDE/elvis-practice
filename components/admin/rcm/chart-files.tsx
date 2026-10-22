@@ -17,6 +17,7 @@ const hints: Record<string, string> = {
   "no-fault-comp": "The carrier's no-fault or workers' compensation papers. This page does not file with the carrier.",
   "medicare-form": "A completed Medicare form, such as an ABN. This page does not generate the CMS form.",
   "hospital-records": "Discharge papers, an operative note, or other hospital records.",
+  "portal-files": "Files the patient uploaded from the portal.",
 };
 
 const accept = "image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,application/pdf,video/mp4,video/quicktime,video/webm,.heic,.pdf,.mp4,.mov";
@@ -251,6 +252,31 @@ export function ChartFiles({
           </section>
         );
       })}
+      {files.some((file) => !patient.documents.some((document) => document.id === file.slotId) && !file.slotId.startsWith("claim-")) ? (
+        <section className="rounded-2xl border border-line bg-card p-4">
+          <h2 className="font-display text-2xl">Files from the patient portal</h2>
+          <p className="mt-1 text-sm text-muted">Uploaded by the patient. Photo ID and insurance cards also land on those items above.</p>
+          <ul className="mt-4 grid gap-3 text-sm">
+            {files
+              .filter((file) => !patient.documents.some((document) => document.id === file.slotId) && !file.slotId.startsWith("claim-"))
+              .map((file) => (
+                <li key={file.path} className="flex flex-wrap items-center gap-3">
+                  <span>
+                    {file.label}
+                    {file.size ? ` · ${sizeLabel(file.size)}` : ""}
+                  </span>
+                  {file.url ? (
+                    <Button variant="secondary" asChild>
+                      <a href={file.url} target="_blank" rel="noreferrer">
+                        Open
+                      </a>
+                    </Button>
+                  ) : null}
+                </li>
+              ))}
+          </ul>
+        </section>
+      ) : null}
       <form
         className="flex flex-wrap items-end gap-3"
         onSubmit={(event) => {

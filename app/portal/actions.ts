@@ -2,10 +2,12 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { listChartFiles, prepareChartUpload } from "@/lib/chart-files/store";
 import type { Appointment, Patient } from "@/lib/rcm/types";
 import { clearPortalCookie, readPortalCookie, writePortalCookie } from "@/lib/portal/cookie";
 import { getPortalStore } from "@/lib/portal/repository";
-import type { IntakeForm } from "@/lib/portal/types";
+import type { IntakeForm, PortalMessage } from "@/lib/portal/types";
+import { portalUploadSlot } from "@/lib/portal/uploads";
 import { rateLimit } from "@/lib/rate-limit";
 import { getStaffSession } from "@/lib/supabase/session";
 
@@ -120,4 +122,83 @@ export async function portalSignOutAction() {
   await getPortalStore().revoke(token);
   await clearPortalCookie();
   redirect("/portal/login");
+}
+
+async function signedInPatient() {
+  return getPortalStore().patientIdForToken(await readPortalCookie());
+}
+
+export async function sendPortalMessageAction(body: string): Promise<{ error: string } | { messages: PortalMessage[] }> {
+  const patientId = await signedInPatient();
+  if (!patientId) return { error: "Sign in required." };
+  if (!rateLimit(await clientKey(`portal-message:${patientId}`), 20, 10 * 60 * 1000)) {
+    return { error: "Too many messages. Wait a few minutes and try again." };
+  }
+  const home = await getPortalStore().home(patientId);
+  const author = home?.preferredName || home?.firstName || "Patient";
+  const result = await getPortalStore().sendMessage({ patientId, from: "patient", author, body });
+  if (!result.ok) return { error: result.error };
+  return { messages: result.value };
+}
+
+export async function staffPortalThreadAction(patientId: string): Promise<{ error: string } | { messages: PortalMessage[] }> {
+  if (!(await getStaffSession())) return { error: "Sign in required." };
+  const seen = await getPortalStore().seeMessages(patientId, "practice");
+  if (!seen.ok) return { error: seen.error };
+  return { messages: seen.value };
+}
+
+export async function sendStaffPortalMessageAction(
+  patientId: string,
+  body: string,
+): Promise<{ error: string } | { messages: PortalMessage[] }> {
+  const staff = await getStaffSession();
+  if (!staff) return { error: "Sign in required." };
+  if (!rateLimit(await clientKey(`staff-portal-message:${staff.userId}`), 30, 10 * 60 * 1000)) {
+    return { error: "Too many messages. Wait a few minutes and try again." };
+  }
+  const result = await getPortalStore().sendMessage({
+    patientId,
+    from: "practice",
+    author: staff.displayName || "The practice",
+    body,
+  });
+  if (!result.ok) return { error: result.error };
+  return { messages: result.value };
+}
+
+export async function beginPortalUploadAction(input: { slotId: string; contentType: string; byteSize: number }) {
+  const patientId = await signedInPatient();
+  if (!patientId) return { ok: false as const, message: "Sign in required." };
+  if (!portalUploadSlot(input.slotId)) return { ok: false as const, message: "Choose a document type." };
+  if (!rateLimit(await clientKey(`portal-upload:${patientId}`), 20, 10 * 60 * 1000)) {
+    return { ok: false as const, message: "Too many uploads. Wait a few minutes and try again." };
+  }
+  const prepared = await prepareChartUpload({
+    patientId,
+    slotId: input.slotId,
+    contentType: input.contentType,
+    byteSize: input.byteSize,
+  });
+  if (!prepared.ok) return prepared;
+  return { ok: true as const, path: prepared.path, signedUrl: prepared.signedUrl };
+}
+
+export async function notePortalUploadAction(slotId: string) {
+  const patientId = await signedInPatient();
+  if (!patientId) return { error: "Sign in required." };
+  const result = await getPortalStore().noteFile(patientId, slotId);
+  if (!result.ok) return { error: result.error };
+  return { ok: true as const };
+}
+
+export async function portalFilesAction() {
+  const patientId = await signedInPatient();
+  if (!patientId) return { ok: false as const, message: "Sign in required.", files: [] };
+  const listed = await listChartFiles(patientId);
+  if (!listed.ok) return { ok: false as const, message: listed.message, files: [] };
+  return {
+    ok: true as const,
+    files: listed.files.filter((file) => !file.slotId.startsWith("claim-")),
+  };
 }
