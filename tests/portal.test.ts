@@ -2,7 +2,8 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { createInvite, createPortalDb, issueLogin, pushCharts, saveForm, submitIntake } from "@/lib/portal/engine";
+import { addPortalMessage, createInvite, createPortalDb, issueLogin, pushCharts, saveForm, submitIntake } from "@/lib/portal/engine";
+import { attachMailbox } from "@/lib/portal/mailbox";
 import { emptyVitals, withChart } from "@/lib/rcm/chart";
 import { fileStore } from "@/lib/portal/file-store";
 import { hashPassword, verifyPassword } from "@/lib/portal/password";
@@ -192,5 +193,59 @@ describe("patient intake", () => {
     if (!login.ok) return;
     const session = await fileStore.login("maya@example.com", login.value.password);
     expect(session.ok).toBe(true);
+    if (!session.ok) return;
+    const sent = await fileStore.sendMessage({
+      patientId: submitted.value.patientId,
+      from: "patient",
+      author: "Maya",
+      body: "Can I move Thursday?",
+    });
+    expect(sent.ok).toBe(true);
+    if (!sent.ok) return;
+    const reply = await fileStore.sendMessage({
+      patientId: submitted.value.patientId,
+      from: "practice",
+      author: "Front desk",
+      body: "Thursday still works.",
+    });
+    expect(reply.ok).toBe(true);
+    const thread = await fileStore.messagesFor(submitted.value.patientId);
+    expect(thread.map((message) => message.body)).toEqual(["Can I move Thursday?", "Thursday still works."]);
+    const seen = await fileStore.seeMessages(submitted.value.patientId, "patient");
+    expect(seen.ok).toBe(true);
+    if (!seen.ok) return;
+    expect(seen.value.every((message) => message.seenByPatient)).toBe(true);
+  });
+
+  it("keeps portal messages when the desk syncs the chart", () => {
+    const created = createInvite(createPortalDb(), { name: "Maya", email: "maya@example.com" });
+    if (!created.ok) return;
+    const submitted = submitIntake(created.db, created.value.token, answersFor(created.db));
+    if (!submitted.ok) return;
+    const patient = submitted.db.patients[0];
+    if (!patient) throw new Error("missing patient");
+    const sent = addPortalMessage(submitted.db, {
+      patientId: patient.id,
+      from: "patient",
+      author: "Maya",
+      body: "Can I move Thursday?",
+    });
+    expect(sent.ok).toBe(true);
+    if (!sent.ok) return;
+    const blank = addPortalMessage(sent.db, { patientId: patient.id, from: "patient", author: "Maya", body: "   " });
+    expect(blank.ok).toBe(false);
+    const synced = pushCharts(sent.db, [{ ...patient.chart, phone: "404-555-0100" }], []);
+    const kept = synced.patients.find((item) => item.id === patient.id);
+    expect(kept?.chart.phone).toBe("404-555-0100");
+    expect(kept?.messages?.[0]?.body).toBe("Can I move Thursday?");
+    const packed = attachMailbox({
+      ...patient,
+      answers: { ...patient.answers, __messages: JSON.stringify(sent.value) },
+      messages: [],
+    });
+    expect(packed.answers.__messages).toBeUndefined();
+    expect(packed.messages?.[0]?.body).toBe("Can I move Thursday?");
+    const view = toPortalView(packed, []);
+    expect(JSON.stringify(view.answers)).not.toContain("Thursday");
   });
 });

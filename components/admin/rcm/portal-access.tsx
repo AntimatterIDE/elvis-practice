@@ -59,7 +59,7 @@ export function PortalAccess({ patient }: { patient: Patient }) {
       <p className="mt-2 text-sm text-muted">
         {hasLogin
           ? "This patient can sign in with the email below. Resetting the password replaces the old one."
-          : "Create a login when you want this patient to see their profile and visits."}
+          : "Create a login when you want this patient to see their record, send a message, and upload a card or ID."}
       </p>
       <div className="mt-4 grid gap-3 sm:max-w-md">
         <Field label="Login email">

@@ -82,6 +82,16 @@ export type PortalSession = {
   expiresAt: string;
 };
 
+export type PortalMessage = {
+  id: string;
+  from: "patient" | "practice";
+  author: string;
+  body: string;
+  createdAt: string;
+  seenByPatient: boolean;
+  seenByPractice: boolean;
+};
+
 export type PortalPatientRecord = {
   id: string;
   mrn: string;
@@ -89,6 +99,7 @@ export type PortalPatientRecord = {
   answers: Record<string, string>;
   fields: IntakeField[];
   updatedAt: string;
+  messages?: PortalMessage[];
 };
 
 export type PortalDb = {
@@ -200,4 +211,13 @@ export type PortalStore = {
     removedAppointmentIds?: string[];
   }) => Promise<PortalResult<{ saved: number }>>;
   removePatients: (ids: string[]) => Promise<PortalResult<{ removed: number }>>;
+  messagesFor: (patientId: string) => Promise<PortalMessage[]>;
+  sendMessage: (input: {
+    patientId: string;
+    from: PortalMessage["from"];
+    author: string;
+    body: string;
+  }) => Promise<PortalResult<PortalMessage[]>>;
+  seeMessages: (patientId: string, side: "patient" | "practice") => Promise<PortalResult<PortalMessage[]>>;
+  noteFile: (patientId: string, slotId: string) => Promise<PortalResult<null>>;
 };
