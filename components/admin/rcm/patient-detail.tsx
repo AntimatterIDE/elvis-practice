@@ -34,7 +34,7 @@ const tabs = [
   ["schedule", "Schedule"],
   ["demographics", "Demographics"],
   ["case", "Case"],
-  ["coverage", "Coverage"],
+  ["coverage", "Insurance"],
   ["clinical", "Clinical"],
   ["visits", "Visits"],
   ["documents", "Documents"],
@@ -102,7 +102,7 @@ export function PatientDetail({ id }: { id: string }) {
           { value: age !== null ? String(age) : "—", label: "Age" },
           { value: nextVisit ? formatTime(nextVisit.start) : "None", label: "Next visit" },
           { value: String(openTasks.length), label: "Open tasks" },
-          { value: coverage ? coverage.payerName : "Self-pay", label: "Coverage" },
+          { value: coverage ? coverage.payerName : "Self-pay", label: "Insurance" },
         ]}
         links={reach}
       />
@@ -214,7 +214,7 @@ function Overview({
         </button>
       </section>
       <section className={panelClass}>
-        <h2 className="font-display text-2xl">Coverage</h2>
+        <h2 className="font-display text-2xl">Insurance</h2>
         {coverage ? (
           <p className="mt-3 text-sm">
             <span className="block font-semibold">
@@ -226,7 +226,7 @@ function Overview({
             </span>
           </p>
         ) : (
-          <p className="mt-3 text-sm text-muted">No coverage on file.</p>
+          <p className="mt-3 text-sm text-muted">No insurance on file.</p>
         )}
         <button type="button" className="mt-3 text-sm underline" onClick={() => onOpen("coverage")}>
           Insurance
@@ -595,7 +595,7 @@ function CoverageDesk({
 
   return (
     <div className="grid gap-4">
-      {patient.coverages.length === 0 ? <p className="text-sm text-muted">No coverage on file.</p> : null}
+      {patient.coverages.length === 0 ? <p className="text-sm text-muted">No insurance on file.</p> : null}
       {patient.coverages.map((coverage) => (
         <form
           key={coverage.id}
@@ -648,7 +648,7 @@ function CoverageDesk({
           </Field>
           <input type="hidden" name="rank" value={coverage.rank} />
           <div className="sm:col-span-2">
-            <Button type="submit">Save coverage</Button>
+            <Button type="submit">Save insurance</Button>
           </div>
         </form>
       ))}
