@@ -1,5 +1,6 @@
 import { practice, publicNav } from "@/lib/site";
 import { BrandMark, PracticeName } from "@/components/site/brand";
+import { PracticeZeroCredit } from "@/components/site/practice-zero";
 import { SiteLink } from "@/components/site/site-link";
 
 const linkClass = "inline-flex min-h-11 items-center text-paper/90 hover:text-foam";
@@ -59,6 +60,11 @@ export function Footer() {
             Patient login
           </SiteLink>
         </nav>
+      </div>
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-6xl justify-center px-5 py-6 md:px-8">
+          <PracticeZeroCredit />
+        </div>
       </div>
     </footer>
   );

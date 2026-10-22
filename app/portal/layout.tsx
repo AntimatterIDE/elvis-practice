@@ -9,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
-  return <ClinicFrame kicker={`${practice.physicianName} · Your record`}>{children}</ClinicFrame>;
+  return (
+    <ClinicFrame kicker={`${practice.physicianName} · Your record`} practiceZero>
+      {children}
+    </ClinicFrame>
+  );
 }

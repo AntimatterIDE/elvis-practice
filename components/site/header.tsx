@@ -2,12 +2,16 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/site/brand";
 import { MobileNav } from "@/components/site/mobile-nav";
 import { SiteLink } from "@/components/site/site-link";
+import { PracticeZeroCredit } from "@/components/site/practice-zero";
 import { practice, practiceName, publicNav } from "@/lib/site";
 
 export function Header() {
   return (
     <div className="site-bar sticky top-0 z-40 bg-card/90 backdrop-blur-md">
       <div className="bg-pine text-paper">
+        <div className="flex justify-center border-b border-white/10 px-5 py-1.5">
+          <PracticeZeroCredit />
+        </div>
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 text-xs md:px-8 md:text-sm">
           <p className="min-w-0 truncate">
             <span className="sm:hidden">New patients are welcome.</span>
