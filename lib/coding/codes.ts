@@ -122,7 +122,7 @@ export function buildCodeLibrary(icd10: unknown, procedures: unknown, ncci?: unk
       byCode: new Map(procedureEntries.map((entry) => [entry.code, entry])),
       list: procedureEntries,
     },
-    ncci: ncci ? buildNcciLibrary(ncci) : undefined,
+    ncci: ncci ? buildNcciLibrary(ncci as { ptp: unknown; mue: unknown; addon: unknown }) : undefined,
   };
 }
 
