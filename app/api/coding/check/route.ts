@@ -10,6 +10,7 @@ type LineBody = {
   modifiers?: unknown;
   diagnoses?: unknown;
   includeOnBill?: unknown;
+  units?: unknown;
 };
 
 export async function POST(request: Request) {
@@ -37,11 +38,13 @@ export async function POST(request: Request) {
     const diagnoses = Array.isArray(line.diagnoses)
       ? line.diagnoses.filter((value): value is string => typeof value === "string").map((value) => value.trim()).filter(Boolean)
       : [];
+    const units = typeof line.units === "number" ? line.units : Number(line.units);
     return {
       cpt: typeof line.cpt === "string" ? line.cpt.trim().toUpperCase() : "",
       modifiers,
       diagnoses,
       includeOnBill: line.includeOnBill !== false,
+      units: Number.isFinite(units) ? units : undefined,
     };
   });
   const problems = claimCodeProblems(codeLibrary(), { dateOfService, lines });
