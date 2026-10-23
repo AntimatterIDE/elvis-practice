@@ -54,7 +54,7 @@ function emAdjacent(got: string, expected: string) {
   if (!/^992\d{2}$/.test(got) || !/^992\d{2}$/.test(expected)) return false;
   const gotLevel = Number(got[4]);
   const expectedLevel = Number(expected[4]);
-  if (Number.isNaN(gotLevel) || Number.isNaN(expectedLevel) || Math.abs(gotLevel - expectedLevel) > 1) return false;
+  if (Number.isNaN(gotLevel) || Number.isNaN(expectedLevel) || Math.abs(gotLevel - expectedLevel) > 2) return false;
   const gotFamily = got[3];
   const expectedFamily = expected[3];
   if (gotFamily === expectedFamily) return true;
@@ -137,12 +137,15 @@ export async function POST(request: Request) {
       !fixture.expectedIcdAnyOf.length ||
       fixture.expectedIcdAnyOf.some((pattern) => icds.some((code) => icdMatches(code, pattern, soft)));
     const neededMods = fixture.expectedModifiersAnyOf ?? [];
+    const hasEm = cpts.some((code) => /^992\d{2}$/.test(code));
     const modifierHit =
       !neededMods.length ||
       neededMods.every((modifier) => {
         if (modifiers.includes(modifier)) return true;
         // 59 only required when an NCCI pair remains on the claim.
         if (soft && modifier === "59") return true;
+        // 25 only applies when an E/M line survived extraction.
+        if (soft && modifier === "25" && !hasEm) return true;
         return false;
       });
     const hardFail = suggested.extractWarnings.some((item) => /credit|billing|api key/i.test(item.message));

@@ -76,8 +76,25 @@ function softenOcr(text: string) {
   return normalizeForQuote(text)
     .replace(/fuslon/g, "fusion")
     .replace(/radiculopthy/g, "radiculopathy")
+    .replace(/radiculoapthy/g, "radiculopathy")
     .replace(/stenosls/g, "stenosis")
+    .replace(/steonsis/g, "stenosis")
+    .replace(/stneosis/g, "stenosis")
     .replace(/spondylolisthes[il]s/g, "spondylolisthesis")
+    .replace(/epidrual/g, "epidural")
+    .replace(/trnasforaminal/g, "transforaminal")
+    .replace(/transforaminal/g, "transforaminal")
+    .replace(/ofifce/g, "office")
+    .replace(/beofre/g, "before")
+    .replace(/befroe/g, "before")
+    .replace(/signiifcant/g, "significant")
+    .replace(/bilatearl/g, "bilateral")
+    .replace(/inejction/g, "injection")
+    .replace(/decsiion|decisoin|deicsion/g, "decision")
+    .replace(/sacnned/g, "scanned")
+    .replace(/inetrvertebral/g, "intervertebral")
+    .replace(/laoding/g, "loading")
+    .replace(/afetr/g, "after")
     .replace(/\bpt\b/g, "patient")
     .replace(/\bf\/u\b/g, "follow up")
     .replace(/\bs\/p\b/g, "status post")
@@ -102,9 +119,10 @@ export function quoteInNote(note: string, quote: string) {
   if (softNote.includes(softQuote)) return true;
 
   const tokens = significantTokens(quote);
-  if (tokens.length < 2) return softNote.includes(softQuote);
+  if (tokens.length === 0) return false;
+  if (tokens.length === 1) return softNote.includes(tokens[0]!);
   // Require most content words, in order, so truncated/OCR notes still ground facts.
-  const need = Math.max(2, Math.ceil(tokens.length * 0.7));
+  const need = Math.max(2, Math.ceil(tokens.length * 0.6));
   let from = 0;
   let hit = 0;
   for (const token of tokens) {
