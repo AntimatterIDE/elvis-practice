@@ -1,3 +1,5 @@
+import type { FilingCode } from "@/lib/rcm/claim-rules";
+
 export type Sex = "female" | "male" | "other" | "unknown";
 
 export type ClaimStatus =
@@ -195,6 +197,7 @@ export type Claim = {
   id: string;
   patientId: string;
   payerName: string;
+  filingCode?: FilingCode;
   dateOfService: string;
   status: ClaimStatus;
   controlNumber: string;
@@ -244,6 +247,7 @@ export type ServiceLineInput = {
 export type ClaimInput = {
   patientId: string;
   payerName: string;
+  filingCode?: FilingCode;
   dateOfService: string;
   placeOfService: string;
   lines: ServiceLineInput[];

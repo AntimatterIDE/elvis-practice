@@ -1,6 +1,6 @@
 import "server-only";
-import { applyCodeApproval, approvalStatus } from "@/lib/encounters/approve";
-import { codeClinicalNote } from "@/lib/encounters/catalog";
+import { codeLibrary } from "@/lib/coding/library";
+import { approvalStatus, reviewCodes, type LineChoice } from "@/lib/encounters/approve";
 import { transcribeAudio, writeClinicalNote } from "@/lib/encounters/openai";
 import { runVisitPipeline, type VisitSnapshot } from "@/lib/encounters/pipeline";
 import {
@@ -14,6 +14,7 @@ import {
   type EncounterProgress,
   type EncounterStatus,
   type VisitCode,
+  type VisitLine,
 } from "@/lib/encounters/types";
 import { isServiceRoleConfigured, isSupabaseConfigured } from "@/lib/env";
 import type { Json } from "@/lib/supabase/database";
@@ -60,22 +61,37 @@ function asStatus(value: string): EncounterStatus {
   return encounterStatuses.find((status) => status === value) ?? "error";
 }
 
-function asCodes(value: Json): VisitCode[] {
+type CodeRecord = { code: string; description: string; approved: boolean; units?: unknown; modifiers?: unknown; diagnoses?: unknown };
+
+function codeRecords(value: Json) {
   if (!Array.isArray(value)) return [];
-  const codes: VisitCode[] = [];
+  const records: CodeRecord[] = [];
   for (const item of value) {
     if (!item || typeof item !== "object" || Array.isArray(item)) continue;
-    const record = item as { code?: unknown; description?: unknown; level?: unknown; approved?: unknown };
+    const record = item as { code?: unknown; description?: unknown; approved?: unknown; units?: unknown; modifiers?: unknown; diagnoses?: unknown };
     if (typeof record.code !== "string" || typeof record.description !== "string") continue;
-    const level = record.level === 1 || record.level === 2 || record.level === 3 ? record.level : 3;
-    codes.push({
-      code: record.code,
-      description: record.description,
-      level,
-      approved: record.approved === true,
-    });
+    records.push({ ...record, code: record.code, description: record.description, approved: record.approved === true });
   }
-  return codes;
+  return records;
+}
+
+function stringList(value: unknown) {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+}
+
+function asCodes(value: Json): VisitCode[] {
+  return codeRecords(value).map(({ code, description, approved }) => ({ code, description, approved }));
+}
+
+function asLines(value: Json): VisitLine[] {
+  return codeRecords(value).map((record) => ({
+    code: record.code,
+    description: record.description,
+    approved: record.approved,
+    units: typeof record.units === "number" && Number.isInteger(record.units) && record.units > 0 ? record.units : 1,
+    modifiers: stringList(record.modifiers),
+    diagnoses: stringList(record.diagnoses),
+  }));
 }
 
 function asProgress(value: Json): EncounterProgress | null {
@@ -99,7 +115,7 @@ function fromRow(row: EncounterRow): Encounter {
     medicalPractice: row.medical_practice,
     noteClinical: row.note_clinical,
     icd10: asCodes(row.icd10),
-    billingCodes: asCodes(row.billing_codes),
+    billingCodes: asLines(row.billing_codes),
     progress: asProgress(row.progress),
     error: row.error,
     createdAt: row.created_at,
@@ -113,11 +129,17 @@ function progressJson(progress: EncounterProgress | null): Json {
 }
 
 function codesJson(codes: VisitCode[]): Json {
-  return codes.map((code) => ({
-    code: code.code,
-    description: code.description,
-    level: code.level,
-    approved: code.approved,
+  return codes.map((code) => ({ code: code.code, description: code.description, approved: code.approved }));
+}
+
+function linesJson(lines: VisitLine[]): Json {
+  return lines.map((line) => ({
+    code: line.code,
+    description: line.description,
+    approved: line.approved,
+    units: line.units,
+    modifiers: line.modifiers,
+    diagnoses: line.diagnoses,
   }));
 }
 
@@ -280,7 +302,7 @@ async function saveSnapshot(visit: VisitSnapshot) {
       medical_practice: visit.medicalPractice,
       note_clinical: visit.noteClinical,
       icd10: codesJson(visit.icd10),
-      billing_codes: codesJson(visit.billingCodes),
+      billing_codes: linesJson(visit.billingCodes),
       progress: progressJson(visit.progress),
       error: visit.error,
       updated_at: new Date().toISOString(),
@@ -322,13 +344,7 @@ export async function processEncounter(id: string, retry = false) {
 
   const supabase = client();
   const startedAt = new Date().toISOString();
-  const nextStatus: EncounterStatus = !existing.transcript.trim()
-    ? "transcribing"
-    : !existing.noteClinical.trim()
-      ? "generating"
-      : existing.icd10.length === 0
-        ? "generating_icd10"
-        : "generating_cpt";
+  const nextStatus: EncounterStatus = !existing.transcript.trim() ? "transcribing" : "generating";
   const claimed = await supabase
     .from("encounters")
     .update({
@@ -358,7 +374,6 @@ export async function processEncounter(id: string, retry = false) {
       },
       transcribe: transcribeAudio,
       writeNote: writeClinicalNote,
-      codeNote: codeClinicalNote,
       save: async (patch) => {
         await saveSnapshot(patch);
       },
@@ -374,25 +389,24 @@ export async function processEncounter(id: string, retry = false) {
 
 export async function reviewEncounter(
   id: string,
-  input: { noteApproved: boolean; icd10: string[]; billingCodes: string[] },
+  input: { noteApproved: boolean; icd10: string[]; billingCodes: LineChoice[] },
 ) {
   const existing = await getEncounter(id);
   if (!existing) return { ok: false as const, status: 404, message: "That visit could not be found." };
   if (existing.status !== "review" && existing.status !== "approved") {
-    return { ok: false as const, status: 409, message: "Approve the note after the codes are ready." };
+    return { ok: false as const, status: 409, message: "Approve the note after it is written." };
   }
-  const icd10 = applyCodeApproval(existing.icd10, input.icd10);
-  const billingCodes = applyCodeApproval(existing.billingCodes, input.billingCodes);
-  if (!icd10 || !billingCodes) return { ok: false as const, status: 400, message: "Those codes are not on this visit." };
+  const reviewed = reviewCodes(codeLibrary(), input);
+  if (!reviewed.ok) return { ok: false as const, status: 400, message: reviewed.error };
   const noteApproved = input.noteApproved === true;
-  const status = approvalStatus(noteApproved, icd10, billingCodes);
+  const status = approvalStatus(noteApproved, reviewed.icd10, reviewed.billingCodes);
   const supabase = client();
   const saved = await supabase
     .from("encounters")
     .update({
       note_approved: noteApproved,
-      icd10: codesJson(icd10),
-      billing_codes: codesJson(billingCodes),
+      icd10: codesJson(reviewed.icd10),
+      billing_codes: linesJson(reviewed.billingCodes),
       status,
       updated_at: new Date().toISOString(),
     })
@@ -401,6 +415,6 @@ export async function reviewEncounter(
     .select("*")
     .maybeSingle();
   if (saved.error) return { ok: false as const, status: 502, message: saved.error.message };
-  if (!saved.data) return { ok: false as const, status: 409, message: "Approve the note after the codes are ready." };
+  if (!saved.data) return { ok: false as const, status: 409, message: "Approve the note after it is written." };
   return { ok: true as const, encounter: fromRow(saved.data as EncounterRow) };
 }

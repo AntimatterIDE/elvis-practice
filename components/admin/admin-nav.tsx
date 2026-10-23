@@ -40,6 +40,8 @@ const billingLinks = [
   ["/admin/operations/tools", "Tools"],
 ] as const;
 
+const devLinks = [["/dev/coding-data", "Coding data"]] as const;
+
 function isActive(pathname: string, href: string) {
   if (href === "/admin" || href === "/admin/operations") return pathname === href;
   if (href === "/admin/operations/claims") {
@@ -83,7 +85,7 @@ function Group({
 }
 
 export function currentDeskLabel(pathname: string) {
-  const links = [...practiceLinks, ...billingLinks, ...siteLinks];
+  const links = [...practiceLinks, ...billingLinks, ...siteLinks, ...devLinks];
   return links.find(([href]) => isActive(pathname, href))?.[1] ?? "Desk";
 }
 
@@ -94,6 +96,7 @@ export function AdminNav({ onNavigate }: { onNavigate?: () => void }) {
       <Group label="Clinic" links={practiceLinks} pathname={pathname} />
       <Group label="Billing" links={billingLinks} pathname={pathname} />
       <Group label="Website" links={siteLinks} pathname={pathname} />
+      <Group label="Dev" links={devLinks} pathname={pathname} />
     </nav>
   );
 }

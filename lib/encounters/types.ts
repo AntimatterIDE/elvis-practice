@@ -14,8 +14,13 @@ export type EncounterStatus = (typeof encounterStatuses)[number];
 export type VisitCode = {
   code: string;
   description: string;
-  level: 1 | 2 | 3;
   approved: boolean;
+};
+
+export type VisitLine = VisitCode & {
+  units: number;
+  modifiers: string[];
+  diagnoses: string[];
 };
 
 export type EncounterProgress = {
@@ -36,7 +41,7 @@ export type Encounter = {
   medicalPractice: string;
   noteClinical: string;
   icd10: VisitCode[];
-  billingCodes: VisitCode[];
+  billingCodes: VisitLine[];
   progress: EncounterProgress | null;
   error: string | null;
   createdAt: string;

@@ -65,6 +65,7 @@ export async function writeClinicalNote(transcript: string) {
     },
     body: JSON.stringify({
       model: noteModel,
+      store: false,
       max_output_tokens: 2000,
       reasoning: { effort: "minimal" },
       text: { verbosity: "low" },

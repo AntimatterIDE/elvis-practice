@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { checkClaimStatus, requestPaperClaim, submitProfessionalClaim } from "@/app/admin/stedi/actions";
 import { Button } from "@/components/ui/button";
+import { filingCodes } from "@/lib/rcm/claim-rules";
 import { claimTotal, formatDay, formatWhen, money, patientName } from "@/lib/rcm/format";
 import { claimSubmissionInput } from "@/lib/rcm/submit-input";
 import type { Claim, ClaimStatus } from "@/lib/rcm/types";
@@ -58,6 +59,7 @@ export function ClaimDetail({ id }: { id: string }) {
   }
 
   const balance = Math.max(0, claimTotal(claim) - (claim.paymentAmount ?? 0));
+  const payerType = filingCodes.find((option) => option.code === claim.filingCode)?.label ?? "Payer type not chosen";
 
   return (
     <main>
@@ -65,7 +67,7 @@ export function ClaimDetail({ id }: { id: string }) {
       <PageHeader
         kicker={claim.controlNumber}
         title={patientName(patient)}
-        lede={`${claim.payerName} · ${formatDay(claim.dateOfService)} · Place of service ${claim.placeOfService}`}
+        lede={`${claim.payerName} · ${payerType} · ${formatDay(claim.dateOfService)} · Place of service ${claim.placeOfService}`}
         action={<StatusPill status={claim.status} />}
       />
       <p className="mt-4 text-sm text-muted">

@@ -14,12 +14,12 @@ import {
   audioExtension,
   type Encounter,
   type EncounterStatus,
-  type VisitCode,
 } from "@/lib/encounters/types";
 import { formatClinicDay, formatTime, patientName } from "@/lib/rcm/format";
-import { claimsHref } from "@/lib/encounters/approve";
+import { claimLinesFromEncounter, claimsHref } from "@/lib/encounters/approve";
 import { rememberedVisit, rememberVisit, subscribeVisitMemory } from "@/lib/rcm/record-visit";
 import { useVisitRecorder } from "@/components/admin/use-visit-recorder";
+import { VisitCodes, type CodesDraft } from "@/components/admin/visit-codes";
 
 const statusLabel: Record<EncounterStatus, string> = {
   uploaded: "Recording stored",
@@ -42,64 +42,36 @@ function when(value: string) {
   }).format(new Date(value));
 }
 
-function CodeList({
-  title,
-  codes,
-  picked,
-  onToggle,
-}: {
-  title: string;
-  codes: VisitCode[];
-  picked?: (code: string, approved: boolean) => boolean;
-  onToggle?: (code: string, approved: boolean) => void;
-}) {
-  return (
-    <section>
-      <h3 className="text-sm font-medium text-neutral-900">{title}</h3>
-      {codes.length === 0 ? (
-        <p className="mt-2 text-sm text-muted">None suggested.</p>
-      ) : (
-        <ul className="mt-2 grid gap-2">
-          {codes.map((code) => {
-            const approved = picked ? picked(code.code, code.approved) : code.approved;
-            return (
-              <li key={`${title}-${code.code}`} className="text-sm">
-                {onToggle ? (
-                  <label className="flex items-start gap-2">
-                    <input
-                      type="checkbox"
-                      className="mt-1"
-                      checked={approved}
-                      onChange={(event) => onToggle(code.code, event.target.checked)}
-                    />
-                    <span>
-                      <span className="font-medium">{code.code}</span>
-                      <span className="text-muted"> · {code.description}</span>
-                      <span className="text-muted"> · level {code.level}</span>
-                    </span>
-                  </label>
-                ) : (
-                  <>
-                    <span className="font-medium">{code.code}</span>
-                    <span className="text-muted"> · {code.description}</span>
-                    <span className="text-muted"> · level {code.level}</span>
-                    {approved ? <span className="text-muted"> · approved</span> : null}
-                  </>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </section>
-  );
+function savedCodes(encounter: Encounter): CodesDraft {
+  return {
+    diagnoses: encounter.icd10.filter((code) => code.approved),
+    lines: claimLinesFromEncounter(encounter).map((line) => ({
+      code: line.code,
+      description: line.description,
+      units: String(line.units),
+      modifiers: [...line.modifiers, "", "", "", ""].slice(0, 4),
+      diagnoses: line.diagnoses,
+    })),
+  };
+}
+
+function codesBody(codes: CodesDraft) {
+  const order = codes.diagnoses.map((code) => code.code);
+  return {
+    icd10: order,
+    billingCodes: codes.lines.map((line) => ({
+      code: line.code,
+      units: Number(line.units) || 0,
+      modifiers: line.modifiers.map((modifier) => modifier.trim().toUpperCase()).filter(Boolean),
+      diagnoses: order.filter((code) => line.diagnoses.includes(code)),
+    })),
+  };
 }
 
 type ApprovalDraft = {
   id: string;
   note: boolean;
-  icd: Record<string, boolean>;
-  cpt: Record<string, boolean>;
+  codes: CodesDraft;
 };
 
 export function VisitDesk({
@@ -236,7 +208,7 @@ export function VisitDesk({
       return;
     }
     if (typeof navigator !== "undefined" && navigator.onLine === false) {
-      setMessage("Saved on this phone. Generate notes and codes again when you have service.");
+      setMessage("Saved on this phone. Generate the note again when you have service.");
       return;
     }
     setPhase("uploading");
@@ -278,7 +250,7 @@ export function VisitDesk({
         if (payload.encounter) apply(payload.encounter);
       }
     } catch {
-      setMessage(`Saved on this phone. Generate notes and codes again when you have service.`);
+      setMessage(`Saved on this phone. Generate the note again when you have service.`);
       setPhase(null);
       return;
     }
@@ -319,11 +291,6 @@ export function VisitDesk({
   const draft = approval?.id === selected?.id ? approval : null;
   const canReview = selected?.status === "review" || selected?.status === "approved";
 
-  function checked(kind: "icd" | "cpt", code: string, saved: boolean) {
-    const map = draft?.[kind];
-    return map && code in map ? map[code] : saved;
-  }
-
   function noteChecked() {
     if (!selected) return false;
     return draft ? draft.note : selected.noteApproved;
@@ -331,12 +298,7 @@ export function VisitDesk({
 
   function ensureDraft(encounter: Encounter): ApprovalDraft {
     if (approval?.id === encounter.id) return approval;
-    return {
-      id: encounter.id,
-      note: encounter.noteApproved,
-      icd: Object.fromEntries(encounter.icd10.map((code) => [code.code, code.approved])),
-      cpt: Object.fromEntries(encounter.billingCodes.map((code) => [code.code, code.approved])),
-    };
+    return { id: encounter.id, note: encounter.noteApproved, codes: savedCodes(encounter) };
   }
 
   function toggleNote(value: boolean) {
@@ -344,20 +306,17 @@ export function VisitDesk({
     setApproval({ ...ensureDraft(selected), note: value });
   }
 
-  function toggleCode(kind: "icd" | "cpt", code: string, value: boolean) {
+  function changeCodes(codes: CodesDraft) {
     if (!selected) return;
-    const next = ensureDraft(selected);
-    setApproval({ ...next, [kind]: { ...next[kind], [code]: value } });
+    setApproval({ ...ensureDraft(selected), codes });
   }
 
-  const approvedIcd = selected?.icd10.filter((code) => checked("icd", code.code, code.approved)).map((code) => code.code) ?? [];
-  const approvedCpt = selected?.billingCodes.filter((code) => checked("cpt", code.code, code.approved)).map((code) => code.code) ?? [];
-  const approvalReady = Boolean(selected && noteChecked() && approvedIcd.length > 0 && approvedCpt.length > 0);
+  const shownCodes = draft?.codes ?? (selected ? savedCodes(selected) : { diagnoses: [], lines: [] });
+  const approvalReady = Boolean(selected && noteChecked() && shownCodes.diagnoses.length > 0 && shownCodes.lines.length > 0);
   const approvalDirty = Boolean(
     selected &&
       (noteChecked() !== selected.noteApproved ||
-        selected.icd10.some((code) => checked("icd", code.code, code.approved) !== code.approved) ||
-        selected.billingCodes.some((code) => checked("cpt", code.code, code.approved) !== code.approved)),
+        JSON.stringify(codesBody(shownCodes)) !== JSON.stringify(codesBody(savedCodes(selected)))),
   );
 
   async function saveApproval() {
@@ -367,7 +326,7 @@ export function VisitDesk({
     const response = await fetch(`/api/encounters/${selected.id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ noteApproved: true, icd10: approvedIcd, billingCodes: approvedCpt }),
+      body: JSON.stringify({ noteApproved: true, ...codesBody(shownCodes) }),
     });
     const payload = (await response.json()) as { message?: string; encounter?: Encounter };
     if (payload.encounter) {
@@ -398,7 +357,7 @@ export function VisitDesk({
       <PageHeader
         kicker="Clinic"
         title="Visits"
-        lede="Record a visit on this phone. Pause keeps the same visit open, and Record adds to it. Generate notes and codes when the visit is over."
+        lede="Record a visit on this phone. Pause keeps the same visit open, and Record adds to it. Generate the note when the visit is over, then enter the codes."
       />
       {appointmentId ? (
         <p className={`${panelClass} text-sm`}>
@@ -447,7 +406,7 @@ export function VisitDesk({
             )}
             {recorder.mode !== "idle" || recorder.savedOnPhone ? (
               <Button type="button" variant="secondary" onClick={() => void generateNotes()} disabled={busy}>
-                Generate notes and codes
+                Generate note
               </Button>
             ) : null}
             {recorder.mode === "paused" && recorder.savedOnPhone ? (
@@ -476,11 +435,11 @@ export function VisitDesk({
             {recorder.mode === "recording"
               ? `Recording ${recorder.elapsedLabel}. This screen stays awake. Audio is saved on this phone as you go, even if service drops. Pause keeps this visit open. If the phone locks, press Record to continue.`
               : recorder.mode === "paused"
-                ? `Paused ${recorder.elapsedLabel}. Saved on this phone. Record adds to this visit. Generate notes and codes when the visit is over.`
+                ? `Paused ${recorder.elapsedLabel}. Saved on this phone. Record adds to this visit. Generate the note when the visit is over.`
                 : phase === "uploading"
                   ? "Storing the recording. It stays on this phone until the upload finishes."
                   : phase === "working"
-                    ? "Working through the transcript, note, and codes."
+                    ? "Working through the transcript and note."
                     : "Webm, mp3, m4a, wav, or mp4. 25 MB or smaller for each segment."}
           </p>
           {recorder.notice ? <p className="mt-2 text-sm text-neutral-900">{recorder.notice}</p> : null}
@@ -525,22 +484,7 @@ export function VisitDesk({
               ) : null}
             </section>
           ) : null}
-          {selected.status === "review" || selected.status === "approved" || selected.icd10.length > 0 || selected.billingCodes.length > 0 ? (
-            <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              <CodeList
-                title="ICD-10"
-                codes={selected.icd10}
-                picked={canReview ? (code, saved) => checked("icd", code, saved) : undefined}
-                onToggle={canReview ? (code, value) => toggleCode("icd", code, value) : undefined}
-              />
-              <CodeList
-                title="CPT"
-                codes={selected.billingCodes}
-                picked={canReview ? (code, saved) => checked("cpt", code, saved) : undefined}
-                onToggle={canReview ? (code, value) => toggleCode("cpt", code, value) : undefined}
-              />
-            </div>
-          ) : null}
+          {canReview ? <VisitCodes codes={shownCodes} disabled={busy} onChange={changeCodes} /> : null}
           {canReview ? (
             <div className="mt-6 flex flex-wrap items-center gap-3">
               {selected.status !== "approved" || approvalDirty ? (
@@ -553,7 +497,9 @@ export function VisitDesk({
                   <Link href={claimLink}>Open in claims</Link>
                 </Button>
               ) : (
-                <p className="text-sm text-muted">Approve the note and at least one diagnosis and one procedure code. Then this visit can open in claims.</p>
+                <p className="text-sm text-muted">
+                  Approve the note and enter at least one diagnosis and one procedure, each procedure linked to its diagnoses. Then this visit can open in claims.
+                </p>
               )}
             </div>
           ) : null}

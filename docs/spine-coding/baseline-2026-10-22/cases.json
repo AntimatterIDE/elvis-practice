@@ -1,0 +1,947 @@
+[
+  {
+    "id": "E01",
+    "title": "New pt L5-S1 HNP, left S1 radiculopathy (real GPT note from prod)",
+    "note": "\nSUBJECTIVE:\n42-year-old male, new to practice, presents with three months of low back pain radiating down the left leg to the lateral foot. Reports numbness in the left lateral foot and weakness with plantar flexion. No other systemic complaints documented. New patient; outside MRI reviewed.\n\nOBJECTIVE:\n- Neuro/musculoskeletal exam:\n  - Positive straight leg raise on the left at 40 degrees.\n  - Diminished left Achilles (S1) reflex.\n  - Left gastrocnemius (plantar flexion) strength 4/5.\n- Imaging:\n  - Outside lumbar spine MRI reviewed: large left paracentral L5–S1 disc herniation compressing the left S1 nerve root.\n\nASSESSMENT:\n1. Lumbar disc herniation at L5–S1 with left S1 radiculopathy — consistent with history, exam, and MRI findings.\n\nPLAN:\n- Initiate physical therapy focused on lumbar stabilization, core strengthening, and radicular symptom management.\n- Start Medrol dose pack (methylprednisolone taper) for short course anti-inflammatory therapy.\n- Refer for left L5–S1 transforaminal epidural steroid injection for targeted radicular pain control.\n- Advise return/follow-up in 6 weeks to reassess symptoms, strength, and reflexes; sooner if worsening neurological deficits, progressive weakness, or bowel/bladder dysfunction.\n- Documented moderate complexity medical decision making.",
+    "expectedIcdAnyOf": [
+      "M51.17",
+      "M51.27",
+      "M54.17"
+    ],
+    "expectedCptAnyOf": [
+      "99204"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "721",
+      "720",
+      "722",
+      "723"
+    ]
+  },
+  {
+    "id": "E02",
+    "title": "Est pt lumbar stenosis w/ neurogenic claudication L4-5",
+    "note": "SUBJECTIVE:\n71-year-old female, established patient, with lumbar spinal stenosis at L4-L5. Neurogenic claudication: walks one block before bilateral leg heaviness, relieved by sitting and leaning forward.\n\nOBJECTIVE:\nStrength 5/5 bilateral lower extremities. Negative straight leg raise bilaterally. Pedal pulses intact.\n\nASSESSMENT:\n1. Lumbar spinal stenosis with neurogenic claudication, L4-L5.\n\nPLAN:\nContinue home exercise program. Gabapentin 300 mg at bedtime. Discussed L4-L5 decompression if symptoms worsen. Return in 3 months. Moderate complexity MDM.",
+    "expectedIcdAnyOf": [
+      "M48.062"
+    ],
+    "expectedCptAnyOf": [
+      "99214"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E03",
+    "title": "New pt cervical spondylotic myelopathy C5-6/C6-7 (surgery recommended)",
+    "note": "SUBJECTIVE:\n63-year-old male with 6 months of progressive hand clumsiness, difficulty buttoning shirts, and gait imbalance.\n\nOBJECTIVE:\nPositive Hoffmann sign bilaterally. Hyperreflexia upper and lower extremities. Wide-based gait. Positive Romberg. MRI cervical spine reviewed: severe canal stenosis at C5-C6 and C6-C7 from disc-osteophyte complexes with T2 cord signal change at C5-C6.\n\nASSESSMENT:\n1. Cervical spondylotic myelopathy at C5-C6 and C6-C7.\n\nPLAN:\nRecommend anterior cervical discectomy and fusion C5-C6 and C6-C7. Risks, benefits, alternatives discussed; patient agrees. High complexity MDM.",
+    "expectedIcdAnyOf": [
+      "M50.022",
+      "M50.023",
+      "M50.020",
+      "M47.12",
+      "M48.02"
+    ],
+    "expectedCptAnyOf": [
+      "99205"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "22",
+      "63",
+      "721",
+      "720",
+      "722",
+      "723"
+    ]
+  },
+  {
+    "id": "E04",
+    "title": "New pt C5-6 HNP, right C6 radiculopathy",
+    "note": "SUBJECTIVE:\n48-year-old female with right neck pain radiating to the right thumb and index finger for 8 weeks.\n\nOBJECTIVE:\nPositive Spurling test on the right. Diminished right biceps and brachioradialis reflexes. Right wrist extension 4/5. MRI reviewed: right foraminal disc herniation at C5-C6 compressing the right C6 nerve root.\n\nASSESSMENT:\n1. Cervical disc herniation at C5-C6 with right C6 radiculopathy.\n\nPLAN:\nPhysical therapy, NSAIDs, cervical epidural steroid injection referral. Return in 6 weeks.",
+    "expectedIcdAnyOf": [
+      "M50.122",
+      "M50.12*",
+      "M54.12"
+    ],
+    "expectedCptAnyOf": [
+      "99204",
+      "99203"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "721",
+      "720",
+      "722",
+      "723"
+    ]
+  },
+  {
+    "id": "E05",
+    "title": "Post-op visit inside 90-day global (2 wk s/p L4-5 TLIF)",
+    "note": "SUBJECTIVE:\n55-year-old male, 2 weeks status post L4-L5 transforaminal lumbar interbody fusion with posterior instrumentation for degenerative spondylolisthesis. Leg pain resolved.\n\nOBJECTIVE:\nIncision clean, dry, intact; no erythema or drainage. Staples removed. Neurologically intact. Standing radiographs: hardware in good position.\n\nASSESSMENT:\n1. Status post L4-L5 TLIF, routine postoperative course.\n\nPLAN:\nContinue walking. No lifting over 10 lb. Follow up in 4 weeks. Visit within the 90-day global period.",
+    "expectedIcdAnyOf": [
+      "Z47.89",
+      "Z98.1",
+      "Z48.89",
+      "Z48.81*"
+    ],
+    "expectedCptAnyOf": [
+      "99024"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "9920",
+      "9921",
+      "22",
+      "63"
+    ]
+  },
+  {
+    "id": "E06",
+    "title": "Decision for surgery visit (day before L4-5 TLIF) - should be E/M + 57, NOT surgery codes",
+    "note": "SUBJECTIVE:\n66-year-old female, established, grade 1 degenerative spondylolisthesis L4-L5 with severe stenosis and bilateral L5 radiculopathy. Failed 6 months PT, 2 epidural injections, medications.\n\nOBJECTIVE:\nFlexion-extension radiographs: 4 mm motion at L4-L5.\n\nASSESSMENT:\n1. Degenerative spondylolisthesis L4-L5.\n2. Lumbar spinal stenosis with neurogenic claudication.\n\nPLAN:\nDecision made today for L4-L5 laminectomy and transforaminal lumbar interbody fusion with pedicle screw instrumentation, scheduled tomorrow. High complexity MDM.",
+    "expectedIcdAnyOf": [
+      "M43.16",
+      "M48.062"
+    ],
+    "expectedCptAnyOf": [
+      "99215"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "22",
+      "63"
+    ]
+  },
+  {
+    "id": "E07",
+    "title": "Telehealth video f/u lumbar radiculopathy (needs 99213 + mod 95)",
+    "note": "SUBJECTIVE:\nTelehealth video visit; patient at home, provider in office. 45-year-old male with right L4-L5 lumbar radiculopathy, 70% improved after physical therapy.\n\nOBJECTIVE:\nObserved via video: normal gait, no distress.\n\nASSESSMENT:\n1. Lumbar radiculopathy, right, improving.\n\nPLAN:\nContinue home exercises. Follow up as needed. Low complexity MDM.",
+    "expectedIcdAnyOf": [
+      "M54.16"
+    ],
+    "expectedCptAnyOf": [
+      "99213"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E08",
+    "title": "Mechanical LBP + cervicalgia + spasm (M54.5 is INVALID since 10/2021)",
+    "note": "SUBJECTIVE:\n39-year-old office worker with mechanical low back pain and neck pain for 1 month. No radiating pain, numbness, or weakness.\n\nOBJECTIVE:\nNormal neurologic exam. Mild paraspinal muscle spasm.\n\nASSESSMENT:\n1. Low back pain.\n2. Cervicalgia.\n3. Muscle spasm of back.\n\nPLAN:\nErgonomics, physical therapy, ibuprofen. Low complexity.",
+    "expectedIcdAnyOf": [
+      "M54.50",
+      "M54.59",
+      "M54.2",
+      "M62.830"
+    ],
+    "expectedCptAnyOf": [
+      "99213",
+      "99212"
+    ],
+    "forbiddenIcdPrefixes": [
+      "M54.5 "
+    ],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E09",
+    "title": "Thoracic disc herniation T7-8 with myelopathy",
+    "note": "SUBJECTIVE:\n52-year-old with mid back pain, bilateral leg numbness, and unsteady gait.\n\nOBJECTIVE:\nHyperreflexia lower extremities, sustained clonus bilaterally. MRI thoracic spine: T7-T8 disc herniation compressing the spinal cord.\n\nASSESSMENT:\n1. Thoracic disc herniation with myelopathy, T7-T8.\n2. Pain in thoracic spine.\n\nPLAN:\nSurgical consultation for thoracic decompression. High complexity.",
+    "expectedIcdAnyOf": [
+      "M51.04",
+      "M54.6"
+    ],
+    "expectedCptAnyOf": [
+      "99205",
+      "99204"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "721",
+      "720",
+      "722",
+      "723"
+    ]
+  },
+  {
+    "id": "E10",
+    "title": "Second-opinion consult, lumbar DDD w/ discogenic back pain (commercial consult code)",
+    "note": "SUBJECTIVE:\nSecond opinion consultation requested by Dr. Smith. 44-year-old with chronic axial low back pain, worse with sitting.\n\nOBJECTIVE:\nMRI: degenerative disc disease L4-L5 with Modic changes; no stenosis.\n\nASSESSMENT:\n1. Lumbar degenerative disc disease with discogenic back pain only, L4-L5.\n\nPLAN:\nRecommend nonoperative care; core strengthening. Report sent to referring physician.",
+    "expectedIcdAnyOf": [
+      "M51.360",
+      "M51.369"
+    ],
+    "expectedCptAnyOf": [
+      "99244",
+      "99243"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E11",
+    "title": "Right-sided sciatica without disc diagnosis",
+    "note": "SUBJECTIVE:\n37-year-old with low back pain and right buttock and posterior thigh pain.\n\nOBJECTIVE:\nPositive slump test on the right. Strength and reflexes normal.\n\nASSESSMENT:\n1. Sciatica, right side, with low back pain.\n\nPLAN:\nNSAIDs, PT. Return in 4 weeks.",
+    "expectedIcdAnyOf": [
+      "M54.41",
+      "M54.31"
+    ],
+    "expectedCptAnyOf": [
+      "99203",
+      "99213"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E12",
+    "title": "Coccydynia after fall",
+    "note": "SUBJECTIVE:\n29-year-old fell onto buttocks on ice 6 weeks ago; pain sitting.\n\nOBJECTIVE:\nPoint tenderness over the coccyx. No neurologic deficit.\n\nASSESSMENT:\n1. Coccydynia.\n\nPLAN:\nDonut cushion, NSAIDs. Consider coccygeal injection.",
+    "expectedIcdAnyOf": [
+      "M53.3"
+    ],
+    "expectedCptAnyOf": [
+      "99203"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E13",
+    "title": "Adult degenerative scoliosis with stenosis",
+    "note": "SUBJECTIVE:\n72-year-old with adult degenerative lumbar scoliosis, low back pain, bilateral leg pain with walking.\n\nOBJECTIVE:\nStanding scoliosis films: 28-degree lumbar curve, lateral listhesis L3-L4.\n\nASSESSMENT:\n1. Adult degenerative scoliosis, lumbar region.\n2. Lumbar spinal stenosis with neurogenic claudication.\n\nPLAN:\nPT, consider injections; surgery discussed. Moderate MDM.",
+    "expectedIcdAnyOf": [
+      "M41.86",
+      "M41.87",
+      "M48.062"
+    ],
+    "expectedCptAnyOf": [
+      "99214"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E14",
+    "title": "AIS 14yo, 45 deg thoracolumbar, scoliosis films taken in office",
+    "note": "SUBJECTIVE:\n14-year-old female referred for adolescent idiopathic scoliosis. Right rib hump on forward bend.\n\nOBJECTIVE:\nStanding PA and lateral scoliosis radiographs of the entire spine obtained in office today: right thoracolumbar curve 45 degrees, Risser 2.\n\nASSESSMENT:\n1. Adolescent idiopathic scoliosis, thoracolumbar region.\n\nPLAN:\nDiscussed bracing vs posterior spinal fusion. MRI to rule out intraspinal anomaly.",
+    "expectedIcdAnyOf": [
+      "M41.125"
+    ],
+    "expectedCptAnyOf": [
+      "99204",
+      "72082",
+      "72081"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E15",
+    "title": "Failed back surgery syndrome / postlaminectomy syndrome",
+    "note": "SUBJECTIVE:\n59-year-old, 3 years after L4-S1 laminectomy, with persistent bilateral leg radicular pain.\n\nOBJECTIVE:\nNo new deficits.\n\nASSESSMENT:\n1. Postlaminectomy syndrome.\n2. Chronic lumbar radiculopathy.\n\nPLAN:\nSpinal cord stimulator trial referral. Continue gabapentin, duloxetine.",
+    "expectedIcdAnyOf": [
+      "M96.1"
+    ],
+    "expectedCptAnyOf": [
+      "99214"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E16",
+    "title": "Pseudarthrosis + broken S1 pedicle screw",
+    "note": "SUBJECTIVE:\n62-year-old, 18 months after L5-S1 posterior fusion, recurrent low back pain.\n\nOBJECTIVE:\nCT: nonunion at L5-S1, lucency around S1 screws, broken left S1 screw.\n\nASSESSMENT:\n1. Pseudarthrosis after fusion, L5-S1.\n2. Mechanical breakdown of internal fixation device of vertebrae, initial encounter.\n\nPLAN:\nRevision fusion with removal and replacement of instrumentation.",
+    "expectedIcdAnyOf": [
+      "M96.0",
+      "T84.216A",
+      "T84.226A"
+    ],
+    "expectedCptAnyOf": [
+      "99214",
+      "99215"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "22",
+      "63"
+    ]
+  },
+  {
+    "id": "E17",
+    "title": "Cauda equina syndrome (emergency)",
+    "note": "SUBJECTIVE:\n38-year-old with sudden severe low back pain, bilateral leg weakness, saddle anesthesia, and urinary retention.\n\nOBJECTIVE:\nDecreased rectal tone, perianal numbness, bilateral ankle dorsiflexion 3/5. Emergency MRI: massive central L4-L5 disc herniation compressing the cauda equina.\n\nASSESSMENT:\n1. Cauda equina syndrome due to L4-L5 disc herniation.\n\nPLAN:\nEmergent L4-L5 decompression and discectomy tonight. High complexity.",
+    "expectedIcdAnyOf": [
+      "G83.4",
+      "M51.26",
+      "M51.06"
+    ],
+    "expectedCptAnyOf": [
+      "99205"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E18",
+    "title": "T10 metastasis w/ pathologic fx; HISTORY of breast cancer (must be Z85.3, not C50)",
+    "note": "SUBJECTIVE:\n67-year-old female with history of breast cancer treated 5 years ago, now with mid back pain.\n\nOBJECTIVE:\nMRI: T10 vertebral body lesion with pathologic compression fracture consistent with metastatic disease; no cord compression.\n\nASSESSMENT:\n1. Secondary malignant neoplasm of bone, T10.\n2. Pathological fracture of T10 vertebra in neoplastic disease, initial encounter.\n3. Personal history of breast cancer.\n\nPLAN:\nCT-guided biopsy, oncology and radiation oncology referral, bracing.",
+    "expectedIcdAnyOf": [
+      "C79.51",
+      "M84.58XA",
+      "Z85.3"
+    ],
+    "expectedCptAnyOf": [
+      "99205",
+      "99204"
+    ],
+    "forbiddenIcdPrefixes": [
+      "C50"
+    ],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E19",
+    "title": "L2-3 discitis/osteomyelitis + epidural abscess, T2DM",
+    "note": "SUBJECTIVE:\n58-year-old diabetic male with severe low back pain and fevers; ESR and CRP elevated.\n\nOBJECTIVE:\nMRI: L2-L3 discitis and vertebral osteomyelitis with small epidural abscess.\n\nASSESSMENT:\n1. Discitis and vertebral osteomyelitis, lumbar.\n2. Spinal epidural abscess.\n3. Type 2 diabetes mellitus.\n\nPLAN:\nCT-guided biopsy and cultures, ID consult, IV antibiotics. High complexity.",
+    "expectedIcdAnyOf": [
+      "M46.26",
+      "M46.46",
+      "M46.36",
+      "G06.1",
+      "E11.9"
+    ],
+    "expectedCptAnyOf": [
+      "99205"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E20",
+    "title": "Ankylosing spondylitis, lumbar",
+    "note": "SUBJECTIVE:\n34-year-old with inflammatory back pain and morning stiffness > 1 hour; HLA-B27 positive.\n\nOBJECTIVE:\nReduced lumbar flexion, Schober 2 cm.\n\nASSESSMENT:\n1. Ankylosing spondylitis of lumbar region.\n\nPLAN:\nRheumatology referral, NSAIDs.",
+    "expectedIcdAnyOf": [
+      "M45.6"
+    ],
+    "expectedCptAnyOf": [
+      "99204"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E21",
+    "title": "Cervical spondylosis without myelopathy or radiculopathy",
+    "note": "SUBJECTIVE:\n61-year-old with chronic axial neck pain.\n\nOBJECTIVE:\nNeurologically intact. X-rays reviewed: multilevel cervical spondylosis.\n\nASSESSMENT:\n1. Cervical spondylosis without myelopathy or radiculopathy.\n\nPLAN:\nPT, NSAIDs, consider facet blocks.",
+    "expectedIcdAnyOf": [
+      "M47.812"
+    ],
+    "expectedCptAnyOf": [
+      "99213",
+      "99214"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "721",
+      "720",
+      "722",
+      "723"
+    ]
+  },
+  {
+    "id": "E22",
+    "title": "Lumbar facet arthropathy (spondylosis w/o radiculopathy)",
+    "note": "SUBJECTIVE:\n57-year-old with axial low back pain worse with extension.\n\nOBJECTIVE:\nFacet loading positive bilaterally. Neurologically intact.\n\nASSESSMENT:\n1. Lumbar spondylosis without myelopathy or radiculopathy (facet arthropathy).\n\nPLAN:\nBilateral L4-L5, L5-S1 medial branch blocks.",
+    "expectedIcdAnyOf": [
+      "M47.816",
+      "M47.817"
+    ],
+    "expectedCptAnyOf": [
+      "99213",
+      "99214"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E23",
+    "title": "OPLL cervical with myelopathy",
+    "note": "SUBJECTIVE:\n55-year-old with hand numbness and gait change.\n\nOBJECTIVE:\nCT: continuous ossification of the posterior longitudinal ligament C3-C6 with canal compromise.\n\nASSESSMENT:\n1. Ossification of posterior longitudinal ligament, cervical, with myelopathy.\n\nPLAN:\nPosterior cervical laminoplasty discussed.",
+    "expectedIcdAnyOf": [
+      "M48.8X2",
+      "M47.12",
+      "G99.2"
+    ],
+    "expectedCptAnyOf": [
+      "99205",
+      "99204"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E24",
+    "title": "Isthmic spondylolisthesis L5-S1 with spondylolysis",
+    "note": "SUBJECTIVE:\n19-year-old athlete with low back pain.\n\nOBJECTIVE:\nX-rays: bilateral L5 pars defects, grade 1 isthmic spondylolisthesis L5-S1.\n\nASSESSMENT:\n1. Isthmic spondylolisthesis L5-S1.\n2. Spondylolysis, lumbosacral.\n\nPLAN:\nActivity modification, PT, bracing.",
+    "expectedIcdAnyOf": [
+      "M43.17",
+      "M43.07",
+      "M43.06"
+    ],
+    "expectedCptAnyOf": [
+      "99204",
+      "99203"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "E25",
+    "title": "SI joint dysfunction / sacroiliitis",
+    "note": "SUBJECTIVE:\n48-year-old with right buttock pain.\n\nOBJECTIVE:\nPositive FABER, thigh thrust, compression on the right.\n\nASSESSMENT:\n1. Sacroiliitis, right.\n2. Sacroiliac joint dysfunction.\n\nPLAN:\nRight SI joint injection.",
+    "expectedIcdAnyOf": [
+      "M46.1",
+      "M53.3",
+      "M53.2X8"
+    ],
+    "expectedCptAnyOf": [
+      "99203",
+      "99213"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "T01",
+    "title": "L1 stable burst fx, ladder fall AT WORK (WC)",
+    "note": "SUBJECTIVE:\n29-year-old fell from a ladder at work 6 days ago. Workers compensation injury.\n\nOBJECTIVE:\nNeurologically intact. CT: stable burst fracture of L1 without retropulsion.\n\nASSESSMENT:\n1. Stable burst fracture of first lumbar vertebra, initial encounter for closed fracture.\n\nPLAN:\nTLSO brace, upright x-rays in 2 weeks.",
+    "expectedIcdAnyOf": [
+      "S32.011A"
+    ],
+    "expectedCptAnyOf": [
+      "99204",
+      "99203"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "T02",
+    "title": "Whiplash after MVA (no-fault)",
+    "note": "SUBJECTIVE:\n34-year-old restrained driver rear-ended 2 weeks ago. No-fault auto claim.\n\nOBJECTIVE:\nParaspinal tenderness, reduced cervical ROM, neuro intact. Outside cervical x-rays reviewed: no fracture.\n\nASSESSMENT:\n1. Sprain of ligaments of cervical spine, initial encounter (whiplash).\n\nPLAN:\nPT, muscle relaxant.",
+    "expectedIcdAnyOf": [
+      "S13.4XXA"
+    ],
+    "expectedCptAnyOf": [
+      "99203"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "721",
+      "720",
+      "722",
+      "723"
+    ]
+  },
+  {
+    "id": "T03",
+    "title": "Lumbar strain lifting at work (WC)",
+    "note": "SUBJECTIVE:\n41-year-old warehouse worker injured lifting a box at work yesterday.\n\nOBJECTIVE:\nParaspinal spasm, neuro intact.\n\nASSESSMENT:\n1. Strain of muscle, fascia and tendon of lower back, initial encounter.\n\nPLAN:\nLight duty, PT, NSAIDs.",
+    "expectedIcdAnyOf": [
+      "S39.012A"
+    ],
+    "expectedCptAnyOf": [
+      "99203"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "T04",
+    "title": "Type II odontoid (dens) fracture, elderly fall",
+    "note": "SUBJECTIVE:\n84-year-old fell at home.\n\nOBJECTIVE:\nCT cervical spine: type II dens fracture, minimally displaced.\n\nASSESSMENT:\n1. Type II dens fracture, initial encounter for closed fracture.\n\nPLAN:\nCervical collar vs posterior C1-C2 fusion discussed.",
+    "expectedIcdAnyOf": [
+      "S12.112A"
+    ],
+    "expectedCptAnyOf": [
+      "99205",
+      "99204"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "T05",
+    "title": "Osteoporotic T12 fx, SUBSEQUENT encounter routine healing (7th char D)",
+    "note": "SUBJECTIVE:\n78-year-old, 6 weeks after T12 osteoporotic compression fracture, improving.\n\nOBJECTIVE:\nUpright x-ray stable height.\n\nASSESSMENT:\n1. Age-related osteoporosis with current pathological fracture, vertebra, subsequent encounter with routine healing.\n\nPLAN:\nContinue brace wean, bisphosphonate.",
+    "expectedIcdAnyOf": [
+      "M80.08XD"
+    ],
+    "expectedCptAnyOf": [
+      "99213"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "T06",
+    "title": "Central cord syndrome after hyperextension fall",
+    "note": "SUBJECTIVE:\n70-year-old fell forward hitting forehead.\n\nOBJECTIVE:\nUpper extremity weakness greater than lower; hand numbness.\n\nASSESSMENT:\n1. Central cord syndrome at C4 level of cervical spinal cord, initial encounter.\n\nPLAN:\nAdmit, MAP goals, surgical decompression discussion.",
+    "expectedIcdAnyOf": [
+      "S14.124A",
+      "S14.12*"
+    ],
+    "expectedCptAnyOf": [
+      "99205",
+      "99223"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S01",
+    "title": "OP: L5-S1 microdiscectomy (hemilaminotomy)",
+    "note": "SUBJECTIVE:\nPreoperative diagnosis: left L5-S1 disc herniation with left S1 radiculopathy.\n\nOBJECTIVE:\nProcedure: left L5-S1 hemilaminotomy and microdiscectomy with operating microscope. Large extruded fragment removed; S1 root decompressed.\n\nASSESSMENT:\nPostoperative diagnosis: same. EBL 20 mL. No complications.\n\nPLAN:\nDischarge same day.",
+    "expectedIcdAnyOf": [
+      "M51.17",
+      "M51.27"
+    ],
+    "expectedCptAnyOf": [
+      "63030"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S02",
+    "title": "OP: 2-level ACDF C5-7 with cages, plate, allograft",
+    "note": "SUBJECTIVE:\nPreoperative diagnosis: cervical spondylotic myelopathy, disc herniation C5-C6 and C6-C7.\n\nOBJECTIVE:\nProcedure: anterior cervical discectomy and fusion C5-C6 and C6-C7, two interbody cages, anterior plate C5-C7, allograft. Neuromonitoring stable.\n\nASSESSMENT:\nPostoperative diagnosis: same. EBL 50 mL.\n\nPLAN:\nAdmit overnight.",
+    "expectedIcdAnyOf": [
+      "M50.022",
+      "M50.023",
+      "M47.12"
+    ],
+    "expectedCptAnyOf": [
+      "22551",
+      "22552",
+      "22853",
+      "22845"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S03",
+    "title": "OP: L4-5 TLIF with pedicle screws",
+    "note": "SUBJECTIVE:\nDiagnosis: degenerative spondylolisthesis L4-L5 with stenosis and neurogenic claudication.\n\nOBJECTIVE:\nProcedure: L4-L5 laminectomy, bilateral foraminotomies, transforaminal lumbar interbody fusion with cage, pedicle screw instrumentation L4-L5, posterolateral fusion, local autograft and allograft.\n\nASSESSMENT:\nEBL 300 mL. No complications.\n\nPLAN:\nAdmit.",
+    "expectedIcdAnyOf": [
+      "M43.16",
+      "M48.062"
+    ],
+    "expectedCptAnyOf": [
+      "22633",
+      "22630",
+      "22840",
+      "22853"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S04",
+    "title": "OP: L3-L5 decompressive laminectomy, no fusion",
+    "note": "SUBJECTIVE:\nDiagnosis: lumbar spinal stenosis with neurogenic claudication L3-L4 and L4-L5.\n\nOBJECTIVE:\nProcedure: decompressive laminectomy L3-L4 and L4-L5 with bilateral facetectomy and foraminotomy, without fusion.\n\nASSESSMENT:\nEBL 150 mL.\n\nPLAN:\nAdmit overnight.",
+    "expectedIcdAnyOf": [
+      "M48.062"
+    ],
+    "expectedCptAnyOf": [
+      "63047",
+      "63048"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S05",
+    "title": "OP: T12 balloon kyphoplasty",
+    "note": "SUBJECTIVE:\n78-year-old with acute osteoporotic T12 compression fracture; MRI marrow edema.\n\nOBJECTIVE:\nProcedure: T12 balloon kyphoplasty, bilateral transpedicular, fluoroscopic guidance, cement augmentation. No extravasation.\n\nASSESSMENT:\nDiagnosis: age-related osteoporosis with current pathological fracture of vertebra, initial encounter.\n\nPLAN:\nDischarge home.",
+    "expectedIcdAnyOf": [
+      "M80.08XA"
+    ],
+    "expectedCptAnyOf": [
+      "22513"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S06",
+    "title": "OP: C5-6 cervical disc arthroplasty",
+    "note": "SUBJECTIVE:\nDiagnosis: C5-C6 disc herniation with right C6 radiculopathy.\n\nOBJECTIVE:\nProcedure: total disc arthroplasty C5-C6, anterior approach, including discectomy.\n\nASSESSMENT:\nEBL 25 mL.\n\nPLAN:\nDischarge next day.",
+    "expectedIcdAnyOf": [
+      "M50.122"
+    ],
+    "expectedCptAnyOf": [
+      "22856"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S07",
+    "title": "OP: posterior cervical laminectomy + fusion C3-C6",
+    "note": "SUBJECTIVE:\nDiagnosis: multilevel cervical stenosis with myelopathy.\n\nOBJECTIVE:\nProcedure: posterior cervical laminectomy C3-C6, posterior fusion C3-C6 with lateral mass screws, allograft.\n\nASSESSMENT:\nEBL 400 mL.\n\nPLAN:\nAdmit.",
+    "expectedIcdAnyOf": [
+      "M47.12",
+      "M48.02"
+    ],
+    "expectedCptAnyOf": [
+      "22600",
+      "22614",
+      "22842",
+      "63045",
+      "63015"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S08",
+    "title": "OP: percutaneous spinal cord stimulator trial",
+    "note": "SUBJECTIVE:\nDiagnosis: postlaminectomy syndrome with chronic radicular pain.\n\nOBJECTIVE:\nProcedure: percutaneous implantation of two epidural neurostimulator electrode arrays, fluoroscopic guidance.\n\nASSESSMENT:\nNo complications.\n\nPLAN:\n7-day trial.",
+    "expectedIcdAnyOf": [
+      "M96.1"
+    ],
+    "expectedCptAnyOf": [
+      "63650"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S09",
+    "title": "OP: removal of posterior lumbar hardware + exploration of fusion",
+    "note": "SUBJECTIVE:\nDiagnosis: painful retained hardware after L4-S1 fusion.\n\nOBJECTIVE:\nProcedure: removal of posterior segmental instrumentation L4-S1 and exploration of spinal fusion; fusion solid.\n\nASSESSMENT:\nEBL 100 mL.\n\nPLAN:\nDischarge next day.",
+    "expectedIcdAnyOf": [
+      "T84.84XA",
+      "Z47.2",
+      "M96.0"
+    ],
+    "expectedCptAnyOf": [
+      "22850",
+      "22830"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S10",
+    "title": "OP: lateral lumbar interbody fusion L3-4",
+    "note": "SUBJECTIVE:\nDiagnosis: L3-L4 degenerative disc disease with foraminal stenosis.\n\nOBJECTIVE:\nProcedure: lateral transpsoas lumbar interbody fusion L3-L4 with cage and lateral plate.\n\nASSESSMENT:\nEBL 50 mL.\n\nPLAN:\nAdmit.",
+    "expectedIcdAnyOf": [
+      "M48.061",
+      "M51.36*",
+      "M51.36"
+    ],
+    "expectedCptAnyOf": [
+      "22558",
+      "22853",
+      "22845"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S11",
+    "title": "OP: I&D deep post-op lumbar wound infection",
+    "note": "SUBJECTIVE:\nDiagnosis: deep incisional surgical site infection after lumbar fusion.\n\nOBJECTIVE:\nProcedure: incision and drainage of deep lumbar wound abscess, debridement to fascia, hardware retained.\n\nASSESSMENT:\nCultures sent.\n\nPLAN:\nIV antibiotics.",
+    "expectedIcdAnyOf": [
+      "T81.42XA",
+      "T84.7XXA"
+    ],
+    "expectedCptAnyOf": [
+      "22015",
+      "10180"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S12",
+    "title": "OP: SI joint fusion",
+    "note": "SUBJECTIVE:\nDiagnosis: right sacroiliac joint dysfunction refractory to injections.\n\nOBJECTIVE:\nProcedure: percutaneous right sacroiliac joint arthrodesis with transfixing implants under fluoroscopy.\n\nASSESSMENT:\nNo complications.\n\nPLAN:\nDischarge.",
+    "expectedIcdAnyOf": [
+      "M53.3",
+      "M46.1",
+      "M53.2X8"
+    ],
+    "expectedCptAnyOf": [
+      "27279"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "S13",
+    "title": "OP: laminectomy with incidental durotomy (G97.41)",
+    "note": "SUBJECTIVE:\nDiagnosis: lumbar stenosis L4-L5.\n\nOBJECTIVE:\nProcedure: L4-L5 decompressive laminectomy. Incidental durotomy repaired primarily.\n\nASSESSMENT:\nComplication: accidental puncture of dura during procedure.\n\nPLAN:\nFlat bed rest 24 hours.",
+    "expectedIcdAnyOf": [
+      "G97.41",
+      "M48.062"
+    ],
+    "expectedCptAnyOf": [
+      "63047"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P01",
+    "title": "Left L5-S1 transforaminal ESI",
+    "note": "SUBJECTIVE:\nIndication: left S1 radiculopathy from L5-S1 disc herniation.\n\nOBJECTIVE:\nProcedure: left L5-S1 transforaminal epidural steroid injection under fluoroscopy; contrast epidural spread, no vascular uptake; dexamethasone and lidocaine injected.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up 2 weeks.",
+    "expectedIcdAnyOf": [
+      "M51.17",
+      "M54.17"
+    ],
+    "expectedCptAnyOf": [
+      "64483"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P02",
+    "title": "L5-S1 interlaminar ESI",
+    "note": "SUBJECTIVE:\nIndication: lumbar spinal stenosis with bilateral radicular pain.\n\nOBJECTIVE:\nProcedure: L5-S1 interlaminar epidural steroid injection, fluoroscopic guidance, loss of resistance.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up.",
+    "expectedIcdAnyOf": [
+      "M48.062",
+      "M48.061",
+      "M54.16"
+    ],
+    "expectedCptAnyOf": [
+      "62323"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P03",
+    "title": "C7-T1 cervical interlaminar ESI",
+    "note": "SUBJECTIVE:\nIndication: cervical radiculopathy.\n\nOBJECTIVE:\nProcedure: C7-T1 cervical interlaminar epidural steroid injection with fluoroscopy.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up.",
+    "expectedIcdAnyOf": [
+      "M54.12",
+      "M50.12*"
+    ],
+    "expectedCptAnyOf": [
+      "62321"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P04",
+    "title": "Bilateral L4-5, L5-S1 medial branch blocks",
+    "note": "SUBJECTIVE:\nIndication: lumbar facet arthropathy, axial low back pain.\n\nOBJECTIVE:\nProcedure: bilateral lumbar medial branch blocks at L4-L5 and L5-S1 facet joints under fluoroscopy, bupivacaine.\n\nASSESSMENT:\n80% relief.\n\nPLAN:\nConsider RFA.",
+    "expectedIcdAnyOf": [
+      "M47.816",
+      "M47.817"
+    ],
+    "expectedCptAnyOf": [
+      "64493",
+      "64494"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P05",
+    "title": "Right L4-5, L5-S1 facet RFA",
+    "note": "SUBJECTIVE:\nIndication: lumbar facet syndrome with >80% relief from two diagnostic blocks.\n\nOBJECTIVE:\nProcedure: right L4-L5 and L5-S1 radiofrequency ablation of medial branch nerves under fluoroscopy, 80 C for 90 seconds.\n\nASSESSMENT:\nNo complications.\n\nPLAN:\nFollow up.",
+    "expectedIcdAnyOf": [
+      "M47.816",
+      "M47.817"
+    ],
+    "expectedCptAnyOf": [
+      "64635",
+      "64636"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P06",
+    "title": "Right SI joint injection with fluoro",
+    "note": "SUBJECTIVE:\nIndication: right sacroiliitis.\n\nOBJECTIVE:\nProcedure: right sacroiliac joint injection with fluoroscopic guidance, contrast confirmed intra-articular, triamcinolone and bupivacaine.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up.",
+    "expectedIcdAnyOf": [
+      "M46.1",
+      "M53.3"
+    ],
+    "expectedCptAnyOf": [
+      "27096",
+      "G0260"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P07",
+    "title": "Trigger point injections, 3+ muscles",
+    "note": "SUBJECTIVE:\nIndication: myofascial pain of the lumbar paraspinals and gluteals.\n\nOBJECTIVE:\nProcedure: trigger point injections into 4 muscles with lidocaine.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nStretching.",
+    "expectedIcdAnyOf": [
+      "M79.18",
+      "M62.830"
+    ],
+    "expectedCptAnyOf": [
+      "20553"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P08",
+    "title": "Epidural blood patch for post-dural-puncture headache",
+    "note": "SUBJECTIVE:\nIndication: positional headache after lumbar puncture.\n\nOBJECTIVE:\nProcedure: lumbar epidural blood patch with 20 mL autologous blood.\n\nASSESSMENT:\nHeadache resolved.\n\nPLAN:\nFollow up.",
+    "expectedIcdAnyOf": [
+      "G97.1"
+    ],
+    "expectedCptAnyOf": [
+      "62273"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X01",
+    "title": "NEGATIONS: 'no cauda equina, no fracture, no myelopathy' with simple LBP",
+    "note": "SUBJECTIVE:\n45-year-old with low back pain for 2 weeks. Denies saddle anesthesia, bowel or bladder dysfunction.\n\nOBJECTIVE:\nNo evidence of cauda equina syndrome. No fracture on x-ray. No myelopathy. No radiculopathy.\n\nASSESSMENT:\n1. Acute low back pain, mechanical. Cauda equina syndrome ruled out.\n\nPLAN:\nPT, NSAIDs.",
+    "expectedIcdAnyOf": [
+      "M54.50",
+      "M54.59"
+    ],
+    "expectedCptAnyOf": [
+      "99213",
+      "99203"
+    ],
+    "forbiddenIcdPrefixes": [
+      "G83.4",
+      "S32",
+      "S22",
+      "M48.5",
+      "M80",
+      "M47.1",
+      "M50.0",
+      "M51.0"
+    ],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X02",
+    "title": "HISTORY ONLY: hx breast cancer in remission, hx diabetes; neck pain",
+    "note": "SUBJECTIVE:\nNeck pain 3 weeks. Past medical history: breast cancer in remission, treated 2015; diabetes.\n\nOBJECTIVE:\nNeuro intact.\n\nASSESSMENT:\n1. Cervicalgia.\n\nPLAN:\nPT.",
+    "expectedIcdAnyOf": [
+      "M54.2"
+    ],
+    "expectedCptAnyOf": [
+      "99213"
+    ],
+    "forbiddenIcdPrefixes": [
+      "C50"
+    ],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X03",
+    "title": "Codes typed into the note by the doctor",
+    "note": "SUBJECTIVE:\nLumbar radiculopathy follow-up.\n\nOBJECTIVE:\nUnchanged.\n\nASSESSMENT:\n1. M51.16 Intervertebral disc disorders with radiculopathy, lumbar region.\n\nPLAN:\nBill CPT 99214.",
+    "expectedIcdAnyOf": [
+      "M51.16"
+    ],
+    "expectedCptAnyOf": [
+      "99214"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X04",
+    "title": "Note = exact catalog wording 'Spinal stenosis, lumbar region with neurogenic claudication'",
+    "note": "ASSESSMENT:\nSpinal stenosis, lumbar region with neurogenic claudication",
+    "expectedIcdAnyOf": [
+      "M48.062"
+    ],
+    "expectedCptAnyOf": [],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X05",
+    "title": "Abbreviation-heavy surgeon shorthand",
+    "note": "SUBJECTIVE:\ns/p L4-5 TLIF 2019, now ASD L3-4 w/ HNP, LBP, LLE radic. DDD. ESI x2 failed.\n\nOBJECTIVE:\n+SLR L, EHL 4/5 L.\n\nASSESSMENT:\nASD L3-4 w/ HNP + L L4 radic.\n\nPLAN:\nPlan L3-4 ext fusion vs XLIF.",
+    "expectedIcdAnyOf": [
+      "M51.16",
+      "M51.26",
+      "M54.16",
+      "M48.061"
+    ],
+    "expectedCptAnyOf": [
+      "99214",
+      "99215"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "22",
+      "63"
+    ]
+  },
+  {
+    "id": "X06",
+    "title": "Near-empty note",
+    "note": "Follow up.",
+    "expectedIcdAnyOf": [],
+    "expectedCptAnyOf": [],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X07",
+    "title": "Spanish-language note",
+    "note": "SUBJECTIVE:\nPaciente de 50 años con dolor lumbar irradiado a la pierna izquierda.\n\nOBJECTIVE:\nLasègue positivo a la izquierda.\n\nASSESSMENT:\n1. Hernia discal L5-S1 con radiculopatía izquierda.\n\nPLAN:\nFisioterapia.",
+    "expectedIcdAnyOf": [
+      "M51.17",
+      "M54.17"
+    ],
+    "expectedCptAnyOf": [
+      "99203",
+      "99213"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X08",
+    "title": "Level tokens C5 / L4 / S1 / T4 (collide with C50 breast CA, L40 psoriasis, S1x neck injury, T40 opioid poisoning)",
+    "note": "SUBJECTIVE:\nPain at C5 and C6, L4, L5 and S1. Prior T4 rib pain.\n\nOBJECTIVE:\nTender at T4.\n\nASSESSMENT:\n1. Multilevel spondylosis.\n\nPLAN:\nPT.",
+    "expectedIcdAnyOf": [
+      "M47.81*",
+      "M47.89*"
+    ],
+    "expectedCptAnyOf": [
+      "99213"
+    ],
+    "forbiddenIcdPrefixes": [
+      "C50",
+      "C5",
+      "L4",
+      "L5",
+      "S1",
+      "T4"
+    ],
+    "forbiddenCptPrefixes": []
+  }
+]

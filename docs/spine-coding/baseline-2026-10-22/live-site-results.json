@@ -1,0 +1,1367 @@
+[
+  {
+    "case": "01-new-lumbar-hnp-s1",
+    "encounterId": "564c6b67-7cf7-468a-920d-33544a56082b",
+    "dictation": "New patient visit. Forty two year old male, new to our practice, with three months of low back pain radiating down the left leg to the lateral foot. Numbness in the left lateral foot. Weakness with plantar flexion. Exam shows positive straight leg raise on the left at forty degrees, diminished left Achilles reflex, four out of five left gastrocnemius strength. I personally reviewed his outside MRI of the lumbar spine which shows a large left paracentral disc herniation at L5 S1 compressing the left S1 nerve root. Assessment: lumbar disc herniation at L5 S1 with left S1 radiculopathy. Plan: physical therapy, a medrol dose pack, and referral for a left L5 S1 transforaminal epidural steroid injection. Follow up in six weeks. Moderate complexity medical decision making.",
+    "medicalPractice": "Neurosurgery / Spine",
+    "note": "\nSUBJECTIVE:\n42-year-old male, new to practice, presents with three months of low back pain radiating down the left leg to the lateral foot. Reports numbness in the left lateral foot and weakness with plantar flexion. No other systemic complaints documented. New patient; outside MRI reviewed.\n\nOBJECTIVE:\n- Neuro/musculoskeletal exam:\n  - Positive straight leg raise on the left at 40 degrees.\n  - Diminished left Achilles (S1) reflex.\n  - Left gastrocnemius (plantar flexion) strength 4/5.\n- Imaging:\n  - Outside lumbar spine MRI reviewed: large left paracentral L5–S1 disc herniation compressing the left S1 nerve root.\n\nASSESSMENT:\n1. Lumbar disc herniation at L5–S1 with left S1 radiculopathy — consistent with history, exam, and MRI findings.\n\nPLAN:\n- Initiate physical therapy focused on lumbar stabilization, core strengthening, and radicular symptom management.\n- Start Medrol dose pack (methylprednisolone taper) for short course anti-inflammatory therapy.\n- Refer for left L5–S1 transforaminal epidural steroid injection for targeted radicular pain control.\n- Advise return/follow-up in 6 weeks to reassess symptoms, strength, and reflexes; sooner if worsening neurological deficits, progressive weakness, or bowel/bladder dysfunction.\n- Documented moderate complexity medical decision making.",
+    "icd10": [
+      {
+        "code": "M05.672",
+        "description": "Rheumatoid arthritis of left ankle and foot with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.612",
+        "description": "Rheumatoid arthritis of left shoulder with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.622",
+        "description": "Rheumatoid arthritis of left elbow with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.632",
+        "description": "Rheumatoid arthritis of left wrist with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.642",
+        "description": "Rheumatoid arthritis of left hand with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.652",
+        "description": "Rheumatoid arthritis of left hip with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.662",
+        "description": "Rheumatoid arthritis of left knee with involvement of other organs and systems"
+      },
+      {
+        "code": "M80.862",
+        "description": "Other osteoporosis with current pathological fracture, left lower leg"
+      },
+      {
+        "code": "S86.192",
+        "description": "Other injury of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, left leg"
+      },
+      {
+        "code": "S86.892",
+        "description": "Other injury of other muscle(s) and tendon(s) at lower leg level, left leg"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "P9612",
+        "description": "Catheterize for urine spec"
+      },
+      {
+        "code": "97036",
+        "description": "Hydrotherapy"
+      },
+      {
+        "code": "G6001",
+        "description": "Echo guidance radiotherapy"
+      },
+      {
+        "code": "92526",
+        "description": "Oral function therapy"
+      },
+      {
+        "code": "97016",
+        "description": "Vasopneumatic device therapy"
+      },
+      {
+        "code": "97026",
+        "description": "Infrared therapy"
+      },
+      {
+        "code": "97116",
+        "description": "Gait training therapy"
+      },
+      {
+        "code": "97140",
+        "description": "Manual therapy"
+      },
+      {
+        "code": "77261",
+        "description": "Radiation therapy planning"
+      },
+      {
+        "code": "77262",
+        "description": "Radiation therapy planning"
+      }
+    ]
+  },
+  {
+    "case": "02-est-lumbar-stenosis-claudication",
+    "encounterId": "431dac2d-11a7-4367-8d89-4468b50a3422",
+    "dictation": "Established patient follow up. Seventy one year old female with known lumbar spinal stenosis at L4 L5. She reports neurogenic claudication, she can walk only one block before bilateral leg heaviness and pain, relieved by sitting and leaning forward on a shopping cart. Exam: normal strength, negative straight leg raise bilaterally, pedal pulses intact. Assessment: lumbar spinal stenosis with neurogenic claudication at L4 L5. Plan: continue home exercise program, gabapentin three hundred milligrams at night, and discussed L4 L5 decompression if symptoms worsen. Moderate medical decision making. Return in three months.",
+    "medicalPractice": "Neurosurgery / Spine",
+    "note": "\nSUBJECTIVE:\n71-year-old female established patient with known lumbar spinal stenosis at L4–L5. Reports neurogenic claudication: can walk ~1 block before developing bilateral leg heaviness and pain, relieved by sitting and by leaning forward on a shopping cart. No new bowel/bladder dysfunction reported. Currently using home exercises.\n\nOBJECTIVE:\nVitals not provided. Neurologic exam: normal motor strength in lower extremities. Straight leg raise test negative bilaterally. Peripheral vascular: pedal pulses intact. No additional objective data documented.\n\nASSESSMENT:\n1. Lumbar spinal stenosis at L4–L5 with symptomatic neurogenic claudication.\n2. No focal motor deficit on exam. No signs of cauda equina syndrome.\n\nPLAN:\n- Continue home exercise program (spine/core strengthening and flexion-based activities as previously instructed).\n- Start gabapentin 300 mg at night.\n- Counseling provided regarding surgical option: L4–L5 decompression if symptoms worsen or functional decline occurs.\n- Moderate medical decision-making complexity.\n- Return to clinic in 3 months or sooner if worsening symptoms, new neurologic deficits, or bowel/bladder changes.",
+    "icd10": [
+      {
+        "code": "Y83-Y84",
+        "description": "Surgical and other medical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure"
+      },
+      {
+        "code": "R00-R99",
+        "description": "Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified"
+      },
+      {
+        "code": "Y83",
+        "description": "Surgical operation and other surgical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure"
+      },
+      {
+        "code": "S34",
+        "description": "Injury of lumbar and sacral spinal cord and nerves at abdomen, lower back and pelvis level"
+      },
+      {
+        "code": "Y75.3",
+        "description": "Surgical instruments, materials and neurological devices (including sutures) associated with adverse incidents"
+      },
+      {
+        "code": "M61.36",
+        "description": "Calcification and ossification of muscles associated with burns, lower leg"
+      },
+      {
+        "code": "M61.361",
+        "description": "Calcification and ossification of muscles associated with burns, right lower leg"
+      },
+      {
+        "code": "M61.362",
+        "description": "Calcification and ossification of muscles associated with burns, left lower leg"
+      },
+      {
+        "code": "M61.369",
+        "description": "Calcification and ossification of muscles associated with burns, unspecified lower leg"
+      },
+      {
+        "code": "Q72.1",
+        "description": "Congenital absence of thigh and lower leg with foot present"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "78630",
+        "description": "Cerebrospinal fluid scan"
+      },
+      {
+        "code": "73590",
+        "description": "X-ray exam of lower leg"
+      },
+      {
+        "code": "0039U",
+        "description": "Dna antb 2strand hi avidity"
+      },
+      {
+        "code": "70380",
+        "description": "X-ray exam of salivary gland"
+      },
+      {
+        "code": "73120",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "73130",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "76536",
+        "description": "Us exam of head and neck"
+      },
+      {
+        "code": "78230",
+        "description": "Salivary gland imaging"
+      },
+      {
+        "code": "78232",
+        "description": "Salivary gland function exam"
+      },
+      {
+        "code": "C2638",
+        "description": "Brachytx, stranded, I-125"
+      }
+    ]
+  },
+  {
+    "case": "03-new-cervical-myelopathy",
+    "encounterId": "33accc04-595b-46fb-a366-6168ef63b998",
+    "dictation": "New patient consultation. Sixty three year old male with progressive hand clumsiness, difficulty buttoning shirts, and gait imbalance over six months. Exam: positive Hoffmann sign bilaterally, hyperreflexia in the upper and lower extremities, wide based gait, positive Romberg. MRI of the cervical spine reviewed shows severe spinal canal stenosis at C5 C6 and C6 C7 from disc osteophyte complexes with T2 signal change in the spinal cord at C5 C6. Assessment: cervical spondylotic myelopathy at C5 C6 and C6 C7. Plan: recommend anterior cervical discectomy and fusion at C5 C6 and C6 C7. Risks benefits and alternatives discussed and the patient agrees to surgery. High complexity decision making.",
+    "medicalPractice": "Neurosurgery",
+    "note": "\nSUBJECTIVE:\n63-year-old male new patient with a 6-month history of progressive hand clumsiness and impaired fine motor tasks (difficulty buttoning shirts) and progressive gait imbalance. No other symptoms reported in the note. Patient understands condition and agrees to recommended intervention.\n\nOBJECTIVE:\nNeurologic exam notable for bilateral positive Hoffmann sign, hyperreflexia in both upper and lower extremities, wide-based gait, and positive Romberg. Cervical spine MRI reviewed: severe spinal canal stenosis at C5–C6 and C6–C7 due to disc-osteophyte complexes with T2 intramedullary signal change at C5–C6 consistent with myelomalacia.\n\nASSESSMENT:\n1. Cervical spondylotic myelopathy, levels C5–C6 and C6–C7, with clinical signs of myelopathy (upper motor neuron findings, gait dysfunction) and radiographic evidence of severe canal stenosis and cord signal change at C5–C6.\n\nPLAN:\n- Recommend surgical decompression: anterior cervical discectomy and fusion (ACDF) at C5–C6 and C6–C7.\n- Discussed risks, benefits, and alternatives (including conservative management, posterior decompression options); patient consents to proceed with surgery.\n- Risk/benefit discussion documented; decision-making complexity high.\n- Preoperative workup: obtain routine labs, ECG as indicated, surgical clearance, and anesthesia evaluation.\n- Schedule operative planning and preop imaging/templating; counsel on postoperative expectations, activity restrictions, and follow-up.",
+    "icd10": [
+      {
+        "code": "Y83-Y84",
+        "description": "Surgical and other medical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure"
+      },
+      {
+        "code": "Z91.19",
+        "description": "Patient's noncompliance with other medical treatment and regimen"
+      },
+      {
+        "code": "Z91.A9",
+        "description": "Caregiver's noncompliance with patient's other medical treatment and regimen"
+      },
+      {
+        "code": "Z01.118",
+        "description": "Encounter for examination of ears and hearing with other abnormal findings"
+      },
+      {
+        "code": "S11.21",
+        "description": "Laceration without foreign body of pharynx and cervical esophagus"
+      },
+      {
+        "code": "S11.22",
+        "description": "Laceration with foreign body of pharynx and cervical esophagus"
+      },
+      {
+        "code": "S11.23",
+        "description": "Puncture wound without foreign body of pharynx and cervical esophagus"
+      },
+      {
+        "code": "S11.24",
+        "description": "Puncture wound with foreign body of pharynx and cervical esophagus"
+      },
+      {
+        "code": "R83-R89",
+        "description": "Abnormal findings on examination of other body fluids, substances and tissues, without diagnosis"
+      },
+      {
+        "code": "Y83",
+        "description": "Surgical operation and other surgical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "73120",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "73130",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "70380",
+        "description": "X-ray exam of salivary gland"
+      },
+      {
+        "code": "76536",
+        "description": "Us exam of head and neck"
+      },
+      {
+        "code": "78232",
+        "description": "Salivary gland function exam"
+      },
+      {
+        "code": "77790",
+        "description": "Radiation handling"
+      },
+      {
+        "code": "0039U",
+        "description": "Dna antb 2strand hi avidity"
+      },
+      {
+        "code": "G0141",
+        "description": "Scr c/v cyto,autosys and md"
+      },
+      {
+        "code": "78215",
+        "description": "Liver and spleen imaging"
+      },
+      {
+        "code": "78230",
+        "description": "Salivary gland imaging"
+      }
+    ]
+  },
+  {
+    "case": "04-new-cervical-radic-c6-right",
+    "encounterId": "5afb1958-0dc6-472a-945f-039a5e10d8fa",
+    "dictation": "New patient visit. Forty eight year old female with right sided neck pain radiating into the right thumb and index finger for eight weeks. Positive Spurling test on the right. Right biceps and brachioradialis reflexes diminished. Right wrist extension four out of five. MRI shows a right foraminal disc herniation at C5 C6 compressing the right C6 nerve root. Assessment: cervical disc herniation at C5 C6 with right C6 radiculopathy. Plan: physical therapy, nonsteroidal anti inflammatory medication, and a cervical epidural steroid injection. Return in six weeks.",
+    "medicalPractice": "Neurosurgery / Spine Clinic",
+    "note": "\nSUBJECTIVE:\n48-year-old female, new patient, presents with eight weeks of right-sided neck pain radiating into the right thumb and index finger. Symptoms consistent with radicular pain in the C6 distribution. Reports no prior surgeries. No bowel or bladder symptoms documented.\n\nOBJECTIVE:\nRight-sided Spurling test positive. Right biceps and brachioradialis reflexes diminished. Right wrist extension strength 4/5. MRI cervical spine: right foraminal disc herniation at C5–C6 compressing the right C6 nerve root.\n\nASSESSMENT:\nCervical disc herniation at C5–C6 with right C6 radiculopathy causing radicular pain, diminished reflexes, and mild motor weakness (right wrist extension 4/5).\n\nPLAN:\n- Initiate physical therapy focusing on cervical stabilization, traction as indicated, and radiculopathy-directed exercises.\n- Prescribe NSAID therapy (agent/dose per provider discretion) for pain/inflammation.\n- Schedule right-sided cervical epidural steroid injection targeting C6 nerve root.\n- Educate patient on activity modification, home exercises, and red-flag symptoms (worsening weakness, new numbness, bowel/bladder dysfunction); instruct to seek urgent care if these occur.\n- Follow up in 6 weeks to reassess symptoms and neurologic exam; consider surgical consultation if progressive neurologic deficit or refractory pain.",
+    "icd10": [
+      {
+        "code": "M05.631",
+        "description": "Rheumatoid arthritis of right wrist with involvement of other organs and systems"
+      },
+      {
+        "code": "S64.8X1",
+        "description": "Injury of other nerves at wrist and hand level of right arm"
+      },
+      {
+        "code": "M05.611",
+        "description": "Rheumatoid arthritis of right shoulder with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.621",
+        "description": "Rheumatoid arthritis of right elbow with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.641",
+        "description": "Rheumatoid arthritis of right hand with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.651",
+        "description": "Rheumatoid arthritis of right hip with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.661",
+        "description": "Rheumatoid arthritis of right knee with involvement of other organs and systems"
+      },
+      {
+        "code": "M05.671",
+        "description": "Rheumatoid arthritis of right ankle and foot with involvement of other organs and systems"
+      },
+      {
+        "code": "S65.091",
+        "description": "Other specified injury of ulnar artery at wrist and hand level of right arm"
+      },
+      {
+        "code": "S65.191",
+        "description": "Other specified injury of radial artery at wrist and hand level of right arm"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "76536",
+        "description": "Us exam of head and neck"
+      },
+      {
+        "code": "C2638",
+        "description": "Brachytx, stranded, I-125"
+      },
+      {
+        "code": "C2639",
+        "description": "Brachytx,non-stranded,I-125"
+      },
+      {
+        "code": "C2640",
+        "description": "Brachytx, stranded, P-103"
+      },
+      {
+        "code": "C2641",
+        "description": "Brachytx, non-stranded,P-103"
+      },
+      {
+        "code": "C2642",
+        "description": "Brachytx, stranded, C-131"
+      },
+      {
+        "code": "C2643",
+        "description": "Brachytx, non-stranded,C-131"
+      },
+      {
+        "code": "C2698",
+        "description": "Brachytx, stranded, NOS"
+      },
+      {
+        "code": "C2699",
+        "description": "Brachytx, non-stranded, NOS"
+      },
+      {
+        "code": "92526",
+        "description": "Oral function therapy"
+      }
+    ]
+  },
+  {
+    "case": "06-spondylolisthesis-decision-surgery",
+    "encounterId": "02ae7ccc-5550-4fcf-ab4c-431ba5247d60",
+    "dictation": "Established patient. Sixty six year old female with degenerative spondylolisthesis at L4 L5, grade one, with severe central and lateral recess stenosis and bilateral L5 radiculopathy. She failed six months of physical therapy, two epidural steroid injections, and medications. Flexion extension x rays show four millimeters of motion at L4 L5. Assessment: degenerative spondylolisthesis L4 L5 with spinal stenosis and neurogenic claudication. Plan: decision made today for L4 L5 laminectomy and transforaminal lumbar interbody fusion with pedicle screw instrumentation, scheduled for tomorrow. High complexity medical decision making.",
+    "medicalPractice": "Neurosurgery / Spine Surgery",
+    "note": "\nSUBJECTIVE:\n66-year-old established female with known degenerative spondylolisthesis at L4-5 (grade 1). Reports severe central and lateral recess stenosis with bilateral L5 radiculopathy and symptoms of neurogenic claudication. Has failed conservative management: 6 months of physical therapy, two epidural steroid injections, and medication therapy. No new complaints documented.\n\nOBJECTIVE:\nFlexion-extension lumbar radiographs: 4 mm motion at L4-5. No additional vitals, neurologic exam, or imaging details provided in the record.\n\nASSESSMENT:\n1. Degenerative spondylolisthesis L4-5, grade 1.\n2. Severe central and lateral recess spinal stenosis at L4-5.\n3. Bilateral L5 radiculopathy with neurogenic claudication.\nClinical course refractory to conservative measures.\n\nPLAN:\n- Proceed with surgical intervention: L4-5 laminectomy and transforaminal lumbar interbody fusion (TLIF) with pedicle screw instrumentation.\n- Surgery scheduled for tomorrow.\n- High-complexity medical decision making documented.\n- Perioperative planning as per standard: preoperative clearance, informed consent, anesthesia evaluation, perioperative antibiotics, DVT prophylaxis, and postoperative rehabilitation plan (details to be completed in preop assessment).",
+    "icd10": [
+      {
+        "code": "M51.1",
+        "description": "Thoracic, thoracolumbar and lumbosacral intervertebral disc disorders with radiculopathy"
+      },
+      {
+        "code": "Q37.4",
+        "description": "Cleft hard and soft palate with bilateral cleft lip"
+      },
+      {
+        "code": "Y93.6A",
+        "description": "Activity, physical games generally associated with school recess, summer camp and children"
+      },
+      {
+        "code": "G44.05",
+        "description": "Short lasting unilateral neuralgiform headache with conjunctival injection and tearing (SUNCT)"
+      },
+      {
+        "code": "Y81.1",
+        "description": "Therapeutic (nonsurgical) and rehabilitative general- and plastic-surgery devices associated with adverse incidents"
+      },
+      {
+        "code": "Y81.2",
+        "description": "Prosthetic and other implants, materials and accessory general- and plastic-surgery devices associated with adverse incidents"
+      },
+      {
+        "code": "Y83-Y84",
+        "description": "Surgical and other medical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure"
+      },
+      {
+        "code": "Y74.1",
+        "description": "Therapeutic (nonsurgical) and rehabilitative general hospital and personal-use devices associated with adverse incidents"
+      },
+      {
+        "code": "Y74.2",
+        "description": "Prosthetic and other implants, materials and accessory general hospital and personal-use devices associated with adverse incidents"
+      },
+      {
+        "code": "D81.1",
+        "description": "Severe combined immunodeficiency [SCID] with low T- and B-cell numbers"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "0174T",
+        "description": "Cad cxr with interp"
+      },
+      {
+        "code": "80061",
+        "description": "Lipid panel [only when billed with ICD-10-CM code  Z13.6]"
+      },
+      {
+        "code": "82465",
+        "description": "Assay bld/serum cholesterol [only when billed with ICD-10-CM code Z13.6]"
+      },
+      {
+        "code": "82947",
+        "description": "Assay glucose blood quant [only when billed with ICD-10-CM code Z13.1]"
+      },
+      {
+        "code": "84478",
+        "description": "Assay of triglycerides [only when billed with ICD-10-CM code Z13.6]"
+      },
+      {
+        "code": "G0141",
+        "description": "Scr c/v cyto,autosys and md"
+      },
+      {
+        "code": "76536",
+        "description": "Us exam of head and neck"
+      },
+      {
+        "code": "C2638",
+        "description": "Brachytx, stranded, I-125"
+      },
+      {
+        "code": "C2639",
+        "description": "Brachytx,non-stranded,I-125"
+      },
+      {
+        "code": "C2640",
+        "description": "Brachytx, stranded, P-103"
+      }
+    ]
+  },
+  {
+    "case": "09-op-tlif-l45",
+    "encounterId": "405678d4-b272-4382-b86c-1ad9d8c268f4",
+    "dictation": "Operative note. Diagnosis: degenerative spondylolisthesis L4 L5 with spinal stenosis and neurogenic claudication. Procedure: L4 L5 laminectomy with bilateral foraminotomies, L4 L5 transforaminal lumbar interbody fusion with insertion of an interbody cage, posterior segmental pedicle screw instrumentation L4 to L5, posterolateral fusion, local autograft and allograft bone graft. Estimated blood loss three hundred milliliters. No complications.",
+    "medicalPractice": "Spine Surgery",
+    "note": "\nSUBJECTIVE:\n67-year-old patient with degenerative L4-L5 spondylolisthesis presenting with spinal stenosis and neurogenic claudication. Symptoms prompting surgery included progressive leg pain and limited walking tolerance consistent with neurogenic claudication. (Operative note provided; preoperative consent and indications documented by surgical team.)\n\nOBJECTIVE:\nOperative procedure performed under general anesthesia. L4-L5 laminectomy with bilateral foraminotomies completed. L4-L5 transforaminal lumbar interbody fusion performed with placement of an interbody cage. Posterior segmental pedicle screw instrumentation placed from L4 to L5. Posterolateral fusion performed using local autograft supplemented with allograft. Estimated blood loss 300 mL. No intraoperative complications reported.\n\nASSESSMENT:\nPrimary diagnosis: Degenerative spondylolisthesis L4-L5 with associated spinal stenosis and neurogenic claudication.\nPostoperative status: Stable intraoperative course; instrumentation and interbody fusion implanted as planned; hemostasis achieved.\n\nPLAN:\n- Routine postoperative monitoring in PACU; neurovascular checks and pain control.\n- Continue wound care per standard spine postoperative protocol; keep incision clean and dry.\n- Initiate DVT prophylaxis per institutional protocol (mechanical and pharmacologic as indicated).\n- Activity: mobilize with assistance as tolerated; limitations on bending, lifting, twisting per surgeon's instructions.\n- Prescribe analgesics and stool softeners as needed; prescribe antibiotics perioperative per protocol.\n- Arrange postoperative follow-up in clinic in approximately 2 weeks for wound check and radiographic evaluation; obtain postoperative x-rays to confirm hardware position and alignment as per surgeon’s preference.\n- Educate patient on signs of infection, increased neurological deficit, or wound drainage and to seek immediate care if they occur.",
+    "icd10": [
+      {
+        "code": "S01.132",
+        "description": "Puncture wound without foreign body of left eyelid and periocular area"
+      },
+      {
+        "code": "S01.142",
+        "description": "Puncture wound with foreign body of left eyelid and periocular area"
+      },
+      {
+        "code": "K35.32",
+        "description": "Acute appendicitis with perforation, localized peritonitis, and gangrene, without abscess"
+      },
+      {
+        "code": "K57.52",
+        "description": "Diverticulitis of both small and large intestine without perforation or abscess without bleeding"
+      },
+      {
+        "code": "Y74.2",
+        "description": "Prosthetic and other implants, materials and accessory general hospital and personal-use devices associated with adverse incidents"
+      },
+      {
+        "code": "I13.2",
+        "description": "Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease"
+      },
+      {
+        "code": "I23",
+        "description": "Certain current complications following ST elevation (STEMI) and non-ST elevation (NSTEMI) myocardial infarction (within the 28 day period)"
+      },
+      {
+        "code": "M61.32",
+        "description": "Calcification and ossification of muscles associated with burns, upper arm"
+      },
+      {
+        "code": "M61.321",
+        "description": "Calcification and ossification of muscles associated with burns, right upper arm"
+      },
+      {
+        "code": "M61.322",
+        "description": "Calcification and ossification of muscles associated with burns, left upper arm"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "Q0220",
+        "description": "Tixagev and cilgav, 300mg"
+      },
+      {
+        "code": "73120",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "78215",
+        "description": "Liver and spleen imaging"
+      },
+      {
+        "code": "78230",
+        "description": "Salivary gland imaging"
+      },
+      {
+        "code": "78232",
+        "description": "Salivary gland function exam"
+      },
+      {
+        "code": "C2638",
+        "description": "Brachytx, stranded, I-125"
+      },
+      {
+        "code": "C2639",
+        "description": "Brachytx,non-stranded,I-125"
+      },
+      {
+        "code": "C2640",
+        "description": "Brachytx, stranded, P-103"
+      },
+      {
+        "code": "C2641",
+        "description": "Brachytx, non-stranded,P-103"
+      },
+      {
+        "code": "C2642",
+        "description": "Brachytx, stranded, C-131"
+      }
+    ]
+  },
+  {
+    "case": "10-op-laminectomy-3-level",
+    "encounterId": "ea9f178f-2bc8-4876-9124-2ec05379c157",
+    "dictation": "Operative note. Diagnosis: multilevel lumbar spinal stenosis with neurogenic claudication, L3 L4 and L4 L5. Procedure: decompressive laminectomy at L3 L4 and L4 L5 with bilateral facetectomy and foraminotomy, without fusion. The thecal sac and traversing nerve roots were fully decompressed. Estimated blood loss one hundred fifty milliliters. No complications.",
+    "medicalPractice": "Neurosurgery / Spine Surgery",
+    "note": "\nSUBJECTIVE:\nPatient with multilevel lumbar spinal stenosis presenting with neurogenic claudication attributable to L3-L4 and L4-L5 levels. (Preoperative symptoms implied: leg pain/weakness and walking intolerance from stenosis.)\n\nOBJECTIVE:\nOperative procedure performed: decompressive laminectomy at L3-L4 and L4-L5 with bilateral facetectomy and foraminotomy. Intraoperative findings: thecal sac and traversing nerve roots fully decompressed. Estimated blood loss 150 mL. No intraoperative complications reported.\n\nASSESSMENT:\n1. Multilevel lumbar spinal stenosis at L3-L4 and L4-L5 causing neurogenic claudication — addressed surgically.\n2. Postoperative status — uncomplicated decompression; adequate neural element decompression confirmed intraoperatively.\n\nPLAN:\n- No fusion performed. \n- Routine postoperative care: monitor neurovascular status, wound care, pain control, and mobilization as tolerated per standard post-laminectomy protocol.\n- Continue hemodynamic and neurologic observation; discharge planning when stable. \n- Follow-up clinic visit for wound check and reassessment of neurologic symptoms (typically 2 weeks post-op). \n- Activity restrictions and physical therapy to be initiated as indicated during follow-up.",
+    "icd10": [
+      {
+        "code": "S01.13",
+        "description": "Puncture wound without foreign body of eyelid and periocular area"
+      },
+      {
+        "code": "S01.131",
+        "description": "Puncture wound without foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.132",
+        "description": "Puncture wound without foreign body of left eyelid and periocular area"
+      },
+      {
+        "code": "S01.139",
+        "description": "Puncture wound without foreign body of unspecified eyelid and periocular area"
+      },
+      {
+        "code": "S01.14",
+        "description": "Puncture wound with foreign body of eyelid and periocular area"
+      },
+      {
+        "code": "S01.141",
+        "description": "Puncture wound with foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.142",
+        "description": "Puncture wound with foreign body of left eyelid and periocular area"
+      },
+      {
+        "code": "S01.149",
+        "description": "Puncture wound with foreign body of unspecified eyelid and periocular area"
+      },
+      {
+        "code": "Y84.2",
+        "description": "Radiological procedure and radiotherapy as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure"
+      },
+      {
+        "code": "F68.12",
+        "description": "…… with predominantly physical signs and symptoms"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "73120",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "78215",
+        "description": "Liver and spleen imaging"
+      },
+      {
+        "code": "78230",
+        "description": "Salivary gland imaging"
+      },
+      {
+        "code": "78232",
+        "description": "Salivary gland function exam"
+      },
+      {
+        "code": "C2638",
+        "description": "Brachytx, stranded, I-125"
+      },
+      {
+        "code": "C2639",
+        "description": "Brachytx,non-stranded,I-125"
+      },
+      {
+        "code": "C2640",
+        "description": "Brachytx, stranded, P-103"
+      },
+      {
+        "code": "C2641",
+        "description": "Brachytx, non-stranded,P-103"
+      },
+      {
+        "code": "C2642",
+        "description": "Brachytx, stranded, C-131"
+      },
+      {
+        "code": "C2643",
+        "description": "Brachytx, non-stranded,C-131"
+      }
+    ]
+  },
+  {
+    "case": "12-esi-transforaminal",
+    "encounterId": "56f1ea2d-0577-40fa-b8a4-1ea9e26c9d2e",
+    "dictation": "Procedure note. Left L5 S1 transforaminal epidural steroid injection under fluoroscopic guidance. Indication: left S1 radiculopathy from L5 S1 disc herniation. After sterile prep, a twenty two gauge spinal needle was advanced into the left L5 S1 foramen. Contrast confirmed epidural spread without vascular uptake. Two milliliters of dexamethasone and lidocaine were injected. The patient tolerated the procedure well.",
+    "medicalPractice": "Interventional Pain Management / Pain Medicine",
+    "note": "\nSUBJECTIVE:\nPatient with left S1 radiculopathy secondary to an L5-S1 disc herniation presenting for left L5-S1 transforaminal epidural steroid injection. Symptoms consistent with radicular pain in left S1 distribution. No complications or intolerance reported by patient prior to procedure.\n\nOBJECTIVE:\nProcedure performed under fluoroscopic guidance. After sterile preparation, a 22-gauge spinal needle advanced into the left L5-S1 neural foramen. Fluoroscopic contrast injection demonstrated appropriate epidural spread without vascular uptake. A total of 2 mL of medication (dexamethasone with lidocaine) was administered. Patient tolerated procedure well with no immediate adverse events observed.\n\nASSESSMENT:\n1. Left S1 radiculopathy due to L5-S1 disc herniation — treated with left L5-S1 transforaminal epidural steroid injection.\n2. No immediate procedural complications; contrast confirmed epidural (not intravascular) placement.\n\nPLAN:\n- Post-procedure observation for appropriate recovery; discharge when stable.\n- Monitor for improvement in radicular pain over subsequent days; expect possible immediate partial relief from local anesthetic and delayed anti-inflammatory effect from steroid.\n- Instruct patient to report any new or worsening symptoms (increasing pain, numbness, weakness, fever, signs of infection, or allergic reaction).\n- Follow-up appointment or phone call as per clinic protocol to assess response and determine need for further interventions or repeat injections.",
+    "icd10": [
+      {
+        "code": "S01.112",
+        "description": "Laceration without foreign body of left eyelid and periocular area"
+      },
+      {
+        "code": "S01.132",
+        "description": "Puncture wound without foreign body of left eyelid and periocular area"
+      },
+      {
+        "code": "S21.112",
+        "description": "Laceration without foreign body of left front wall of thorax without penetration into thoracic cavity"
+      },
+      {
+        "code": "S21.132",
+        "description": "Puncture wound without foreign body of left front wall of thorax without penetration into thoracic cavity"
+      },
+      {
+        "code": "S21.212",
+        "description": "Laceration without foreign body of left back wall of thorax without penetration into thoracic cavity"
+      },
+      {
+        "code": "S21.232",
+        "description": "Puncture wound without foreign body of left back wall of thorax without penetration into thoracic cavity"
+      },
+      {
+        "code": "S21.122",
+        "description": "Laceration with foreign body of left front wall of thorax without penetration into thoracic cavity"
+      },
+      {
+        "code": "S21.142",
+        "description": "Puncture wound with foreign body of left front wall of thorax without penetration into thoracic cavity"
+      },
+      {
+        "code": "S21.222",
+        "description": "Laceration with foreign body of left back wall of thorax without penetration into thoracic cavity"
+      },
+      {
+        "code": "S21.242",
+        "description": "Puncture wound with foreign body of left back wall of thorax without penetration into thoracic cavity"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "82465",
+        "description": "Assay bld/serum cholesterol [only when billed with ICD-10-CM code Z13.6]"
+      },
+      {
+        "code": "82947",
+        "description": "Assay glucose blood quant [only when billed with ICD-10-CM code Z13.1]"
+      },
+      {
+        "code": "82950",
+        "description": "Glucose test [only when billed with ICD-10-CM code Z13.1]"
+      },
+      {
+        "code": "82951",
+        "description": "Glucose tolerance test (GTT) [only when billed with ICD-10-CM code Z13.1]"
+      },
+      {
+        "code": "55920",
+        "description": "Place needles pelvic for rt"
+      },
+      {
+        "code": "78202",
+        "description": "Liver imaging with flow"
+      },
+      {
+        "code": "93320",
+        "description": "Doppler echo exam heart [if used in conjunction with 93303-93304]"
+      },
+      {
+        "code": "93321",
+        "description": "Doppler echo exam heart [if used in conjunction with 93303, 93304, 93308]"
+      },
+      {
+        "code": "93325",
+        "description": "Doppler color flow add-on [if used in conjunction with 76825, 76826, 76827,76828, 93303, 93304, 93308]"
+      },
+      {
+        "code": "P9612",
+        "description": "Catheterize for urine spec"
+      }
+    ]
+  },
+  {
+    "case": "13-medial-branch-block",
+    "encounterId": "9ecf8d9c-7df2-4484-8056-1d574202d70c",
+    "dictation": "Procedure note. Bilateral lumbar medial branch blocks at L4 L5 and L5 S1 facet joints under fluoroscopic guidance for chronic axial low back pain due to lumbar facet arthropathy and lumbar spondylosis without radiculopathy. Bupivacaine was injected at each level. Patient reported eighty percent relief during the diagnostic window.",
+    "medicalPractice": "Pain Management / Interventional Pain Medicine",
+    "note": "\nSUBJECTIVE:\nPatient with chronic axial low back pain attributed to lumbar facet arthropathy and lumbar spondylosis without radiculopathy. Presented for diagnostic bilateral lumbar medial branch blocks at L4-L5 and L5-S1. Reported approximately 80% pain relief during the diagnostic window following the procedure.\n\nOBJECTIVE:\nProcedure performed under fluoroscopic guidance. Bilateral medial branch blocks at L4-L5 and L5-S1 were identified fluoroscopically. Bupivacaine was injected at each targeted level. No immediate complications observed. Patient tolerated the procedure well.\n\nASSESSMENT:\n1. Chronic axial low back pain secondary to lumbar facet arthropathy and lumbar spondylosis without radiculopathy.\n2. Diagnostic bilateral lumbar medial branch blocks at L4-L5 and L5-S1 with bupivacaine resulted in approximately 80% temporary pain relief — consistent with positive diagnostic blocks indicating facet-mediated pain.\n\nPLAN:\n- Given positive diagnostic response, discuss proceeding with bilateral radiofrequency ablation (medial branch neurotomy) of L4-L5 and L5-S1 medial branches as next therapeutic option.\n- Review risks, benefits, and alternatives with patient and obtain consent if proceeding.\n- Provide post-procedure instructions: activity as tolerated, monitor for increased pain, bleeding, infection, or signs of adverse reaction; acetaminophen or prescribed analgesics as needed.\n- Follow-up appointment to review outcomes and plan definitive intervention (RFA) in 1–2 weeks or sooner if symptoms change.",
+    "icd10": [
+      {
+        "code": "Y83-Y84",
+        "description": "Surgical and other medical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure"
+      },
+      {
+        "code": "Y70-Y82",
+        "description": "Medical devices associated with adverse incidents in diagnostic and therapeutic use"
+      },
+      {
+        "code": "R90-R94",
+        "description": "Abnormal findings on diagnostic imaging and in function studies, without diagnosis"
+      },
+      {
+        "code": "S30-S39",
+        "description": "Injuries to the abdomen, lower back, lumbar spine, pelvis and external genitals"
+      },
+      {
+        "code": "Y71.0",
+        "description": "Diagnostic and monitoring cardiovascular devices associated with adverse incidents"
+      },
+      {
+        "code": "Y72.0",
+        "description": "Diagnostic and monitoring otorhinolaryngological devices associated with adverse incidents"
+      },
+      {
+        "code": "Y81.0",
+        "description": "Diagnostic and monitoring general- and plastic-surgery devices associated with adverse incidents"
+      },
+      {
+        "code": "M51.0",
+        "description": "Thoracic, thoracolumbar and lumbosacral intervertebral disc disorders with myelopathy"
+      },
+      {
+        "code": "M51.1",
+        "description": "Thoracic, thoracolumbar and lumbosacral intervertebral disc disorders with radiculopathy"
+      },
+      {
+        "code": "Y83",
+        "description": "Surgical operation and other surgical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "0039U",
+        "description": "Dna antb 2strand hi avidity"
+      },
+      {
+        "code": "G0141",
+        "description": "Scr c/v cyto,autosys and md"
+      },
+      {
+        "code": "70380",
+        "description": "X-ray exam of salivary gland"
+      },
+      {
+        "code": "73120",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "73130",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "76536",
+        "description": "Us exam of head and neck"
+      },
+      {
+        "code": "78215",
+        "description": "Liver and spleen imaging"
+      },
+      {
+        "code": "78230",
+        "description": "Salivary gland imaging"
+      },
+      {
+        "code": "78232",
+        "description": "Salivary gland function exam"
+      },
+      {
+        "code": "57155",
+        "description": "Insert uteri tandems/ovoids"
+      }
+    ]
+  },
+  {
+    "case": "14-rfa-lumbar",
+    "encounterId": "a2dbcbaa-05fe-41d3-9799-51f2ce695cb8",
+    "dictation": "Procedure note. Right L4 L5 and L5 S1 lumbar facet radiofrequency ablation of the medial branch nerves under fluoroscopic guidance. Indication: lumbar facet joint syndrome and lumbar spondylosis without myelopathy or radiculopathy, with greater than eighty percent relief from two prior diagnostic medial branch blocks. Lesions were created at eighty degrees Celsius for ninety seconds. No complications.",
+    "medicalPractice": "Pain Management / Interventional Pain Medicine",
+    "note": "\nSUBJECTIVE:\nPatient with history of lumbar facet joint syndrome and lumbar spondylosis without myelopathy or radiculopathy. Prior diagnostic medial branch blocks provided >80% pain relief. Patient presented for radiofrequency ablation for persistent facet-mediated low back pain.\n\nOBJECTIVE:\nProcedure: Right L4–L5 and L5–S1 lumbar medial branch radiofrequency ablation performed under fluoroscopic guidance. Lesions created at 80°C for 90 seconds at each targeted medial branch. No intraprocedural complications. Hemostasis adequate. Patient tolerated procedure well.\n\nASSESSMENT:\n1. Lumbar facet joint syndrome (right L4–5 and L5–S1) — treated with therapeutic radiofrequency ablation of medial branch nerves.\n2. Lumbar spondylosis without myelopathy or radiculopathy.\n\nPLAN:\n- Post-procedure observation per routine protocols; discharge when stable.\n- Routine post-procedure instructions: activity as tolerated, avoid strenuous lifting for 24–48 hours, local soreness expected; use ice/acetaminophen/NSAIDs as needed unless contraindicated.\n- Monitor for complications (increasing pain, fever, numbness, weakness, wound issues); return to clinic or ED if occur.\n- Follow-up arranged per clinic protocol (typically 4–12 weeks) to assess pain relief and functional improvement.\n- Continue other conservative measures as previously recommended (physical therapy, home exercise program, analgesics) as indicated.",
+    "icd10": [
+      {
+        "code": "S01.131",
+        "description": "Puncture wound without foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.111",
+        "description": "Laceration without foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.431",
+        "description": "Puncture wound without foreign body of right cheek and temporomandibular area"
+      },
+      {
+        "code": "S01.141",
+        "description": "Puncture wound with foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.411",
+        "description": "Laceration without foreign body of right cheek and temporomandibular area"
+      },
+      {
+        "code": "S01.13",
+        "description": "Puncture wound without foreign body of eyelid and periocular area"
+      },
+      {
+        "code": "S01.132",
+        "description": "Puncture wound without foreign body of left eyelid and periocular area"
+      },
+      {
+        "code": "S01.139",
+        "description": "Puncture wound without foreign body of unspecified eyelid and periocular area"
+      },
+      {
+        "code": "Q71.11",
+        "description": "Congenital absence of right upper arm and forearm with hand present"
+      },
+      {
+        "code": "S01.121",
+        "description": "Laceration with foreign body of right eyelid and periocular area"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "73090",
+        "description": "X-ray exam of forearm"
+      },
+      {
+        "code": "77790",
+        "description": "Radiation handling"
+      },
+      {
+        "code": "90749",
+        "description": "Unlisted vaccine/toxoid [only when used to identify a COVID-19 vaccine]"
+      },
+      {
+        "code": "97750",
+        "description": "Physical performance test"
+      },
+      {
+        "code": "32553",
+        "description": "Ins mark thor for rt perq"
+      },
+      {
+        "code": "49411",
+        "description": "Ins mark abd/pel for rt perq"
+      },
+      {
+        "code": "90901",
+        "description": "Biofeedback train any meth"
+      },
+      {
+        "code": "72131",
+        "description": "Ct lumbar spine w/o dye"
+      },
+      {
+        "code": "72132",
+        "description": "Ct lumbar spine w/dye"
+      },
+      {
+        "code": "72133",
+        "description": "Ct lumbar spine w/o & w/dye"
+      }
+    ]
+  },
+  {
+    "case": "15-si-joint-injection",
+    "encounterId": "59d538ad-25e8-42fc-b625-c3eaa0eba920",
+    "dictation": "Procedure note. Right sacroiliac joint injection under fluoroscopic guidance for right sacroiliac joint dysfunction and sacroiliitis. Positive FABER, thigh thrust, and compression tests on the right. Contrast confirmed intra articular spread, then triamcinolone and bupivacaine were injected. No complications.",
+    "medicalPractice": "Interventional Pain Management / Pain Medicine",
+    "note": "\nSUBJECTIVE:\nThe patient presented for right-sided sacroiliac (SI) joint pain consistent with SI joint dysfunction and sacroiliitis. Provocative maneuvers (FABER, thigh thrust, and compression tests) were positive on the right. Indication for procedure: diagnostic and therapeutic right SI joint injection.\n\nOBJECTIVE:\nProcedure: Right sacroiliac joint injection performed under fluoroscopic guidance. Fluoroscopy used to localize joint; contrast agent injected with confirmation of intra-articular spread. Following confirmation, triamcinolone (corticosteroid) and bupivacaine (local anesthetic) were injected into the right SI joint. Vital signs stable throughout. No immediate complications observed.\n\nASSESSMENT:\n- Right sacroiliac joint dysfunction / sacroiliitis — symptomatic with positive FABER, thigh thrust, and compression tests.\n- Diagnostic and therapeutic intra-articular right SI joint injection performed successfully with confirmed intra-articular contrast spread.\n- No immediate procedure-related complications.\n\nPLAN:\n- Observe patient post-procedure per routine recovery protocol; discharge when stable.\n- Expect temporary numbness/pain relief from local anesthetic and longer-lasting anti-inflammatory effect from steroid over days to weeks.\n- Advise activity modification for 24–48 hours; avoid strenuous activity and heavy lifting during this period.\n- Provide return precautions: seek immediate care for increasing pain, fever, chills, redness, swelling at injection site, or neurological symptoms.\n- Arrange follow-up with referring provider or pain clinic to assess response to injection and discuss further management (repeat injections, physical therapy, or other interventions) as indicated.",
+    "icd10": [
+      {
+        "code": "M25.571",
+        "description": "Pain in right ankle and joints of right foot"
+      },
+      {
+        "code": "M24.841",
+        "description": "Other specific joint derangements of right hand, not elsewhere classified"
+      },
+      {
+        "code": "M25.841",
+        "description": "Other specified joint disorders, right hand"
+      },
+      {
+        "code": "M25.871",
+        "description": "Other specified joint disorders, right ankle and foot"
+      },
+      {
+        "code": "M25.541",
+        "description": "Pain in joints of right hand"
+      },
+      {
+        "code": "Q71.11",
+        "description": "Congenital absence of right upper arm and forearm with hand present"
+      },
+      {
+        "code": "S01.111",
+        "description": "Laceration without foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.121",
+        "description": "Laceration with foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.131",
+        "description": "Puncture wound without foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.141",
+        "description": "Puncture wound with foreign body of right eyelid and periocular area"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "72200",
+        "description": "X-ray exam sacroiliac joints"
+      },
+      {
+        "code": "72202",
+        "description": "X-ray exam sacroiliac joints"
+      },
+      {
+        "code": "0039U",
+        "description": "Dna antb 2strand hi avidity"
+      },
+      {
+        "code": "G0141",
+        "description": "Scr c/v cyto,autosys and md"
+      },
+      {
+        "code": "70380",
+        "description": "X-ray exam of salivary gland"
+      },
+      {
+        "code": "73120",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "73130",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "76536",
+        "description": "Us exam of head and neck"
+      },
+      {
+        "code": "78215",
+        "description": "Liver and spleen imaging"
+      },
+      {
+        "code": "78230",
+        "description": "Salivary gland imaging"
+      }
+    ]
+  },
+  {
+    "case": "19-pseudarthrosis-hardware",
+    "encounterId": "1cca165b-e597-494f-8329-e7b3069e35fb",
+    "dictation": "Established patient. Sixty two year old female, eighteen months after L5 S1 posterior fusion, with recurrent low back pain. CT scan shows nonunion at L5 S1 with lucency around both S1 pedicle screws and a broken left S1 screw. Assessment: pseudarthrosis after lumbar fusion at L5 S1 and mechanical breakdown of the internal fixation device of the vertebrae. Plan: revision posterior fusion with removal and replacement of instrumentation. Discussed risks and benefits.",
+    "medicalPractice": "Practice/Specialty: Spine Surgery / Orthopedic Spine",
+    "note": "\nSUBJECTIVE:\n62-year-old female, established patient, presents 18 months status-post L5-S1 posterior fusion with recurrent low back pain. Reports persistent/recurrent lumbar pain since prior surgery. No additional history provided regarding radicular symptoms, neurologic deficits, systemic symptoms, or prior medical comorbidities in the note. Patient understands imaging findings and surgical recommendations after discussion of risks and benefits.\n\nOBJECTIVE:\nCT lumbar spine demonstrates nonunion (pseudarthrosis) at L5-S1 with lucency surrounding both S1 pedicle screws and a broken left S1 screw. No other objective exam findings documented in the provided information.\n\nASSESSMENT:\n1. Pseudarthrosis (nonunion) at L5-S1 following prior posterior lumbar fusion.\n2. Mechanical failure of posterior instrumentation: lucency around bilateral S1 pedicle screws and fractured left S1 pedicle screw.\n3. Recurrent low back pain likely secondary to hardware failure and pseudarthrosis.\n\nPLAN:\n- Recommend revision posterior fusion at L5-S1 with removal of existing instrumentation and replacement of hardware.\n- Discussed risks, benefits, and alternatives of revision surgery with the patient.\n- Preoperative planning: obtain routine pre-op clearance, recent labs, and any necessary imaging (full lumbar radiographs and consideration of CT for planning if not recent).\n- Plan for intraoperative removal of broken screw, debridement of pseudarthrosis, possible extension of fusion levels as indicated, and placement of new instrumentation with augmentation/grafting as needed (autograft/allograft/biologics to promote fusion).\n- Arrange surgical scheduling, preoperative consultation, and consent. Follow-up for pre-op clearance and perioperative instructions.",
+    "icd10": [
+      {
+        "code": "I83.225",
+        "description": "Varicose veins of left lower extremity with both ulcer other part of foot and inflammation"
+      },
+      {
+        "code": "I83.228",
+        "description": "Varicose veins of left lower extremity with both ulcer of other part of lower extremity and inflammation"
+      },
+      {
+        "code": "Z01.118",
+        "description": "Encounter for examination of ears and hearing with other abnormal findings"
+      },
+      {
+        "code": "Y83-Y84",
+        "description": "Surgical and other medical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure"
+      },
+      {
+        "code": "I83.22",
+        "description": "Varicose veins of left lower extremity with both ulcer and inflammation"
+      },
+      {
+        "code": "I83.221",
+        "description": "Varicose veins of left lower extremity with both ulcer of thigh and inflammation"
+      },
+      {
+        "code": "I83.222",
+        "description": "Varicose veins of left lower extremity with both ulcer of calf and inflammation"
+      },
+      {
+        "code": "I83.223",
+        "description": "Varicose veins of left lower extremity with both ulcer of ankle and inflammation"
+      },
+      {
+        "code": "I83.224",
+        "description": "Varicose veins of left lower extremity with both ulcer of heel and midfoot and inflammation"
+      },
+      {
+        "code": "I83.229",
+        "description": "Varicose veins of left lower extremity with both ulcer of unspecified site and inflammation"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "78215",
+        "description": "Liver and spleen imaging"
+      },
+      {
+        "code": "78230",
+        "description": "Salivary gland imaging"
+      },
+      {
+        "code": "70380",
+        "description": "X-ray exam of salivary gland"
+      },
+      {
+        "code": "73120",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "73130",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "76536",
+        "description": "Us exam of head and neck"
+      },
+      {
+        "code": "78232",
+        "description": "Salivary gland function exam"
+      },
+      {
+        "code": "0039U",
+        "description": "Dna antb 2strand hi avidity"
+      },
+      {
+        "code": "G0141",
+        "description": "Scr c/v cyto,autosys and md"
+      },
+      {
+        "code": "57155",
+        "description": "Insert uteri tandems/ovoids"
+      }
+    ]
+  },
+  {
+    "case": "20-l1-burst-fracture-trauma",
+    "encounterId": "d95ad512-9498-47eb-9e8d-a2cf2a1e3137",
+    "dictation": "New patient. Twenty nine year old male who fell from a ladder at work six days ago and sustained a stable burst fracture of the L1 vertebral body, initial encounter. Neurologically intact. No retropulsion causing canal compromise. Plan: thoracolumbosacral orthosis brace, upright x rays in two weeks, pain control. This is a workers compensation injury.",
+    "medicalPractice": "Orthopedic Spine",
+    "note": "\nSUBJECTIVE:\n29-year-old male, new patient, presents for evaluation following a fall from a ladder at work six days ago. Reports acute back pain since the injury localized to the lower thoracic/upper lumbar region. Denies numbness, tingling, weakness, bowel or bladder dysfunction. Injury is work-related and will be managed as worker's compensation.\n\nOBJECTIVE:\nNeurologic exam: intact motor strength and sensation in bilateral lower extremities; no focal deficits noted. No signs of spinal cord compression. Imaging (prior): L1 burst fracture described as stable with no retropulsion causing canal compromise. (Plan for upright x-rays in two weeks to reassess alignment.)\n\nASSESSMENT:\n1. Stable burst fracture of L1 vertebral body — initial encounter.\n2. No neurologic deficit; no canal compromise on prior imaging.\n3. Occupational (worker's compensation) injury.\n\nPLAN:\n- Conservative management with thoracolumbosacral orthosis (TLSO) brace; patient to wear as instructed.\n- Pain control: prescribe/advise appropriate analgesics (NSAID and/or short course opioid as needed) and consider muscle relaxant if indicated. (Prescriptions per clinic protocol — arrange as needed.)\n- Activity: limited/modified duty per brace and work restrictions; avoid heavy lifting, bending, twisting until reassessment.\n- Imaging: obtain upright lumbar spine x-rays in 2 weeks to evaluate alignment and stability.\n- Follow-up: clinic follow-up after x-rays or sooner if worsening pain, new neurologic symptoms, or other concerns.\n- Document as worker's compensation; provide necessary paperwork for employer/claims.",
+    "icd10": [
+      {
+        "code": "S86.392",
+        "description": "Other injury of muscle(s) and tendon(s) of peroneal muscle group at lower leg level, left leg"
+      },
+      {
+        "code": "S86.291",
+        "description": "Other injury of muscle(s) and tendon(s) of anterior muscle group at lower leg level, right leg"
+      },
+      {
+        "code": "S39.092",
+        "description": "Other injury of muscle, fascia and tendon of lower back"
+      },
+      {
+        "code": "K35.32",
+        "description": "Acute appendicitis with perforation, localized peritonitis, and gangrene, without abscess"
+      },
+      {
+        "code": "I83.218",
+        "description": "Varicose veins of right lower extremity with both ulcer of other part of lower extremity and inflammation"
+      },
+      {
+        "code": "S01.111",
+        "description": "Laceration without foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.121",
+        "description": "Laceration with foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.131",
+        "description": "Puncture wound without foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S01.141",
+        "description": "Puncture wound with foreign body of right eyelid and periocular area"
+      },
+      {
+        "code": "S86.192",
+        "description": "Other injury of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, left leg"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "77072",
+        "description": "X-rays for bone age"
+      },
+      {
+        "code": "78215",
+        "description": "Liver and spleen imaging"
+      },
+      {
+        "code": "78230",
+        "description": "Salivary gland imaging"
+      },
+      {
+        "code": "P9612",
+        "description": "Catheterize for urine spec"
+      },
+      {
+        "code": "73120",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "78232",
+        "description": "Salivary gland function exam"
+      },
+      {
+        "code": "32553",
+        "description": "Ins mark thor for rt perq"
+      },
+      {
+        "code": "C2638",
+        "description": "Brachytx, stranded, I-125"
+      },
+      {
+        "code": "C2639",
+        "description": "Brachytx,non-stranded,I-125"
+      },
+      {
+        "code": "C2640",
+        "description": "Brachytx, stranded, P-103"
+      }
+    ]
+  },
+  {
+    "case": "22-spinal-metastasis",
+    "encounterId": "e4cef595-c314-4daf-9b28-3bed3363d2af",
+    "dictation": "New patient. Sixty seven year old female with a history of breast cancer treated five years ago, now with new mid back pain. MRI shows a lesion in the T10 vertebral body with pathologic compression fracture, consistent with metastatic disease to bone. No spinal cord compression. Assessment: secondary malignant neoplasm of bone, T10 pathologic fracture. Plan: CT guided biopsy, oncology referral, radiation oncology consult, and bracing.",
+    "medicalPractice": "Oncology",
+    "note": "\nSUBJECTIVE:\n67-year-old female, new patient. History of breast cancer treated five years ago. Presents with new mid-back pain. No reported neurological deficits or symptoms of spinal cord compression noted in the provided history.\n\nOBJECTIVE:\nMRI: Lesion in the T10 vertebral body with pathologic compression fracture. No evidence of spinal cord compression on imaging. No additional physical exam findings provided.\n\nASSESSMENT:\n1. Secondary malignant neoplasm of bone — lesion involving T10 vertebral body, suspicious for metastatic breast cancer.\n2. Pathologic compression fracture of T10.\n3. No spinal cord compression identified on MRI.\n\nPLAN:\n- CT-guided biopsy of the T10 lesion to obtain tissue diagnosis.\n- Referral to medical oncology for systemic management given concern for metastatic breast cancer.\n- Referral to radiation oncology for consideration of palliative/spinal radiation to T10.\n- Spinal bracing for stabilization and pain management as indicated.\n- Pain control as needed (coordinate analgesics with oncology/pain management).\n- Obtain baseline labs and consider staging scans per oncology recommendations (e.g., CT chest/abdomen/pelvis, bone scan or PET-CT) after biopsy results.\n- Close follow-up after biopsy and specialist evaluations; urgent re-evaluation if new neurologic symptoms (weakness, numbness, bowel/bladder changes) develop.",
+    "icd10": [
+      {
+        "code": "Z01.118",
+        "description": "Encounter for examination of ears and hearing with other abnormal findings"
+      },
+      {
+        "code": "P02.5",
+        "description": "Newborn affected by other compression of umbilical cord"
+      },
+      {
+        "code": "R83-R89",
+        "description": "Abnormal findings on examination of other body fluids, substances and tissues, without diagnosis"
+      },
+      {
+        "code": "Z01.11",
+        "description": "Encounter for examination of ears and hearing with abnormal findings"
+      },
+      {
+        "code": "O69.2",
+        "description": "Labor and delivery complicated by other cord entanglement, with compression"
+      },
+      {
+        "code": "O69.82",
+        "description": "Labor and delivery complicated by other cord entanglement, without compression"
+      },
+      {
+        "code": "O91.1",
+        "description": "Abscess of breast associated with pregnancy, the puerperium and lactation"
+      },
+      {
+        "code": "O92.2",
+        "description": "Other and unspecified disorders of breast associated with pregnancy and the puerperium"
+      },
+      {
+        "code": "O92.20",
+        "description": "Unspecified disorder of breast associated with pregnancy and the puerperium"
+      },
+      {
+        "code": "O92.29",
+        "description": "Other disorders of breast associated with pregnancy and the puerperium"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "19296",
+        "description": "Place po breast cath for rad"
+      },
+      {
+        "code": "19297",
+        "description": "Place breast cath for rad"
+      },
+      {
+        "code": "63620",
+        "description": "SRS spinal lesion"
+      },
+      {
+        "code": "63621",
+        "description": "SRS spinal lesion addl"
+      },
+      {
+        "code": "P9612",
+        "description": "Catheterize for urine spec"
+      },
+      {
+        "code": "77431",
+        "description": "Radiation therapy management"
+      },
+      {
+        "code": "77499",
+        "description": "Radiation therapy management"
+      },
+      {
+        "code": "71120",
+        "description": "X-ray exam of breastbone"
+      },
+      {
+        "code": "71130",
+        "description": "X-ray exam of breastbone"
+      },
+      {
+        "code": "77072",
+        "description": "X-rays for bone age"
+      }
+    ]
+  },
+  {
+    "case": "25-simple-lbp-neck-pain",
+    "encounterId": "bf91b921-e049-45e9-9db1-83ac1a8c0792",
+    "dictation": "Established patient. Thirty nine year old office worker with mechanical low back pain and neck pain for one month. No radiating pain, no numbness, no weakness. Exam: normal neurologic exam, mild paraspinal muscle spasm. Assessment: low back pain and cervicalgia, muscle spasm of back. Plan: ergonomic changes, physical therapy, ibuprofen. Low complexity.",
+    "medicalPractice": "Physical Medicine & Rehabilitation (Physiatry) / Primary Care — Musculoskeletal",
+    "note": "\nSUBJECTIVE:\n39-year-old established patient, office worker, presents with one month of mechanical low back pain and neck pain. No radicular symptoms: denies radiating pain, numbness, or weakness. Symptoms consistent with activity/posture-related pain.\n\nOBJECTIVE:\nPhysical exam: normal neurologic exam (no sensory deficit, no motor weakness, reflexes intact). Mild paraspinal muscle spasm noted in cervical and lumbar regions. No signs of acute neurocompression.\n\nASSESSMENT:\n1. Mechanical low back pain.\n2. Cervicalgia (neck pain).\n3. Paraspinal muscle spasm.\n\nPLAN:\n- Education on ergonomic changes at work (adjust chair, monitor height, lumbar support, frequent position changes/mini-breaks).\n- Prescribe/refer for physical therapy focusing on posture correction, core and cervical strengthening, stretching, and manual therapy as indicated.\n- Recommend ibuprofen (e.g., 400 mg PO every 6–8 hours as needed with food), barring contraindications; advise maximum daily dose and to consult if on other anticoagulants/NSAIDs or history of GI/renal disease.\n- Encourage home exercises and application of heat/ice as tolerated.\n- Return precautions: worsening pain, development of radicular symptoms, numbness, weakness, bowel/bladder changes — seek earlier evaluation.\n- Follow-up in 4–6 weeks to assess response or sooner if symptoms progress. Low-complexity visit.",
+    "icd10": [
+      {
+        "code": "Z01.118",
+        "description": "Encounter for examination of ears and hearing with other abnormal findings"
+      },
+      {
+        "code": "M61.36",
+        "description": "Calcification and ossification of muscles associated with burns, lower leg"
+      },
+      {
+        "code": "M61.361",
+        "description": "Calcification and ossification of muscles associated with burns, right lower leg"
+      },
+      {
+        "code": "M61.362",
+        "description": "Calcification and ossification of muscles associated with burns, left lower leg"
+      },
+      {
+        "code": "M61.369",
+        "description": "Calcification and ossification of muscles associated with burns, unspecified lower leg"
+      },
+      {
+        "code": "R83-R89",
+        "description": "Abnormal findings on examination of other body fluids, substances and tissues, without diagnosis"
+      },
+      {
+        "code": "Z01.11",
+        "description": "Encounter for examination of ears and hearing with abnormal findings"
+      },
+      {
+        "code": "N02.8",
+        "description": "Recurrent and persistent hematuria with other morphologic changes"
+      },
+      {
+        "code": "Y83-Y84",
+        "description": "Surgical and other medical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure"
+      },
+      {
+        "code": "M61.33",
+        "description": "Calcification and ossification of muscles associated with burns, forearm"
+      }
+    ],
+    "billingCodes": [
+      {
+        "code": "76536",
+        "description": "Us exam of head and neck"
+      },
+      {
+        "code": "70380",
+        "description": "X-ray exam of salivary gland"
+      },
+      {
+        "code": "73120",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "73130",
+        "description": "X-ray exam of hand"
+      },
+      {
+        "code": "78232",
+        "description": "Salivary gland function exam"
+      },
+      {
+        "code": "0039U",
+        "description": "Dna antb 2strand hi avidity"
+      },
+      {
+        "code": "G0141",
+        "description": "Scr c/v cyto,autosys and md"
+      },
+      {
+        "code": "78215",
+        "description": "Liver and spleen imaging"
+      },
+      {
+        "code": "78230",
+        "description": "Salivary gland imaging"
+      },
+      {
+        "code": "57155",
+        "description": "Insert uteri tandems/ovoids"
+      }
+    ]
+  }
+]

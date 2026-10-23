@@ -10,8 +10,13 @@ const redirectHosts = (
 
   const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
+  // lib/coding/library.ts reads these at runtime. Keys are route globs, so
+  // dynamic segments need escaped brackets.
   outputFileTracingIncludes: {
-    "/api/encounters/[id]/process": ["./data/coding/**/*"],
+    "/api/coding/search": ["./data/coding/*.json"],
+    "/api/coding/check": ["./data/coding/*.json"],
+    "/api/encounters/\\[id\\]": ["./data/coding/*.json"],
+    "/admin/operations/claims/\\[id\\]": ["./data/coding/*.json"],
   },
   async redirects() {
     return redirectHosts.flatMap((host) => [
