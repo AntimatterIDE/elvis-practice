@@ -1,44 +1,18 @@
 {
-  "generatedAt": "2026-10-23T04:42:58.713Z",
+  "generatedAt": "2026-10-23T05:11:23.031Z",
   "origin": "https://thealignmentclinic.com",
   "path": "suggestVisitCodes",
   "imperfect": true,
   "count": 300,
-  "passed": 285,
-  "failed": 15,
-  "passRate": 0.95,
-  "imperfectPassRate": 0.9516728624535316,
-  "cleanPassRate": 0.9354838709677419,
-  "cptHitRate": 0.9533333333333334,
+  "passed": 296,
+  "failed": 4,
+  "passRate": 0.9866666666666667,
+  "imperfectPassRate": 0.9851301115241635,
+  "cleanPassRate": 1,
+  "cptHitRate": 0.99,
   "icdHitRate": 0.9966666666666667,
   "modifierHitRate": 1,
   "failures": [
-    {
-      "id": "E16",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "abbreviations",
-        "word_typos",
-        "drop_sentence"
-      ],
-      "cpts": [
-        "22850",
-        "22830"
-      ],
-      "icds": [
-        "T84.216A",
-        "M96.0"
-      ],
-      "modifiers": [
-        "59"
-      ],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
     {
       "id": "E17",
       "imperfect": true,
@@ -46,16 +20,43 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
-      "cpts": [
-        "63030"
-      ],
+      "cpts": [],
       "icds": [
         "G83.4",
-        "M51.16"
+        "M51.26"
       ],
       "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "E22",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "anchor_restore"
+      ],
+      "cpts": [
+        "64493",
+        "64494"
+      ],
+      "icds": [
+        "M47.816",
+        "M54.50"
+      ],
+      "modifiers": [
+        "50",
+        "50"
+      ],
       "cptHit": false,
       "icdHit": true,
       "modifierHit": true,
@@ -69,258 +70,48 @@
         "drop_headers",
         "ocr_typos",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
-      "cpts": [],
+      "cpts": [
+        "27096"
+      ],
       "icds": [
         "M46.1",
         "M53.3"
       ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "P01",
-      "imperfect": true,
-      "mutations": [
-        "abbreviations",
-        "fax_junk",
-        "word_typos",
-        "drop_sentence"
-      ],
-      "cpts": [
-        "99213"
-      ],
-      "icds": [
-        "M51.17"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "P02",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "abbreviations",
-        "word_typos"
-      ],
-      "cpts": [],
-      "icds": [
-        "M48.061"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "P04",
-      "imperfect": false,
-      "mutations": [
-        "clean_control"
-      ],
-      "cpts": [],
-      "icds": [
-        "M47.816",
-        "M54.50"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "P06",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "abbreviations",
-        "word_typos"
-      ],
-      "cpts": [],
-      "icds": [
-        "M46.1"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "P08",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "ocr_typos",
-        "abbreviations",
-        "word_typos",
-        "drop_sentence"
-      ],
-      "cpts": [
-        "99212"
-      ],
-      "icds": [
-        "G97.1"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "X04",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "ocr_typos",
-        "abbreviations",
-        "word_typos"
-      ],
-      "cpts": [
-        "99203"
-      ],
-      "icds": [
-        "M48.062"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "X06",
-      "imperfect": false,
-      "mutations": [
-        "clean_control"
-      ],
-      "cpts": [
-        "99213"
-      ],
-      "icds": [],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "S04",
-      "imperfect": true,
-      "mutations": [
-        "abbreviations",
-        "fax_junk",
-        "word_typos"
-      ],
-      "cpts": [],
-      "icds": [
-        "M48.062"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "S05",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "ocr_typos",
-        "abbreviations",
-        "word_typos"
-      ],
-      "cpts": [],
-      "icds": [
-        "M80.08XA"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "M002",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "abbreviations",
-        "fax_junk",
-        "word_typos",
-        "drop_sentence"
-      ],
-      "cpts": [
-        "99215"
-      ],
-      "icds": [],
       "modifiers": [
-        "57"
+        "RT"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M020",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "anchor_restore"
+      ],
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M54.16"
+      ],
+      "modifiers": [
+        "25",
+        "RT"
       ],
       "cptHit": true,
       "icdHit": false,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "M038",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "ocr_typos",
-        "abbreviations",
-        "word_typos"
-      ],
-      "cpts": [],
-      "icds": [
-        "M47.812"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "M039",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "abbreviations",
-        "fax_junk",
-        "word_typos"
-      ],
-      "cpts": [],
-      "icds": [
-        "M47.816"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
       "modifierHit": true,
       "blocked": [],
       "extractWarnings": []
@@ -334,7 +125,8 @@
         "drop_headers",
         "abbreviations",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -363,13 +155,14 @@
         "abbreviations",
         "fax_junk",
         "word_typos",
-        "drop_sentence"
+        "drop_sentence",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213"
+        "99214"
       ],
       "icds": [
         "M48.062"
@@ -389,7 +182,8 @@
         "ocr_typos",
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -417,7 +211,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -449,13 +244,12 @@
         "99024"
       ],
       "icds": [
-        "Z98.1",
-        "M43.16"
+        "Z98.1"
       ],
       "modifiers": [],
       "extractWarnings": [],
       "codingWarnings": [
-        "Skipped history “radiculopathy” — no Z-code rule."
+        "Skipped history “spondylolisthesis” — no Z-code rule."
       ],
       "blocked": [],
       "enabled": true,
@@ -469,7 +263,8 @@
         "abbreviations",
         "fax_junk",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -555,21 +350,26 @@
         "abbreviations",
         "word_typos",
         "drop_sentence",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99205"
+        "99215"
       ],
       "icds": [
-        "M51.04"
+        "M51.04",
+        "M54.6"
       ],
-      "modifiers": [],
+      "modifiers": [
+        "57"
+      ],
       "extractWarnings": [],
       "codingWarnings": [
-        "No rule matched diagnosis “myelopathy” (thoracic)."
+        "No rule matched diagnosis “myelopathy” (thoracic).",
+        "Remapped consult → office_established (no requesting-provider language)."
       ],
       "blocked": [],
       "enabled": true,
@@ -593,8 +393,7 @@
         "99244"
       ],
       "icds": [
-        "M51.360",
-        "M54.50"
+        "M51.360"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -617,7 +416,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99203"
+        "99213"
       ],
       "icds": [
         "M54.41",
@@ -637,13 +436,14 @@
       "mutations": [
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99202"
+        "99203"
       ],
       "icds": [
         "M53.3"
@@ -663,7 +463,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -745,28 +546,29 @@
         "drop_headers",
         "abbreviations",
         "word_typos",
-        "drop_sentence"
+        "drop_sentence",
+        "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "22850",
-        "22830"
+        "99215"
       ],
       "icds": [
+        "M96.0",
         "T84.216A",
-        "M96.0"
+        "M54.50"
       ],
       "modifiers": [
-        "59"
+        "57"
       ],
       "extractWarnings": [],
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "E17",
@@ -775,21 +577,22 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": false,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [
-        "63030"
-      ],
+      "cpts": [],
       "icds": [
         "G83.4",
-        "M51.16"
+        "M51.26"
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
       "blocked": [],
       "enabled": true,
       "codeHit": false,
@@ -812,7 +615,8 @@
       ],
       "icds": [
         "C79.51",
-        "M84.58XA"
+        "M84.58XA",
+        "M54.6"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -829,7 +633,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -862,7 +667,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99203"
+        "99202"
       ],
       "icds": [
         "M45.6"
@@ -882,17 +687,18 @@
         "ocr_typos",
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213"
+        "99214"
       ],
       "icds": [
-        "M54.2",
-        "M47.812"
+        "M47.812",
+        "M54.2"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -909,24 +715,32 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
-      "cptHit": true,
+      "cptHit": false,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99203"
+        "64493",
+        "64494"
       ],
       "icds": [
-        "M47.816"
+        "M47.816",
+        "M54.50"
       ],
-      "modifiers": [],
+      "modifiers": [
+        "50",
+        "50"
+      ],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "Skipped radiculopathy (negated) — not coded as active disease."
+      ],
       "blocked": [],
       "enabled": true,
-      "codeHit": true,
-      "ok": true
+      "codeHit": false,
+      "ok": false
     },
     {
       "id": "E23",
@@ -938,10 +752,10 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99204"
+        "99205"
       ],
       "icds": [
-        "M48.8X2"
+        "M47.12"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -964,11 +778,10 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99204"
+        "99203"
       ],
       "icds": [
-        "M43.16",
-        "M47.816"
+        "M43.16"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -985,21 +798,24 @@
         "drop_headers",
         "ocr_typos",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": false,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [],
+      "cpts": [
+        "27096"
+      ],
       "icds": [
         "M46.1",
         "M53.3"
       ],
-      "modifiers": [],
-      "extractWarnings": [],
-      "codingWarnings": [
-        "No visit or performed procedure — nothing to suggest."
+      "modifiers": [
+        "RT"
       ],
+      "extractWarnings": [],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
       "codeHit": false,
@@ -1044,7 +860,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99203"
+        "99204"
       ],
       "icds": [
         "S13.4XXA"
@@ -1072,7 +888,8 @@
         "99203"
       ],
       "icds": [
-        "S39.012A"
+        "S39.012A",
+        "M62.830"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1089,7 +906,8 @@
         "drop_headers",
         "ocr_typos",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1141,7 +959,8 @@
         "abbreviations",
         "word_typos",
         "truncate_soft",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1150,12 +969,11 @@
         "99205"
       ],
       "icds": [
-        "S14.124A",
-        "M47.12",
-        "M54.12",
-        "M62.830"
+        "S14.124A"
       ],
-      "modifiers": [],
+      "modifiers": [
+        "57"
+      ],
       "extractWarnings": [],
       "codingWarnings": [],
       "blocked": [],
@@ -1185,8 +1003,8 @@
       "extractWarnings": [],
       "codingWarnings": [
         "Skipped cauda_equina_syndrome (ruled_out) — not coded as active disease.",
-        "Skipped radiculopathy (negated) — not coded as active disease.",
-        "Skipped myelopathy (negated) — not coded as active disease."
+        "Skipped radiculopathy (ruled_out) — not coded as active disease.",
+        "Skipped myelopathy (ruled_out) — not coded as active disease."
       ],
       "blocked": [],
       "enabled": true,
@@ -1251,23 +1069,21 @@
       "mutations": [
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99214"
+        "99204"
       ],
       "icds": [
         "M51.26",
-        "M54.16",
         "M51.360",
-        "M54.50"
+        "M54.16"
       ],
-      "modifiers": [
-        "57"
-      ],
+      "modifiers": [],
       "extractWarnings": [],
       "codingWarnings": [
         "Skipped history “fusion_status” — no Z-code rule."
@@ -1291,11 +1107,10 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213"
+        "99203"
       ],
       "icds": [
         "M51.17",
-        "M54.50",
         "M54.16"
       ],
       "modifiers": [],
@@ -1319,11 +1134,12 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99202"
+        "99213"
       ],
       "icds": [
         "M47.812",
-        "M47.816"
+        "M47.816",
+        "M54.6"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1342,24 +1158,27 @@
         "abbreviations",
         "fax_junk",
         "word_typos",
-        "drop_sentence"
+        "drop_sentence",
+        "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213"
+        "64483"
       ],
       "icds": [
         "M51.17"
       ],
-      "modifiers": [],
+      "modifiers": [
+        "LT"
+      ],
       "extractWarnings": [],
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "P02",
@@ -1367,24 +1186,25 @@
       "mutations": [
         "drop_headers",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [],
+      "cpts": [
+        "62323"
+      ],
       "icds": [
         "M48.061"
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [
-        "No visit or performed procedure — nothing to suggest."
-      ],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "P03",
@@ -1393,7 +1213,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1418,23 +1239,27 @@
       "mutations": [
         "clean_control"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [],
+      "cpts": [
+        "64493",
+        "64494"
+      ],
       "icds": [
         "M47.816",
         "M54.50"
       ],
-      "modifiers": [],
-      "extractWarnings": [],
-      "codingWarnings": [
-        "No visit or performed procedure — nothing to suggest."
+      "modifiers": [
+        "50",
+        "50"
       ],
+      "extractWarnings": [],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "P05",
@@ -1444,7 +1269,8 @@
         "abbreviations",
         "fax_junk",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1473,24 +1299,27 @@
       "mutations": [
         "drop_headers",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [],
+      "cpts": [
+        "27096"
+      ],
       "icds": [
         "M46.1"
       ],
-      "modifiers": [],
-      "extractWarnings": [],
-      "codingWarnings": [
-        "No visit or performed procedure — nothing to suggest."
+      "modifiers": [
+        "RT"
       ],
+      "extractWarnings": [],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "P07",
@@ -1498,7 +1327,8 @@
       "mutations": [
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1525,13 +1355,14 @@
         "ocr_typos",
         "abbreviations",
         "word_typos",
-        "drop_sentence"
+        "drop_sentence",
+        "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99212"
+        "62273"
       ],
       "icds": [
         "G97.1"
@@ -1541,8 +1372,8 @@
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "X04",
@@ -1553,11 +1384,11 @@
         "abbreviations",
         "word_typos"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99203"
+        "99213"
       ],
       "icds": [
         "M48.062"
@@ -1567,8 +1398,8 @@
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "X06",
@@ -1576,7 +1407,7 @@
       "mutations": [
         "clean_control"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
@@ -1588,8 +1419,8 @@
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "S01",
@@ -1604,7 +1435,8 @@
         "63030"
       ],
       "icds": [
-        "M51.17"
+        "M51.17",
+        "M54.16"
       ],
       "modifiers": [
         "LT"
@@ -1625,7 +1457,8 @@
         "fax_junk",
         "word_typos",
         "truncate_soft",
-        "drop_sentence"
+        "drop_sentence",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1655,7 +1488,8 @@
       "mutations": [
         "drop_headers",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1668,7 +1502,9 @@
         "22830"
       ],
       "icds": [
-        "M43.16"
+        "M43.16",
+        "M48.061",
+        "M48.062"
       ],
       "modifiers": [
         "59",
@@ -1687,24 +1523,26 @@
       "mutations": [
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [],
+      "cpts": [
+        "63047",
+        "63048"
+      ],
       "icds": [
         "M48.062"
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [
-        "No visit or performed procedure — nothing to suggest."
-      ],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "S05",
@@ -1713,24 +1551,25 @@
         "drop_headers",
         "ocr_typos",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [],
+      "cpts": [
+        "22513"
+      ],
       "icds": [
         "M80.08XA"
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [
-        "No visit or performed procedure — nothing to suggest."
-      ],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "S06",
@@ -1739,7 +1578,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1765,14 +1605,16 @@
         "abbreviations",
         "word_typos",
         "truncate_soft",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
         "63045",
-        "22600"
+        "22600",
+        "22840"
       ],
       "icds": [
         "M47.12"
@@ -1792,7 +1634,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1819,18 +1662,23 @@
         "ocr_typos",
         "abbreviations",
         "word_typos",
-        "drop_sentence"
+        "drop_sentence",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "22850"
+        "22850",
+        "22830"
       ],
       "icds": [
-        "T84.84XA"
+        "T84.84XA",
+        "Z98.1"
       ],
-      "modifiers": [],
+      "modifiers": [
+        "59"
+      ],
       "extractWarnings": [],
       "codingWarnings": [],
       "blocked": [],
@@ -1870,7 +1718,8 @@
         "abbreviations",
         "fax_junk",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1879,8 +1728,7 @@
         "22015"
       ],
       "icds": [
-        "T81.42XA",
-        "T84.7XXA"
+        "T81.42XA"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1897,7 +1745,8 @@
         "drop_headers",
         "ocr_typos",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1924,7 +1773,8 @@
       "mutations": [
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -1960,7 +1810,7 @@
         "99205"
       ],
       "icds": [
-        "M48.062"
+        "M47.816"
       ],
       "modifiers": [
         "57"
@@ -1983,7 +1833,7 @@
         "drop_sentence"
       ],
       "cptHit": true,
-      "icdHit": false,
+      "icdHit": true,
       "modifierHit": true,
       "cpts": [
         "99215"
@@ -1996,8 +1846,8 @@
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "M003",
@@ -2014,7 +1864,7 @@
         "99204"
       ],
       "icds": [
-        "M47.816"
+        "M48.062"
       ],
       "modifiers": [
         "57"
@@ -2116,7 +1966,8 @@
       "mutations": [
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2131,9 +1982,7 @@
         "24"
       ],
       "extractWarnings": [],
-      "codingWarnings": [
-        "Skipped history “fusion_status” — no Z-code rule."
-      ],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -2146,7 +1995,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2337,13 +2187,14 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99214",
+        "99213",
         "64483"
       ],
       "icds": [
@@ -2368,20 +2219,19 @@
         "abbreviations",
         "word_typos",
         "drop_sentence",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213",
         "64479"
       ],
       "icds": [
         "M50.20"
       ],
       "modifiers": [
-        "25",
         "LT"
       ],
       "extractWarnings": [],
@@ -2398,18 +2248,21 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
+        "99213",
         "64483"
       ],
       "icds": [
         "M47.816"
       ],
       "modifiers": [
+        "25",
         "LT"
       ],
       "extractWarnings": [],
@@ -2453,19 +2306,22 @@
         "abbreviations",
         "fax_junk",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213"
+        "99213",
+        "64479"
       ],
       "icds": [
         "M50.20"
       ],
       "modifiers": [
-        "25"
+        "25",
+        "RT"
       ],
       "extractWarnings": [],
       "codingWarnings": [],
@@ -2481,17 +2337,18 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
-      "icdHit": true,
+      "icdHit": false,
       "modifierHit": true,
       "cpts": [
         "99213",
         "64483"
       ],
       "icds": [
-        "M48.061"
+        "M54.16"
       ],
       "modifiers": [
         "25",
@@ -2501,8 +2358,8 @@
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": true,
-      "ok": true
+      "codeHit": false,
+      "ok": false
     },
     {
       "id": "M021",
@@ -2510,7 +2367,8 @@
       "mutations": [
         "drop_headers",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2539,7 +2397,8 @@
       "mutations": [
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2571,7 +2430,8 @@
         "abbreviations",
         "word_typos",
         "truncate_soft",
-        "drop_sentence"
+        "drop_sentence",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2581,7 +2441,7 @@
         "64483"
       ],
       "icds": [
-        "M48.061"
+        "M47.816"
       ],
       "modifiers": [
         "25",
@@ -2601,7 +2461,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2628,7 +2489,8 @@
       "mutations": [
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2656,7 +2518,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2711,7 +2574,8 @@
         "abbreviations",
         "fax_junk",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2740,7 +2604,8 @@
       "mutations": [
         "drop_headers",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2770,7 +2635,8 @@
         "drop_headers",
         "ocr_typos",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2797,7 +2663,8 @@
       "mutations": [
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2825,7 +2692,8 @@
         "drop_headers",
         "abbreviations",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2853,7 +2721,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2883,7 +2752,8 @@
         "ocr_typos",
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2913,7 +2783,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -2971,7 +2842,8 @@
         "fax_junk",
         "word_typos",
         "truncate_soft",
-        "drop_sentence"
+        "drop_sentence",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3001,24 +2873,29 @@
         "drop_headers",
         "ocr_typos",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [],
+      "cpts": [
+        "64490",
+        "64491"
+      ],
       "icds": [
         "M47.812"
       ],
-      "modifiers": [],
-      "extractWarnings": [],
-      "codingWarnings": [
-        "No visit or performed procedure — nothing to suggest."
+      "modifiers": [
+        "RT",
+        "RT"
       ],
+      "extractWarnings": [],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "M039",
@@ -3027,24 +2904,29 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [],
+      "cpts": [
+        "64635",
+        "64636"
+      ],
       "icds": [
         "M47.816"
       ],
-      "modifiers": [],
-      "extractWarnings": [],
-      "codingWarnings": [
-        "No visit or performed procedure — nothing to suggest."
+      "modifiers": [
+        "LT",
+        "LT"
       ],
+      "extractWarnings": [],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "M040",
@@ -3052,7 +2934,8 @@
       "mutations": [
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3083,7 +2966,8 @@
         "ocr_typos",
         "abbreviations",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3113,7 +2997,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3140,7 +3025,8 @@
       "mutations": [
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3168,7 +3054,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3176,9 +3063,7 @@
       "cpts": [
         "64633"
       ],
-      "icds": [
-        "M47.812"
-      ],
+      "icds": [],
       "modifiers": [
         "50"
       ],
@@ -3202,7 +3087,7 @@
         "27096"
       ],
       "icds": [
-        "M53.3"
+        "M46.1"
       ],
       "modifiers": [
         "LT"
@@ -3221,7 +3106,8 @@
         "abbreviations",
         "fax_junk",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3248,7 +3134,8 @@
       "mutations": [
         "drop_headers",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3276,7 +3163,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3285,7 +3173,7 @@
         "62323"
       ],
       "icds": [
-        "M48.061"
+        "M47.816"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -3302,7 +3190,8 @@
         "ocr_typos",
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3328,7 +3217,8 @@
         "drop_headers",
         "abbreviations",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3354,7 +3244,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3382,7 +3273,8 @@
         "ocr_typos",
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3410,7 +3302,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3463,7 +3356,8 @@
         "abbreviations",
         "fax_junk",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3489,7 +3383,8 @@
         "drop_headers",
         "ocr_typos",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3515,7 +3410,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3546,7 +3442,8 @@
         "abbreviations",
         "word_typos",
         "drop_sentence",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3577,7 +3474,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3608,7 +3506,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3638,7 +3537,8 @@
       "mutations": [
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3646,16 +3546,17 @@
       "cpts": [
         "22551",
         "22552",
-        "22853"
+        "22853",
+        "22845"
       ],
       "icds": [
         "M47.12"
       ],
-      "modifiers": [],
-      "extractWarnings": [],
-      "codingWarnings": [
-        "Procedure “anterior_instrumentation” was performed but no rule emits that CPT yet — code it by search."
+      "modifiers": [
+        "59"
       ],
+      "extractWarnings": [],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -3668,7 +3569,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3727,7 +3629,8 @@
         "abbreviations",
         "fax_junk",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3757,7 +3660,8 @@
       "mutations": [
         "drop_headers",
         "abbreviations",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3786,7 +3690,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3815,7 +3720,8 @@
         "ocr_typos",
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3844,7 +3750,8 @@
         "drop_headers",
         "abbreviations",
         "fax_junk",
-        "word_typos"
+        "word_typos",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3873,7 +3780,8 @@
         "drop_headers",
         "abbreviations",
         "word_typos",
-        "truncate_soft"
+        "truncate_soft",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3902,7 +3810,8 @@
         "ocr_typos",
         "abbreviations",
         "word_typos",
-        "shuffle_paras"
+        "shuffle_paras",
+        "anchor_restore"
       ],
       "cptHit": true,
       "icdHit": true,
@@ -3989,7 +3898,7 @@
         "99215"
       ],
       "icds": [
-        "M54.50"
+        "M53.3"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -4475,7 +4384,7 @@
         "99203"
       ],
       "icds": [
-        "M79.18"
+        "M62.830"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -7034,7 +6943,7 @@
         "99204"
       ],
       "icds": [
-        "M62.830"
+        "M79.18"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -7568,7 +7477,7 @@
         "99214"
       ],
       "icds": [
-        "M53.3"
+        "M54.50"
       ],
       "modifiers": [],
       "extractWarnings": [],
