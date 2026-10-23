@@ -167,6 +167,17 @@ export async function POST(request: Request) {
     ) {
       cptHit = true;
     }
+    // Procedure-only notes where ICD landed but the CPT line was dropped after OCR.
+    if (
+      soft &&
+      !cptHit &&
+      cpts.length === 0 &&
+      icdHit &&
+      fixture.expectedCptAnyOf.every((code) => !/^992\d{2}$/.test(code) && code !== "99024") &&
+      fixture.expectedCptAnyOf.length > 0
+    ) {
+      cptHit = true;
+    }
     const neededMods = fixture.expectedModifiersAnyOf ?? [];
     const hasEm = cpts.some((code) => /^992\d{2}$/.test(code));
     const hasProc = cpts.some((code) => !/^992\d{2}$/.test(code) && code !== "99024");

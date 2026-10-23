@@ -1,6 +1,7 @@
 import {
   keepQuotedFacts,
   parseCodingFacts,
+  quoteInNote,
   type CodingFacts,
   type FactWarning,
 } from "@/lib/coding/facts";
@@ -203,6 +204,64 @@ export type ExtractResult = {
   warnings: FactWarning[];
 };
 
+/** When the model drops a clear Procedure: line, recover it from the note text. */
+function rescueProceduresFromNote(note: string, result: ExtractResult): ExtractResult {
+  if (result.facts.procedures.some((procedure) => procedure.performed)) return result;
+  const procLine = note
+    .split(/\n/)
+    .map((item) => item.trim())
+    .find((item) => /^procedure:\s*/i.test(item));
+  if (!procLine) return result;
+  const line = procLine.replace(/^procedure:\s*/i, "").trim();
+  const lower = line.toLowerCase();
+  let name: string | null = null;
+  if (/transforaminal/.test(lower)) name = "transforaminal_esi";
+  else if (/interlaminar|epidural steroid/.test(lower)) name = "interlaminar_esi";
+  else if (/medial branch/.test(lower)) name = "medial_branch_block";
+  else if (/radiofrequency|rfa|rhizotomy/.test(lower)) name = "facet_rfa";
+  else if (/blood patch/.test(lower)) name = "epidural_blood_patch";
+  else if (/si joint|sacroiliac/.test(lower) && /inject/.test(lower)) name = "si_joint_injection";
+  else if (/trigger point/.test(lower)) name = "trigger_point";
+  else if (/kyphoplasty/.test(lower)) name = "kyphoplasty";
+  else if (/microdiscectomy|discectomy/.test(lower) && !/fusion/.test(lower)) name = "microdiscectomy";
+  if (!name) return result;
+
+  const levelMatch = line.match(/[CTL]\d{1,2}\s*-\s*[CTL]?\d{1,2}|[CTL]\d{1,2}-S\d|[CTL]\d{1,2}/gi);
+  const levels = (levelMatch ?? []).map((item) => item.replace(/\s+/g, ""));
+  const side = /\bbilateral\b/i.test(line)
+    ? "bilateral"
+    : /\bleft\b/i.test(line)
+      ? "left"
+      : /\bright\b/i.test(line)
+        ? "right"
+        : "none";
+  // Prefer a short grounded quote that survives OCR softening.
+  const quoteCandidates = [procLine.slice(0, 160), line.slice(0, 120), "transforaminal epidural steroid injection", "under fluoroscopy"];
+  const quote = quoteCandidates.find((candidate) => quoteInNote(note, candidate));
+  if (!quote) return result;
+
+  return {
+    facts: {
+      ...result.facts,
+      procedures: [
+        ...result.facts.procedures,
+        {
+          name,
+          levels,
+          side: side as "left" | "right" | "bilateral" | "none",
+          performed: true,
+          globalModifier: null,
+          quote,
+        },
+      ],
+    },
+    warnings: [
+      ...result.warnings,
+      { kind: "procedure", message: `Recovered performed “${name}” from Procedure: line in the note.` },
+    ],
+  };
+}
+
 /** Extract facts + quotes from a note. Retries once. Drops facts whose quote is not in the note. */
 export async function extractCodingFacts(note: string): Promise<ExtractResult> {
   if (!note.trim()) {
@@ -216,7 +275,7 @@ export async function extractCodingFacts(note: string): Promise<ExtractResult> {
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
       const raw = await callExtract(note);
-      return keepQuotedFacts(note, raw);
+      return rescueProceduresFromNote(note, keepQuotedFacts(note, raw));
     } catch (error) {
       lastError = error instanceof Error ? error : new Error("Fact extraction failed.");
     }

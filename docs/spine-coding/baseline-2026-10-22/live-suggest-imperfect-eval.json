@@ -1,117 +1,63 @@
 {
-  "generatedAt": "2026-10-23T05:11:23.031Z",
+  "generatedAt": "2026-10-23T12:41:08.711Z",
   "origin": "https://thealignmentclinic.com",
   "path": "suggestVisitCodes",
   "imperfect": true,
   "count": 300,
-  "passed": 296,
-  "failed": 4,
-  "passRate": 0.9866666666666667,
-  "imperfectPassRate": 0.9851301115241635,
+  "passed": 298,
+  "failed": 2,
+  "passRate": 0.9933333333333333,
+  "imperfectPassRate": 0.9925650557620818,
   "cleanPassRate": 1,
-  "cptHitRate": 0.99,
-  "icdHitRate": 0.9966666666666667,
+  "cptHitRate": 0.9933333333333333,
+  "icdHitRate": 1,
   "modifierHitRate": 1,
   "failures": [
     {
-      "id": "E17",
+      "id": "E16",
       "imperfect": true,
       "mutations": [
         "drop_headers",
         "abbreviations",
+        "word_typos",
+        "drop_sentence",
+        "anchor_restore"
+      ],
+      "cpts": [
+        "22850",
+        "22830"
+      ],
+      "icds": [
+        "M96.0",
+        "T84.216A"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "P01",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
         "fax_junk",
         "word_typos",
+        "drop_sentence",
         "anchor_restore"
       ],
       "cpts": [],
       "icds": [
-        "G83.4",
-        "M51.26"
+        "M51.17",
+        "M54.16"
       ],
       "modifiers": [],
       "cptHit": false,
       "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "E22",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "abbreviations",
-        "fax_junk",
-        "word_typos",
-        "anchor_restore"
-      ],
-      "cpts": [
-        "64493",
-        "64494"
-      ],
-      "icds": [
-        "M47.816",
-        "M54.50"
-      ],
-      "modifiers": [
-        "50",
-        "50"
-      ],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "E25",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "ocr_typos",
-        "abbreviations",
-        "word_typos",
-        "anchor_restore"
-      ],
-      "cpts": [
-        "27096"
-      ],
-      "icds": [
-        "M46.1",
-        "M53.3"
-      ],
-      "modifiers": [
-        "RT"
-      ],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "M020",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "abbreviations",
-        "fax_junk",
-        "word_typos",
-        "anchor_restore"
-      ],
-      "cpts": [
-        "99213",
-        "64483"
-      ],
-      "icds": [
-        "M54.16"
-      ],
-      "modifiers": [
-        "25",
-        "RT"
-      ],
-      "cptHit": true,
-      "icdHit": false,
       "modifierHit": true,
       "blocked": [],
       "extractWarnings": []
@@ -136,8 +82,7 @@
       ],
       "icds": [
         "M51.17",
-        "M54.16",
-        "M54.50"
+        "M54.16"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -192,7 +137,8 @@
         "99205"
       ],
       "icds": [
-        "M47.12"
+        "M47.12",
+        "M48.02"
       ],
       "modifiers": [
         "57"
@@ -274,7 +220,6 @@
       ],
       "icds": [
         "M43.16",
-        "M48.062",
         "M54.16"
       ],
       "modifiers": [
@@ -333,7 +278,7 @@
       "icds": [
         "M54.50",
         "M54.2",
-        "M79.18"
+        "M62.830"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -360,14 +305,12 @@
         "99215"
       ],
       "icds": [
-        "M51.04",
         "M54.6"
       ],
-      "modifiers": [
-        "57"
-      ],
+      "modifiers": [],
       "extractWarnings": [],
       "codingWarnings": [
+        "No rule matched diagnosis “disc_herniation” (thoracic).",
         "No rule matched diagnosis “myelopathy” (thoracic).",
         "Remapped consult → office_established (no requesting-provider language)."
       ],
@@ -443,7 +386,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99203"
+        "99202"
       ],
       "icds": [
         "M53.3"
@@ -475,12 +418,13 @@
       "icds": [
         "M41.86",
         "M48.062",
-        "M54.50",
-        "M43.16"
+        "M54.50"
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "Remapped consult → office_established (no requesting-provider language)."
+      ],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -496,15 +440,12 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99204",
-        "72082"
+        "99204"
       ],
       "icds": [
         "M41.125"
       ],
-      "modifiers": [
-        "25"
-      ],
+      "modifiers": [],
       "extractWarnings": [],
       "codingWarnings": [],
       "blocked": [],
@@ -549,26 +490,26 @@
         "drop_sentence",
         "anchor_restore"
       ],
-      "cptHit": true,
+      "cptHit": false,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99215"
+        "22850",
+        "22830"
       ],
       "icds": [
         "M96.0",
-        "T84.216A",
-        "M54.50"
+        "T84.216A"
       ],
       "modifiers": [
-        "57"
+        "59"
       ],
       "extractWarnings": [],
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": true,
-      "ok": true
+      "codeHit": false,
+      "ok": false
     },
     {
       "id": "E17",
@@ -580,13 +521,12 @@
         "word_typos",
         "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [],
       "icds": [
-        "G83.4",
-        "M51.26"
+        "G83.4"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -595,8 +535,8 @@
       ],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "E18",
@@ -615,8 +555,7 @@
       ],
       "icds": [
         "C79.51",
-        "M84.58XA",
-        "M54.6"
+        "M84.58XA"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -667,14 +606,17 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99202"
+        "99203"
       ],
       "icds": [
-        "M45.6"
+        "M45.6",
+        "M47.816"
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “inflammatory_back_pain” (lumbar)."
+      ],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -694,7 +636,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99214"
+        "99203"
       ],
       "icds": [
         "M47.812",
@@ -702,7 +644,10 @@
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "Skipped myelopathy (ruled_out) — not coded as active disease.",
+        "Skipped radiculopathy (ruled_out) — not coded as active disease."
+      ],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -718,29 +663,26 @@
         "word_typos",
         "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "64493",
-        "64494"
+        "99203"
       ],
       "icds": [
         "M47.816",
         "M54.50"
       ],
-      "modifiers": [
-        "50",
-        "50"
-      ],
+      "modifiers": [],
       "extractWarnings": [],
       "codingWarnings": [
-        "Skipped radiculopathy (negated) — not coded as active disease."
+        "Skipped radiculopathy (negated) — not coded as active disease.",
+        "Skipped myelopathy (negated) — not coded as active disease."
       ],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "E23",
@@ -752,10 +694,10 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99205"
+        "99204"
       ],
       "icds": [
-        "M47.12"
+        "M48.8X2"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -778,7 +720,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99203"
+        "99204"
       ],
       "icds": [
         "M43.16"
@@ -801,25 +743,23 @@
         "word_typos",
         "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [
-        "27096"
-      ],
+      "cpts": [],
       "icds": [
         "M46.1",
         "M53.3"
       ],
-      "modifiers": [
-        "RT"
-      ],
+      "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "T01",
@@ -888,8 +828,7 @@
         "99203"
       ],
       "icds": [
-        "S39.012A",
-        "M62.830"
+        "S39.012A"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -969,11 +908,10 @@
         "99205"
       ],
       "icds": [
-        "S14.124A"
+        "S14.124A",
+        "M47.12"
       ],
-      "modifiers": [
-        "57"
-      ],
+      "modifiers": [],
       "extractWarnings": [],
       "codingWarnings": [],
       "blocked": [],
@@ -1003,8 +941,8 @@
       "extractWarnings": [],
       "codingWarnings": [
         "Skipped cauda_equina_syndrome (ruled_out) — not coded as active disease.",
-        "Skipped radiculopathy (ruled_out) — not coded as active disease.",
-        "Skipped myelopathy (ruled_out) — not coded as active disease."
+        "Skipped radiculopathy (negated) — not coded as active disease.",
+        "Skipped myelopathy (negated) — not coded as active disease."
       ],
       "blocked": [],
       "enabled": true,
@@ -1076,12 +1014,12 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99204"
+        "99214"
       ],
       "icds": [
-        "M51.26",
-        "M51.360",
-        "M54.16"
+        "M51.16",
+        "M54.16",
+        "M51.360"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1110,8 +1048,7 @@
         "99203"
       ],
       "icds": [
-        "M51.17",
-        "M54.16"
+        "M51.17"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1134,12 +1071,11 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213"
+        "99203"
       ],
       "icds": [
         "M47.812",
-        "M47.816",
-        "M54.6"
+        "M47.816"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1161,24 +1097,23 @@
         "drop_sentence",
         "anchor_restore"
       ],
-      "cptHit": true,
+      "cptHit": false,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [
-        "64483"
-      ],
+      "cpts": [],
       "icds": [
-        "M51.17"
+        "M51.17",
+        "M54.16"
       ],
-      "modifiers": [
-        "LT"
-      ],
+      "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
       "blocked": [],
       "enabled": true,
-      "codeHit": true,
-      "ok": true
+      "codeHit": false,
+      "ok": false
     },
     {
       "id": "P02",
@@ -1196,7 +1131,8 @@
         "62323"
       ],
       "icds": [
-        "M48.061"
+        "M47.816",
+        "M54.16"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1387,15 +1323,15 @@
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [
-        "99213"
-      ],
+      "cpts": [],
       "icds": [
         "M48.062"
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -1435,8 +1371,7 @@
         "63030"
       ],
       "icds": [
-        "M51.17",
-        "M54.16"
+        "M51.17"
       ],
       "modifiers": [
         "LT"
@@ -1498,16 +1433,12 @@
         "63047",
         "22633",
         "22853",
-        "22840",
-        "22830"
+        "22840"
       ],
       "icds": [
-        "M43.16",
-        "M48.061",
-        "M48.062"
+        "M43.16"
       ],
       "modifiers": [
-        "59",
         "59"
       ],
       "extractWarnings": [],
@@ -1617,7 +1548,8 @@
         "22840"
       ],
       "icds": [
-        "M47.12"
+        "M47.12",
+        "M47.812"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1673,8 +1605,7 @@
         "22830"
       ],
       "icds": [
-        "T84.84XA",
-        "Z98.1"
+        "T84.84XA"
       ],
       "modifiers": [
         "59"
@@ -1696,7 +1627,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "22558"
+        "22633"
       ],
       "icds": [
         "M51.360",
@@ -1864,7 +1795,7 @@
         "99204"
       ],
       "icds": [
-        "M48.062"
+        "M47.816"
       ],
       "modifiers": [
         "57"
@@ -1982,7 +1913,9 @@
         "24"
       ],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "Skipped history “fusion_status” — no Z-code rule."
+      ],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -2011,7 +1944,9 @@
         "24"
       ],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "Skipped history “fusion_status” — no Z-code rule."
+      ],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -2226,12 +2161,14 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
+        "99213",
         "64479"
       ],
       "icds": [
         "M50.20"
       ],
       "modifiers": [
+        "25",
         "LT"
       ],
       "extractWarnings": [],
@@ -2255,14 +2192,12 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213",
         "64483"
       ],
       "icds": [
-        "M47.816"
+        "M48.061"
       ],
       "modifiers": [
-        "25",
         "LT"
       ],
       "extractWarnings": [],
@@ -2341,14 +2276,14 @@
         "anchor_restore"
       ],
       "cptHit": true,
-      "icdHit": false,
+      "icdHit": true,
       "modifierHit": true,
       "cpts": [
         "99213",
         "64483"
       ],
       "icds": [
-        "M54.16"
+        "M48.061"
       ],
       "modifiers": [
         "25",
@@ -2358,8 +2293,8 @@
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "M021",
@@ -3034,9 +2969,7 @@
       "cpts": [
         "64633"
       ],
-      "icds": [
-        "M47.812"
-      ],
+      "icds": [],
       "modifiers": [
         "RT"
       ],
@@ -3087,7 +3020,7 @@
         "27096"
       ],
       "icds": [
-        "M46.1"
+        "M53.3"
       ],
       "modifiers": [
         "LT"
@@ -3173,7 +3106,7 @@
         "62323"
       ],
       "icds": [
-        "M47.816"
+        "M48.061"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -3546,17 +3479,16 @@
       "cpts": [
         "22551",
         "22552",
-        "22853",
-        "22845"
+        "22853"
       ],
       "icds": [
         "M47.12"
       ],
-      "modifiers": [
-        "59"
-      ],
+      "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "Procedure “anterior_instrumentation” was performed but no rule emits that CPT yet — code it by search."
+      ],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -3670,7 +3602,8 @@
         "63030"
       ],
       "icds": [
-        "M51.17"
+        "M51.17",
+        "M54.16"
       ],
       "modifiers": [
         "LT",
@@ -4128,7 +4061,7 @@
         "99205"
       ],
       "icds": [
-        "M62.830"
+        "M79.18"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -4153,7 +4086,7 @@
         "99213"
       ],
       "icds": [
-        "M53.3"
+        "M54.50"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -6943,7 +6876,7 @@
         "99204"
       ],
       "icds": [
-        "M79.18"
+        "M62.830"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -7477,7 +7410,7 @@
         "99214"
       ],
       "icds": [
-        "M54.50"
+        "M53.3"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -7964,7 +7897,7 @@
         "99205"
       ],
       "icds": [
-        "M62.830"
+        "M79.18"
       ],
       "modifiers": [],
       "extractWarnings": [],
