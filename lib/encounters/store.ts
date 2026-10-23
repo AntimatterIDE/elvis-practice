@@ -293,6 +293,23 @@ export async function deleteDraftEncounter(id: string) {
   return { ok: true as const };
 }
 
+/** One-shot cleanup for labeled QA test visits (and their audio). Staff-only. */
+export async function purgeQaTestEncounters() {
+  const supabase = client();
+  const listed = await supabase.from("encounters").select("id,patient_label,audio_path").ilike("patient_label", "QA TEST%").limit(200);
+  if (listed.error) return { ok: false as const, status: 502, message: listed.error.message, deleted: [] as string[] };
+  const rows = (listed.data ?? []) as { id: string; patient_label: string; audio_path: string | null }[];
+  const deleted: string[] = [];
+  for (const row of rows) {
+    const paths = audioPaths(row.audio_path);
+    if (paths.length > 0) await supabase.storage.from(bucket).remove(paths);
+    const removed = await supabase.from("encounters").delete().eq("id", row.id);
+    if (removed.error) return { ok: false as const, status: 502, message: removed.error.message, deleted };
+    deleted.push(row.id);
+  }
+  return { ok: true as const, deleted };
+}
+
 async function saveSnapshot(visit: VisitSnapshot) {
   const supabase = client();
   const saved = await supabase
