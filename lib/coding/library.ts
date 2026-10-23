@@ -10,6 +10,10 @@ function readJson(name: string): unknown {
 }
 
 export function codeLibrary() {
-  cached ??= buildCodeLibrary(readJson("icd10cm.json"), readJson("procedures.json"));
+  cached ??= buildCodeLibrary(readJson("icd10cm.json"), readJson("procedures.json"), {
+    ptp: readJson("ncci-ptp.json"),
+    mue: readJson("mue.json"),
+    addon: readJson("addon-primaries.json"),
+  });
   return cached;
 }

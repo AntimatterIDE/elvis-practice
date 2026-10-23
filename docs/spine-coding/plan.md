@@ -1,6 +1,22 @@
 # Spine coding plan — The Alignment Clinic
 
-Status: phase 0 built 2026-10-22 (evening updates: clinic billing identity, claim-form CMS search, Ready-for-bill code check); not yet committed or deployed (see section 9); later phases are proposals · Written 2026-10-22 · Clinical sign-off: Dr. Elvis Francois · Billing input: Christina 2026-10-22 (sections 11–13)
+Status: **Phase 0 live in production** (commit `66d9f73`, 2026-10-22) · Path of least resistance is the rollout driver (section 0) · Partner checklist: `/dev/coding-data` · Written 2026-10-22 · Billing input: Christina 2026-10-22 (sections 11–13)
+
+## 0. Path of least resistance (build order)
+
+This is how we ship exact coding without waiting on AMA. The partner page
+`/dev/coding-data` mirrors these steps. Do not skip ahead to auto-suggestions
+until steps 1–3 are green.
+
+| Step | Status | What |
+| --- | --- | --- |
+| 1. CMS NCCI pack | **Done 2026-10-22** | Practitioner PTP spine subset (`ncci-ptp.json`), MUE, add-on primaries, Policy Manual PDFs under `docs/spine-coding/ncci-policy-manual-2024/` |
+| 2. Phase 0 deploy | **Done 2026-10-22** | Suggestions off; CMS ICD/PFS/HCPCS search; claim form search; Ready + Stedi library checks; bill as The Alignment Clinic + EIN |
+| 3. Wire NCCI/MUE/add-on validator | **Done 2026-10-22** | `claimCodeProblems` fails closed on NCCI pairs, over-MUE units, add-ons without a listed primary — Ready for bill + Stedi (same library) |
+| 4. Fact extract + TypeScript spine rules | Later | `gpt-5-mini` facts + quotes only; rules emit CPT/ICD numbers; still numbers-only until AMA |
+| 5. AMA CPT Data File (distributor) | When ready | Official descriptors, inclusion text, E/M tables — Clinix distributor license, not a clinic Codify seat |
+
+**Impenetrable stack:** LLM never invents codes → TypeScript rules (CMS + optional AMA text) → CMS validator (ICD billable, PFS, NCCI, MUE, add-on) → human review → same checks again before Stedi.
 
 ## 1. Summary
 
@@ -640,8 +656,9 @@ Effort is a rough estimate for one engineer.
 | Phase | Scope | Effort |
 | --- | --- | --- |
 | Now | Code claims by hand in Billing → Claims → New claim. Ignore suggested codes in the visit desk | — |
-| 0. Safe manual coding | Turn off suggestions in `runVisitPipeline`. Code search over a one-time import of the CMS ICD-10-CM and fee schedule files (the refresh script comes in phase 1). Approval accepts any valid code. Units, modifiers, and pointers carry into the claim. Payer type sets the claim filing code. Diagnosis and pointer limits. Bill as The Alignment Clinic (org + EIN) with Dr. Francois as rendering. Claim form CMS search + Ready-for-bill `/api/coding/check`. Add `store: false` to the OpenAI note call | Built 2026-10-22, not yet committed (below) |
-| 1. Library and validator | Refresh script and CMS files. Full validator at approval and submission. Note editing and the "paste operative report" path. Server record of claims (or the full submission snapshot). Rule review page | About 1 week |
+| 0. Safe manual coding | Turn off suggestions in `runVisitPipeline`. Code search over a one-time import of the CMS ICD-10-CM and fee schedule files (the refresh script comes in phase 1). Approval accepts any valid code. Units, modifiers, and pointers carry into the claim. Payer type sets the claim filing code. Diagnosis and pointer limits. Bill as The Alignment Clinic (org + EIN) with Dr. Francois as rendering. Claim form CMS search + Ready-for-bill `/api/coding/check`. Add `store: false` to the OpenAI note call | **Live 2026-10-22** (`66d9f73`) |
+| 0b. NCCI validator | Spine-subset PTP + MUE + add-on primaries in `claimCodeProblems`; Policy Manual PDFs in repo; `/dev/coding-data` tracks sources | **Built 2026-10-22** (this commit) |
+| 1. Library and validator | Note editing and the "paste operative report" path. Server record of claims (or the full submission snapshot). Rule review page. Expand PTP beyond spine subset if needed | Remaining ~1 week |
 | 2. Core spine rules | Fact extraction. Rules for office and post-op visits, injections and ablation, decompression, ACDF, lumbar fusion, kyphoplasty, and diagnoses. Review screen with reasons and quotes. Regression tests | 1–2 weeks |
 | 3. Turn on, rule set by rule set | Collect the note set, pass the gate, get Dr. Francois's sign-off, enable. Weekly edit review | Depends on collecting notes |
 | 4. Long tail | Deformity, revisions and hardware, stimulators, trauma, tumor, infection. Workers' comp and no-fault details. Prior authorization tracking | Ongoing |

@@ -312,6 +312,7 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
               modifiers: line.modifiers,
               diagnoses: line.diagnoses,
               includeOnBill: line.includeOnBill,
+              units: line.units,
             })),
           }),
         });

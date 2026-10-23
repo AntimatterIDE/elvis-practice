@@ -197,6 +197,63 @@ describe("claim code check", () => {
     });
     expect(problems).toEqual(["Line 1: 5 is not a modifier. A modifier is two letters or digits, such as 25, 59, LT, or RT."]);
   });
+
+  it("refuses an NCCI pair, an over-MUE line, and an add-on without its primary", () => {
+    const withNcci = buildCodeLibrary(
+      {
+        release: "ICD-10-CM test",
+        effectiveFrom: "2026-10-01",
+        rows: [
+          ["M48.062", 1, "Spinal stenosis, lumbar region with neurogenic claudication"],
+        ],
+      },
+      {
+        release: "procedures test",
+        effectiveFrom: "2026-10-01",
+        rows: [
+          ["63047", "", "A", "090"],
+          ["69990", "", "A", "ZZZ"],
+          ["64483", "", "A", "000"],
+          ["64484", "", "A", "ZZZ"],
+        ],
+      },
+      {
+        ptp: {
+          release: "ptp test",
+          effectiveFrom: "2026-10-01",
+          rows: [["63047", "69990", 0]],
+        },
+        mue: {
+          release: "mue test",
+          effectiveFrom: "2026-10-01",
+          rows: [["64483", 1]],
+        },
+        addon: {
+          release: "addon test",
+          effectiveFrom: "2026-10-01",
+          rows: [["64484", "64483", 1]],
+        },
+      },
+    );
+    const problems = claimCodeProblems(withNcci, {
+      dateOfService: "2026-10-15",
+      lines: [
+        { cpt: "63047", modifiers: [], diagnoses: ["M48.062"], includeOnBill: true, units: 1 },
+        { cpt: "69990", modifiers: [], diagnoses: ["M48.062"], includeOnBill: true, units: 1 },
+        { cpt: "64483", modifiers: [], diagnoses: ["M48.062"], includeOnBill: true, units: 3 },
+        { cpt: "64484", modifiers: [], diagnoses: ["M48.062"], includeOnBill: true, units: 1 },
+      ],
+    });
+    expect(problems.some((problem) => problem.includes("NCCI pair"))).toBe(true);
+    expect(problems.some((problem) => problem.includes("MUE"))).toBe(true);
+    // 64484 has 64483 on the claim, so add-on primary is satisfied; only the MUE on 64483 fires for units.
+    expect(problems.filter((problem) => problem.includes("add-on"))).toEqual([]);
+    const missingPrimary = claimCodeProblems(withNcci, {
+      dateOfService: "2026-10-15",
+      lines: [{ cpt: "64484", modifiers: [], diagnoses: ["M48.062"], includeOnBill: true, units: 1 }],
+    });
+    expect(missingPrimary.some((problem) => problem.includes("add-on") && problem.includes("64483"))).toBe(true);
+  });
 });
 
 describe("loaded code files", () => {
@@ -231,5 +288,16 @@ describe("loaded code files", () => {
     expect(real.procedures.byCode.get("22853")).toMatchObject({ globalDays: "ZZZ" });
     expect(real.procedures.byCode.has("J1010")).toBe(true);
     expect(real.procedures.byCode.has("J1030")).toBe(false);
+  });
+
+  it("loads the Medicare NCCI spine subset, MUE, and add-on primaries", () => {
+    const ptp = table("ncci-ptp.json");
+    const mue = table("mue.json");
+    const addon = table("addon-primaries.json");
+    expect(ptp.effectiveFrom).toBe("2026-10-01");
+    expect(ptp.rows.length).toBeGreaterThan(10_000);
+    expect(mue.rows.some(([code]) => code === "64483")).toBe(true);
+    expect(addon.rows.some(([addonCode, primary]) => addonCode === "64484" && primary === "64483")).toBe(true);
+    expect(addon.rows.some(([addonCode, primary]) => addonCode === "22853" && primary === "22633")).toBe(true);
   });
 });
