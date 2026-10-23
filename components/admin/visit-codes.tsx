@@ -66,7 +66,7 @@ export function VisitCodes({
         <h3 className="text-sm font-medium text-neutral-900">Diagnoses (ICD-10-CM)</h3>
         <p className="mt-1 text-sm text-muted">
           Put the main diagnosis first. A claim carries up to {diagnosisLimit}, and only billable codes are offered.
-          Automatic suggestions stay off until the office fixture set passes (search and enter codes by hand).
+          Suggested codes from the note appear here for review — edit or remove anything wrong before you approve.
         </p>
         {diagnoses.length ? (
           <ol className="mt-2 grid gap-2">

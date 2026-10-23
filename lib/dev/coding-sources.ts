@@ -267,11 +267,11 @@ export const leastResistanceSteps = [
   },
   {
     step: 4,
-    title: "Qualified on fixtures (60/60 + CMS/NCCI) — suggestions gated",
+    title: "Live — suggestions ON for claim gear-up",
     detail:
-      "npm run test:qualify is green (facts→codes on production library, NCCI/MUE clean). " +
-      "SPINE_CODING_SUGGESTIONS still off until Francois sign-off, ≥150 real notes, and live extraction eval. " +
-      "Need from clinic: real notes, AMA distributor app, type 2 NPI, rule sign-off.",
+      "Suggestions default on (kill-switch: SPINE_CODING_SUGGESTIONS=false). " +
+      "Visit desk shows extract→rules codes for review; Ready/Stedi still run CMS+NCCI checks. " +
+      "Still want: Francois spot-check, real notes, AMA distributor, type 2 NPI.",
   },
   {
     step: 5,
