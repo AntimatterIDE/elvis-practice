@@ -16,7 +16,7 @@ import {
   type EncounterStatus,
 } from "@/lib/encounters/types";
 import { formatClinicDay, formatTime, patientName } from "@/lib/rcm/format";
-import { claimLinesFromEncounter, claimsHref } from "@/lib/encounters/approve";
+import { claimsHref } from "@/lib/encounters/approve";
 import { rememberedVisit, rememberVisit, subscribeVisitMemory } from "@/lib/rcm/record-visit";
 import { useVisitRecorder } from "@/components/admin/use-visit-recorder";
 import { VisitCodes, type CodesDraft } from "@/components/admin/visit-codes";
@@ -43,14 +43,17 @@ function when(value: string) {
 }
 
 function savedCodes(encounter: Encounter): CodesDraft {
+  // Include suggested (not-yet-approved) codes so staff can review AI/rules output before approving.
+  const diagnoses = encounter.icd10;
+  const diagnosisCodes = diagnoses.map((code) => code.code);
   return {
-    diagnoses: encounter.icd10.filter((code) => code.approved),
-    lines: claimLinesFromEncounter(encounter).map((line) => ({
+    diagnoses,
+    lines: encounter.billingCodes.map((line) => ({
       code: line.code,
       description: line.description,
-      units: String(line.units),
+      units: String(line.units || 1),
       modifiers: [...line.modifiers, "", "", "", ""].slice(0, 4),
-      diagnoses: line.diagnoses,
+      diagnoses: line.diagnoses.length ? line.diagnoses : diagnosisCodes.slice(0, 1),
     })),
   };
 }

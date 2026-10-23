@@ -157,10 +157,9 @@ const gate = {
   },
   qualifyForSuggestions: failed.length === 0,
   stillNeededForLaunch: [
-    "Dr. Francois sign-off on office / injection / surgery rule tables",
-    "≥150 de-identified real notes with confirmed codes (plan §8 gate)",
-    "Optional: live extraction eval (OPENAI_API_KEY + --extract)",
-    "Set SPINE_CODING_SUGGESTIONS=true only after the above",
+    "Spot-check tomorrow's real claims with Francois before Stedi submit",
+    "Live extraction eval: npm run test:extract",
+    "Kill-switch if needed: SPINE_CODING_SUGGESTIONS=false",
   ],
   failures: failed.map((item) => ({ id: item.id, errors: item.errors })),
 };
@@ -179,7 +178,7 @@ if (failed.length) {
   }
   process.exitCode = 1;
 } else {
-  console.log("Still needed before turning SPINE_CODING_SUGGESTIONS on:");
+  console.log("Operational checklist:");
   for (const item of gate.stillNeededForLaunch) console.log(`  - ${item}`);
 }
 console.log(`Wrote ${outPath}`);

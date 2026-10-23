@@ -185,9 +185,10 @@ describe("office spine code generation", () => {
     expect(rules.diagnoses.length).toBeGreaterThan(40);
   });
 
-  it("keeps suggestions off by default", () => {
-    expect(spineSuggestionsEnabled({})).toBe(false);
+  it("keeps suggestions on by default with an explicit kill-switch", () => {
+    expect(spineSuggestionsEnabled({})).toBe(true);
     expect(spineSuggestionsEnabled({ SPINE_CODING_SUGGESTIONS: "true" })).toBe(true);
+    expect(spineSuggestionsEnabled({ SPINE_CODING_SUGGESTIONS: "false" })).toBe(false);
   });
 
   it(`covers ${fixtures.length} baseline fixtures (office + injections + surgery)`, () => {

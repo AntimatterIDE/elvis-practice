@@ -376,23 +376,31 @@ export async function processEncounter(id: string, retry = false) {
       transcribe: transcribeAudio,
       writeNote: writeClinicalNote,
       suggestCodes: async (note) => {
-        const suggested = await suggestVisitCodes(note, { library: codeLibrary() });
-        if (!suggested.enabled || suggested.blocked.length) {
+        const library = codeLibrary();
+        const suggested = await suggestVisitCodes(note, { library });
+        if (!suggested.enabled) {
           return { icd10: [], billingCodes: [] };
         }
-        const icd10: VisitCode[] = suggested.coding.diagnoses.map((item) => ({
-          code: item.icd,
-          description: "",
-          approved: false,
-        }));
-        const billingCodes: VisitLine[] = suggested.coding.lines.map((line) => ({
-          code: line.cpt,
-          description: "",
-          approved: false,
-          units: line.units,
-          modifiers: line.modifiers,
-          diagnoses: line.diagnosisPointers,
-        }));
+        // Still surface suggestions when the validator flags something — staff must fix before Ready/Stedi.
+        const icd10: VisitCode[] = suggested.coding.diagnoses.map((item) => {
+          const checked = library.diagnoses.byCode.get(item.icd);
+          return {
+            code: item.icd,
+            description: checked?.description ?? "",
+            approved: false,
+          };
+        });
+        const billingCodes: VisitLine[] = suggested.coding.lines.map((line) => {
+          const checked = library.procedures.byCode.get(line.cpt);
+          return {
+            code: line.cpt,
+            description: checked?.description ?? "",
+            approved: false,
+            units: line.units,
+            modifiers: line.modifiers,
+            diagnoses: line.diagnosisPointers,
+          };
+        });
         return { icd10, billingCodes };
       },
       save: async (patch) => {

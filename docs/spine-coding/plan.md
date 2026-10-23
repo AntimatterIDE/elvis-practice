@@ -1,6 +1,6 @@
 # Spine coding plan — The Alignment Clinic
 
-Status: Steps **1–3 done** · **Step 4 qualified on fixtures** (**60/60** + production CMS/NCCI bar green — `npm run test:qualify`; suggestions still gated off pending Francois sign-off + real notes + extraction eval) · Path of least resistance is the rollout driver (section 0) · Partner checklist: `/dev/coding-data` · Written 2026-10-22 · Billing input: Christina 2026-10-22 (sections 11–13)
+Status: Steps **1–3 done** · **Step 4 live** (suggestions **ON** by default; fixture+NCCI qualify 60/60; extraction eval + claim gear-up 2026-10-22) · Path of least resistance is the rollout driver (section 0) · Partner checklist: `/dev/coding-data` · Written 2026-10-22 · Billing input: Christina 2026-10-22 (sections 11–13)
 
 ## 0. Path of least resistance (build order)
 
@@ -13,7 +13,7 @@ until steps 1–3 are green.
 | 1. CMS NCCI pack | **Done 2026-10-22** | Practitioner PTP spine subset (`ncci-ptp.json`), MUE, add-on primaries, Policy Manual PDFs under `docs/spine-coding/ncci-policy-manual-2024/` |
 | 2. Phase 0 deploy | **Done 2026-10-22** | Suggestions off; CMS ICD/PFS/HCPCS search; claim form search; Ready + Stedi library checks; bill as The Alignment Clinic + EIN |
 | 3. Wire NCCI/MUE/add-on validator | **Done 2026-10-22** | `claimCodeProblems` fails closed on NCCI pairs, over-MUE units, add-ons without a listed primary — Ready for bill + Stedi (same library) |
-| 4. Fact extract + TypeScript spine rules | **Baseline green (60/60)** | Packs: `office.json` + `injections.json` + `surgery.json`. All baseline fact fixtures pass. `SPINE_CODING_SUGGESTIONS` still off until Francois sign-off + real-note gate. |
+| 4. Fact extract + TypeScript spine rules | **Live — suggestions ON** | Packs: office + injections + surgery. `SPINE_CODING_SUGGESTIONS` defaults on (set `false` to kill-switch). Visit desk shows suggested codes for review. |
 | 5. AMA CPT Data File (distributor) | When ready | Official descriptors, inclusion text, E/M tables — Clinix distributor license, not a clinic Codify seat |
 
 **Impenetrable stack:** LLM never invents codes → TypeScript rules (CMS + optional AMA text) → CMS validator (ICD billable, PFS, NCCI, MUE, add-on) → human review → same checks again before Stedi.
