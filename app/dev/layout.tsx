@@ -33,6 +33,12 @@ export default async function DevLayout({ children }: { children: React.ReactNod
               All sources
             </Link>
             <Link
+              href="/dev/spine-eval"
+              className="rounded-full px-3.5 py-1.5 text-[13px] font-medium text-neutral-700 transition hover:bg-white hover:text-ink"
+            >
+              Live eval
+            </Link>
+            <Link
               href="/admin/operations"
               className="rounded-full px-3.5 py-1.5 text-[13px] font-medium text-neutral-600 transition hover:bg-white hover:text-ink"
             >

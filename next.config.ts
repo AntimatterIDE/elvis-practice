@@ -13,10 +13,16 @@ const redirectHosts = (
   // lib/coding/library.ts reads these at runtime. Keys are route globs, so
   // dynamic segments need escaped brackets.
   outputFileTracingIncludes: {
-    "/api/coding/search": ["./data/coding/*.json"],
-    "/api/coding/check": ["./data/coding/*.json"],
-    "/api/encounters/\\[id\\]": ["./data/coding/*.json"],
-    "/admin/operations/claims/\\[id\\]": ["./data/coding/*.json"],
+    "/api/coding/search": ["./data/coding/**/*.json"],
+    "/api/coding/check": ["./data/coding/**/*.json"],
+    "/api/coding/suggest": ["./data/coding/**/*.json"],
+    "/api/dev/spine-eval": [
+      "./data/coding/**/*.json",
+      "./tests/fixtures/spine-office-facts.json",
+      "./docs/spine-coding/baseline-2026-10-22/cases.json",
+    ],
+    "/api/encounters/\\[id\\]": ["./data/coding/**/*.json"],
+    "/admin/operations/claims/\\[id\\]": ["./data/coding/**/*.json"],
   },
   async redirects() {
     return redirectHosts.flatMap((host) => [

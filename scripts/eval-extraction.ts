@@ -56,78 +56,85 @@ function matchesPattern(code: string, pattern: string) {
   return code === trimmed;
 }
 
-const selected = typeof limit === "number" && Number.isFinite(limit) ? fixtures.slice(0, limit) : fixtures;
-const rows = [];
+async function main() {
+  const selected = typeof limit === "number" && Number.isFinite(limit) ? fixtures.slice(0, limit) : fixtures;
+  const rows: Record<string, unknown>[] = [];
 
-for (const fixture of selected) {
-  const note = notes.get(fixture.id);
-  if (!note) {
-    rows.push({ id: fixture.id, ok: false, error: "missing note" });
-    continue;
+  for (const fixture of selected) {
+    const note = notes.get(fixture.id);
+    if (!note) {
+      rows.push({ id: fixture.id, ok: false, error: "missing note" });
+      continue;
+    }
+    console.log(`Extracting ${fixture.id}…`);
+    const extracted = await extractCodingFacts(note);
+    const coded = codeVisit(extracted.facts, library);
+    const cpts = coded.lines.map((line) => line.cpt);
+    const icds = coded.diagnoses.map((item) => item.icd);
+    const problems = claimCodeProblems(library, {
+      dateOfService: "2026-10-22",
+      lines: coded.lines.map((line) => ({
+        cpt: line.cpt,
+        modifiers: line.modifiers,
+        diagnoses: line.diagnosisPointers.length ? line.diagnosisPointers : icds.slice(0, 1),
+        includeOnBill: line.cpt !== "99024",
+        units: line.units,
+      })),
+    });
+
+    const expectedVisit = fixture.facts.visit?.kind ?? null;
+    const gotVisit = extracted.facts.visit?.kind ?? null;
+    const expectedDx = new Set(
+      fixture.facts.diagnoses.filter((item) => item.status === "current").map((item) => item.condition),
+    );
+    const gotDx = new Set(
+      extracted.facts.diagnoses.filter((item) => item.status === "current").map((item) => item.condition),
+    );
+    const expectedPx = new Set(
+      fixture.facts.procedures.filter((item) => item.performed).map((item) => item.name),
+    );
+    const gotPx = new Set(extracted.facts.procedures.filter((item) => item.performed).map((item) => item.name));
+
+    const cptHit =
+      !fixture.expectedCptAnyOf.length || fixture.expectedCptAnyOf.some((code) => cpts.includes(code));
+    const icdHit =
+      !fixture.expectedIcdAnyOf.length ||
+      fixture.expectedIcdAnyOf.some((pattern) => icds.some((code) => matchesPattern(code, pattern)));
+
+    rows.push({
+      id: fixture.id,
+      visitMatch: expectedVisit === gotVisit,
+      expectedVisit,
+      gotVisit,
+      dxRecall: [...expectedDx].filter((item) => gotDx.has(item)).length / Math.max(1, expectedDx.size),
+      pxRecall: [...expectedPx].filter((item) => gotPx.has(item)).length / Math.max(1, expectedPx.size),
+      cptHit,
+      icdHit,
+      cpts,
+      icds,
+      extractWarnings: extracted.warnings.map((item) => item.message),
+      validatorProblems: problems,
+      ok: cptHit && icdHit && problems.length === 0,
+    });
   }
-  console.log(`Extracting ${fixture.id}…`);
-  const extracted = await extractCodingFacts(note);
-  const coded = codeVisit(extracted.facts, library);
-  const cpts = coded.lines.map((line) => line.cpt);
-  const icds = coded.diagnoses.map((item) => item.icd);
-  const problems = claimCodeProblems(library, {
-    dateOfService: "2026-10-22",
-    lines: coded.lines.map((line) => ({
-      cpt: line.cpt,
-      modifiers: line.modifiers,
-      diagnoses: line.diagnosisPointers.length ? line.diagnosisPointers : icds.slice(0, 1),
-      includeOnBill: line.cpt !== "99024",
-      units: line.units,
-    })),
-  });
 
-  const expectedVisit = fixture.facts.visit?.kind ?? null;
-  const gotVisit = extracted.facts.visit?.kind ?? null;
-  const expectedDx = new Set(
-    fixture.facts.diagnoses.filter((item) => item.status === "current").map((item) => item.condition),
-  );
-  const gotDx = new Set(
-    extracted.facts.diagnoses.filter((item) => item.status === "current").map((item) => item.condition),
-  );
-  const expectedPx = new Set(
-    fixture.facts.procedures.filter((item) => item.performed).map((item) => item.name),
-  );
-  const gotPx = new Set(extracted.facts.procedures.filter((item) => item.performed).map((item) => item.name));
-
-  const cptHit =
-    !fixture.expectedCptAnyOf.length || fixture.expectedCptAnyOf.some((code) => cpts.includes(code));
-  const icdHit =
-    !fixture.expectedIcdAnyOf.length ||
-    fixture.expectedIcdAnyOf.some((pattern) => icds.some((code) => matchesPattern(code, pattern)));
-
-  rows.push({
-    id: fixture.id,
-    visitMatch: expectedVisit === gotVisit,
-    expectedVisit,
-    gotVisit,
-    dxRecall: [...expectedDx].filter((item) => gotDx.has(item)).length / Math.max(1, expectedDx.size),
-    pxRecall: [...expectedPx].filter((item) => gotPx.has(item)).length / Math.max(1, expectedPx.size),
-    cptHit,
-    icdHit,
-    cpts,
-    icds,
-    extractWarnings: extracted.warnings.map((item) => item.message),
-    validatorProblems: problems,
-    ok: cptHit && icdHit && problems.length === 0,
-  });
+  const passed = rows.filter((row) => row.ok === true).length;
+  const out = {
+    generatedAt: new Date().toISOString(),
+    model: "gpt-5-mini-2025-08-07",
+    count: rows.length,
+    passed,
+    failed: rows.length - passed,
+    rows,
+  };
+  const outPath = path.join(root, "docs/spine-coding/baseline-2026-10-22/extraction-eval.json");
+  writeFileSync(outPath, `${JSON.stringify(out, null, 2)}\n`);
+  console.log(`Extraction eval: ${passed}/${rows.length} end-to-end code hits with clean validator`);
+  console.log(`Wrote ${outPath}`);
+  if (passed < rows.length) process.exitCode = 1;
 }
 
-const passed = rows.filter((row) => row.ok).length;
-const out = {
-  generatedAt: new Date().toISOString(),
-  model: "gpt-5-mini-2025-08-07",
-  count: rows.length,
-  passed,
-  failed: rows.length - passed,
-  rows,
-};
-const outPath = path.join(root, "docs/spine-coding/baseline-2026-10-22/extraction-eval.json");
-writeFileSync(outPath, `${JSON.stringify(out, null, 2)}\n`);
-console.log(`Extraction eval: ${passed}/${rows.length} end-to-end code hits with clean validator`);
-console.log(`Wrote ${outPath}`);
-if (passed < rows.length) process.exitCode = 1;
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
