@@ -20,6 +20,7 @@ const redirectHosts = (
       "./data/coding/**/*.json",
       "./tests/fixtures/spine-office-facts.json",
       "./docs/spine-coding/baseline-2026-10-22/cases.json",
+      "./docs/spine-coding/baseline-2026-10-22/imperfect-cases.json",
     ],
     "/api/encounters/\\[id\\]": ["./data/coding/**/*.json"],
     "/admin/operations/claims/\\[id\\]": ["./data/coding/**/*.json"],

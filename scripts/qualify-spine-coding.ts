@@ -14,6 +14,8 @@ type Fixture = {
   title: string;
   expectedCptAnyOf: string[];
   expectedIcdAnyOf: string[];
+  expectedModifiersAnyOf?: string[];
+  expectedModifiersOnCpt?: Record<string, string[]>;
   forbiddenCptPrefixes?: string[];
   forbiddenIcdPrefixes?: string[];
   facts: CodingFacts;
@@ -102,6 +104,21 @@ for (const fixture of fixtures) {
   }
   for (const prefix of fixture.forbiddenIcdPrefixes ?? []) {
     if (icds.some((code) => isForbiddenIcd(code, prefix))) errors.push(`forbidden ICD ${prefix}`);
+  }
+
+  const mods = coded.lines.flatMap((line) => line.modifiers);
+  for (const modifier of fixture.expectedModifiersAnyOf ?? []) {
+    if (!mods.includes(modifier)) errors.push(`missing modifier ${modifier} in [${mods.join(", ")}]`);
+  }
+  for (const [cpt, need] of Object.entries(fixture.expectedModifiersOnCpt ?? {})) {
+    const line = coded.lines.find((item) => item.cpt === cpt);
+    if (!line) {
+      errors.push(`missing CPT ${cpt} for modifier check`);
+      continue;
+    }
+    for (const modifier of need) {
+      if (!line.modifiers.includes(modifier)) errors.push(`missing ${modifier} on ${cpt}`);
+    }
   }
 
   for (const icd of icds) {

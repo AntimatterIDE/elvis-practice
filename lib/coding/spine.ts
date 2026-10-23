@@ -247,11 +247,12 @@ function procedureModifiers(procedure: ProcedureFacts, rule: ProcedureRule): str
   const modifiers: string[] = [];
   if (procedure.side === "bilateral" && rule.bilateralModifier) {
     modifiers.push(rule.bilateralModifier);
-  } else if (rule.lateralityModifiers) {
+  } else if (rule.lateralityModifiers || rule.bilateralModifier) {
     if (procedure.side === "left") modifiers.push("LT");
     if (procedure.side === "right") modifiers.push("RT");
-    if (procedure.side === "bilateral") modifiers.push("50");
+    if (procedure.side === "bilateral") modifiers.push(rule.bilateralModifier ?? "50");
   }
+  if (procedure.globalModifier) modifiers.push(procedure.globalModifier);
   return modifiers;
 }
 
@@ -263,11 +264,12 @@ function emitProcedureLines(
   const modifiers = procedureModifiers(procedure, rule);
   const count = levelCount(procedure);
   const primaryUnits = rule.unitsFromLevels ? Math.max(1, count) : 1;
+  // Laterality / global modifiers belong on every line from this procedure (primary + add-ons).
   const lines: CodedLine[] = [
     {
       cpt: rule.cpt,
       units: primaryUnits,
-      modifiers,
+      modifiers: [...modifiers],
       diagnosisPointers: pointers,
       rule: rule.id,
       quote: procedure.quote,
@@ -277,7 +279,7 @@ function emitProcedureLines(
     lines.push({
       cpt: rule.addonCpt,
       units: rule.thirdLevelCpt ? 1 : Math.max(1, count - 1),
-      modifiers: [],
+      modifiers: [...modifiers],
       diagnosisPointers: pointers,
       rule: `${rule.id}.addon`,
       quote: procedure.quote,
@@ -287,13 +289,33 @@ function emitProcedureLines(
     lines.push({
       cpt: rule.thirdLevelCpt,
       units: Math.max(1, count - 2),
-      modifiers: [],
+      modifiers: [...modifiers],
       diagnosisPointers: pointers,
       rule: `${rule.id}.third`,
       quote: procedure.quote,
     });
   }
   return lines;
+}
+
+/** E/M on the same day as a procedure needs 25 (or 57 when decision-for-surgery). */
+function ensureSameDayVisitModifiers(lines: CodedLine[], facts: CodingFacts): CodedLine[] {
+  const visit = facts.visit;
+  if (!visit) return lines;
+  const hasProcedure = lines.some((line) => !/^992\d{2}$|^99024$/.test(line.cpt));
+  const hasEm = lines.some((line) => /^992\d{2}$/.test(line.cpt));
+  if (!hasProcedure || !hasEm) return lines;
+  return lines.map((line) => {
+    if (!/^992\d{2}$/.test(line.cpt)) return line;
+    const modifiers = [...line.modifiers];
+    if (visit.decisionForSurgery) {
+      if (!modifiers.includes("57")) modifiers.push("57");
+    } else if (visit.significantSeparateProblem || hasProcedure) {
+      // Same-day E/M + procedure: bill with 25 when separately significant (default for combo visits).
+      if (!modifiers.includes("25") && !modifiers.includes("57")) modifiers.push("25");
+    }
+    return { ...line, modifiers };
+  });
 }
 
 /** When rules intentionally emit an NCCI indicator-1 pair, attach 59 so the claim is billable. */
@@ -397,7 +419,8 @@ export function codeVisit(
 
   lines.push(...performedProcedureLines);
 
-  const billed = clampUnitsToMue(applyNcciBypassModifiers(lines, library), library);
+  const withVisitMods = ensureSameDayVisitModifiers(lines, facts);
+  const billed = clampUnitsToMue(applyNcciBypassModifiers(withVisitMods, library), library);
 
   if (!visit && !billed.length) {
     warnings.push("No visit or performed procedure — nothing to suggest.");

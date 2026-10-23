@@ -1,0 +1,3535 @@
+[
+  {
+    "id": "E01",
+    "title": "New pt L5-S1 HNP, left S1 radiculopathy (real GPT note from prod)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "\n42–year–old male, new to practice, presents with three months of low back pain radiating down the left leg to the lateral foot. Reports numbness in the left lateral foot and weakness with plantar flexion. No other ssytemic complaints documented. New pt; otuside MRI reviewed.\n\n– Neuro/musculoskeletal exam:\n  – Positive straight leg riase on the left at 40 degrees.\n  – Diminished left Achliles (S1) reflex.\n  – Left gsatrocnemius (plantar flexion) strength 4/5.\n– Imaging:\n  – Outside lumbar spien MRI reviewed: large left paracenrtal L5–S1 disc herniation compressing the left S1 nerve root.\n\n1. Lumbar disc herniation at L5–S1 with left S1 radiculopathy — consistent with history, exam, and MRI findings.\n\n– Initiate pyhsical therapy focused on lumbar stabilization, core strengthening, and radicular smyptom management.\n– Start Medrol dose pack (methylprednisolone taper) for shrot course…"
+  },
+  {
+    "id": "E02",
+    "title": "Est pt lumbar stenosis w/ neurogenic claudication L4-5",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated",
+      "drop_sentence"
+    ],
+    "note": "*** CONFIDENTIAL ***\n71-year-old female, established pt, with lumbar spnial stenosis at L4-L5. Neurogenic claudication: walks one block before bilaterla leg heaviness, relieved by stiting and leaning forward. Strength 5/5 bilateral lower extremities. Negative staright leg raise bilaterally. Pedal pusles intact. 1. Cotninue home exerc…"
+  },
+  {
+    "id": "E03",
+    "title": "New pt cervical spondylotic myelopathy C5-6/C6-7 (surgery recommended)",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "63–year–old male with 6 months of progressive hand clumsiness, difficulty buttonnig shirts, and gait imbalance.\nSUBJECTIVE:\nOBJECTIVE:\nPositive Hoffmann sign bilaterally. Hyperrefleixa upper and lower extremities. Wide–based gait. Positive Romberg. MRI cerivcal spine reviewed: severe canal setnosis at C5–C6 and C6–C7 from disc–osteophyte complexes with T2 cord signal change at C5–C6.\nASSESSMENT:\n1. Cervical spondylotic myelopathy at C5–C6 and C6–C7.\nPLAN:\nRceommend anterior cervical discectomy and fsulon C5–C6 and C6–C7. Risks, benefits, alternatives discussed; pt agrees. High complexity MDM."
+  },
+  {
+    "id": "E04",
+    "title": "New pt C5-6 HNP, right C6 radiculopathy",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\n48-year-old female with right neck pain radiating to the right tuhmb and index finger for 8 weeks.\n\nPositive Spurling test on the right. Diminished right biecps and brachioradialis reflexes. Right wrsit extension 4/5. MRI reviewed: rigth foraminal disc herniation at C5-C6 compressing the right C6 nevre root.\n\n1. Cervical disc hernaition at C5-C6 with right C6 radiculopathy.\n\nPhysical therapy, NSAIDs, cevrical epidural steroid injection referral. Reutrn in 6 weeks.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "E05",
+    "title": "Post-op visit inside 90-day global (2 wk s/p L4-5 TLIF)",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "SUBJECTIVE:\n55-year-old male, 2 weeks status post L4-L5 transforaminal lumbar interbody fusion with posterior instrumentation for degenerative spondylolisthesis. Leg pain resolved.\n\nOBJECTIVE:\nIncision clean, dry, intact; no erythema or drainage. Staples removed. Neurologically intact. Standing radiographs: hardware in good position.\n\nASSESSMENT:\n1. Status post L4-L5 TLIF, routine postoperative course.\n\nPLAN:\nContinue walking. No lifting over 10 lb. Follow up in 4 weeks. Visit within the 90-day global period."
+  },
+  {
+    "id": "E06",
+    "title": "Decision for surgery visit (day before L4-5 TLIF) - should be E/M + 57, NOT surgery codes",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nSUBJECTIVE:\n66-year-old female, established, garde 1 degenerative spondylolisthesis L4-L5 with severe stenosis and bilateral L5 radiculopathy. Failed 6 months PT, 2 epidural injections, medications.\n\nOBJECTIVE:\nFlexion-extension radiographs: 4 mm moiton at L4-L5.\n\nASSESSMENT:\n1. Degeneartive spondylolisthesis L4-L5.\n2. Lumbar spnial stenosis with neurogenic claudication.\n\nPLAN:\nDecision made today for L4-L5 laminectom…"
+  },
+  {
+    "id": "E07",
+    "title": "Telehealth video f/u lumbar radiculopathy (needs 99213 + mod 95)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Telehealth video visit; pt at home, provider in office. 45–year–old male with right L4–L5 lmubar radiculopthy, 70% improved after pyhsical therapy.\n\nObserved via video: nromal gait, no distress.\n\n1. Lumabr radiculopthy, right, im…"
+  },
+  {
+    "id": "E08",
+    "title": "Mechanical LBP + cervicalgia + spasm (M54.5 is INVALID since 10/2021)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\n39-year-old office worker with mehcanical low back pain and neck pain for 1 month. No radiating pain, numbness, or weakness.\n\nNormal neurologic exam. Mild paarspinal muscle spasm.\n\n1. Low back pain.\n2. Cervicalgia.\n3. Mucsle spasm of back.\n\nErgonomics, physcial therapy, ibuprofen. Low complexity.\nDitcated but not read."
+  },
+  {
+    "id": "E09",
+    "title": "Thoracic disc herniation T7-8 with myelopathy",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "drop_sentence",
+      "shuffle_paras"
+    ],
+    "note": "52–year–old with mid back pain, bilateral leg numbness, and unsteady gait. OBJECTIVE:\nSUBJECTIVE:\nHyperreflexai lower extremities, sustained clonus bilaterally. MRI thoracic spine: T7–T8 disc herniation compressing the spinal cord. ASSESSMENT:\n1. 2. Pain in thoracic spine. PLAN:\nSurigcal consultation for thoracic decompression. High complexity."
+  },
+  {
+    "id": "E10",
+    "title": "Second-opinion consult, lumbar DDD w/ discogenic back pain (commercial consult code)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Second opinion cnosultation requested by Dr. Smith. 44–year–old with chronic axial low back pain, worse with sitting.\n\nMRI: degenerative disc disease L4–L5 with Modic changes; no stenosis.\n\n1. Lumbar degenerative disc disease with discogenic back p…"
+  },
+  {
+    "id": "E11",
+    "title": "Right-sided sciatica without disc diagnosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\n37-year-old with low back pain and rigth buttock and posterior thigh pain.\n\nPositive slump test on the right. Strength and reflexes normal.\n\n1. Sciatica, right sid…"
+  },
+  {
+    "id": "E12",
+    "title": "Coccydynia after fall",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "29–year–old fell onto buttocks on ice 6 weeks ago; pain sitting.\nSUBJECTIVE:\nOBJECTIVE:\nPoint tenderness over the coccyx. No neurologic deficit.\nASSESSMENT:\n1. Coccydynia.\nPLAN:\nDonut cushion, NSAIDs. Consider coccygeal injection."
+  },
+  {
+    "id": "E13",
+    "title": "Adult degenerative scoliosis with stenosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\n72-year-old with adult degenerative lumbar scoliosis, low back pain, bilateral leg pain with walking.\n\nStanding scloiosis films: 28-degree lumbar curve, ltaeral listhesis L3-L4.\n\n1. Adult degeneartive scoliosis, lumbar region.\n2. Lubmar spinal stenosis with neurogenic claudication.\n\nPT, consider injections; surgery discussed. Moderate MDM.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "E14",
+    "title": "AIS 14yo, 45 deg thoracolumbar, scoliosis films taken in office",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "SUBJECTIVE:\n14-year-old female referred for adolescent idiopathic scoliosis. Right rib hump on forward bend.\n\nOBJECTIVE:\nStanding PA and lateral scoliosis radiographs of the entire spine obtained in office today: right thoracolumbar curve 45 degrees, Risser 2.\n\nASSESSMENT:\n1. Adolescent idiopathic scoliosis, thoracolumbar region.\n\nPLAN:\nDiscussed bracing vs posterior spinal fusion. MRI to rule out intraspinal anomaly."
+  },
+  {
+    "id": "E15",
+    "title": "Failed back surgery syndrome / postlaminectomy syndrome",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nSUBJECTIVE:\n59-year-old, 3 years atfer L4-S1 laminectomy, with persistent bialteral leg radicular pain.\n\nOBJECTIVE:\nNo new deficits.\n\nASSESSMENT:\n1. Postlaminecotmy syndrome.\n2. Chronic lumbar radiculopathy.\n\nPLAN:\nSpinal cord …"
+  },
+  {
+    "id": "E16",
+    "title": "Pseudarthrosis + broken S1 pedicle screw",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated",
+      "drop_sentence"
+    ],
+    "note": "62–year–old, 18 months after L5–S1 posterior fusion, recurrent low back pain. CT: nonunion at L5–S1, lucency around S1 screws, borken left S1 screw. 1. 2. Mechaincal breakdown of internal fixation devcie of vertebrae, initi…"
+  },
+  {
+    "id": "E17",
+    "title": "Cauda equina syndrome (emergency)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\n38-year-old with sudden severe low back pain, bilateral leg weakness, saddle anesthesia, and urinary retention.\n\nDecreased rectal tone, perianal numbness, bilateral ankle dorsiflexion 3/5. Eemrgency MRI: massive central L4-L5 disc herniation compressing the cauda equina.\n\n1. Cauda equina syndrome due to L4-L5 disc herniation.\n\nEmregent L4-L5 decompression and discectomy tonight. High complexity.\nDictated but not read."
+  },
+  {
+    "id": "E18",
+    "title": "T10 metastasis w/ pathologic fx; HISTORY of breast cancer (must be Z85.3, not C50)",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "67–year–old female with h/o breast cancer treated 5 years ago, now with mid back pain.\nSUBJECTIVE:\nOBJECTIVE:\nMRI: T10 vertebral body lesion with patohlogic compression fracture consistent with metasattic disease; no cord compression.\nASSESSMENT:\n1. Secondary malignant neoplasm of bone, T10.\n2. Pathological fratcure of T10 vertebra in neoplsatic disease, initial encounter.\n3. Persoanl h/o breast cancer.\nPLAN:\nCT–guided biopsy, oncology and radiation ocnology referral, bracing."
+  },
+  {
+    "id": "E19",
+    "title": "L2-3 discitis/osteomyelitis + epidural abscess, T2DM",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\n58-year-old diabetci male with severe low back pain and fevers; ESR and CRP elevated.\n\nMRI: L2-L3 discitsi and vertebral osteomyelitis with samll epidural abscess.\n\n1. Discitis and vertebral osteomyelitis, lumbar.\n2. Spinla epidural abscess.\n3. Type 2 diabetes mellitus.\n\nCT-guided biopsy and cultures, ID consult, IV antibiotics. High complexity.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "E20",
+    "title": "Ankylosing spondylitis, lumbar",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\n34-year-old with inflammatory back pain and mroning stiffness > 1 hour; HLA-B27 positive.\n\nReduced lumbar flexion, Shcober 2 cm.\n\n1. Ankylosing spondyilti…"
+  },
+  {
+    "id": "E21",
+    "title": "Cervical spondylosis without myelopathy or radiculopathy",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "61–year–old with chronic axial neck pain.\nSUBJECTIVE:\nOBJECTIVE:\nNeurologically intact. X–rays reviewed: multilevel cervical spondylosis.\nASSESSMENT:\n1. Cervical spondylosis without myelopathy or radiculopthy.\nPLAN:\nPT, NSAIDs, consiedr facet blocks."
+  },
+  {
+    "id": "E22",
+    "title": "Lumbar facet arthropathy (spondylosis w/o radiculopathy)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\n57-year-old with axial low back pain worse with extension.\n\nFacet laoding positive bilaterally. Neurologically intact.\n\n1. Lumbar spondylosis without myelopathy or radiculopathy (facet arthropathy).\n\nBilateral L4-L5, L5-S1 medial branch blocks.\nPage 2 of 3 — sacnned from fax."
+  },
+  {
+    "id": "E23",
+    "title": "OPLL cervical with myelopathy",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "SUBJECTIVE:\n55-year-old with hand numbness and gait change.\n\nOBJECTIVE:\nCT: continuous ossification of the posterior longitudinal ligament C3-C6 with canal compromise.\n\nASSESSMENT:\n1. Ossification of posterior longitudinal ligament, cervical, with myelopathy.\n\nPLAN:\nPosterior cervical laminoplasty discussed."
+  },
+  {
+    "id": "E24",
+    "title": "Isthmic spondylolisthesis L5-S1 with spondylolysis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nSUBJECTIVE:\n19-year-old athlete with low back pain.\n\nOBJECTIVE:\nX-rays: bilaetral L5 pars defects, grade 1 isthmic spondylolisthesis L5-S1.\n\nASSESSMENT:\n1. Isthmic spondylolisthesis L5-S1.\n2. Spondylolysis, l…"
+  },
+  {
+    "id": "E25",
+    "title": "SI joint dysfunction / sacroiliitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "48–year–old with right buttock pain.\n\nPositive FABER, thigh thrust, compressoin on the right.\n\n1. Sacroiliitis, right.\n2. Sacroiliac join…"
+  },
+  {
+    "id": "T01",
+    "title": "L1 stable burst fx, ladder fall AT WORK (WC)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\n29-year-old fell from a ladder at work 6 days ago. Workers compensation injury.\n\nNeurologically intact. CT: stable burst fracture of L1 without retropulsion.\n\n1…"
+  },
+  {
+    "id": "T02",
+    "title": "Whiplash after MVA (no-fault)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "34–year–old restrained driver rear–ended 2 weeks ago. No–fault auto claim.\n\nParaspinal tenderness, reduced cervical ROM, neuro intact. Outside cervical x–ray…"
+  },
+  {
+    "id": "T03",
+    "title": "Lumbar strain lifting at work (WC)",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nSUBJECTIVE:\n41-year-old warehouse worker ijnured lifting a box at work yesterday.\n\nOBJECTIVE:\nParaspinal spasm, neuor intact.\n\nASSESSMENT:\n1. Strain of muscle, fascia and tendon of lower back, initial encounter.\n\nPLAN:\nLight duty, PT, NSAIDs.\nDicttaed but not read."
+  },
+  {
+    "id": "T04",
+    "title": "Type II odontoid (dens) fracture, elderly fall",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "84–year–old fell at home.\n\nCT cervical spine: type II dens fracture, minimally displaced.\n\n1. Type II dens fracture, iintial encounter for closed fracture.\n\nCerivcal collar vs posterior C1–C2 fsulon discussed."
+  },
+  {
+    "id": "T05",
+    "title": "Osteoporotic T12 fx, SUBSEQUENT encounter routine healing (7th char D)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dictatde but not read.\n78-year-old, 6 weeks after T12 osteoporotic compressoin fracture, improving.\n\nUpright x-ray stabel height.\n\n1. Age-related osteoporosis with current pathological fracture, vertebra, subsqeuent encounter with routine healing.\n\nContineu brace wean, bisphosphonate.\n*** CONFIDNETIAL ***"
+  },
+  {
+    "id": "T06",
+    "title": "Central cord syndrome after hyperextension fall",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "truncated",
+      "shuffle_paras"
+    ],
+    "note": "70–year–old fell forward hitting forehead.\nSUBJECTIVE:\nOBJECTIVE:\nUppre extremity weakness greater than lower; hand numbness.\nASSESSMENT:\n1. Cnetral cord syndrome at C4…"
+  },
+  {
+    "id": "X01",
+    "title": "NEGATIONS: 'no cauda equina, no fracture, no myelopathy' with simple LBP",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dictatde but not read.\n45-year-old with low back pain for 2 weeks. Denies saddle anesthesia, bowle or bladder dysfunction.\n\nNo evidnece of cauda equina syndrome. No fracture on x-ray. No myelopathy. No radiculopathy.\n\n1. Acute low back pain, mechanical. Cauda eqiuna syndrome ruled out.\n\nPT, NSAIDs.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "X02",
+    "title": "HISTORY ONLY: hx breast cancer in remission, hx diabetes; neck pain",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "SUBJECTIVE:\nNeck pain 3 weeks. Past medical history: breast cancer in remission, terated 2015; diabetes…"
+  },
+  {
+    "id": "X03",
+    "title": "Codes typed into the note by the doctor",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nLumbar radiculoapthy f/u.\n\nUnchanged.\n\n1. M51.16 Inetrvertebral disc disorders with…"
+  },
+  {
+    "id": "X05",
+    "title": "Abbreviation-heavy surgeon shorthand",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nSUBJECTIVE:\ns/p L4-5 TLIF 2019, now ASD L3-4 w/ HNP, LBP, LLE radic. DDD. ESI x2 failed.\n\nOBJECTIVE:\n+SLR L, EHL 4/5 L.\n\nASSESSMENT:\nASD L3-4 w/ HNP + L L4 radic.\n\nPLAN:\nPlan L3-4 ext fusion vs XLIF.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "X07",
+    "title": "Spanish-language note",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nPaciente de 50 años con dolor lumbar irradiado a la pierna izquierda.\n\nLasègue positivo a la izquierda.\n\n1. Hernia di…"
+  },
+  {
+    "id": "X08",
+    "title": "Level tokens C5 / L4 / S1 / T4 (collide with C50 breast CA, L40 psoriasis, S1x neck injury, T40 opioid poisoning)",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated",
+      "shuffle_paras"
+    ],
+    "note": "Pain at C5 and C6, L4, L5 and S1. Prior T4 rib pain.\nSUBJECTIVE:\nOBJECTIVE:\nTender at T4.\nAS…"
+  },
+  {
+    "id": "P01",
+    "title": "Left L5-S1 transforaminal ESI",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nSUBJECTIVE:\nIndication: left S1 radiculopathy from L5-S1 disc herniation.\n\nOBJECTIVE:\nProcedure: left L5-S1 transforaminal epidural steroid injectino under fluoroscopy; contrast epidural spread, no vascular uptake; dexamethasone and lidocaine injected.\n\nASS…"
+  },
+  {
+    "id": "P02",
+    "title": "L5-S1 interlaminar ESI",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "Indication: lmubar spinal stenosis with bilateral radciular pain.\n\nProcedure: L5–S1 interlaminar epiudral steroid injection, fluoroscopic guidance, loss of resistance.\n\nTolerated well.\n\nf/u."
+  },
+  {
+    "id": "P03",
+    "title": "C7-T1 cervical interlaminar ESI",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nIndication: cervical radiculopathy.\n\nProcedure: C7-T1 cervcial interlaminar epidural steroid injection with fluoroscopy.\n\nTolerated well.\n\nf/u.\nPage 2 of 3 — sacnned from fax."
+  },
+  {
+    "id": "P04",
+    "title": "Bilateral L4-5, L5-S1 medial branch blocks",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "SUBJECTIVE:\nIndication: lumbar facet arthropathy, axial low back pain.\n\nOBJECTIVE:\nProcedure: bilateral lumbar medial branch blocks at L4-L5 and L5-S1 facet joints under fluoroscopy, bupivacaine.\n\nASSESSMENT:\n80% relief.\n\nPLAN:\nConsider RFA."
+  },
+  {
+    "id": "P05",
+    "title": "Right L4-5, L5-S1 facet RFA",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nIndication: lumbar facet syndrome with >80% relief from two diagnostci blocks.\n\nProcedure: right L4-L5 and L5-S1 radiofreque…"
+  },
+  {
+    "id": "P06",
+    "title": "Right SI joint injection with fluoro",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Indication: right sacroiliitis.\n\nProcedure: rihgt sacroiliac joint injection with fuloroscopic guidance, contr…"
+  },
+  {
+    "id": "P07",
+    "title": "Trigger point injections, 3+ muscles",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nSUBJECTIVE:\nIndication: myofascial pain of the lumbar paraspinals and gluteals.\n\nOBJECTIVE:\nProcedure: trigger point injectiosn into 4 muscles with lidocaine.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nStretching.\nDictated but not read."
+  },
+  {
+    "id": "P08",
+    "title": "Epidural blood patch for post-dural-puncture headache",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "drop_sentence"
+    ],
+    "note": "Indication: positional headache afetr lumbar puncture. Headache resolved. f/u."
+  },
+  {
+    "id": "X04",
+    "title": "Note = exact catalog wording 'Spinal stenosis, lumbar region with neurogenic claudication'",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "Spinal stenosis, lumbar region with neurogenic caludication"
+  },
+  {
+    "id": "X06",
+    "title": "Near-empty note",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "Follow up."
+  },
+  {
+    "id": "S01",
+    "title": "OP: L5-S1 microdiscectomy (hemilaminotomy)",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "SUBJECTIVE:\nPreoperative diagnosis: left L5-S1 disc herniation with left S1 radiculopathy.\n\nOBJECTIVE:\nProcedure: left L5-S1 hemilaminotomy and microdiscectomy with operating microscope. Large extruded fragment removed; S1 root decompressed.\n\nASSESSMENT:\nPostoperative diagnosis: same. EBL 20 mL. No complications.\n\nPLAN:\nDischarge same day."
+  },
+  {
+    "id": "S02",
+    "title": "OP: 2-level ACDF C5-7 with cages, plate, allograft",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nPreoperative diagnosis: cervical spondylotic myelopathy, disc herniation C5-C6 and C6-C7.\n\nProcedure: anterior cervical discectomy and fusion C5-C6 and C6-C7, two in…"
+  },
+  {
+    "id": "S03",
+    "title": "OP: L4-5 TLIF with pedicle screws",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Diagnosis: degenerative spondylolisthesis L4–L5 with stenosis and neurogenic claudication.\n\nProcedure: L4–L5 laminectomy, bilateral foraminotomies, transfoarminal lumbar interbody fusion…"
+  },
+  {
+    "id": "S04",
+    "title": "OP: L3-L5 decompressive laminectomy, no fusion",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nSUBJECTIVE:\nDiagnosis: lumbar spinal stensois with neurogenic claudication L3-L4 and L4-L5.\n\nOBJECTIVE:\nProcedure: decompressive lamniectomy L3-L4 and L4-L5 with bilatearl facetectomy and foraminotomy, without fusion.\n\nASSESSMENT:\nEBL 150 mL.\n\nPLAN:\nAdmit overnight.\nDictated but not read."
+  },
+  {
+    "id": "S05",
+    "title": "OP: T12 balloon kyphoplasty",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "78–year–old with acute otseoporotic T12 compression fracture; MRI mrarow edema.\n\nProcedure: T12 balloon kyphoplasty, bilateral transpedicular, fluoroscopic guidance, cmeent augmentation. No extravasation.\n\nDiagnosis: age–related osteoporosis with current pathological farcture of vertebra, initial encounter.\n\nDishcarge home."
+  },
+  {
+    "id": "S06",
+    "title": "OP: C5-6 cervical disc arthroplasty",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dictatde but not read.\nDiagnosis: C5-C6 disc herniation with right C6 radiculopathy.\n\nProcedure: total disc arthrolpasty C5-C6, anterior approach, including discectomy.\n\nEBL 25 mL.\n\nDischarge next day.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "S07",
+    "title": "OP: posterior cervical laminectomy + fusion C3-C6",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "truncated",
+      "shuffle_paras"
+    ],
+    "note": "Diagnosis: multileevl cervical stenosis with myelopathy.\nSUBJECTIVE:\nOBJECTIVE:\nProcedure: posterior cervical laminectomy C3–C6, posterior…"
+  },
+  {
+    "id": "S08",
+    "title": "OP: percutaneous spinal cord stimulator trial",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nDiagnosis: psotlaminectomy syndrome with chronic radicular pain.\n\nProcedure: percutaneous implantation of two epidural neurostimulat…"
+  },
+  {
+    "id": "S09",
+    "title": "OP: removal of posterior lumbar hardware + exploration of fusion",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "drop_sentence"
+    ],
+    "note": "Diagnosis: pianful retained hardware after L4–S1 fuslon. EBL 100 mL. Discharge next day."
+  },
+  {
+    "id": "S10",
+    "title": "OP: lateral lumbar interbody fusion L3-4",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "SUBJECTIVE:\nDiagnosis: L3-L4 degenerative disc disease with foraminal stenosis.\n\nOBJECTIVE:\nProcedure: lateral transpsoas lumbar interbody fusion L3-L4 with cage and lateral plate.\n\nASSESSMENT:\nEBL 50 mL.\n\nPLAN:\nAdmit."
+  },
+  {
+    "id": "S11",
+    "title": "OP: I&D deep post-op lumbar wound infection",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nDiagnosis: deep incisional surgical site infection after lumbar fusion.\n\nProcedure: incision and drainage of deep lu…"
+  },
+  {
+    "id": "S12",
+    "title": "OP: SI joint fusion",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Diagnosis: right sacroiliac joint dysfunctoin refractory to injections.\n\nProcedure: precutaneous right sacroiliac joi…"
+  },
+  {
+    "id": "S13",
+    "title": "OP: laminectomy with incidental durotomy (G97.41)",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nSUBJECTIVE:\nDiagnosis: lumbar stenosis L4-L5.\n\nOBJECTIVE:\nProcedure: L4-L5 decompressive laminectomy. Incidental durotomy repaired primarily.\n\nASSESSMENT:\nComplication: accidental puncture of dura during procedure.\n\nPLAN:\nFlat bed rest 24 hours.\nDictated but not read."
+  },
+  {
+    "id": "M001",
+    "title": "office_new low decision for surgery → 57",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M001: office_new low decsiion for surgery → 57\nHigh–stakes low MDM with decisoin for surgery documented.\nLumbar steonsis with neurogenic claudication\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar st…"
+  },
+  {
+    "id": "M002",
+    "title": "office_established low decision for surgery → 57",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "drop_sentence"
+    ],
+    "note": "Electronically signed. CASE M002: office_established low deicsion for surgery → 57\nHigh-stakes low MDM with decision for surgery documented. Dictated but not read."
+  },
+  {
+    "id": "M003",
+    "title": "office_new moderate decision for surgery → 57",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M003: office_new modreate decision for surgery → 57\nHigh–stakes moderate MDM with decisoin for surgery documented.\nLumbar steonsis with neurogenic claudication\nLumbar setnosis with neurogenic claudication\nHigh–stakes modertae MDM with decision for srugery documented."
+  },
+  {
+    "id": "M004",
+    "title": "office_established moderate decision for surgery → 57",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M004: office_established moderate decision for srugery → 57\nSUBJECTIVE:\nHigh-stakes modearte MDM with decision for srugery documented.\nLumbar stenosis with neruogenic claudication\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbra stenosis with neurogenic claudication\nPLAN:\nPlan: High-stakes moderate MDM with decision for surgery documented.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M005",
+    "title": "office_new high decision for surgery → 57",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M005: office_new high decision for surgery → 57\nHigh–stakes high MDM with decision for surgery documented.\nLumabr stenosis with neurogenic claudication\nLmubar stenosis with neurog…"
+  },
+  {
+    "id": "M006",
+    "title": "office_established high decision for surgery → 57",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M006: office_established high decision for srugery → 57\nHigh-stakes high MDM with decision for surgery documented.\nLumbar stenosis with neurogenic claudiaction\nLumbar stenosis with neurogenic cla…"
+  },
+  {
+    "id": "M007",
+    "title": "office_established low unrelated in global → 24",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M007: office_established low unrelated in gloabl → 24\nUnrelated porblem inside global period, low MDM.\nMechanical low back pain unerlated to recent fusion\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain unrelated to recent fusion\nPLAN:\nPlan: Unrelated problem inside golbal period, low MDM."
+  },
+  {
+    "id": "M008",
+    "title": "office_established moderate unrelated in global → 24",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M008: office_established moderate unrelated in global → 24\nUnrelated porblem inside global period, moderate MDM.\nMechanical low back pain unrelatde to recent fusion\nMechanical low back pain unrelated to reecnt fusion\nUnrelated problem inside globla period, moderate MDM.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M009",
+    "title": "telehealth_established low → 95",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M009: telehealth_established low → 95\nSUBJECTIVE:\nVideo telehealth visit with low MDM.\nLumbar radiculopathy follow-up on video\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar radiculopathy follow-up on video\nPLAN:\nPlan: Video telehealth visit with low MDM."
+  },
+  {
+    "id": "M010",
+    "title": "telehealth_established moderate → 95",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "truncated",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M010: telehealth_established moderate → 95\nVideo telehealth vsiit with moderate MDM.\nLumbar radicuolpathy follow–up on video\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lum…"
+  },
+  {
+    "id": "M011",
+    "title": "telehealth_established high → 95",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M011: telehealth_established high → 95\nVideo telehealth visit with high MDM.\nLumbar radiculopathy f/u on video\nLumbar radiculopathy f/u on video\nVideo telehealth visti with high MDM.\nDictated but not read."
+  },
+  {
+    "id": "M012",
+    "title": "telehealth_new low → 95",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M012: telehealth_new low → 95\nVideo telehealth vsiit with low MDM.\nLumbar rdaiculopthy follow–up on video\nLumbar rdaiculopthy follow–up on video\nVideo telheealth visit with low MDM."
+  },
+  {
+    "id": "M013",
+    "title": "telehealth_new moderate → 95",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M013: telehealth_new moderate → 95\nSUBJECTIVE:\nVideo telehealth visit with modearte MDM.\nLumbar radiculopathy f/u on video\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbra radiculopathy f/u on video\nPLAN:\nPlan: Video telehealth visit with moderate MDM.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M014",
+    "title": "telehealth_new high → 95",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M014: telehealth_new high → 95\nVideo telehaelth visit with high MDM.\nLumabr radiculopathy follow–up on video\nLmubar radiculopathy …"
+  },
+  {
+    "id": "M015",
+    "title": "E/M + TFESI left lumbar → 25 + laterality",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M015: E/M + TFESI left lubmar → 25 + laterality\nSepaartely significant office visit before left injection.\ndisc herniation at L4-L5\nPerformed left lumbar transforaminal epidrual steroid injection at L4-L5.\ndisc herniation at L4-L5\nSeparately siginficant office visit before left inj…"
+  },
+  {
+    "id": "M016",
+    "title": "E/M + TFESI left cervical → 25 + laterality",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "drop_sentence",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M016: E/M + TFESI left crevical → 25 + laterality\nSeparately significant office visit bfeore left injection. ASSESSMENT:\nAssessment: disc hreniation at C5–C6\nPLAN:\nPlan: Sepraately significant office visit before left injection. Procedure performed: Performed left cervical transforaminal epidural steroid injetcion at C5–C6."
+  },
+  {
+    "id": "M017",
+    "title": "E/M + TFESI left lumbar → 25 + laterality",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M017: E/M + TFESI left lumbar → 25 + latearlity\nSeparately significant office visit beofre left injection.\nstenosis at L4-L5\nPerformed left lumbar transforaminal epidrual steroid injection at L4-L5.\nstneosis at L4-L5\nSeparately significant ofifce visit before left injection.\nProceduer performed: Performed left lumbar trnasforaminal epidural steroid injection at L4-L5.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M018",
+    "title": "E/M + TFESI right lumbar → 25 + laterality",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M018: E/M + TFESI right lumbar → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit before right injection.\ndisc herniation at L4-L5\nOBJECTIVE:\nPerformed right lumbar transforaminal epidural steroid injection at L4-L5.\nASSESSMENT:\nAssessment: disc herniation at L4-L5\nPLAN:\nPlan: Separately significant office visit before right injection.\nProcedure performed: Performed right lumbar transforaminal epidural steroid injection at L4-L5."
+  },
+  {
+    "id": "M019",
+    "title": "E/M + TFESI right cervical → 25 + laterality",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M019: E/M + TEFSI right cervical → 25 + laterality\nSUBJECTIVE:\nSeparately significant offiec visit before right injection.\ndisc herniation at C5-C6\nOBJECTIVE:\nPreformed right cervical transforaminal epidural setroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc herniation at C5-C6\nPLAN:\nPlan: Separately significant office visti before right injecti…"
+  },
+  {
+    "id": "M020",
+    "title": "E/M + TFESI right lumbar → 25 + laterality",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M020: E/M + TFSEI right lumbar → 25 + laterality\nSeparately significant office vsiit before right injection.\nstenosis at L4-L5\nPerformed right lumbar transfroaminal epidural steroid injection at L4-L5.\nstenosis at L4-L5\nSeparately signiifcant office visit before right injection.\nProcedure performed: Performed right lubmar transforaminal epidural steroid injection at L4-L5.\nDictated but not read."
+  },
+  {
+    "id": "M021",
+    "title": "E/M + TFESI bilateral lumbar → 25 + laterality",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M021: E/M + TFESI bilateral lumbar → 25 + laterality\nSeparately significant office visit before bilateral injection.\ndisc herniation at L4–L5\nPerformed bilatearl lumbar transforaminal epidural steroid inejction at L4–L5.\ndisc herniation at L4–L5\nSeparately significant office vsiit before bilateral injection.\nProcedure performed: Performed bilateral lumbar transforaminal epiudral steroid injection at L4–L5."
+  },
+  {
+    "id": "M022",
+    "title": "E/M + TFESI bilateral cervical → 25 + laterality",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M022: E/M + TFESI bilateral cervicla → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit befoer bilateral injection.\ndisc herniation at C5-C6\nOBJECTIVE:\nPerformed bilateral cervcial transforaminal epidural steroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc hernaition at C5-C6\nPLAN:\nPlan: Separaetly significant office visit before bilatreal injection.\nProcedure performed: Performed bliateral cervical transforaminal epidural steroid injetcion at C5-C6.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M023",
+    "title": "E/M + TFESI bilateral lumbar → 25 + laterality",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M023: E/M + TFESI bilateral lumbar → 25 + laterality\nSeparately signiifcant office visit before bilateral injection.\nstenosis at L4–L5\nPerformed bilatearl lumbar transforaminal epidural steroid inejction at L4–L5.\nstenosis at L4–L5\nSeparately significant office visit befroe bila…"
+  },
+  {
+    "id": "M024",
+    "title": "Injection transforaminal_esi left L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M024: Injection transforaminal_esi left L5-S1\nL5-S1 disc herniation with radiculopathy\nProcedure: left transforaminal esi L5-S1 preformed today.\nL5-S1 disc herniation with radiculopathy\nProcedure…"
+  },
+  {
+    "id": "M025",
+    "title": "Injection transforaminal_esi right L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M025: Injection transforaminal_esi right L5–S1\nL5–S1 disc herniation with radciulopathy\nOBJECTIVE:\nProcedure: right transforaminal esi L5–S1 performed today.\nASSESSMENT:\nAssessment: L5–S1 disc herniation with radiculopatyh\nPLAN:\nProcedure performed: Procedure: rigth transforaminal esi L5–S1 performed today."
+  },
+  {
+    "id": "M026",
+    "title": "Injection transforaminal_esi bilateral L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M026: Injection transforaminal_esi bilateral L5-S1\nL5-S1 disc herniation with radiculoapthy\nProcedure: bilateral transforaminal esi L5-S1 performed today.\nL5-S1 disc herniaiton with radiculopathy\nProcedure performed: Procedure: bilateral transforaminal esi L5-S1 perofrmed today.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M027",
+    "title": "Injection transforaminal_esi left L4-L5+L5-S1",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M027: Injection transforaminal_esi left L4-L5+L5-S1\nSUBJECTIVE:\nTwo-level lumbar disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: left transforaminal esi L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Two-level lumbar disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: left transforaminal esi L4-L5 L5-S1 performed today."
+  },
+  {
+    "id": "M028",
+    "title": "Injection transforaminal_esi right L4-L5+L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M028: Injection transforaminal_esi rgiht L4-L5+L5-S1\nSUBJECTIVE:\nTwo-level lumbar disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: right transforaminal esi L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Two-level lumbar disc herniation with radciulopathy\nPLAN:\nProcedu…"
+  },
+  {
+    "id": "M029",
+    "title": "Injection transforaminal_esi bilateral L4-L5+L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M029: Injection transforaminal_esi bilaetral L4–L5+L5–S1\nTwo–level lumbar disc hernitaion with radiculopathy\nProcedure: bilateral trasnforaminal esi L4–L5 L5–S1 performed today.\nTwo–level lumbar disc herniation with radiculopathy\nProcedure perf…"
+  },
+  {
+    "id": "M030",
+    "title": "Injection transforaminal_esi left C6-C7",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M030: Injection transforaminal_esi left C6–C7\nC6–C7 disc hreniation with radiculopthy\nProcedure: left transforamianl esi C6–C7 performed today.\nC6–C7 disc herniation with radiculopthy\nPorcedure performed: Procedure: left transforaminal esi C6–C7 performed today."
+  },
+  {
+    "id": "M031",
+    "title": "Injection transforaminal_esi right C6-C7",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M031: Injection transforaminal_esi right C6-C7\nSUBJECTIVE:\nC6-C7 disc herniation with radicluopathy\nOBJECTIVE:\nProcedure: right transforaminal esi C6-C7 performed today.\nASSESSMENT:\nAssessment: C6-C7 disc herniation with raidculopathy\nPLAN:\nProcedure performed: Procedure: rihgt transforaminal esi C6-C7 performed today.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M032",
+    "title": "Injection transforaminal_esi bilateral C6-C7",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M032: Injcetion transforaminal_esi bilateral C6–C7\nC6–C7 disc herniation with radiculopathy\nProcedure: bialteral transforaminal esi C6–C7 performed today.\nC6–C7 disc herniation with radiculoptahy\n…"
+  },
+  {
+    "id": "M033",
+    "title": "Injection medial_branch_block bilateral L4-L5+L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M033: Injection medial_branch_block bilateral L4-L5+L5-S1\nLubmar facet arthropathy\nProcedure: bilateral medila branch block L4-L5 L5-S1 perofrmed today.\nLumbar facet arthropathy\nProcedrue performed:…"
+  },
+  {
+    "id": "M034",
+    "title": "Injection medial_branch_block left L4-L5+L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M034: Injection medial_branch_block left L4–L5+L5–S1\nLumbar facet arthropathy\nOBJECTIVE:\nProcedure: left medial branch block L4–L5 L5–S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet arthropathy\nPLAN:\nProcdeure performed: Procedure: left medial bracnh block L4–L5 L5–S1 performed today."
+  },
+  {
+    "id": "M035",
+    "title": "Injection medial_branch_block right L4-L5+L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M035: Injection medial_branch_block right L4-L5+L5-S1\nLumbar facet arthropathy\nProcedure: rgiht medial branch block L4-L5 L5-S1 performed today.\nLumbar facet arthroapthy\nProcedure performed: Procedure: right meidal branch block L4-L5 L5-S1 perfomred today.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M036",
+    "title": "Injection medial_branch_block bilateral C4-C5+C5-C6",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M036: Injection medial_branch_block bilateral C4-C5+C5-C6\nSUBJECTIVE:\nCervical facet arthropathy\nOBJECTIVE:\nProcedure: bilateral medial branch block C4-C5 C5-C6 performed today.\nASSESSMENT:\nAssessment: Cervical facet arthropathy\nPLAN:\nProcedure performed: Procedure: bilateral medial branch block C4-C5 C5-C6 performed today."
+  },
+  {
+    "id": "M037",
+    "title": "Injection medial_branch_block left C4-C5+C5-C6",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M037: Injection medial_branch_block left C4-C5+C5-C6\nSUBJECTIVE:\nCervical facet arthrpoathy\nOBJECTIVE:\nProcedure: left medial branhc block C4-C5 C5-C6 performed today.\nASSESSMENT:\nAssessment: Cervical facet arthropahty\nPLAN:\nProcedure performed…"
+  },
+  {
+    "id": "M038",
+    "title": "Injection medial_branch_block right C4-C5+C5-C6",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M038: Injection medial_branch_block rgiht C4–C5+C5–C6\nCervical facet arthropathy\nProcedure: right medial branch block C4–C5 C5–C6 performed today.\nCervical fcaet arthropathy\nProcedure performed: Proc…"
+  },
+  {
+    "id": "M039",
+    "title": "Injection facet_rfa left L4-L5+L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M039: Injection facet_rfa left L4-L5+L5-S1\nLumbar facet RFA indicatino\nProcedure: left facet rfa L4-L5 L5-S1 performed today.\nLumbar facte RFA indication\nProcedure performed: Procedure: left facet rfa L4-L5 L5-S1 performed today.\nDictated but not read."
+  },
+  {
+    "id": "M040",
+    "title": "Injection facet_rfa right L4-L5+L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M040: Injection facet_rfa right L4-L5+L5-S1\nSUBJECTIVE:\nLumbar facet RFA indication\nOBJECTIVE:\nProcedure: right facet rfa L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet RFA indication\nPLAN:\nProcedure performed: Procedure: right faect rfa L4-L5 L5-S1 performed today.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M041",
+    "title": "Injection facet_rfa bilateral L4-L5+L5-S1",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M041: Injeciton facet_rfa bilateral L4–L5+L5–S1\nLumbar fcaet RFA indication\nProcedure: bilateral faect rfa L4–L5 L5–S1 performed today.\nLumbar facet RFA indication\nProecdu…"
+  },
+  {
+    "id": "M042",
+    "title": "Injection facet_rfa left C5-C6",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M042: Injection facet_rfa left C5-C6\nCervicla facet RFA indication\nProcedure: left facet rfa C5-C6 performed today.\nCervical facet RFA indication\nPorcedure perf…"
+  },
+  {
+    "id": "M043",
+    "title": "Injection facet_rfa right C5-C6",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M043: Injection facet_rfa right C5–C6\nCervical facet RFA indication\nOBJECTIVE:\nProcedure: right facet rfa C5–C6 performed today.\nASSESSMENT:\nAssessment: Crevical facet RFA indication\nPLAN:\nProcedrue performed: Procedure: right facet rfa C5–C6 performed today."
+  },
+  {
+    "id": "M044",
+    "title": "Injection facet_rfa bilateral C5-C6",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M044: Injection facet_rfa bilateral C5-C6\nCervical facet RFA indication\nProcedure: bilateral facet rfa C5-C6 perfomred today.\nCervical facet RFA inidcation\nProcedure performed: Procedure: bilateral fcaet rfa C5-C6 performed today.\nPage 2 of 3 — sacnned from fax."
+  },
+  {
+    "id": "M045",
+    "title": "Injection si_joint_injection left n/a",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M045: Injection si_joint_injection left n/a\nSUBJECTIVE:\nSacroiliitis with SI joint pain\nOBJECTIVE:\nProcedure: left si joint injection  performed today.\nASSESSMENT:\nAssessment: Sacroiliitis with SI joint pain\nPLAN:\nProcedure performed: Procedure: left si joint injection  performed today."
+  },
+  {
+    "id": "M046",
+    "title": "Injection si_joint_injection right n/a",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M046: Injection si_joint_injection rgiht n/a\nSUBJECTIVE:\nSacroiliitis with SI joint pain\nOBJECTIVE:\nProcedure: rigth si joint injection  performed today.\nASSESSMENT:\nAssessment: Sacroiliitis with SI joint pain\nPLAN:\nProcedure per…"
+  },
+  {
+    "id": "M047",
+    "title": "Injection si_joint_injection bilateral n/a",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M047: Injection si_joint_injection bliateral n/a\nSacroiliitis with SI jonit pain\nProcedure: bilateral si joitn injection  performed today.\nSacroiliitis with SI joint pain\nProcedure performed…"
+  },
+  {
+    "id": "M048",
+    "title": "Injection interlaminar_esi none L4-L5",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M048: Injection interlaminar_esi none L4-L5\nLumbar stenosis for interlmainar ESI\nProcedure: none interlaminar esi L4-L5 performed today.\nLumbar stenossi for interlaminar ESI\nProcedure performed: Procedure: none interlaminar esi L4-L5 performed today.\nDictated but not read."
+  },
+  {
+    "id": "M049",
+    "title": "Injection trigger_point none trapezius+levator+paraspinal",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M049: Injection trigger_point none trapezius+levator+paraspinal\nMyofascial pain with trigger points\nOBJECTIVE:\nProcedure: none trigger point trapezius lveator paraspinal performed today.\nASSESSMENT:\nAssessment: Myofascial pain with trigger pionts\nPLAN:\nProcedure performed: Procedure: none trigger point trapezius levator parasipnal performed today."
+  },
+  {
+    "id": "M050",
+    "title": "Injection epidural_blood_patch none n/a",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M050: Injectino epidural_blood_patch none n/a\nPost–dural pnucture headache\nProcedure: none epidural blood patch  performed today.\nPost–dural puntcure headache\nProce…"
+  },
+  {
+    "id": "M051",
+    "title": "Surgery microdiscectomy left",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M051: Surgery microdiscectomy left\nLeft L5-S1 disc herniation with radiculopathy\nProcedure: microdiscectomy L5-S1 left performed.\nLeft L5-S1 disc herniation with radiculoapthy\nProced…"
+  },
+  {
+    "id": "M052",
+    "title": "Surgery microdiscectomy right",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M052: Surgery microdiscectomy right\nRgiht L4–L5 disc herniation with rdaiculopthy\nOBJECTIVE:\nProcedure: microdiscectomy L4–L5 rigth performed.\nASSESSMENT:\nAssessment: Right L4–L5 disc herniation with radiculopthy\nPLAN:\nProcedure performed: Procedure: microdiscectomy L4–L5 right performed."
+  },
+  {
+    "id": "M053",
+    "title": "Surgery si_joint_fusion left",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M053: Surgery si_joint_fusion left\nLeft sacroiliitis for fusion\nProcedure: si joint fusion  left performed.\nLeft sacroiliitis for fusion\nProcedure performed: Procedure: si joint fusion  left performed.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M054",
+    "title": "Surgery si_joint_fusion right",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M054: Surgery si_joint_fusion right\nSUBJECTIVE:\nRight sacroiliitis for fusion\nOBJECTIVE:\nProcedure: si joint fusion  right performed.\nASSESSMENT:\nAssessment: Right sacroiliitis for fusion\nPLAN:\nProcedure performed: Procedure: si joint fusion  right performed."
+  },
+  {
+    "id": "M055",
+    "title": "Surgery kyphoplasty none",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M055: Surgery kyphoplasty none\nSUBJECTIVE:\nOsteoporotic T12 compression frcature initial\nOBJECTIVE:\nProcedure: kyphoplasty T12 none performed.\nASSESSMENT:\nAssessment: Osteoprootic T12 compression fracture initial\nPLAN:\nPro…"
+  },
+  {
+    "id": "M056",
+    "title": "Surgery kyphoplasty none",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M056: Surgery kyphoplasty none\nOsteoporotic L1 compression fracture iintial\nProcedure: kyphoplasty L1 none performed.\nOsteoporotic L1 compression fracture iintial\nProcedure…"
+  },
+  {
+    "id": "M057",
+    "title": "ACDF 2-level with cages/plate (NCCI 59)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M057: ACDF 2-level with cages/plate (NCCI 59)\nCervical sopndylotic myelopathy\nAnterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cages placed at C5-C6 and C6-C7.\nAnterior plate intsrumentation across C5-C6 to C6-C7.\nCervicla spondylotic myelopathy\nProcedure performed: Anteiror cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C5-C6 and C6-C7.\nProcedure performed: Anetrior plate instrumentation across C5-C6 to C6-C7.\nDictated but not read."
+  },
+  {
+    "id": "M058",
+    "title": "ACDF 3-level with cages/plate (NCCI 59)",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "drop_sentence",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M058: ACDF 3–level with cages/plate (NCCI 59)\nCervical spondylotic myelopathy\nOBJECTIVE:\nAntreior cervical discectomy and fusion C4–C5 and C5–C6 and C6–C7 performed. Interbody cages placed at C4–C5 and C5–C6 and C6–C7. Atnerior plate instrumentation across C4–C5 to C5–C6 to C6–C7. Procedure performed: Intebrody cages placed at C4–C5 and C5–C6 and C6–C7. Procedure performed: Anterior plate instrumentation across C4–C5 to C5–C6 to C6–C7."
+  },
+  {
+    "id": "M059",
+    "title": "ACDF 2-level with cages/plate (NCCI 59)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\nCASE M059: ACDF 2-level with cages/plate (NCCI 59)\nCervical spondylotic myelopathy\nAnetrior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cgaes placed at C5-C6 and C6-C7.\nAnterior plate instrumentation across C5-C6 to C6-C7.\nCervical spondylotic myelopatyh\nProcedure performed: Anterior cervical dicsectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cgaes placed at C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumnetation across C5-C6 to C6-C7.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M060",
+    "title": "ACDF 3-level with cages/plate (NCCI 59)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M060: ACDF 3-level with cages/plate (NCCI 59)\nCervical spondylotic myelopathy\nAnteiror cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nInterbody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnetrior plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nCervical sopndylotic myelopathy\nProcedure performed: Anterior cevrical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProceu…"
+  },
+  {
+    "id": "M061",
+    "title": "ACDF 2-level with cages/plate (NCCI 59)",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M061: ACDF 2–level with cages/plate (NCCI 59)\nCervical spondylotic myeloapthy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C5–C6 and C6–C7 performed.\nInterbody cages placed at C5–C6 and C6–C7.\nAnterior plate isntrumentation across C5–C6 to C6–C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical disecctomy and fusion C5–C6 and C6–C7 performed.\nProcedure performed: Interbody caegs placed at C5–C6 and C6–C7.\nProcedure performed: Anterior plate instruemntation across C5–C6 to C6–C7."
+  },
+  {
+    "id": "M062",
+    "title": "ACDF 3-level with cages/plate (NCCI 59)",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M062: ACDF 3-level with cages/plate (NCCI 59)\nCervical spondylotic myleopathy\nAnterior cervical discectomy and fusino C4-C5 and C5-C6 and C6-C7 performed.\nInterbody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnterior plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nCervcial spondylotic myelopathy\nProcedure performed: Anetrior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages plcaed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior palte instrumentation across C4-C5 to C5-C6 to C6-C7.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M063",
+    "title": "ACDF 2-level with cages/plate (NCCI 59)",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M063: ACDF 2-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCervical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cages placed at C5-C6 and C6-C7.\nAnterior plate instrumentation across C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C5-C6 to C6-C7."
+  },
+  {
+    "id": "M064",
+    "title": "ACDF 3-level with cages/plate (NCCI 59)",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M064: ACDF 3-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCevrical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervicla discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nIntebrody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnterior palte instrumentation across C4-C5 to C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervicla spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fuison C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performe…"
+  },
+  {
+    "id": "M065",
+    "title": "Microdiscectomy left with global modifier 58",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M065: Microdiscectomy left with global modifier 58\nRecurrent L5–S1 disc herniation with radiculopathy\nRetrun procedure 58: left L5–S1 microdicsectomy performed in global period.\nRecrurent L5–S1 disc herniation with radiculoptahy\nProcedure performed:…"
+  },
+  {
+    "id": "M066",
+    "title": "Microdiscectomy right with global modifier 58",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M066: Microdiscectomy right with global modifier 58\nRecurrent L5-S1 disc herniation with radiculopathy\nRetunr procedure 58: right L5-S1 microdiscectmoy performed in global period.\nRceurrent L5-S1 disc herniation with radciulopathy\nProcedure performed: Return procedure 58: right L5-S1 microdiscectomy performed in global period.\nDictated but not read."
+  },
+  {
+    "id": "M067",
+    "title": "Microdiscectomy left with global modifier 78",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M067: Microdiscectomy left with global modifier 78\nRecurrent L5–S1 disc herniation with radiculopthy\nOBJECTIVE:\nReturn procedure 78: left L5–S1 microdiscectomy performed in global period.\nASSESSMENT:\nAssessment: Recurrnet L5–S1 disc herniation with rdaiculopthy\nPLAN:\nProcedure performed: Return proceudre 78: left L5–S1 microdiscectomy preformed in global period."
+  },
+  {
+    "id": "M068",
+    "title": "Microdiscectomy right with global modifier 78",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\nCASE M068: Microdiscectomy right with global modiifer 78\nRecurrent L5-S1 disc hernaition with radiculopathy\nReturn procedure 78: right L5-S1 microdiscectomy performed in global period.\nRecurrent L5-S1 disc herniation with radiculopathy\nProcedure performed: Return procedure 78: right L5-S1 microdiscectomy performed in global period.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M069",
+    "title": "Microdiscectomy left with global modifier 79",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M069: Micordiscectomy left with global modifier 79\nRecurrent L5–S1 disc herniation with radiculopathy\nReturn procedure 79: left L5–S1 microdiscectomy performed in gloabl period.\nRecurrent L5–S1 disc hernitaion with radiculopathy\nProcedure performed: Retrun proce…"
+  },
+  {
+    "id": "M070",
+    "title": "Microdiscectomy right with global modifier 79",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M070: Microdiscectomy right with global mdoifier 79\nRecurrent L5–S1 disc herniation with radiculopthy\nOBJECTIVE:\nRteurn procedure 79: right L5–S1 microdiscecotmy performed in global period.\nASSESSMENT:\nAssessment: Recurrent L5–S1 disc herination with radiculopthy\nPLAN:\nProcedure performed: Return procedure 79: right L5–S1 microdiscectomy performed in global period."
+  },
+  {
+    "id": "M071",
+    "title": "Office office_established low cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M071: Office office_established low cerviclagia\nlow complexity office established for Cervicalgia without radiculopathy.\nCervicalgia wtihout radiculopathy\nCervicalgia without radiculopathy\nlow complexity office established for Crevicalgia without radiculopathy.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M072",
+    "title": "Office office_new moderate muscle_spasm",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M072: Office office_new moderate muscle_spasm\nSUBJECTIVE:\nmoderate complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: moderate complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M073",
+    "title": "Office office_established high coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M073: Office office_established high coccydynia\nSUBJECTIVE:\nhigh complexity ofifce established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: hig…"
+  },
+  {
+    "id": "M074",
+    "title": "Office office_new low sciatica",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M074: Office office_new low sciatica\nlow complexity office new for Right–sided sciatica.\nRight–sided scitaica\nRight–sided sciatica\nlow com…"
+  },
+  {
+    "id": "M075",
+    "title": "Office office_established moderate spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M075: Office office_established moderaet spondylolisthesis\nmoderate complexity office establihsed for L4-L5 spondylolisthesis.\nL4-L5 spondylolishtesis\nL4-L5 spondylolisthesis\nmoderate complexity offiec established for L4-L5 spondylolisthesis.\nDicttaed but not read."
+  },
+  {
+    "id": "M076",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M076: Office office_new high postlaminectomy_syndrome\nhigh comlpexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: high complexity office new for Postlmainectomy syndrome."
+  },
+  {
+    "id": "M077",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\nCASE M077: Office office_established low ankylosing_spondylitis\nlow complexity office established for Anyklosing spondylitis lumbar.\nAnkylosing spondylitis lumbra\nAnkylosing spondylitis lumbar\nlow compleixty office established for Ankylosing spnodylitis lumbar.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M078",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M078: Office office_new moderate si_joint_dysfunction\nmoderate comlpexity office new for SI joitn dysfunction.\nSI joint dysfunction\nSI joint dysfunction\nmoderate comple…"
+  },
+  {
+    "id": "M079",
+    "title": "Office office_established high scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M079: Office office_established high scoliosis\nSUBJECTIVE:\nhigh complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity offic…"
+  },
+  {
+    "id": "M080",
+    "title": "Office office_new low low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M080: Office office_new low low_back_pain\nlow complexity office new for Mechanical low back pain.\nMechanicla low back pain\nMechanical low back pain\nlow complexity offiec new for Mechanical low back pain.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M081",
+    "title": "Office office_established moderate cervicalgia",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M081: Office office_established moderate cervicalgia\nSUBJECTIVE:\nmoderate complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: moderate complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M082",
+    "title": "Office office_new high muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M082: Office office_new high muscle_spasm\nSUBJECTIVE:\nhigh complexity offiec new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spsam of back\nPLAN:\nPlan: h…"
+  },
+  {
+    "id": "M083",
+    "title": "Office office_established low coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M083: Office office_established low coccydynia\nlow complexity office estabilshed for Coccydynia after fall.\nCocycdynia after fall\nCoccydynia after fall\nlow comple…"
+  },
+  {
+    "id": "M084",
+    "title": "Office office_new moderate sciatica",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M084: Office office_new moderaet sciatica\nmoderate complexity office new for Right-sided sciatica.\nRight-sided scaitica\nRight-sided sciatica\nmoderate complexity ofifce new for Right-sided sciatica.\nDicttaed but not read."
+  },
+  {
+    "id": "M085",
+    "title": "Office office_established high spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M085: Office office_established high spondylolisthesis\nhigh cmoplexity office established for L4–L5 spondylolisthesis.\nL4–L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4–L5 spondylolisthesis\nPLAN:\nPlan: high complexity office established for L4–L5 spondylolisthesis."
+  },
+  {
+    "id": "M086",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "drop_sentence"
+    ],
+    "note": "Ditcated but not read. CASE M086: Office office_new low postlaminectomy_syndrome\nlow complexity office new for Postlaminetcomy syndrome. *** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M087",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M087: Offcie office_established moderate ankylosing_spondylitis\nmoderate cmoplexity office established for Ankylosing spondyiltis lumbar.\nAnkylosing spondylitis lumbar\nAnkylsoing spondylitis lumbar\nmoderate complexity …"
+  },
+  {
+    "id": "M088",
+    "title": "Office office_new high si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M088: Office office_new high si_joint_dysfunction\nSUBJECTIVE:\nhigh complexity office new for SI joint dysfunction.\nSI joitn dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: high complexity …"
+  },
+  {
+    "id": "M089",
+    "title": "Office office_established low scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M089: Office office_established low scoliosis\nlow complexity office established for Thoarcic scoliosis.\nThoracic scoliosis\nThoracic scoloisis\nlow complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M090",
+    "title": "Office office_new moderate low_back_pain",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M090: Office office_new moderate low_back_pain\nSUBJECTIVE:\nmoderate complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: moderate complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M091",
+    "title": "Office office_established high cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M091: Office office_established high cervicalgia\nSUBJECTIVE:\nhigh complexity ofifce established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: high…"
+  },
+  {
+    "id": "M092",
+    "title": "Office office_new low muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M092: Office office_new low muscle_spasm\nlow complexity office new for Muscle spasm of back.\nMuscle spasm of back\nMuslce spasm of back\nlow com…"
+  },
+  {
+    "id": "M093",
+    "title": "Office office_established moderate coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "drop_sentence"
+    ],
+    "note": "Electronically signed. CASE M093: Office office_established moderaet coccydynia\nmoderate complexity office estalbished for Coccydynia after fall. Dictated but not read."
+  },
+  {
+    "id": "M094",
+    "title": "Office office_new high sciatica",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M094: Office office_new high sciatica\nhigh complextiy office new for Right–sided sciatica.\nRight–sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right–sided sciatica\nPLAN:\nPlan: high complexity office new for Right–sided sciatica."
+  },
+  {
+    "id": "M095",
+    "title": "Office office_established low spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\nCASE M095: Office office_established low spondylolisthesis\nlow complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nL4-L5 spondyollisthesis\nlow complexity office established for L4-L5 spondylolisthesis.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M096",
+    "title": "Office office_new moderate postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M096: Office office_new moderate postlaminectomy_syndrome\nmoderate complextiy office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nPostlaminectomy syndrome\nmdoerate comple…"
+  },
+  {
+    "id": "M097",
+    "title": "Office office_established high ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M097: Office office_established high ankylosing_spondylitis\nSUBJECTIVE:\nhigh complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondyiltis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Anyklosing spondylitis lumbar\nPLAN:\nPlan: high complexity offic…"
+  },
+  {
+    "id": "M098",
+    "title": "Office office_new low si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M098: Office office_new low si_joint_dysfunction\nlow complexity office new for SI joint dysfunction.\nSI joint dsyfunction\nSI joint dysfunction\nlow complxeity office new for SI joitn dysfunction."
+  },
+  {
+    "id": "M099",
+    "title": "Office office_established moderate scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M099: Office office_established moderate scolisois\nmoderate complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nThoracci scoliosis\nmoderate complexity office establihsed for Thoracic scoliosis.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M100",
+    "title": "Office office_new high low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M100: Office office_new high low_back_pain\nhigh complexity offcie new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mec…"
+  },
+  {
+    "id": "M101",
+    "title": "Office office_established low cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M101: Office office_established low cervicalgia\nlow complexity office establishde for Cervicalgia without radiculopathy.\nCrevicalgia without radiculopathy\nCervicalgia without radicluopathy\nlow complexity office established for Cervicalgia without radiculopathy.\nDictated but not read."
+  },
+  {
+    "id": "M102",
+    "title": "Office office_new moderate muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M102: Office office_new moderate muscle_spasm\nmoderate complexity offcie new for Muscle spasm of back.\nMuscle spasm of back\nMuscle spasm of back\nmdoerate complexity office new for Muslce spasm of back."
+  },
+  {
+    "id": "M103",
+    "title": "Office office_established high coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M103: Office office_established high coccydynia\nSUBJECTIVE:\nhigh complexity office established for Coccydynia after fall.\nCoccydynia afetr fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: high complexity office established for Coccydnyia after fall.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M104",
+    "title": "Office office_new low sciatica",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M104: Office office_new low sciatica\nlow complextiy office new for Right–sided sciatica.\nRight–sided sciatica\nRight–sided sciat…"
+  },
+  {
+    "id": "M105",
+    "title": "Office office_established moderate spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M105: Office office_established moderate spondylolisthesis\nmoderaet complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nL4-L5 spondylolishtesis\nmode…"
+  },
+  {
+    "id": "M106",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M106: Office office_new high postlaminectomy_syndrome\nhigh complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: high complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M107",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M107: Office office_established low ankylosing_spondylitis\nlow complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spnodylitis lumbar\nAnkylosing spondylitis lumbar\nlow complexity office established for Ankyolsing spondylitis lumbar.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M108",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M108: Office office_new moderate si_joint_dysfunction\nSUBJECTIVE:\nmoderate complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: moderate complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M109",
+    "title": "Office office_established high scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M109: Office office_established high scoliosis\nSUBJECTIVE:\nhigh complexity offiec established for Thoracic scoliosis.\nThoracci scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thorcaic scoliosis\nPLAN:\nPlan: hig…"
+  },
+  {
+    "id": "M110",
+    "title": "Office office_new low low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M110: Office office_new low low_back_pain\nlow complexity office new for Mechanical low back pain.\nMechanical low back pain\nMechancial low back pain\nlow complexiyt office new for Mechanical low back pain.\nDictated but not read."
+  },
+  {
+    "id": "M111",
+    "title": "Office office_established moderate cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M111: Office office_established moderate cervicalgia\nmoderate complexity office established for Cervicalgia without radiculopthy.\nCervicalgia without radiculopthy\nCervicalgia wtihout radiculopthy\nmoderate complexity office etsablished for Cervicalgia without radiculopthy."
+  },
+  {
+    "id": "M112",
+    "title": "Office office_new high muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M112: Office office_new high muscle_spasm\nSUBJECTIVE:\nhigh complexity office new for Muscle spasm of back.\nMucsle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: high complexity offiec new for Muscle spasm of back.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M113",
+    "title": "Office office_established low coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M113: Offcie office_established low coccydynia\nlow complxeity office established for Coccydynia afetr fall.\nCoccydynia after fall\nCcocydynia after fa…"
+  },
+  {
+    "id": "M114",
+    "title": "Office office_new moderate sciatica",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M114: Office office_new moderate sciatica\nmoderaet complexity office new for Right-sided sciatica.\nRight-sided sciatica\nRight-sided scaitica\nmodera…"
+  },
+  {
+    "id": "M115",
+    "title": "Office office_established high spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M115: Office office_established high spondylolisthesis\nhigh complexity office established for L4–L5 spondylolisthesis.\nL4–L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4–L5 spondylolisthesis\nPLAN:\nPlan: high complexity office esatblished for L4–L5 spondylolisthesis."
+  },
+  {
+    "id": "M116",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M116: Office office_new low postlaminectomy_syndrome\nlow complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nPostlaimnectomy syndrome\nlow complexity office new for Postlaminectomy syndrome.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M117",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M117: Office office_established moderate ankylosing_spondylitis\nSUBJECTIVE:\nmoderate complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: moderate complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M118",
+    "title": "Office office_new high si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M118: Office office_new high si_joint_dysfunction\nSUBJECTIVE:\nhigh complexity ofifce new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan:…"
+  },
+  {
+    "id": "M119",
+    "title": "Office office_established low scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M119: Office office_established low scoliosis\nlow complexity office establisehd for Thoracic scoliosis.\nThoracic scloiosis\nThoracic scoliosis\nlow comple…"
+  },
+  {
+    "id": "M120",
+    "title": "Office office_new moderate low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M120: Office office_new moderate low_back_pain\nmoderate complexity offcie new for Mechanical low back pain.\nMechanical low back pain\nMechanical low back pain\nmdoerate complexity office new for Mecahnical low back pain."
+  },
+  {
+    "id": "M121",
+    "title": "Office office_established high cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "drop_sentence"
+    ],
+    "note": "Dicttaed but not read. CASE M121: Office office_established high cervicalgia\nSUBJECTIVE:\nhigh complexity office established for Cervicalgia without radiculopathy. *** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M122",
+    "title": "Office office_new low muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M122: Office office_new low muscle_spasm\nlow comlpexity office new for Muscle spsam of back.\nMuscle spasm of back\nMuscle spasm of …"
+  },
+  {
+    "id": "M123",
+    "title": "Office office_established moderate coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M123: Office office_established moderate coccydynia\nmoderaet complexity office established for Coccydynia after fall.\nCoccydynia after fall\nCoccydynia after fall\nmoderat…"
+  },
+  {
+    "id": "M124",
+    "title": "Office office_new high sciatica",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M124: Office office_new high sciatica\nhigh complexity office new for Right–sided sciatica.\nRight–sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right–sided sciatica\nPLAN:\nPlan: high complexity office new for Right–sided sciatica."
+  },
+  {
+    "id": "M125",
+    "title": "Office office_established low spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M125: Office office_established low spondyollisthesis\nlow complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nL4-L5 spondylolisthesis\nlow complexity office establishde for L4-L5 spondylolisthesis.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M126",
+    "title": "Office office_new moderate postlaminectomy_syndrome",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M126: Office office_new moderate postlaminectomy_syndrome\nSUBJECTIVE:\nmoderate complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: moderate complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M127",
+    "title": "Office office_established high ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M127: Office office_established high ankylosing_spondylitis\nSUBJECTIVE:\nhigh complexity offiec established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: h…"
+  },
+  {
+    "id": "M128",
+    "title": "Office office_new low si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M128: Office office_new low si_joint_dysfunction\nlow complexity office new for SI joint dysfunction.\nSI joint dysfunction\nSI joint dysfnuction\nlow c…"
+  },
+  {
+    "id": "M129",
+    "title": "Office office_established moderate scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M129: Office office_established moderaet scoliosis\nmoderate complexity office establihsed for Thoracic scoliosis.\nThoracic scloiosis\nThoracic scoliosis\nmoderate complexity ofifce established for Thoracic scoliosis.\nDicttaed but not read."
+  },
+  {
+    "id": "M130",
+    "title": "Office office_new high low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M130: Office office_new high low_back_pain\nSUBJECTIVE:\nhigh complexity office new for Mechanical low back pain.\nMehcanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: high complexity offiec new for Mechanical low back pain.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M131",
+    "title": "Office office_established low cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M131: Offcie office_established low cervicalgia\nlow cmoplexity office established for Cervicalgia wtihout radiculopathy.\nCervicalgia without radiculopathy\nCerviclagia without radiculo…"
+  },
+  {
+    "id": "M132",
+    "title": "Office office_new moderate muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M132: Office office_new moderate muscle_spasm\nmoderaet complexity office new for Muscel spasm of back.\nMuscle spsam of back\nMuscle spasm of back\nmoder…"
+  },
+  {
+    "id": "M133",
+    "title": "Office office_established high coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M133: Office office_established high coccydynia\nhigh complexity office established for Coccydynia after fall.\nCoccydynia aftre fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydyina after fall\nPLAN:\nPlan: high complexity office established for Cocycdynia after fall."
+  },
+  {
+    "id": "M134",
+    "title": "Office office_new low sciatica",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M134: Office office_new low sciatiac\nlow complexity office new for Right-sided sciatica.\nRight-sided sciatica\nRight-sided sciatica\nlow complexity office new for Right-sided sciatica.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M135",
+    "title": "Office office_established moderate spondylolisthesis",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M135: Office office_established moderate spondylolisthesis\nSUBJECTIVE:\nmoderate complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: moderate complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M136",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M136: Office office_new high postlaminectomy_syndrome\nSUBJECTIVE:\nhigh complexity ofifce new for Postlaminectomy syndrome.\nPostlaminecotmy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlamienctomy syndrome\nPLAN:\nPlan…"
+  },
+  {
+    "id": "M137",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M137: Office office_established low ankylosing_spondylitis\nlow complexity office estabilshed for Ankylosing spondylitis lumbar.\nAnkylsoing spondylitis lumbar\nAnkylosing spondylitis lumabr\nlow com…"
+  },
+  {
+    "id": "M138",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M138: Office office_new moderaet si_joint_dysfunction\nmoderate complexity office new for SI joint dysfunction.\nSI joint dysfunction\nSI joint dysufnction\nmoderate complexity office new for SI joint dysfunction.\nDictated but not read."
+  },
+  {
+    "id": "M139",
+    "title": "Office office_established high scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M139: Office office_established high scoliosis\nhigh comlpexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity office established for Thoarcic scoliosis."
+  },
+  {
+    "id": "M140",
+    "title": "Office office_new low low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M140: Office office_new low low_back_pain\nlow complextiy office new for Mechanical low back pain.\nMechanical low back pain\nMechanical low back…"
+  },
+  {
+    "id": "M141",
+    "title": "Office office_established moderate cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M141: Office office_established moderate cervicalgia\nmoderaet complexity office established for Cervcialgia without radiculopathy.\nCervicalgia without radiuclopathy\nCervicalgia without radiculopathy\nmoder…"
+  },
+  {
+    "id": "M142",
+    "title": "Office office_new high muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M142: Office office_new high muscle_spasm\nhigh complexity office new for Muscle spasm of back.\nMuslce spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: high complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M143",
+    "title": "Office office_established low coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M143: Office office_established low coccdyynia\nlow complexity office established for Coccydynia after fall.\nCoccydynia afetr fall\nCoccydynia after fall\nlow complexity office established for Coccdyynia after fall.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M144",
+    "title": "Office office_new moderate sciatica",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M144: Office office_new moderate sciatica\nSUBJECTIVE:\nmoderate complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: moderate complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M145",
+    "title": "Office office_established high spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M145: Office office_established high spondylolisthesis\nSUBJECTIVE:\nhigh complexity offiec established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: hi…"
+  },
+  {
+    "id": "M146",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M146: Office office_new low postlaminectomy_syndrome\nlow complexity office new for Postlaminectomy syndrome.\nPostlaminectomy synrdome\nPostlaminectomy syndrome\nlow …"
+  },
+  {
+    "id": "M147",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M147: Office office_established moderaet ankylosing_spondylitis\nmoderate complexity office estalbished for Ankylosing spondylitis lumbar.\nAnkylosign spondylitis lumbar\nAnkylosing spondylitis lubmar\nmoderate complexity office established for Ankylosing spondylitis lumbar.\nDictated but not read."
+  },
+  {
+    "id": "M148",
+    "title": "Office office_new high si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M148: Office office_new high si_joint_dysfunction\nhigh cmoplexity office new for SI joitn dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dyfsunction\nPLAN:\nPlan: high complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M149",
+    "title": "Office office_established low scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "drop_sentence"
+    ],
+    "note": "Ditcated but not read. CASE M149: Office office_established low scoliosis\nlow complexity office established for Throacic scoliosis. *** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M150",
+    "title": "Office office_new moderate low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M150: Office office_new moderate low_back_pain\nmoderaet complexity office new for Mechnaical low back pain.\nMechanical low back pain\nMechanical low back pain\nmode…"
+  },
+  {
+    "id": "M151",
+    "title": "Office office_established high cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M151: Office office_established high cervicalgia\nhigh complexity office established for Cervicalgia without radiculopthy.\nCervicalgia wtihout radiculopthy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervcialgia without radiculopthy\nPLAN:\nPlan: high complexity office established for Cerviclagia without radiculopthy."
+  },
+  {
+    "id": "M152",
+    "title": "Office office_new low muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M152: Office office_new low muscle_spasm\nlow complexity office new for Muscle spasm of back.\nMucsle spasm of back\nMuscle spams of back\nlow complexity ofifce new for Muscle spasm of back.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M153",
+    "title": "Office office_established moderate coccydynia",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M153: Office office_established moderate coccydynia\nSUBJECTIVE:\nmoderate complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: moderate complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M154",
+    "title": "Office office_new high sciatica",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M154: Office office_new high sciatica\nSUBJECTIVE:\nhigh complexity ofifce new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: hi…"
+  },
+  {
+    "id": "M155",
+    "title": "Office office_established low spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M155: Office office_established low spondylolisthesis\nlow complexity office esatblished for L4–L5 spondylolisthesis.\nL4–L5 spondyollisthesis\nL4–L5 spondylolisthesis\nlow comp…"
+  },
+  {
+    "id": "M156",
+    "title": "Office office_new moderate postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "drop_sentence"
+    ],
+    "note": "Electronically signed. CASE M156: Office office_new moderaet postlaminectomy_syndrome\nmoderate complexity office new for Postlaminectomy syndrome. Dicttaed but not read."
+  },
+  {
+    "id": "M157",
+    "title": "Office office_established high ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M157: Office office_established high ankylosing_spondylitis\nhigh complextiy office established for Ankylosing spodnylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lmubar\nPLAN:\nPlan: high complexity offcie established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M158",
+    "title": "Office office_new low si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\nCASE M158: Office office_new low si_joint_dysfunction\nlow complexity office new for SI joint dysfunction.\nSI joint dysfunctino\nSI joint dysfunction\nlow copmlexity office new for SI jonit dysfunction.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M159",
+    "title": "Office office_established moderate scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M159: Office office_established moderate scoliosis\nmoderate complextiy office established for Thoracic scoliosis.\nThoracic scoliosis\nThoracic scoliosis\nmdoerate complexity …"
+  },
+  {
+    "id": "M160",
+    "title": "Office office_new high low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M160: Office office_new high low_back_pain\nhigh complexity office new for Mechanical low back pain.\nMechaniacl low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: high complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M161",
+    "title": "Office office_established low cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M161: Office office_established low cervicalgai\nlow complexity office established for Cervicalgia without radiculopathy.\nCervicalgia wtihout radiculopathy\nCervicalgia without radiculopathy\nlow complexity office established for Cervcialgia without radiculopathy.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M162",
+    "title": "Office office_new moderate muscle_spasm",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M162: Office office_new moderate muscle_spasm\nSUBJECTIVE:\nmoderate complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: moderate complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M163",
+    "title": "Office office_established high coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M163: Office office_established high coccydynia\nSUBJECTIVE:\nhigh complexity offiec established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: hig…"
+  },
+  {
+    "id": "M164",
+    "title": "Office office_new low sciatica",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M164: Office office_new low sciatica\nlow complexity office new for Right–sided sciatica.\nRight–sided scitaica\nRight–sided sciatica\nlow com…"
+  },
+  {
+    "id": "M165",
+    "title": "Office office_established moderate spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M165: Office office_established moderaet spondylolisthesis\nmoderate complexity office etsablished for L4-L5 spondylolisthesis.\nL4-L5 spondylolishtesis\nL4-L5 spondylolisthesis\nmoderate complexity ofifce established for L4-L5 spondylolisthesis.\nDicttaed but not read."
+  },
+  {
+    "id": "M166",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M166: Office office_new high postlaminectomy_syndrome\nhigh complxeity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: high complexity office new for Postlaminectmoy syndrome."
+  },
+  {
+    "id": "M167",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\nCASE M167: Office office_established low ankylosing_spondylitis\nlow complexity office established for Ankyolsing spondylitis lumbar.\nAnkylosing spondylitis lubmar\nAnkylosing spondylitis lumbar\nlow complexiyt office established for Ankylosing spondlyitis lumbar.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M168",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M168: Offcie office_new moderate si_joint_dysfunction\nmoderate complxeity office new for SI joitn dysfunction.\nSI joint dysfunction\nSI joint dysfunction\nmoderate comple…"
+  },
+  {
+    "id": "M169",
+    "title": "Office office_established high scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M169: Office office_established high scoliosis\nSUBJECTIVE:\nhigh complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity offic…"
+  },
+  {
+    "id": "M170",
+    "title": "Office office_new low low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M170: Office office_new low low_back_pain\nlow complexity office new for Mechanical low back pain.\nMehcanical low back pain\nMechanical low back pain\nlow complexity ofifce new for Mechanical low back pain.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M171",
+    "title": "Office office_established moderate cervicalgia",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M171: Office office_established moderate cervicalgia\nSUBJECTIVE:\nmoderate complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: moderate complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M172",
+    "title": "Office office_new high muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M172: Office office_new high muscle_spasm\nSUBJECTIVE:\nhigh complexity ofifce new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spsam of back\nPLAN:\nPlan: h…"
+  },
+  {
+    "id": "M173",
+    "title": "Office office_established low coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M173: Office office_established low coccydynia\nlow complexity office establisehd for Coccydynia after fall.\nCoccyydnia after fall\nCoccydynia after fall\nlow comple…"
+  },
+  {
+    "id": "M174",
+    "title": "Office office_new moderate sciatica",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M174: Office office_new moderaet sciatica\nmoderate complexity office new for Right-sided sciatica.\nRight-sided scaitica\nRight-sided sciatica\nmoderate complexity offiec new for Right-sided sciatica.\nDicttaed but not read."
+  },
+  {
+    "id": "M175",
+    "title": "Office office_established high spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M175: Office office_established high spondylolisthesis\nhigh comlpexity office established for L4–L5 spondylolisthesis.\nL4–L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4–L5 spondylolisthesis\nPLAN:\nPlan: high complexity office established for L4–L5 spondylolisthesis."
+  },
+  {
+    "id": "M176",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\nCASE M176: Office office_new low postlaminectomy_syndrome\nlow complexity office new for Postalminectomy syndrome.\nPostlaminectomy syndrome\nPostlaminectomy syndroem\nlow complexity office new for Postlaminectomy syndrome.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M177",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M177: Office office_established moderate ankylosing_spondylitis\nmoderate comlpexity office established for Ankylosing spondylitsi lumbar.\nAnkylosing spondylitis lumbar\nAnkylosnig spondylitis lumbar\nmoderate complexity …"
+  },
+  {
+    "id": "M178",
+    "title": "Office office_new high si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M178: Office office_new high si_joint_dysfunction\nSUBJECTIVE:\nhigh complexity office new for SI joint dysfunction.\nSI joitn dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: high complexity …"
+  },
+  {
+    "id": "M179",
+    "title": "Office office_established low scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M179: Office office_established low scoliosis\nlow complexity office established for Thoarcic scoliosis.\nThoracic scoliosis\nThoracic scoilosis\nlow complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M180",
+    "title": "Office office_new moderate low_back_pain",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M180: Office office_new moderate low_back_pain\nSUBJECTIVE:\nmoderate complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: moderate complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M181",
+    "title": "Office office_established high cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M181: Office office_established high cervicalgia\nSUBJECTIVE:\nhigh complexity offiec established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: high…"
+  },
+  {
+    "id": "M182",
+    "title": "Office office_new low muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M182: Office office_new low muscle_spasm\nlow complexity office new for Muscle spasm of back.\nMuscle spasm of back\nMsucle spasm of back\nlow com…"
+  },
+  {
+    "id": "M183",
+    "title": "Office office_established moderate coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M183: Office office_established moderaet coccydynia\nmoderate complexity office establihsed for Coccydynia after fall.\nCoccydynai after fall\nCoccydynia after fall\nmoderate complexity office established for Coccydynia after fall.\nDictated but not read."
+  },
+  {
+    "id": "M184",
+    "title": "Office office_new high sciatica",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M184: Office office_new high sciatica\nhigh cmoplexity office new for Right–sided sciatica.\nRight–sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right–sided sciatica\nPLAN:\nPlan: high complexity office new for Right–sided sciatica."
+  },
+  {
+    "id": "M185",
+    "title": "Office office_established low spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\nCASE M185: Office office_established low spondylolisthesis\nlow complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nL4-L5 spondyollisthesis\nlow complexity office established for L4-L5 spondylolisthesis.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M186",
+    "title": "Office office_new moderate postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M186: Offcie office_new moderate postlaminectomy_syndrome\nmoderate cmoplexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nPostlaminectomy syndrome\nmdoerate comple…"
+  },
+  {
+    "id": "M187",
+    "title": "Office office_established high ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M187: Office office_established high ankylosing_spondylitis\nSUBJECTIVE:\nhigh complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitsi lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankyolsing spondylitis lumbar\nPLAN:\nPlan: high complexity offic…"
+  },
+  {
+    "id": "M188",
+    "title": "Office office_new low si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M188: Office office_new low si_joint_dysfunction\nlow complexity office new for SI joint dysfunction.\nSI joint dysfnuction\nSI joint dysfunction\nlow complextiy office new for SI joitn dysfunction."
+  },
+  {
+    "id": "M189",
+    "title": "Office office_established moderate scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M189: Office office_established moderate scoloisis\nmoderate complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nThoracci scoliosis\nmoderate complexity office etsablished for Thoracic scoliosis.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M190",
+    "title": "Office office_new high low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M190: Office office_new high low_back_pain\nSUBJECTIVE:\nhigh complexity ofifce new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: h…"
+  },
+  {
+    "id": "M191",
+    "title": "Office office_established low cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M191: Office office_established low cervicalgia\nlow complexity office estabilshed for Cervicalgia without radiculopthy.\nCerviclagia without radiculopthy\nCervicalgia without rdaiculopthy\nlow comple…"
+  },
+  {
+    "id": "M192",
+    "title": "Office office_new moderate muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M192: Office office_new moderaet muscle_spasm\nmoderate complexity office new for Muscle spasm of back.\nMuscle spasm of back\nMuscel spasm of back\nmoderate copmlexity office new for Muscle spsam of back.\nDictated but not read."
+  },
+  {
+    "id": "M193",
+    "title": "Office office_established high coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M193: Office office_established high coccydynia\nhigh complextiy office established for Coccydynia aftre fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: high complexity offcie established for Coccydynia after fall."
+  },
+  {
+    "id": "M194",
+    "title": "Office office_new low sciatica",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\nCASE M194: Office office_new low sciatica\nlow complexity office new for Right-sided sciatica.\nRight-sided sciatica\nRight-sided sciatiac\nlow complexity office new for Right-sided sciatica.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M195",
+    "title": "Office office_established moderate spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M195: Office office_established moderate spondylolisthesis\nmoderate complextiy office established for L4–L5 spondylolisthesis.\nL4–L5 spondylolisthesis\nL4–L5 spondylolisthesis\nmdoerate complexity …"
+  },
+  {
+    "id": "M196",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M196: Office office_new high postlaminectomy_syndrome\nSUBJECTIVE:\nhigh complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: high complexity …"
+  },
+  {
+    "id": "M197",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M197: Office office_established low ankylosing_spondylitis\nlow complexity office established for Aknylosing spondylitis lumbar.\nAnkylosing spondylitis lumabr\nAnkylosing spondylitis lumbar\nlow complxeity office established for Ankylosing spondylitsi lumbar."
+  },
+  {
+    "id": "M198",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M198: Office office_new moderate si_joint_dysfunction\nmoderate complexity office new for SI joint dysfunction.\nSI joitn dysfunction\nSI joint dysfunction\nmodearte complexity office new for SI joint dysfunction.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M199",
+    "title": "Office office_established high scoliosis",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M199: Office office_established high scoliosis\nSUBJECTIVE:\nhigh complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M200",
+    "title": "Office office_new low low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M200: Office office_new low low_back_pain\nlow complexity office new for Mechanical low back pain.\nMechanical low back pain\nMechanicla low back pain\nlow copmlexity office new for Mechanical low back pain.\nDictated but not read."
+  },
+  {
+    "id": "M201",
+    "title": "Office office_established moderate cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M201: Office office_established moderate cervicalgia\nmoderate complexity offcie established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nCervicalgia wtihout radiculopathy\nmoderate complexity office estalbished for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M202",
+    "title": "Office office_new high muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M202: Office office_new high muscle_spasm\nSUBJECTIVE:\nhigh complexity office new for Muscle spasm of back.\nMuscel spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: high complexity ofifce new for Muscle spasm of back.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M203",
+    "title": "Office office_established low coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M203: Office office_established low coccydynia\nlow complextiy office established for Coccydynia afetr fall.\nCoccydynia after fall\nCocycdynia after fa…"
+  },
+  {
+    "id": "M204",
+    "title": "Office office_new moderate sciatica",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M204: Office office_new moderate sciatica\nmoderaet complexity office new for Right-sided sciatica.\nRight-sided sciatica\nRight-sided scaitica\nmodera…"
+  },
+  {
+    "id": "M205",
+    "title": "Office office_established high spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M205: Office office_established high spondylolisthesis\nhigh complexity office established for L4–L5 spondylolisthesis.\nL4–L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4–L5 spondylolisthesis\nPLAN:\nPlan: high complexity office estabilshed for L4–L5 spondylolisthesis."
+  },
+  {
+    "id": "M206",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M206: Office office_new low postlaminectomy_syndrome\nlow complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nPostlaminectoym syndrome\nlow complexity office new for Postlaminectomy syndrome.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M207",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M207: Office office_established moderate ankylosing_spondylitis\nSUBJECTIVE:\nmoderate complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: moderate complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M208",
+    "title": "Office office_new high si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M208: Office office_new high si_joint_dysfunction\nSUBJECTIVE:\nhigh complexity offiec new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan:…"
+  },
+  {
+    "id": "M209",
+    "title": "Office office_established low scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M209: Office office_established low scoliosis\nlow complexity office esatblished for Thoracic scoliosis.\nThoracic socliosis\nThoracic scoliosis\nlow comple…"
+  },
+  {
+    "id": "M210",
+    "title": "Office office_new moderate low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos"
+    ],
+    "note": "CASE M210: Office office_new moderate low_back_pain\nmoderate complexity office new for Mechanical low back pain.\nMechanical low back pain\nMechanical low back pain\nmdoerate complexity office new for Mechaincal low back pain."
+  },
+  {
+    "id": "M211",
+    "title": "Office office_established high cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M211: Office office_established high cervicalgia\nSUBJECTIVE:\nhigh complexity office established for Cervicalgia without radiculopathy.\nCervicalgia wtihout radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cerivcalgia without radiculopathy\nPLAN:\nPlan: high complexity office established for Cerviaclgia without radiculopathy.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M212",
+    "title": "Office office_new low muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M212: Offcie office_new low muscle_spasm\nlow complxeity office new for Muscle spsam of back.\nMuscle spasm of back\nMuscle spasm of …"
+  },
+  {
+    "id": "M213",
+    "title": "Office office_established moderate coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M213: Office office_established moderate coccydynia\nmoderaet complexity office established for Coccdyynia after fall.\nCoccydynia after fall\nCoccydynia after fall\nmoderat…"
+  },
+  {
+    "id": "M214",
+    "title": "Office office_new high sciatica",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M214: Office office_new high sciatica\nhigh complexity office new for Right–sided sciatica.\nRight–sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right–sided sciatica\nPLAN:\nPlan: high complexity office new for Right–sided sciatica."
+  },
+  {
+    "id": "M215",
+    "title": "Office office_established low spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M215: Office office_established low spondyollisthesis\nlow complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nL4-L5 spondylolisthesis\nlow complexity office estbalished for L4-L5 spondylolisthesis.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M216",
+    "title": "Office office_new moderate postlaminectomy_syndrome",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M216: Office office_new moderate postlaminectomy_syndrome\nSUBJECTIVE:\nmoderate complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: moderate complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M217",
+    "title": "Office office_established high ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M217: Office office_established high ankylosing_spondylitis\nSUBJECTIVE:\nhigh complexity ofifce established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: h…"
+  },
+  {
+    "id": "M218",
+    "title": "Office office_new low si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M218: Office office_new low si_joint_dysfunction\nlow complexity office new for SI joint dysfunction.\nSI joint dysfunction\nSI joint dysfunciton\nlow c…"
+  },
+  {
+    "id": "M219",
+    "title": "Office office_established moderate scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "drop_sentence"
+    ],
+    "note": "Electronically signed. CASE M219: Office office_established moderaet scoliosis\nmoderate complexity office etsablished for Thoracic scoliosis. Dicttaed but not read."
+  },
+  {
+    "id": "M220",
+    "title": "Office office_new high low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Dicttaed but not read.\nCASE M220: Office office_new high low_back_pain\nSUBJECTIVE:\nhigh complexity office new for Mechanical low back pain.\nMechnaical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: high complexity ofifce new for Mechanical low back pain.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M221",
+    "title": "Office office_established low cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M221: Office office_established low cervicalgia\nlow comlpexity office established for Cervicalgia wtihout radiculopthy.\nCervicalgia without radiculopthy\nCervicalgai without radiculo…"
+  },
+  {
+    "id": "M222",
+    "title": "Office office_new moderate muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M222: Office office_new moderate muscle_spasm\nmoderaet complexity office new for Mucsle spasm of back.\nMuscle spsam of back\nMuscle spasm of back\nmoder…"
+  },
+  {
+    "id": "M223",
+    "title": "Office office_established high coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M223: Office office_established high coccydynia\nhigh complexity office established for Coccydynia after fall.\nCoccydynia aftre fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ccocydynia after fall\nPLAN:\nPlan: high complexity office established for Coccyydnia after fall."
+  },
+  {
+    "id": "M224",
+    "title": "Office office_new low sciatica",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M224: Office office_new low sciatiac\nlow complexity office new for Right-sided sciatica.\nRight-sided sciatica\nRight-sided sciatica\nlow complexity office new for Right-sided sciatica.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M225",
+    "title": "Office office_established moderate spondylolisthesis",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M225: Office office_established moderate spondylolisthesis\nSUBJECTIVE:\nmoderate complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: moderate complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M226",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M226: Office office_new high postlaminectomy_syndrome\nSUBJECTIVE:\nhigh complexity offiec new for Postlaminectomy syndrome.\nPostlmainectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Potslaminectomy syndrome\nPLAN:\nPlan…"
+  },
+  {
+    "id": "M227",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M227: Office office_established low ankylosing_spondylitis\nlow complexity office establisehd for Ankylosing spondylitis lumbar.\nAnkylosnig spondylitis lumbar\nAnkylosing spondylitis lmubar\nlow com…"
+  },
+  {
+    "id": "M228",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M228: Office office_new moderaet si_joint_dysfunction\nmoderate complexity office new for SI joint dysfunction.\nSI joint dysfunction\nSI joint dysfuntcion\nmoderate complexity office new for SI joint dysfunction.\nDictated but not read."
+  },
+  {
+    "id": "M229",
+    "title": "Office office_established high scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M229: Office office_established high scoliosis\nhigh complxeity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity office established for Thoarcic scoliosis."
+  },
+  {
+    "id": "M230",
+    "title": "Office office_new low low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M230: Offcie office_new low low_back_pain\nlow cmoplexity office new for Mechanical low back pain.\nMechanical low back pain\nMechanical low back…"
+  },
+  {
+    "id": "M231",
+    "title": "Office office_established moderate cervicalgia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M231: Office office_established moderate cervicalgia\nmoderaet complexity office established for Cervicaglia without radiculopathy.\nCervicalgia without radiculopahty\nCervicalgia without radiculopathy\nmoder…"
+  },
+  {
+    "id": "M232",
+    "title": "Office office_new high muscle_spasm",
+    "imperfect": true,
+    "mutations": [
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M232: Office office_new high muscle_spasm\nhigh complexity office new for Muscle spasm of back.\nMsucle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: high complexity offcie new for Muscle spasm of back."
+  },
+  {
+    "id": "M233",
+    "title": "Office office_established low coccydynia",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "cc: referring PCP\nCASE M233: Office office_established low coccydnyia\nlow complexity office established for Coccydynia after fall.\nCoccydynia afetr fall\nCoccydynia after fall\nlow complexity office established for Coccydnyia after fall.\nPage 2 of 3 — scanned from fax."
+  },
+  {
+    "id": "M234",
+    "title": "Office office_new moderate sciatica",
+    "imperfect": false,
+    "mutations": [
+      "clean_control"
+    ],
+    "note": "CASE M234: Office office_new moderate sciatica\nSUBJECTIVE:\nmoderate complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: moderate complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M235",
+    "title": "Office office_established high spondylolisthesis",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M235: Office office_established high spondylolisthesis\nSUBJECTIVE:\nhigh complexity ofifce established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: hi…"
+  },
+  {
+    "id": "M236",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "ocr_typos",
+      "abbreviations",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "CASE M236: Office office_new low postlaminectomy_syndrome\nlow complexity office new for Postlaminectomy syndrome.\nPostlaminectomy synrdome\nPostlaminectomy syndrome\nlow …"
+  },
+  {
+    "id": "M237",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Electronically signed.\nCASE M237: Office office_established moderaet ankylosing_spondylitis\nmoderate complexity office establihsed for Ankylosing spondylitis lumbar.\nAnyklosing spondylitis lumbar\nAnkylosing spondylitis lumbra\nmoderate complexity office established for Ankylosing spondylitis lumbar.\nDictated but not read."
+  },
+  {
+    "id": "M238",
+    "title": "Office office_new high si_joint_dysfunction",
+    "imperfect": true,
+    "mutations": [
+      "abbreviations",
+      "word_typos",
+      "shuffle_paras"
+    ],
+    "note": "SUBJECTIVE:\nCASE M238: Office office_new high si_joint_dysfunction\nhigh comlpexity office new for SI joitn dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfucntion\nPLAN:\nPlan: high complexity offcie new for SI joint dysfunction."
+  },
+  {
+    "id": "M239",
+    "title": "Office office_established low scoliosis",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos"
+    ],
+    "note": "Ditcated but not read.\nCASE M239: Office office_established low scoliosis\nlow complexity office established for Throacic scoliosis.\nThoracic scoliosis\nThoracic socliosis\nlow complexity office established for Thoracic scoliosis.\n*** CONFIDENTIAL ***"
+  },
+  {
+    "id": "M240",
+    "title": "Office office_new moderate low_back_pain",
+    "imperfect": true,
+    "mutations": [
+      "drop_headers",
+      "abbreviations",
+      "fax_junk",
+      "word_typos",
+      "truncated"
+    ],
+    "note": "*** CONFIDENTIAL ***\nCASE M240: Office office_new moderate low_back_pain\nmoderaet complexity office new for Mechancial low back pain.\nMechanical low back pain\nMechanical low back pain\nmode…"
+  }
+]

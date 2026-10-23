@@ -95,6 +95,13 @@
       "maxLevels": 3
     },
     {
+      "id": "anterior_instrumentation_4_7",
+      "name": "anterior_instrumentation",
+      "cpt": "22846",
+      "minLevels": 4,
+      "maxLevels": 7
+    },
+    {
       "id": "interbody_cage",
       "name": "interbody_cage",
       "cpt": "22853",

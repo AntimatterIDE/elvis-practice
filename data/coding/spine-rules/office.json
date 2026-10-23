@@ -309,6 +309,17 @@
       "icd": "M41.86"
     },
     {
+      "id": "scoliosis_adult_thoracic",
+      "condition": "scoliosis",
+      "region": ["thoracic"],
+      "icd": "M41.84"
+    },
+    {
+      "id": "scoliosis_unspecified",
+      "condition": "scoliosis",
+      "icd": "M41.9"
+    },
+    {
       "id": "scoliosis_ais_thoracolumbar",
       "condition": "adolescent_idiopathic_scoliosis",
       "region": ["thoracolumbar", "thoracic", "lumbar"],

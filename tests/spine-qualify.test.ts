@@ -11,6 +11,7 @@ type Fixture = {
   expectedCptAnyOf: string[];
   expectedIcdAnyOf: string[];
   expectedModifiersAnyOf?: string[];
+  expectedModifiersOnCpt?: Record<string, string[]>;
   forbiddenCptPrefixes?: string[];
   forbiddenIcdPrefixes?: string[];
   facts: CodingFacts;
@@ -58,7 +59,7 @@ describe("spine coding qualification (production CMS + NCCI)", () => {
   resetSpineRulesCache();
 
   it("loads the full baseline fixture set", () => {
-    expect(fixtures).toHaveLength(60);
+    expect(fixtures).toHaveLength(300);
     expect(production.diagnoses.billable.length).toBeGreaterThan(10_000);
     expect(production.procedures.list.length).toBeGreaterThan(1_000);
     expect(production.ncci).toBeTruthy();
@@ -123,6 +124,13 @@ describe("spine coding qualification (production CMS + NCCI)", () => {
       }
       for (const modifier of fixture.expectedModifiersAnyOf ?? []) {
         expect(result.lines.flatMap((line) => line.modifiers)).toContain(modifier);
+      }
+      for (const [cpt, need] of Object.entries(fixture.expectedModifiersOnCpt ?? {})) {
+        const line = result.lines.find((item) => item.cpt === cpt);
+        expect(line, `${fixture.id} missing CPT ${cpt} for modifier check`).toBeTruthy();
+        for (const modifier of need) {
+          expect(line!.modifiers, `${fixture.id} ${cpt} missing ${modifier}`).toContain(modifier);
+        }
       }
 
       // Every emitted code must exist and be billable / active in the loaded CMS files.

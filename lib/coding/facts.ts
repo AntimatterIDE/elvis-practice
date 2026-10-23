@@ -22,11 +22,16 @@ export type VisitFacts = {
   quote: string;
 };
 
+/** Global-period return modifiers on a procedure performed today. */
+export type ProcedureGlobalModifier = "58" | "78" | "79";
+
 export type ProcedureFacts = {
   name: string;
   levels?: string[];
   side?: "left" | "right" | "bilateral" | "none" | null;
   performed: boolean;
+  /** Staged (58), related return to OR (78), or unrelated procedure in global (79). */
+  globalModifier?: ProcedureGlobalModifier | null;
   quote: string;
 };
 
@@ -203,6 +208,10 @@ export function parseCodingFacts(value: unknown): CodingFacts {
     .filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === "object")
     .map((item) => {
       const rawName = asString(item.name).toLowerCase().replace(/\s+/g, "_");
+      const globalRaw = asString(item.globalModifier);
+      const globalModifier = (["58", "78", "79"].includes(globalRaw)
+        ? globalRaw
+        : null) as ProcedureFacts["globalModifier"];
       return {
         name: procedureAliases[rawName] ?? rawName,
         levels: asStringList(item.levels),
@@ -210,6 +219,7 @@ export function parseCodingFacts(value: unknown): CodingFacts {
           ? asString(item.side)
           : null) as ProcedureFacts["side"],
         performed: Boolean(item.performed),
+        globalModifier,
         quote: asString(item.quote),
       };
     })
