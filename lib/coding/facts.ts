@@ -155,32 +155,82 @@ export function parseCodingFacts(value: unknown): CodingFacts {
         }
       : null;
 
+  const procedureAliases: Record<string, string> = {
+    tfesi: "transforaminal_esi",
+    transforaminal_epidural: "transforaminal_esi",
+    transforaminal_epidural_steroid_injection: "transforaminal_esi",
+    epidural_steroid_injection: "interlaminar_esi",
+    interlaminar_epidural: "interlaminar_esi",
+    interlaminar_epidural_steroid_injection: "interlaminar_esi",
+    mbb: "medial_branch_block",
+    medial_branch_blocks: "medial_branch_block",
+    facet_block: "medial_branch_block",
+    radiofrequency_ablation: "facet_rfa",
+    rfa: "facet_rfa",
+    balloon_kyphoplasty: "kyphoplasty",
+    vertebroplasty: "kyphoplasty",
+    anterior_cervical_discectomy_and_fusion: "acdf",
+    anterior_cervical_discectomy_fusion: "acdf",
+    lumbar_microdiscectomy: "microdiscectomy",
+    discectomy: "microdiscectomy",
+    blood_patch: "epidural_blood_patch",
+    pedicle_screw_instrumentation: "posterior_instrumentation",
+    cage: "interbody_cage",
+    interbody_cages: "interbody_cage",
+    anterior_plate: "anterior_instrumentation",
+  };
+
+  const diagnosisAliases: Record<string, string> = {
+    cervical_spondylotic_myelopathy: "spondylotic_myelopathy",
+    lumbar_radiculopathy: "radiculopathy",
+    cervical_radiculopathy: "radiculopathy",
+    herniated_disc: "disc_herniation",
+    herniated_nucleus_pulposus: "disc_herniation",
+    hnp: "disc_herniation",
+    spinal_stenosis: "stenosis",
+    lumbar_stenosis: "stenosis",
+    compression_fracture: "osteoporotic_fracture",
+    vertebral_compression_fracture: "osteoporotic_fracture",
+    pathological_fracture: "osteoporotic_fracture",
+    facet_arthropathy: "spondylosis",
+    lumbar_facet_arthropathy: "spondylosis",
+    failed_back_surgery_syndrome: "postlaminectomy_syndrome",
+    neck_pain: "cervicalgia",
+    mid_back_pain: "thoracic_pain",
+  };
+
   const procedures = (Array.isArray(record.procedures) ? record.procedures : [])
     .filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === "object")
-    .map((item) => ({
-      name: asString(item.name).toLowerCase().replace(/\s+/g, "_"),
-      levels: asStringList(item.levels),
-      side: (["left", "right", "bilateral", "none"].includes(asString(item.side))
-        ? asString(item.side)
-        : null) as ProcedureFacts["side"],
-      performed: Boolean(item.performed),
-      quote: asString(item.quote),
-    }))
+    .map((item) => {
+      const rawName = asString(item.name).toLowerCase().replace(/\s+/g, "_");
+      return {
+        name: procedureAliases[rawName] ?? rawName,
+        levels: asStringList(item.levels),
+        side: (["left", "right", "bilateral", "none"].includes(asString(item.side))
+          ? asString(item.side)
+          : null) as ProcedureFacts["side"],
+        performed: Boolean(item.performed),
+        quote: asString(item.quote),
+      };
+    })
     .filter((item) => item.name && item.quote);
 
   const diagnoses = (Array.isArray(record.diagnoses) ? record.diagnoses : [])
     .filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === "object")
-    .map((item) => ({
-      condition: asString(item.condition).toLowerCase().replace(/\s+/g, "_"),
-      region: asString(item.region).toLowerCase() || null,
-      levels: asStringList(item.levels),
-      side: (["left", "right", "bilateral", "none"].includes(asString(item.side))
-        ? asString(item.side)
-        : null) as DiagnosisFacts["side"],
-      with: asStringList(item.with).map((entry) => entry.toLowerCase().replace(/\s+/g, "_")),
-      status: (statuses.has(item.status as FactStatus) ? item.status : "current") as FactStatus,
-      quote: asString(item.quote),
-    }))
+    .map((item) => {
+      const rawCondition = asString(item.condition).toLowerCase().replace(/\s+/g, "_");
+      return {
+        condition: diagnosisAliases[rawCondition] ?? rawCondition,
+        region: asString(item.region).toLowerCase() || null,
+        levels: asStringList(item.levels),
+        side: (["left", "right", "bilateral", "none"].includes(asString(item.side))
+          ? asString(item.side)
+          : null) as DiagnosisFacts["side"],
+        with: asStringList(item.with).map((entry) => entry.toLowerCase().replace(/\s+/g, "_")),
+        status: (statuses.has(item.status as FactStatus) ? item.status : "current") as FactStatus,
+        quote: asString(item.quote),
+      };
+    })
     .filter((item) => item.condition && item.quote)
     // Model must never supply codes; drop anything that looks like one.
     .filter((item) => !/^[A-TV-Z][0-9][0-9A-Z]/.test(item.condition) && !/^\d{5}$/.test(item.condition));
