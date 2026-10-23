@@ -377,8 +377,18 @@ function neutralizePlannedProcedures(facts: CodingFacts): CodingFacts {
       if (!procedure.performed) return procedure;
       const quote = procedure.quote.toLowerCase();
       const planned = /(recommend|planned|schedule|consider|refer for|decision for|to undergo)/i.test(quote);
-      const done = /(performed|completed|underwent|injected|implanted|procedure:|operative)/i.test(quote);
+      const done = /(performed|completed|underwent|injected|implanted|procedure:|operative|fluoroscop)/i.test(quote);
       if (planned && !done) return { ...procedure, performed: false };
+      // Office visit notes that only name a block/injection in the plan (not a procedure note).
+      if (
+        facts.visit &&
+        !done &&
+        /medial_branch|transforaminal|interlaminar|facet_rfa|si_joint_injection|blood_patch|trigger_point/.test(
+          procedure.name,
+        )
+      ) {
+        return { ...procedure, performed: false };
+      }
       return procedure;
     }),
   };

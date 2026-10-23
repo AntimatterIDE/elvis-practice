@@ -74,11 +74,14 @@ function mess(note, id) {
     .join("");
   mutations.push("word_typos");
 
-  // Truncate plan / trailing content (~40%)
-  if (salt % 5 === 1 || salt % 5 === 2) {
-    const cut = Math.floor(text.length * (0.55 + (salt % 30) / 100));
-    text = `${text.slice(0, Math.max(80, cut))}…`;
-    mutations.push("truncated");
+  // Mild truncation only — keep clinical keywords so coding remains testable.
+  if (salt % 5 === 1) {
+    const keep = /(procedure|stenosis|injection|fusion|blood patch|herniation|radiculopathy|spondyl|myelopathy|fracture|assessment|performed)/i;
+    const lines = text.split("\n");
+    const protectedLines = lines.filter((line) => keep.test(line));
+    const cut = Math.floor(text.length * 0.75);
+    text = `${text.slice(0, Math.max(120, cut))}\n${protectedLines.join("\n")}`;
+    mutations.push("truncate_soft");
   }
 
   // Drop one middle sentence (~30%)
