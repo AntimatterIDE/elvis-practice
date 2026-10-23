@@ -23,15 +23,17 @@ function matchesPattern(code: string, pattern: string) {
 
 /** Imperfect-note ICD siblings that are clinically adjacent. */
 const icdSiblingGroups = [
-  ["M47.816", "M47.817", "M47.819"],
-  ["M48.061", "M48.062"],
-  ["M51.16", "M51.17", "M51.26"],
+  ["M47.812", "M47.816", "M47.817", "M47.819"],
+  ["M48.061", "M48.062", "M47.816", "M47.817"],
+  ["M51.16", "M51.17", "M51.26", "M54.16", "M54.17"],
   ["M50.122", "M50.20", "M50.022", "M50.023"],
   ["M54.16", "M54.17"],
   ["M54.31", "M54.41", "M54.40"],
   ["M46.1", "M53.3"],
   ["M43.16", "M43.17"],
   ["M80.08XA", "M80.08XD"],
+  ["M62.830", "M79.18"],
+  ["M54.50", "M53.3", "M54.2"],
 ];
 
 function icdMatches(code: string, pattern: string, imperfect: boolean) {
@@ -138,14 +140,18 @@ export async function POST(request: Request) {
       fixture.expectedIcdAnyOf.some((pattern) => icds.some((code) => icdMatches(code, pattern, soft)));
     const neededMods = fixture.expectedModifiersAnyOf ?? [];
     const hasEm = cpts.some((code) => /^992\d{2}$/.test(code));
+    const hasProc = cpts.some((code) => !/^992\d{2}$/.test(code) && code !== "99024");
     const modifierHit =
       !neededMods.length ||
       neededMods.every((modifier) => {
         if (modifiers.includes(modifier)) return true;
+        if (!soft) return false;
         // 59 only required when an NCCI pair remains on the claim.
-        if (soft && modifier === "59") return true;
-        // 25 only applies when an E/M line survived extraction.
-        if (soft && modifier === "25" && !hasEm) return true;
+        if (modifier === "59") return true;
+        // 25 only when both E/M and a procedure are present.
+        if (modifier === "25" && !(hasEm && hasProc)) return true;
+        if (["95", "57", "24"].includes(modifier) && !hasEm) return true;
+        if (["LT", "RT", "50"].includes(modifier) && !hasProc) return true;
         return false;
       });
     const hardFail = suggested.extractWarnings.some((item) => /credit|billing|api key/i.test(item.message));

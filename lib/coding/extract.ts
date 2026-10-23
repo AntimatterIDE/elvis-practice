@@ -210,7 +210,10 @@ function rescueVisitIfNeeded(note: string, result: ExtractResult): ExtractResult
   if (facts.visit) return result;
   if (facts.procedures.some((procedure) => procedure.performed)) return result;
   if (!facts.diagnoses.length) return result;
-  // Prefer a grounded clinical line over inventing an ungounded visit.
+  // Only rescue when the note clearly describes an ambulatory visit (not negation-only / empty-code traps).
+  if (!/\b(follow[- ]?up|f\/u|established|new patient|mdm|office|telehealth|return)\b/i.test(note)) {
+    return result;
+  }
   const line =
     note
       .split(/\n/)
