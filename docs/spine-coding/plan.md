@@ -855,9 +855,8 @@ Effort is a rough estimate for one engineer.
 
 ## 12. Cleanup from the 2026-10-22 test run
 
-- 25 test visits titled "QA TEST" are in the live visit desk. The app cannot
-  delete visits that have notes, so they must be removed from the
-  `encounters` table directly.
+- 25 test visits titled "QA TEST" were purged from production on 2026-10-23
+  (encounters + audio). Visit desk now shows only real practice visits.
 - The one real patient visit in the visit desk that day was coded `M96.A` (a
   non-billable parent code) and `97039`. Recode it by hand before billing.
   With phase 0, saving that visit or submitting its claim refuses `M96.A`.
