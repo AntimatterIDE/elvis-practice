@@ -1066,7 +1066,7 @@
       "word_typos",
       "truncate_soft"
     ],
-    "note": "CASE M032: Injcetion transforaminal_esi bilateral C6–C7\nC6–C7 disc herniation with radiculopathy\nProcedure: bialteral transforaminal esi C6–C7 performed today.\nC6–C7 disc herniation with radiculoptahy\nProcedure pe\nC6–C7 disc herniation with radiculopathy\nProcedure: bialteral transforaminal esi C6–C7 performed today.\nC6–C7 disc herniation with radiculoptahy\nProcedure performed: Procedure: bilateral transoframinal esi C6–C7 performed today."
+    "note": "CASE M032: Injcetion transforaminal_esi bilateral C6–C7\nC6–C7 disc herniation with radiculopathy\nProcedure: bialteral transforaminal esi C6–C7 performed today.\nC6–C7 disc herniation with radiculoptahy\nProcedure pe\nCASE M032: Injcetion transforaminal_esi bilateral C6–C7\nC6–C7 disc herniation with radiculopathy\nProcedure: bialteral transforaminal esi C6–C7 performed today.\nC6–C7 disc herniation with radiculoptahy\nProcedure performed: Procedure: bilateral transoframinal esi C6–C7 performed today."
   },
   {
     "id": "M033",
@@ -1275,7 +1275,7 @@
       "word_typos",
       "truncate_soft"
     ],
-    "note": "CASE M050: Injectino epidural_blood_patch none n/a\nPost–dural pnucture headache\nProcedure: none epidural blood patch  performed today.\nPost–dural puntcure headache\nProcedure perfo\nProcedure: none epidural blood patch  performed today.\nProcedure performed: Procedure: none epidural blood patch  performed today."
+    "note": "CASE M050: Injectino epidural_blood_patch none n/a\nPost–dural pnucture headache\nProcedure: none epidural blood patch  performed today.\nPost–dural puntcure headache\nProcedure perfo\nCASE M050: Injectino epidural_blood_patch none n/a\nProcedure: none epidural blood patch  performed today.\nProcedure performed: Procedure: none epidural blood patch  performed today."
   },
   {
     "id": "M051",
@@ -1332,7 +1332,7 @@
       "word_typos",
       "truncate_soft"
     ],
-    "note": "Page 2 of 3 — scanned from fax.\nCASE M055: Surgery kyphoplasty none\nSUBJECTIVE:\nOsteoporotic T12 compression frcature initial\nOBJECTIVE:\nProcedure: kyphoplasty T12 none performed.\nASSESSMENT:\nAssessment: Osteoprootic T12 compression fracture initial\nPLAN:\n\nProcedure: kyphoplasty T12 none performed.\nASSESSMENT:\nAssessment: Osteoprootic T12 compression fracture initial\nProcedure performed: Procedure: kyphoplasty T12 none performed."
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M055: Surgery kyphoplasty none\nSUBJECTIVE:\nOsteoporotic T12 compression frcature initial\nOBJECTIVE:\nProcedure: kyphoplasty T12 none performed.\nASSESSMENT:\nAssessment: Osteoprootic T12 compression fracture initial\nPLAN:\n\nCASE M055: Surgery kyphoplasty none\nProcedure: kyphoplasty T12 none performed.\nASSESSMENT:\nAssessment: Osteoprootic T12 compression fracture initial\nProcedure performed: Procedure: kyphoplasty T12 none performed."
   },
   {
     "id": "M056",

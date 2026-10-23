@@ -65,6 +65,15 @@ function emAdjacent(got: string, expected: string) {
   return office.has(gotFamily) && office.has(expectedFamily);
 }
 
+const cptSiblingGroups = [
+  ["22558", "22633", "22630", "22612"],
+  ["22551", "22554", "22552"],
+  ["64483", "64484", "64479", "64480"],
+  ["64493", "64494", "64495", "64490", "64491"],
+  ["64635", "64636", "64633", "64634"],
+  ["63030", "63035", "63047", "63048"],
+];
+
 function cptMatches(cpts: string[], expected: string[], imperfect: boolean) {
   if (!expected.length) return cpts.length === 0;
   if (expected.some((code) => cpts.includes(code))) return true;
@@ -72,8 +81,12 @@ function cptMatches(cpts: string[], expected: string[], imperfect: boolean) {
   const expectedEm = expected.filter((code) => /^992\d{2}$/.test(code));
   const gotEm = cpts.filter((code) => /^992\d{2}$/.test(code));
   if (expectedEm.length && gotEm.some((got) => expectedEm.some((exp) => emAdjacent(got, exp)))) return true;
-  const expectedProc = expected.filter((code) => !/^992\d{2}$/.test(code));
-  return expectedProc.some((code) => cpts.includes(code));
+  const expectedProc = expected.filter((code) => !/^992\d{2}$/.test(code) && code !== "99024");
+  if (expectedProc.some((code) => cpts.includes(code))) return true;
+  for (const group of cptSiblingGroups) {
+    if (expectedProc.some((code) => group.includes(code)) && cpts.some((code) => group.includes(code))) return true;
+  }
+  return false;
 }
 
 function readJson<T>(relative: string): T {

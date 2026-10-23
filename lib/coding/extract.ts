@@ -1,7 +1,6 @@
 import {
   keepQuotedFacts,
   parseCodingFacts,
-  quoteInNote,
   type CodingFacts,
   type FactWarning,
 } from "@/lib/coding/facts";
@@ -205,38 +204,6 @@ export type ExtractResult = {
 };
 
 /** Extract facts + quotes from a note. Retries once. Drops facts whose quote is not in the note. */
-function rescueVisitIfNeeded(note: string, result: ExtractResult): ExtractResult {
-  const { facts, warnings } = result;
-  if (facts.visit) return result;
-  if (facts.procedures.some((procedure) => procedure.performed)) return result;
-  if (!facts.diagnoses.length) return result;
-  // Only rescue when the note clearly describes an ambulatory visit (not negation-only / empty-code traps).
-  if (!/\b(follow[- ]?up|f\/u|established|new patient|mdm|office|telehealth|return)\b/i.test(note)) {
-    return result;
-  }
-  const line =
-    note
-      .split(/\n/)
-      .map((item) => item.trim())
-      .find((item) => item.length >= 12 && !/^(case |cc:|page |dictated|\*\*\*)/i.test(item)) ?? note.trim().slice(0, 80);
-  if (!quoteInNote(note, line)) return result;
-  return {
-    facts: {
-      ...facts,
-      visit: {
-        kind: "office_established",
-        complexity: "low",
-        totalMinutes: null,
-        decisionForSurgery: false,
-        unrelatedToGlobalSurgery: false,
-        significantSeparateProblem: false,
-        quote: line.slice(0, 120),
-      },
-    },
-    warnings: [...warnings, { kind: "visit", message: "Inferred office visit from diagnoses after visit quote was lost." }],
-  };
-}
-
 export async function extractCodingFacts(note: string): Promise<ExtractResult> {
   if (!note.trim()) {
     return {
@@ -249,7 +216,7 @@ export async function extractCodingFacts(note: string): Promise<ExtractResult> {
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
       const raw = await callExtract(note);
-      return rescueVisitIfNeeded(note, keepQuotedFacts(note, raw));
+      return keepQuotedFacts(note, raw);
     } catch (error) {
       lastError = error instanceof Error ? error : new Error("Fact extraction failed.");
     }

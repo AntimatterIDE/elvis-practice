@@ -377,17 +377,24 @@ function neutralizePlannedProcedures(facts: CodingFacts): CodingFacts {
       if (!procedure.performed) return procedure;
       const quote = procedure.quote.toLowerCase();
       const planned = /(recommend|planned|schedule|consider|refer for|decision for|to undergo)/i.test(quote);
-      const done = /(performed|completed|underwent|injected|implanted|procedure:|operative|fluoroscop)/i.test(quote);
+      const done =
+        /(performed|completed|underwent|injected|implanted|procedure:|operative|fluoroscop|blood patch|autologous|ebl|neuromonitoring|preoperative diagnosis)/i.test(
+          quote,
+        );
       if (planned && !done) return { ...procedure, performed: false };
-      // Office visit notes that only name a procedure in the plan (not performed today).
+      // Name-only procedure facts without operative/performance language are plans.
       if (
-        facts.visit &&
         !done &&
-        /medial_branch|transforaminal|interlaminar|facet_rfa|si_joint_injection|blood_patch|trigger_point|microdiscectomy|acdf|tlif|plif|llif|laminectomy|kyphoplasty|fusion/.test(
+        /^(medial_branch_block|transforaminal_esi|interlaminar_esi|facet_rfa|si_joint_injection|epidural_blood_patch|trigger_point|microdiscectomy|acdf|tlif|plif|llif|laminectomy_facetectomy|kyphoplasty)$/.test(
           procedure.name,
         )
       ) {
-        return { ...procedure, performed: false };
+        // Keep procedure-only notes that read like an op report body even without "performed".
+        const opBody =
+          /(level|levels|interbody|pedicle|cage|plate|laminect|discect|fluoroscop|contrast|dexamethasone|bupivacaine|\bml\b|trigger|muscle|autologous|blood patch)/i.test(
+            quote,
+          );
+        if (facts.visit || !opBody) return { ...procedure, performed: false };
       }
       return procedure;
     }),
