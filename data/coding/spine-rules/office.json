@@ -1,6 +1,6 @@
 {
   "id": "office",
-  "version": "2026-10-22",
+  "version": "2026-10-22b",
   "signedOff": false,
   "visitCodes": {
     "office_new": {
@@ -37,6 +37,13 @@
       "code": "99024"
     }
   },
+  "procedures": [
+    {
+      "id": "scoliosis_radiographs_entire",
+      "name": "scoliosis_radiographs",
+      "cpt": "72082"
+    }
+  ],
   "diagnoses": [
     {
       "id": "hnp_radiculopathy_lumbosacral",
@@ -53,18 +60,37 @@
       "icd": "M51.16"
     },
     {
-      "id": "hnp_myelopathy_cervical_c56",
+      "id": "hnp_lumbar_other",
+      "condition": "disc_herniation",
+      "region": ["lumbar"],
+      "icd": "M51.26"
+    },
+    {
+      "id": "hnp_myelopathy_thoracic",
+      "condition": "disc_herniation",
+      "region": ["thoracic"],
+      "withAny": ["myelopathy"],
+      "icd": "M51.04"
+    },
+    {
+      "id": "hnp_myelopathy_cervical",
       "condition": "disc_herniation",
       "region": ["cervical"],
       "withAny": ["myelopathy"],
       "icd": "M50.022"
     },
     {
-      "id": "hnp_radiculopathy_cervical_c56",
+      "id": "hnp_radiculopathy_cervical",
       "condition": "disc_herniation",
       "region": ["cervical"],
       "withAny": ["radiculopathy"],
       "icd": "M50.122"
+    },
+    {
+      "id": "ddd_lumbar",
+      "condition": "degenerative_disc_disease",
+      "region": ["lumbar", "lumbosacral"],
+      "icd": "M51.360"
     },
     {
       "id": "stenosis_lumbar_nc",
@@ -96,6 +122,12 @@
       "condition": "spondylolisthesis",
       "region": ["lumbosacral"],
       "icd": "M43.17"
+    },
+    {
+      "id": "spondylolysis_lumbosacral",
+      "condition": "spondylolysis",
+      "region": ["lumbosacral", "lumbar"],
+      "icd": "M43.07"
     },
     {
       "id": "radiculopathy_lumbar",
@@ -137,9 +169,19 @@
       "icd": "M54.2"
     },
     {
+      "id": "thoracic_pain",
+      "condition": "thoracic_pain",
+      "icd": "M54.6"
+    },
+    {
       "id": "muscle_spasm_back",
       "condition": "muscle_spasm",
       "icd": "M62.830"
+    },
+    {
+      "id": "coccydynia",
+      "condition": "coccydynia",
+      "icd": "M53.3"
     },
     {
       "id": "myelopathy_cervical",
@@ -148,9 +190,107 @@
       "icd": "M47.12"
     },
     {
+      "id": "spondylotic_myelopathy_cervical",
+      "condition": "spondylotic_myelopathy",
+      "region": ["cervical"],
+      "icd": "M47.12"
+    },
+    {
+      "id": "spondylosis_cervical",
+      "condition": "spondylosis",
+      "region": ["cervical"],
+      "icd": "M47.812"
+    },
+    {
+      "id": "spondylosis_lumbar",
+      "condition": "spondylosis",
+      "region": ["lumbar"],
+      "icd": "M47.816"
+    },
+    {
+      "id": "spondylosis_unspecified",
+      "condition": "spondylosis",
+      "icd": "M47.819"
+    },
+    {
       "id": "postlaminectomy_syndrome",
       "condition": "postlaminectomy_syndrome",
       "icd": "M96.1"
+    },
+    {
+      "id": "pseudarthrosis",
+      "condition": "pseudarthrosis",
+      "icd": "M96.0"
+    },
+    {
+      "id": "hardware_breakdown",
+      "condition": "hardware_breakdown",
+      "icd": "T84.216A"
+    },
+    {
+      "id": "cauda_equina_syndrome",
+      "condition": "cauda_equina_syndrome",
+      "icd": "G83.4"
+    },
+    {
+      "id": "bone_metastasis",
+      "condition": "bone_metastasis",
+      "icd": "C79.51"
+    },
+    {
+      "id": "pathologic_fracture_neoplasm",
+      "condition": "pathologic_fracture_neoplasm",
+      "icd": "M84.58XA"
+    },
+    {
+      "id": "history_breast_cancer",
+      "condition": "history_breast_cancer",
+      "status": "history",
+      "icd": "Z85.3"
+    },
+    {
+      "id": "discitis_lumbar",
+      "condition": "discitis",
+      "region": ["lumbar"],
+      "icd": "M46.26"
+    },
+    {
+      "id": "osteomyelitis_lumbar",
+      "condition": "osteomyelitis",
+      "region": ["lumbar"],
+      "icd": "M46.26"
+    },
+    {
+      "id": "epidural_abscess",
+      "condition": "epidural_abscess",
+      "icd": "G06.1"
+    },
+    {
+      "id": "type2_diabetes",
+      "condition": "type2_diabetes",
+      "icd": "E11.9"
+    },
+    {
+      "id": "ankylosing_spondylitis_lumbar",
+      "condition": "ankylosing_spondylitis",
+      "region": ["lumbar"],
+      "icd": "M45.6"
+    },
+    {
+      "id": "opll_cervical",
+      "condition": "opll",
+      "region": ["cervical"],
+      "icd": "M48.8X2"
+    },
+    {
+      "id": "sacroiliitis",
+      "condition": "sacroiliitis",
+      "icd": "M46.1"
+    },
+    {
+      "id": "si_joint_dysfunction",
+      "condition": "si_joint_dysfunction",
+      "icd": "M53.3"
     },
     {
       "id": "aftercare",
@@ -163,10 +303,47 @@
       "icd": "Z98.1"
     },
     {
-      "id": "scoliosis_thoracolumbar",
+      "id": "scoliosis_adult_lumbar",
       "condition": "scoliosis",
-      "region": ["thoracolumbar", "thoracic", "lumbar"],
+      "region": ["lumbar"],
       "icd": "M41.86"
+    },
+    {
+      "id": "scoliosis_ais_thoracolumbar",
+      "condition": "adolescent_idiopathic_scoliosis",
+      "region": ["thoracolumbar", "thoracic", "lumbar"],
+      "icd": "M41.125"
+    },
+    {
+      "id": "burst_fracture_l1_initial",
+      "condition": "burst_fracture",
+      "region": ["lumbar"],
+      "icd": "S32.011A"
+    },
+    {
+      "id": "cervical_sprain_initial",
+      "condition": "cervical_sprain",
+      "icd": "S13.4XXA"
+    },
+    {
+      "id": "lumbar_strain_initial",
+      "condition": "lumbar_strain",
+      "icd": "S39.012A"
+    },
+    {
+      "id": "dens_fracture_initial",
+      "condition": "dens_fracture",
+      "icd": "S12.112A"
+    },
+    {
+      "id": "osteoporotic_fracture_subsequent",
+      "condition": "osteoporotic_fracture",
+      "icd": "M80.08XD"
+    },
+    {
+      "id": "central_cord_syndrome_initial",
+      "condition": "central_cord_syndrome",
+      "icd": "S14.124A"
     }
   ]
 }

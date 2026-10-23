@@ -1,10 +1,22 @@
 [
   {
     "id": "E01",
-    "title": "New pt L5-S1 HNP with radiculopathy",
-    "expectedCptAnyOf": ["99204"],
-    "expectedIcdAnyOf": ["M51.17", "M51.27", "M54.17"],
-    "forbiddenCptPrefixes": ["721", "720", "722", "723"],
+    "title": "New pt L5-S1 HNP, left S1 radiculopathy (real GPT note from prod)",
+    "expectedCptAnyOf": [
+      "99204"
+    ],
+    "expectedIcdAnyOf": [
+      "M51.17",
+      "M51.27",
+      "M54.17"
+    ],
+    "forbiddenCptPrefixes": [
+      "721",
+      "720",
+      "722",
+      "723"
+    ],
+    "forbiddenIcdPrefixes": [],
     "facts": {
       "visit": {
         "kind": "office_new",
@@ -18,7 +30,9 @@
       "procedures": [
         {
           "name": "transforaminal_esi",
-          "levels": ["L5-S1"],
+          "levels": [
+            "L5-S1"
+          ],
           "side": "left",
           "performed": false,
           "quote": "Refer for left L5–S1 transforaminal epidural steroid injection for targeted radicular pain control."
@@ -28,9 +42,13 @@
         {
           "condition": "disc_herniation",
           "region": "lumbar",
-          "levels": ["L5-S1"],
+          "levels": [
+            "L5-S1"
+          ],
           "side": "left",
-          "with": ["radiculopathy"],
+          "with": [
+            "radiculopathy"
+          ],
           "status": "current",
           "quote": "Lumbar disc herniation at L5–S1 with left S1 radiculopathy"
         }
@@ -40,10 +58,15 @@
   },
   {
     "id": "E02",
-    "title": "Est pt lumbar stenosis with neurogenic claudication",
-    "expectedCptAnyOf": ["99214"],
-    "expectedIcdAnyOf": ["M48.062"],
+    "title": "Est pt lumbar stenosis w/ neurogenic claudication L4-5",
+    "expectedCptAnyOf": [
+      "99214"
+    ],
+    "expectedIcdAnyOf": [
+      "M48.062"
+    ],
     "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
     "facts": {
       "visit": {
         "kind": "office_established",
@@ -59,9 +82,13 @@
         {
           "condition": "stenosis",
           "region": "lumbar",
-          "levels": ["L4-L5"],
+          "levels": [
+            "L4-L5"
+          ],
           "side": null,
-          "with": ["neurogenic_claudication"],
+          "with": [
+            "neurogenic_claudication"
+          ],
           "status": "current",
           "quote": "Lumbar spinal stenosis with neurogenic claudication, L4-L5."
         }
@@ -70,11 +97,135 @@
     }
   },
   {
+    "id": "E03",
+    "title": "New pt cervical spondylotic myelopathy C5-6/C6-7 (surgery recommended)",
+    "expectedCptAnyOf": [
+      "99205"
+    ],
+    "expectedIcdAnyOf": [
+      "M50.022",
+      "M50.023",
+      "M50.020",
+      "M47.12",
+      "M48.02"
+    ],
+    "forbiddenCptPrefixes": [
+      "22",
+      "63",
+      "721",
+      "720",
+      "722",
+      "723"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "high",
+        "totalMinutes": null,
+        "decisionForSurgery": true,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "High complexity MDM."
+      },
+      "procedures": [
+        {
+          "name": "acdf",
+          "levels": [
+            "C5-C6",
+            "C6-C7"
+          ],
+          "side": null,
+          "performed": false,
+          "quote": "Recommend anterior cervical discectomy and fusion C5-C6 and C6-C7."
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "spondylotic_myelopathy",
+          "region": "cervical",
+          "levels": [
+            "C5-C6",
+            "C6-C7"
+          ],
+          "side": null,
+          "with": [
+            "myelopathy"
+          ],
+          "status": "current",
+          "quote": "Cervical spondylotic myelopathy at C5-C6 and C6-C7."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E04",
+    "title": "New pt C5-6 HNP, right C6 radiculopathy",
+    "expectedCptAnyOf": [
+      "99204",
+      "99203"
+    ],
+    "expectedIcdAnyOf": [
+      "M50.122",
+      "M50.12*",
+      "M54.12"
+    ],
+    "forbiddenCptPrefixes": [
+      "721",
+      "720",
+      "722",
+      "723"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Physical therapy, NSAIDs, cervical epidural steroid injection referral."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "disc_herniation",
+          "region": "cervical",
+          "levels": [
+            "C5-C6"
+          ],
+          "side": "right",
+          "with": [
+            "radiculopathy"
+          ],
+          "status": "current",
+          "quote": "Cervical disc herniation at C5-C6 with right C6 radiculopathy."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
     "id": "E05",
-    "title": "Post-op visit inside 90-day global",
-    "expectedCptAnyOf": ["99024"],
-    "expectedIcdAnyOf": ["Z47.89", "Z98.1", "Z48.89"],
-    "forbiddenCptPrefixes": ["9920", "9921", "22", "63"],
+    "title": "Post-op visit inside 90-day global (2 wk s/p L4-5 TLIF)",
+    "expectedCptAnyOf": [
+      "99024"
+    ],
+    "expectedIcdAnyOf": [
+      "Z47.89",
+      "Z98.1",
+      "Z48.89",
+      "Z48.81*"
+    ],
+    "forbiddenCptPrefixes": [
+      "9920",
+      "9921",
+      "22",
+      "63"
+    ],
+    "forbiddenIcdPrefixes": [],
     "facts": {
       "visit": {
         "kind": "post_op_global",
@@ -90,7 +241,9 @@
         {
           "condition": "aftercare",
           "region": "lumbar",
-          "levels": ["L4-L5"],
+          "levels": [
+            "L4-L5"
+          ],
           "side": null,
           "with": [],
           "status": "current",
@@ -99,7 +252,9 @@
         {
           "condition": "fusion_status",
           "region": "lumbar",
-          "levels": ["L4-L5"],
+          "levels": [
+            "L4-L5"
+          ],
           "side": null,
           "with": [],
           "status": "current",
@@ -111,11 +266,22 @@
   },
   {
     "id": "E06",
-    "title": "Decision for surgery — E/M + 57, no surgery CPT",
-    "expectedCptAnyOf": ["99215"],
-    "expectedModifiersAnyOf": ["57"],
-    "expectedIcdAnyOf": ["M43.16", "M48.062"],
-    "forbiddenCptPrefixes": ["22", "63"],
+    "title": "Decision for surgery visit (day before L4-5 TLIF) - should be E/M + 57, NOT surgery codes",
+    "expectedCptAnyOf": [
+      "99215"
+    ],
+    "expectedIcdAnyOf": [
+      "M43.16",
+      "M48.062"
+    ],
+    "forbiddenCptPrefixes": [
+      "22",
+      "63"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "expectedModifiersAnyOf": [
+      "57"
+    ],
     "facts": {
       "visit": {
         "kind": "office_established",
@@ -129,7 +295,9 @@
       "procedures": [
         {
           "name": "tlif",
-          "levels": ["L4-L5"],
+          "levels": [
+            "L4-L5"
+          ],
           "side": null,
           "performed": false,
           "quote": "Decision made today for L4-L5 laminectomy and transforaminal lumbar interbody fusion with pedicle screw instrumentation, scheduled tomorrow."
@@ -139,7 +307,9 @@
         {
           "condition": "spondylolisthesis",
           "region": "lumbar",
-          "levels": ["L4-L5"],
+          "levels": [
+            "L4-L5"
+          ],
           "side": null,
           "with": [],
           "status": "current",
@@ -148,9 +318,13 @@
         {
           "condition": "stenosis",
           "region": "lumbar",
-          "levels": ["L4-L5"],
+          "levels": [
+            "L4-L5"
+          ],
           "side": null,
-          "with": ["neurogenic_claudication"],
+          "with": [
+            "neurogenic_claudication"
+          ],
           "status": "current",
           "quote": "Lumbar spinal stenosis with neurogenic claudication."
         }
@@ -160,11 +334,18 @@
   },
   {
     "id": "E07",
-    "title": "Telehealth video follow-up",
-    "expectedCptAnyOf": ["99213"],
-    "expectedModifiersAnyOf": ["95"],
-    "expectedIcdAnyOf": ["M54.16"],
+    "title": "Telehealth video f/u lumbar radiculopathy (needs 99213 + mod 95)",
+    "expectedCptAnyOf": [
+      "99213"
+    ],
+    "expectedIcdAnyOf": [
+      "M54.16"
+    ],
     "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "expectedModifiersAnyOf": [
+      "95"
+    ],
     "facts": {
       "visit": {
         "kind": "telehealth_established",
@@ -180,7 +361,9 @@
         {
           "condition": "radiculopathy",
           "region": "lumbar",
-          "levels": ["L4-L5"],
+          "levels": [
+            "L4-L5"
+          ],
           "side": "right",
           "with": [],
           "status": "current",
@@ -192,11 +375,21 @@
   },
   {
     "id": "E08",
-    "title": "Mechanical LBP + cervicalgia — never M54.5",
-    "expectedCptAnyOf": ["99213", "99212"],
-    "expectedIcdAnyOf": ["M54.50", "M54.59", "M54.2", "M62.830"],
-    "forbiddenIcdExact": ["M54.5"],
+    "title": "Mechanical LBP + cervicalgia + spasm (M54.5 is INVALID since 10/2021)",
+    "expectedCptAnyOf": [
+      "99213",
+      "99212"
+    ],
+    "expectedIcdAnyOf": [
+      "M54.50",
+      "M54.59",
+      "M54.2",
+      "M62.830"
+    ],
     "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [
+      "M54.5 "
+    ],
     "facts": {
       "visit": {
         "kind": "office_established",
@@ -235,6 +428,1366 @@
           "with": [],
           "status": "current",
           "quote": "Muscle spasm of back."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E09",
+    "title": "Thoracic disc herniation T7-8 with myelopathy",
+    "expectedCptAnyOf": [
+      "99205",
+      "99204"
+    ],
+    "expectedIcdAnyOf": [
+      "M51.04",
+      "M54.6"
+    ],
+    "forbiddenCptPrefixes": [
+      "721",
+      "720",
+      "722",
+      "723"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "high",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "High complexity."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "disc_herniation",
+          "region": "thoracic",
+          "levels": [
+            "T7-T8"
+          ],
+          "side": null,
+          "with": [
+            "myelopathy"
+          ],
+          "status": "current",
+          "quote": "Thoracic disc herniation with myelopathy, T7-T8."
+        },
+        {
+          "condition": "thoracic_pain",
+          "region": "thoracic",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Pain in thoracic spine."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E10",
+    "title": "Second-opinion consult, lumbar DDD w/ discogenic back pain (commercial consult code)",
+    "expectedCptAnyOf": [
+      "99244",
+      "99243"
+    ],
+    "expectedIcdAnyOf": [
+      "M51.360",
+      "M51.369"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "consult",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Second opinion consultation requested by Dr. Smith."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "degenerative_disc_disease",
+          "region": "lumbar",
+          "levels": [
+            "L4-L5"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Lumbar degenerative disc disease with discogenic back pain only, L4-L5."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E11",
+    "title": "Right-sided sciatica without disc diagnosis",
+    "expectedCptAnyOf": [
+      "99203",
+      "99213"
+    ],
+    "expectedIcdAnyOf": [
+      "M54.41",
+      "M54.31"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "NSAIDs, PT. Return in 4 weeks."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "sciatica",
+          "region": null,
+          "levels": [],
+          "side": "right",
+          "with": [],
+          "status": "current",
+          "quote": "Sciatica, right side, with low back pain."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E12",
+    "title": "Coccydynia after fall",
+    "expectedCptAnyOf": [
+      "99203"
+    ],
+    "expectedIcdAnyOf": [
+      "M53.3"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Donut cushion, NSAIDs. Consider coccygeal injection."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "coccydynia",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Coccydynia."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E13",
+    "title": "Adult degenerative scoliosis with stenosis",
+    "expectedCptAnyOf": [
+      "99214"
+    ],
+    "expectedIcdAnyOf": [
+      "M41.86",
+      "M41.87",
+      "M48.062"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "PT, consider injections; surgery discussed. Moderate MDM."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "scoliosis",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Adult degenerative scoliosis, lumbar region."
+        },
+        {
+          "condition": "stenosis",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [
+            "neurogenic_claudication"
+          ],
+          "status": "current",
+          "quote": "Lumbar spinal stenosis with neurogenic claudication."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E14",
+    "title": "AIS 14yo, 45 deg thoracolumbar, scoliosis films taken in office",
+    "expectedCptAnyOf": [
+      "99204",
+      "72082",
+      "72081"
+    ],
+    "expectedIcdAnyOf": [
+      "M41.125"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Discussed bracing vs posterior spinal fusion."
+      },
+      "procedures": [
+        {
+          "name": "scoliosis_radiographs",
+          "levels": [],
+          "side": null,
+          "performed": true,
+          "quote": "Standing PA and lateral scoliosis radiographs of the entire spine obtained in office today"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "adolescent_idiopathic_scoliosis",
+          "region": "thoracolumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Adolescent idiopathic scoliosis, thoracolumbar region."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E15",
+    "title": "Failed back surgery syndrome / postlaminectomy syndrome",
+    "expectedCptAnyOf": [
+      "99214"
+    ],
+    "expectedIcdAnyOf": [
+      "M96.1"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Spinal cord stimulator trial referral."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "postlaminectomy_syndrome",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Postlaminectomy syndrome."
+        },
+        {
+          "condition": "radiculopathy",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Chronic lumbar radiculopathy."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E16",
+    "title": "Pseudarthrosis + broken S1 pedicle screw",
+    "expectedCptAnyOf": [
+      "99214",
+      "99215"
+    ],
+    "expectedIcdAnyOf": [
+      "M96.0",
+      "T84.216A",
+      "T84.226A"
+    ],
+    "forbiddenCptPrefixes": [
+      "22",
+      "63"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Revision fusion with removal and replacement of instrumentation."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "pseudarthrosis",
+          "region": "lumbosacral",
+          "levels": [
+            "L5-S1"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Pseudarthrosis after fusion, L5-S1."
+        },
+        {
+          "condition": "hardware_breakdown",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Mechanical breakdown of internal fixation device of vertebrae, initial encounter."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E17",
+    "title": "Cauda equina syndrome (emergency)",
+    "expectedCptAnyOf": [
+      "99205"
+    ],
+    "expectedIcdAnyOf": [
+      "G83.4",
+      "M51.26",
+      "M51.06"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "high",
+        "totalMinutes": null,
+        "decisionForSurgery": true,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "High complexity."
+      },
+      "procedures": [
+        {
+          "name": "decompression",
+          "levels": [
+            "L4-L5"
+          ],
+          "side": null,
+          "performed": false,
+          "quote": "Emergent L4-L5 decompression and discectomy tonight."
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "cauda_equina_syndrome",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Cauda equina syndrome due to L4-L5 disc herniation."
+        },
+        {
+          "condition": "disc_herniation",
+          "region": "lumbar",
+          "levels": [
+            "L4-L5"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "massive central L4-L5 disc herniation compressing the cauda equina"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E18",
+    "title": "T10 metastasis w/ pathologic fx; HISTORY of breast cancer (must be Z85.3, not C50)",
+    "expectedCptAnyOf": [
+      "99205",
+      "99204"
+    ],
+    "expectedIcdAnyOf": [
+      "C79.51",
+      "M84.58XA",
+      "Z85.3"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [
+      "C50"
+    ],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "high",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "CT-guided biopsy, oncology and radiation oncology referral, bracing."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "bone_metastasis",
+          "region": "thoracic",
+          "levels": [
+            "T10"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Secondary malignant neoplasm of bone, T10."
+        },
+        {
+          "condition": "pathologic_fracture_neoplasm",
+          "region": "thoracic",
+          "levels": [
+            "T10"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Pathological fracture of T10 vertebra in neoplastic disease, initial encounter."
+        },
+        {
+          "condition": "history_breast_cancer",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "history",
+          "quote": "Personal history of breast cancer."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E19",
+    "title": "L2-3 discitis/osteomyelitis + epidural abscess, T2DM",
+    "expectedCptAnyOf": [
+      "99205"
+    ],
+    "expectedIcdAnyOf": [
+      "M46.26",
+      "M46.46",
+      "M46.36",
+      "G06.1",
+      "E11.9"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "high",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "High complexity."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "discitis",
+          "region": "lumbar",
+          "levels": [
+            "L2-L3"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Discitis and vertebral osteomyelitis, lumbar."
+        },
+        {
+          "condition": "epidural_abscess",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Spinal epidural abscess."
+        },
+        {
+          "condition": "type2_diabetes",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Type 2 diabetes mellitus."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E20",
+    "title": "Ankylosing spondylitis, lumbar",
+    "expectedCptAnyOf": [
+      "99204"
+    ],
+    "expectedIcdAnyOf": [
+      "M45.6"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Rheumatology referral, NSAIDs."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "ankylosing_spondylitis",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Ankylosing spondylitis of lumbar region."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E21",
+    "title": "Cervical spondylosis without myelopathy or radiculopathy",
+    "expectedCptAnyOf": [
+      "99213",
+      "99214"
+    ],
+    "expectedIcdAnyOf": [
+      "M47.812"
+    ],
+    "forbiddenCptPrefixes": [
+      "721",
+      "720",
+      "722",
+      "723"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "PT, NSAIDs, consider facet blocks."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "spondylosis",
+          "region": "cervical",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Cervical spondylosis without myelopathy or radiculopathy."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E22",
+    "title": "Lumbar facet arthropathy (spondylosis w/o radiculopathy)",
+    "expectedCptAnyOf": [
+      "99213",
+      "99214"
+    ],
+    "expectedIcdAnyOf": [
+      "M47.816",
+      "M47.817"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Bilateral L4-L5, L5-S1 medial branch blocks."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "spondylosis",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Lumbar spondylosis without myelopathy or radiculopathy (facet arthropathy)."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E23",
+    "title": "OPLL cervical with myelopathy",
+    "expectedCptAnyOf": [
+      "99205",
+      "99204"
+    ],
+    "expectedIcdAnyOf": [
+      "M48.8X2",
+      "M47.12",
+      "G99.2"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "high",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Posterior cervical laminoplasty discussed."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "opll",
+          "region": "cervical",
+          "levels": [],
+          "side": null,
+          "with": [
+            "myelopathy"
+          ],
+          "status": "current",
+          "quote": "Ossification of posterior longitudinal ligament, cervical, with myelopathy."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E24",
+    "title": "Isthmic spondylolisthesis L5-S1 with spondylolysis",
+    "expectedCptAnyOf": [
+      "99204",
+      "99203"
+    ],
+    "expectedIcdAnyOf": [
+      "M43.17",
+      "M43.07",
+      "M43.06"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Activity modification, PT, bracing."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "spondylolisthesis",
+          "region": "lumbosacral",
+          "levels": [
+            "L5-S1"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Isthmic spondylolisthesis L5-S1."
+        },
+        {
+          "condition": "spondylolysis",
+          "region": "lumbosacral",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Spondylolysis, lumbosacral."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E25",
+    "title": "SI joint dysfunction / sacroiliitis",
+    "expectedCptAnyOf": [
+      "99203",
+      "99213"
+    ],
+    "expectedIcdAnyOf": [
+      "M46.1",
+      "M53.3",
+      "M53.2X8"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Right SI joint injection."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "sacroiliitis",
+          "region": null,
+          "levels": [],
+          "side": "right",
+          "with": [],
+          "status": "current",
+          "quote": "Sacroiliitis, right."
+        },
+        {
+          "condition": "si_joint_dysfunction",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Sacroiliac joint dysfunction."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "T01",
+    "title": "L1 stable burst fx, ladder fall AT WORK (WC)",
+    "expectedCptAnyOf": [
+      "99204",
+      "99203"
+    ],
+    "expectedIcdAnyOf": [
+      "S32.011A"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "TLSO brace, upright x-rays in 2 weeks."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "burst_fracture",
+          "region": "lumbar",
+          "levels": [
+            "L1"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Stable burst fracture of first lumbar vertebra, initial encounter for closed fracture."
+        }
+      ],
+      "injury": {
+        "workRelated": true,
+        "autoAccident": false,
+        "date": null,
+        "cause": "fall",
+        "quote": "Workers compensation injury."
+      }
+    }
+  },
+  {
+    "id": "T02",
+    "title": "Whiplash after MVA (no-fault)",
+    "expectedCptAnyOf": [
+      "99203"
+    ],
+    "expectedIcdAnyOf": [
+      "S13.4XXA"
+    ],
+    "forbiddenCptPrefixes": [
+      "721",
+      "720",
+      "722",
+      "723"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "PT, muscle relaxant."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "cervical_sprain",
+          "region": "cervical",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Sprain of ligaments of cervical spine, initial encounter (whiplash)."
+        }
+      ],
+      "injury": {
+        "workRelated": false,
+        "autoAccident": true,
+        "date": null,
+        "cause": "mva",
+        "quote": "No-fault auto claim."
+      }
+    }
+  },
+  {
+    "id": "T03",
+    "title": "Lumbar strain lifting at work (WC)",
+    "expectedCptAnyOf": [
+      "99203"
+    ],
+    "expectedIcdAnyOf": [
+      "S39.012A"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Light duty, PT, NSAIDs."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "lumbar_strain",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Strain of muscle, fascia and tendon of lower back, initial encounter."
+        }
+      ],
+      "injury": {
+        "workRelated": true,
+        "autoAccident": false,
+        "date": null,
+        "cause": "lifting",
+        "quote": "warehouse worker injured lifting a box at work yesterday"
+      }
+    }
+  },
+  {
+    "id": "T04",
+    "title": "Type II odontoid (dens) fracture, elderly fall",
+    "expectedCptAnyOf": [
+      "99205",
+      "99204"
+    ],
+    "expectedIcdAnyOf": [
+      "S12.112A"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "high",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Cervical collar vs posterior C1-C2 fusion discussed."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "dens_fracture",
+          "region": "cervical",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Type II dens fracture, initial encounter for closed fracture."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "T05",
+    "title": "Osteoporotic T12 fx, SUBSEQUENT encounter routine healing (7th char D)",
+    "expectedCptAnyOf": [
+      "99213"
+    ],
+    "expectedIcdAnyOf": [
+      "M80.08XD"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Continue brace wean, bisphosphonate."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "osteoporotic_fracture",
+          "region": "thoracic",
+          "levels": [
+            "T12"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Age-related osteoporosis with current pathological fracture, vertebra, subsequent encounter with routine healing."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "T06",
+    "title": "Central cord syndrome after hyperextension fall",
+    "expectedCptAnyOf": [
+      "99205",
+      "99223"
+    ],
+    "expectedIcdAnyOf": [
+      "S14.124A",
+      "S14.12*"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "high",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Admit, MAP goals, surgical decompression discussion."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "central_cord_syndrome",
+          "region": "cervical",
+          "levels": [
+            "C4"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Central cord syndrome at C4 level of cervical spinal cord, initial encounter."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "X01",
+    "title": "NEGATIONS: 'no cauda equina, no fracture, no myelopathy' with simple LBP",
+    "expectedCptAnyOf": [
+      "99213",
+      "99203"
+    ],
+    "expectedIcdAnyOf": [
+      "M54.50",
+      "M54.59"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [
+      "G83.4",
+      "S32",
+      "S22",
+      "M48.5",
+      "M80",
+      "M47.1",
+      "M50.0",
+      "M51.0"
+    ],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "PT, NSAIDs."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "low_back_pain",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Acute low back pain, mechanical."
+        },
+        {
+          "condition": "cauda_equina_syndrome",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "ruled_out",
+          "quote": "Cauda equina syndrome ruled out."
+        },
+        {
+          "condition": "burst_fracture",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "negated",
+          "quote": "No fracture on x-ray."
+        },
+        {
+          "condition": "myelopathy",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "negated",
+          "quote": "No myelopathy."
+        },
+        {
+          "condition": "radiculopathy",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "negated",
+          "quote": "No radiculopathy."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "X02",
+    "title": "HISTORY ONLY: hx breast cancer in remission, hx diabetes; neck pain",
+    "expectedCptAnyOf": [
+      "99213"
+    ],
+    "expectedIcdAnyOf": [
+      "M54.2"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [
+      "C50"
+    ],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "PT."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "cervicalgia",
+          "region": "cervical",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Cervicalgia."
+        },
+        {
+          "condition": "history_breast_cancer",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "history",
+          "quote": "breast cancer in remission, treated 2015"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "X03",
+    "title": "Codes typed into the note by the doctor",
+    "expectedCptAnyOf": [
+      "99214"
+    ],
+    "expectedIcdAnyOf": [
+      "M51.16"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Bill CPT 99214."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "disc_herniation",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [
+            "radiculopathy"
+          ],
+          "status": "current",
+          "quote": "M51.16 Intervertebral disc disorders with radiculopathy, lumbar region."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "X05",
+    "title": "Abbreviation-heavy surgeon shorthand",
+    "expectedCptAnyOf": [
+      "99214",
+      "99215"
+    ],
+    "expectedIcdAnyOf": [
+      "M51.16",
+      "M51.26",
+      "M54.16",
+      "M48.061"
+    ],
+    "forbiddenCptPrefixes": [
+      "22",
+      "63"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Plan L3-4 ext fusion vs XLIF."
+      },
+      "procedures": [
+        {
+          "name": "tlif",
+          "levels": [
+            "L3-L4"
+          ],
+          "side": null,
+          "performed": false,
+          "quote": "Plan L3-4 ext fusion vs XLIF."
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "disc_herniation",
+          "region": "lumbar",
+          "levels": [
+            "L3-L4"
+          ],
+          "side": "left",
+          "with": [
+            "radiculopathy"
+          ],
+          "status": "current",
+          "quote": "ASD L3-4 w/ HNP + L L4 radic."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "X07",
+    "title": "Spanish-language note",
+    "expectedCptAnyOf": [
+      "99203",
+      "99213"
+    ],
+    "expectedIcdAnyOf": [
+      "M51.17",
+      "M54.17"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Fisioterapia."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "disc_herniation",
+          "region": "lumbar",
+          "levels": [
+            "L5-S1"
+          ],
+          "side": "left",
+          "with": [
+            "radiculopathy"
+          ],
+          "status": "current",
+          "quote": "Hernia discal L5-S1 con radiculopatía izquierda."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "X08",
+    "title": "Level tokens C5 / L4 / S1 / T4 (collide with C50 breast CA, L40 psoriasis, S1x neck injury, T40 opioid poisoning)",
+    "expectedCptAnyOf": [
+      "99213"
+    ],
+    "expectedIcdAnyOf": [
+      "M47.81*",
+      "M47.89*"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [
+      "C50",
+      "C5",
+      "L4",
+      "L5",
+      "S1",
+      "T4"
+    ],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "PT."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "spondylosis",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Multilevel spondylosis."
         }
       ],
       "injury": null
