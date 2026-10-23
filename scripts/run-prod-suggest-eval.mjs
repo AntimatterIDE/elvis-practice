@@ -5,8 +5,9 @@
  */
 const origin = process.env.SPINE_EVAL_ORIGIN || "https://thealignmentclinic.com";
 const token = process.env.SPINE_EVAL_TOKEN || "clinix-spine-eval-2026-10-23";
-const batchSize = Number(process.env.SPINE_EVAL_BATCH || 4);
+const batchSize = Number(process.env.SPINE_EVAL_BATCH || 3);
 const imperfect = process.env.SPINE_EVAL_IMPERFECT !== "0";
+const maxAttempts = Number(process.env.SPINE_EVAL_RETRIES || 4);
 
 const fixtures = JSON.parse(
   await import("node:fs").then((fs) =>
@@ -15,30 +16,42 @@ const fixtures = JSON.parse(
 );
 const allIds = fixtures.map((item) => item.id);
 
+async function fetchBatch(ids) {
+  let lastError = null;
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await fetch(`${origin}/api/dev/spine-eval`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-spine-eval": token,
+        },
+        body: JSON.stringify({ ids, imperfect }),
+        signal: AbortSignal.timeout(280_000),
+      });
+      const text = await response.text();
+      let payload;
+      try {
+        payload = JSON.parse(text);
+      } catch {
+        throw new Error(`Non-JSON ${response.status}: ${text.slice(0, 200)}`);
+      }
+      if (!response.ok) throw new Error(`HTTP ${response.status}: ${JSON.stringify(payload).slice(0, 200)}`);
+      return payload;
+    } catch (error) {
+      lastError = error;
+      console.error(`  retry ${attempt}/${maxAttempts}: ${error instanceof Error ? error.message : error}`);
+      await new Promise((resolve) => setTimeout(resolve, 2000 * attempt));
+    }
+  }
+  throw lastError ?? new Error("batch failed");
+}
+
 const rows = [];
 for (let i = 0; i < allIds.length; i += batchSize) {
   const ids = allIds.slice(i, i + batchSize);
   console.log(`Batch ${i / batchSize + 1}/${Math.ceil(allIds.length / batchSize)}: ${ids.join(", ")}`);
-  const response = await fetch(`${origin}/api/dev/spine-eval`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "x-spine-eval": token,
-    },
-    body: JSON.stringify({ ids, imperfect }),
-  });
-  const text = await response.text();
-  let payload;
-  try {
-    payload = JSON.parse(text);
-  } catch {
-    console.error("Non-JSON", response.status, text.slice(0, 400));
-    process.exit(1);
-  }
-  if (!response.ok) {
-    console.error("Eval failed", response.status, payload);
-    process.exit(1);
-  }
+  const payload = await fetchBatch(ids);
   rows.push(...(payload.rows || []));
   console.log(`  → ${payload.passed}/${payload.count} in batch (running ${rows.filter((r) => r.ok).length}/${rows.length})`);
 }
