@@ -505,6 +505,249 @@
     "forbiddenCptPrefixes": []
   },
   {
+    "id": "X01",
+    "title": "NEGATIONS: 'no cauda equina, no fracture, no myelopathy' with simple LBP",
+    "note": "SUBJECTIVE:\n45-year-old with low back pain for 2 weeks. Denies saddle anesthesia, bowel or bladder dysfunction.\n\nOBJECTIVE:\nNo evidence of cauda equina syndrome. No fracture on x-ray. No myelopathy. No radiculopathy.\n\nASSESSMENT:\n1. Acute low back pain, mechanical. Cauda equina syndrome ruled out.\n\nPLAN:\nPT, NSAIDs.",
+    "expectedIcdAnyOf": [
+      "M54.50",
+      "M54.59"
+    ],
+    "expectedCptAnyOf": [
+      "99213",
+      "99203"
+    ],
+    "forbiddenIcdPrefixes": [
+      "G83.4",
+      "S32",
+      "S22",
+      "M48.5",
+      "M80",
+      "M47.1",
+      "M50.0",
+      "M51.0"
+    ],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X02",
+    "title": "HISTORY ONLY: hx breast cancer in remission, hx diabetes; neck pain",
+    "note": "SUBJECTIVE:\nNeck pain 3 weeks. Past medical history: breast cancer in remission, treated 2015; diabetes.\n\nOBJECTIVE:\nNeuro intact.\n\nASSESSMENT:\n1. Cervicalgia.\n\nPLAN:\nPT.",
+    "expectedIcdAnyOf": [
+      "M54.2"
+    ],
+    "expectedCptAnyOf": [
+      "99213"
+    ],
+    "forbiddenIcdPrefixes": [
+      "C50"
+    ],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X03",
+    "title": "Codes typed into the note by the doctor",
+    "note": "SUBJECTIVE:\nLumbar radiculopathy follow-up.\n\nOBJECTIVE:\nUnchanged.\n\nASSESSMENT:\n1. M51.16 Intervertebral disc disorders with radiculopathy, lumbar region.\n\nPLAN:\nBill CPT 99214.",
+    "expectedIcdAnyOf": [
+      "M51.16"
+    ],
+    "expectedCptAnyOf": [
+      "99214"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X05",
+    "title": "Abbreviation-heavy surgeon shorthand",
+    "note": "SUBJECTIVE:\ns/p L4-5 TLIF 2019, now ASD L3-4 w/ HNP, LBP, LLE radic. DDD. ESI x2 failed.\n\nOBJECTIVE:\n+SLR L, EHL 4/5 L.\n\nASSESSMENT:\nASD L3-4 w/ HNP + L L4 radic.\n\nPLAN:\nPlan L3-4 ext fusion vs XLIF.",
+    "expectedIcdAnyOf": [
+      "M51.16",
+      "M51.26",
+      "M54.16",
+      "M48.061"
+    ],
+    "expectedCptAnyOf": [
+      "99214",
+      "99215"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": [
+      "22",
+      "63"
+    ]
+  },
+  {
+    "id": "X07",
+    "title": "Spanish-language note",
+    "note": "SUBJECTIVE:\nPaciente de 50 años con dolor lumbar irradiado a la pierna izquierda.\n\nOBJECTIVE:\nLasègue positivo a la izquierda.\n\nASSESSMENT:\n1. Hernia discal L5-S1 con radiculopatía izquierda.\n\nPLAN:\nFisioterapia.",
+    "expectedIcdAnyOf": [
+      "M51.17",
+      "M54.17"
+    ],
+    "expectedCptAnyOf": [
+      "99203",
+      "99213"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X08",
+    "title": "Level tokens C5 / L4 / S1 / T4 (collide with C50 breast CA, L40 psoriasis, S1x neck injury, T40 opioid poisoning)",
+    "note": "SUBJECTIVE:\nPain at C5 and C6, L4, L5 and S1. Prior T4 rib pain.\n\nOBJECTIVE:\nTender at T4.\n\nASSESSMENT:\n1. Multilevel spondylosis.\n\nPLAN:\nPT.",
+    "expectedIcdAnyOf": [
+      "M47.81*",
+      "M47.89*"
+    ],
+    "expectedCptAnyOf": [
+      "99213"
+    ],
+    "forbiddenIcdPrefixes": [
+      "C50",
+      "C5",
+      "L4",
+      "L5",
+      "S1",
+      "T4"
+    ],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P01",
+    "title": "Left L5-S1 transforaminal ESI",
+    "note": "SUBJECTIVE:\nIndication: left S1 radiculopathy from L5-S1 disc herniation.\n\nOBJECTIVE:\nProcedure: left L5-S1 transforaminal epidural steroid injection under fluoroscopy; contrast epidural spread, no vascular uptake; dexamethasone and lidocaine injected.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up 2 weeks.",
+    "expectedIcdAnyOf": [
+      "M51.17",
+      "M54.17"
+    ],
+    "expectedCptAnyOf": [
+      "64483"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P02",
+    "title": "L5-S1 interlaminar ESI",
+    "note": "SUBJECTIVE:\nIndication: lumbar spinal stenosis with bilateral radicular pain.\n\nOBJECTIVE:\nProcedure: L5-S1 interlaminar epidural steroid injection, fluoroscopic guidance, loss of resistance.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up.",
+    "expectedIcdAnyOf": [
+      "M48.062",
+      "M48.061",
+      "M54.16"
+    ],
+    "expectedCptAnyOf": [
+      "62323"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P03",
+    "title": "C7-T1 cervical interlaminar ESI",
+    "note": "SUBJECTIVE:\nIndication: cervical radiculopathy.\n\nOBJECTIVE:\nProcedure: C7-T1 cervical interlaminar epidural steroid injection with fluoroscopy.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up.",
+    "expectedIcdAnyOf": [
+      "M54.12",
+      "M50.12*"
+    ],
+    "expectedCptAnyOf": [
+      "62321"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P04",
+    "title": "Bilateral L4-5, L5-S1 medial branch blocks",
+    "note": "SUBJECTIVE:\nIndication: lumbar facet arthropathy, axial low back pain.\n\nOBJECTIVE:\nProcedure: bilateral lumbar medial branch blocks at L4-L5 and L5-S1 facet joints under fluoroscopy, bupivacaine.\n\nASSESSMENT:\n80% relief.\n\nPLAN:\nConsider RFA.",
+    "expectedIcdAnyOf": [
+      "M47.816",
+      "M47.817"
+    ],
+    "expectedCptAnyOf": [
+      "64493",
+      "64494"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P05",
+    "title": "Right L4-5, L5-S1 facet RFA",
+    "note": "SUBJECTIVE:\nIndication: lumbar facet syndrome with >80% relief from two diagnostic blocks.\n\nOBJECTIVE:\nProcedure: right L4-L5 and L5-S1 radiofrequency ablation of medial branch nerves under fluoroscopy, 80 C for 90 seconds.\n\nASSESSMENT:\nNo complications.\n\nPLAN:\nFollow up.",
+    "expectedIcdAnyOf": [
+      "M47.816",
+      "M47.817"
+    ],
+    "expectedCptAnyOf": [
+      "64635",
+      "64636"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P06",
+    "title": "Right SI joint injection with fluoro",
+    "note": "SUBJECTIVE:\nIndication: right sacroiliitis.\n\nOBJECTIVE:\nProcedure: right sacroiliac joint injection with fluoroscopic guidance, contrast confirmed intra-articular, triamcinolone and bupivacaine.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up.",
+    "expectedIcdAnyOf": [
+      "M46.1",
+      "M53.3"
+    ],
+    "expectedCptAnyOf": [
+      "27096",
+      "G0260"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P07",
+    "title": "Trigger point injections, 3+ muscles",
+    "note": "SUBJECTIVE:\nIndication: myofascial pain of the lumbar paraspinals and gluteals.\n\nOBJECTIVE:\nProcedure: trigger point injections into 4 muscles with lidocaine.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nStretching.",
+    "expectedIcdAnyOf": [
+      "M79.18",
+      "M62.830"
+    ],
+    "expectedCptAnyOf": [
+      "20553"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "P08",
+    "title": "Epidural blood patch for post-dural-puncture headache",
+    "note": "SUBJECTIVE:\nIndication: positional headache after lumbar puncture.\n\nOBJECTIVE:\nProcedure: lumbar epidural blood patch with 20 mL autologous blood.\n\nASSESSMENT:\nHeadache resolved.\n\nPLAN:\nFollow up.",
+    "expectedIcdAnyOf": [
+      "G97.1"
+    ],
+    "expectedCptAnyOf": [
+      "62273"
+    ],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X04",
+    "title": "Note = exact catalog wording 'Spinal stenosis, lumbar region with neurogenic claudication'",
+    "note": "ASSESSMENT:\nSpinal stenosis, lumbar region with neurogenic claudication",
+    "expectedIcdAnyOf": [
+      "M48.062"
+    ],
+    "expectedCptAnyOf": [],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
+    "id": "X06",
+    "title": "Near-empty note",
+    "note": "Follow up.",
+    "expectedIcdAnyOf": [],
+    "expectedCptAnyOf": [],
+    "forbiddenIcdPrefixes": [],
+    "forbiddenCptPrefixes": []
+  },
+  {
     "id": "S01",
     "title": "OP: L5-S1 microdiscectomy (hemilaminotomy)",
     "note": "SUBJECTIVE:\nPreoperative diagnosis: left L5-S1 disc herniation with left S1 radiculopathy.\n\nOBJECTIVE:\nProcedure: left L5-S1 hemilaminotomy and microdiscectomy with operating microscope. Large extruded fragment removed; S1 root decompressed.\n\nASSESSMENT:\nPostoperative diagnosis: same. EBL 20 mL. No complications.\n\nPLAN:\nDischarge same day.",
@@ -702,246 +945,1203 @@
     "forbiddenCptPrefixes": []
   },
   {
-    "id": "P01",
-    "title": "Left L5-S1 transforaminal ESI",
-    "note": "SUBJECTIVE:\nIndication: left S1 radiculopathy from L5-S1 disc herniation.\n\nOBJECTIVE:\nProcedure: left L5-S1 transforaminal epidural steroid injection under fluoroscopy; contrast epidural spread, no vascular uptake; dexamethasone and lidocaine injected.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up 2 weeks.",
-    "expectedIcdAnyOf": [
-      "M51.17",
-      "M54.17"
-    ],
-    "expectedCptAnyOf": [
-      "64483"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M001",
+    "title": "office_new low decision for surgery → 57",
+    "note": "CASE M001: office_new low decision for surgery → 57\nSUBJECTIVE:\nHigh-stakes low MDM with decision for surgery documented.\nLumbar stenosis with neurogenic claudication\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar stenosis with neurogenic claudication\nPLAN:\nPlan: High-stakes low MDM with decision for surgery documented."
   },
   {
-    "id": "P02",
-    "title": "L5-S1 interlaminar ESI",
-    "note": "SUBJECTIVE:\nIndication: lumbar spinal stenosis with bilateral radicular pain.\n\nOBJECTIVE:\nProcedure: L5-S1 interlaminar epidural steroid injection, fluoroscopic guidance, loss of resistance.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up.",
-    "expectedIcdAnyOf": [
-      "M48.062",
-      "M48.061",
-      "M54.16"
-    ],
-    "expectedCptAnyOf": [
-      "62323"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M002",
+    "title": "office_established low decision for surgery → 57",
+    "note": "CASE M002: office_established low decision for surgery → 57\nSUBJECTIVE:\nHigh-stakes low MDM with decision for surgery documented.\nLumbar stenosis with neurogenic claudication\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar stenosis with neurogenic claudication\nPLAN:\nPlan: High-stakes low MDM with decision for surgery documented."
   },
   {
-    "id": "P03",
-    "title": "C7-T1 cervical interlaminar ESI",
-    "note": "SUBJECTIVE:\nIndication: cervical radiculopathy.\n\nOBJECTIVE:\nProcedure: C7-T1 cervical interlaminar epidural steroid injection with fluoroscopy.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up.",
-    "expectedIcdAnyOf": [
-      "M54.12",
-      "M50.12*"
-    ],
-    "expectedCptAnyOf": [
-      "62321"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M003",
+    "title": "office_new moderate decision for surgery → 57",
+    "note": "CASE M003: office_new moderate decision for surgery → 57\nSUBJECTIVE:\nHigh-stakes moderate MDM with decision for surgery documented.\nLumbar stenosis with neurogenic claudication\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar stenosis with neurogenic claudication\nPLAN:\nPlan: High-stakes moderate MDM with decision for surgery documented."
   },
   {
-    "id": "P04",
-    "title": "Bilateral L4-5, L5-S1 medial branch blocks",
-    "note": "SUBJECTIVE:\nIndication: lumbar facet arthropathy, axial low back pain.\n\nOBJECTIVE:\nProcedure: bilateral lumbar medial branch blocks at L4-L5 and L5-S1 facet joints under fluoroscopy, bupivacaine.\n\nASSESSMENT:\n80% relief.\n\nPLAN:\nConsider RFA.",
-    "expectedIcdAnyOf": [
-      "M47.816",
-      "M47.817"
-    ],
-    "expectedCptAnyOf": [
-      "64493",
-      "64494"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M004",
+    "title": "office_established moderate decision for surgery → 57",
+    "note": "CASE M004: office_established moderate decision for surgery → 57\nSUBJECTIVE:\nHigh-stakes moderate MDM with decision for surgery documented.\nLumbar stenosis with neurogenic claudication\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar stenosis with neurogenic claudication\nPLAN:\nPlan: High-stakes moderate MDM with decision for surgery documented."
   },
   {
-    "id": "P05",
-    "title": "Right L4-5, L5-S1 facet RFA",
-    "note": "SUBJECTIVE:\nIndication: lumbar facet syndrome with >80% relief from two diagnostic blocks.\n\nOBJECTIVE:\nProcedure: right L4-L5 and L5-S1 radiofrequency ablation of medial branch nerves under fluoroscopy, 80 C for 90 seconds.\n\nASSESSMENT:\nNo complications.\n\nPLAN:\nFollow up.",
-    "expectedIcdAnyOf": [
-      "M47.816",
-      "M47.817"
-    ],
-    "expectedCptAnyOf": [
-      "64635",
-      "64636"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M005",
+    "title": "office_new high decision for surgery → 57",
+    "note": "CASE M005: office_new high decision for surgery → 57\nSUBJECTIVE:\nHigh-stakes high MDM with decision for surgery documented.\nLumbar stenosis with neurogenic claudication\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar stenosis with neurogenic claudication\nPLAN:\nPlan: High-stakes high MDM with decision for surgery documented."
   },
   {
-    "id": "P06",
-    "title": "Right SI joint injection with fluoro",
-    "note": "SUBJECTIVE:\nIndication: right sacroiliitis.\n\nOBJECTIVE:\nProcedure: right sacroiliac joint injection with fluoroscopic guidance, contrast confirmed intra-articular, triamcinolone and bupivacaine.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nFollow up.",
-    "expectedIcdAnyOf": [
-      "M46.1",
-      "M53.3"
-    ],
-    "expectedCptAnyOf": [
-      "27096",
-      "G0260"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M006",
+    "title": "office_established high decision for surgery → 57",
+    "note": "CASE M006: office_established high decision for surgery → 57\nSUBJECTIVE:\nHigh-stakes high MDM with decision for surgery documented.\nLumbar stenosis with neurogenic claudication\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar stenosis with neurogenic claudication\nPLAN:\nPlan: High-stakes high MDM with decision for surgery documented."
   },
   {
-    "id": "P07",
-    "title": "Trigger point injections, 3+ muscles",
-    "note": "SUBJECTIVE:\nIndication: myofascial pain of the lumbar paraspinals and gluteals.\n\nOBJECTIVE:\nProcedure: trigger point injections into 4 muscles with lidocaine.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nStretching.",
-    "expectedIcdAnyOf": [
-      "M79.18",
-      "M62.830"
-    ],
-    "expectedCptAnyOf": [
-      "20553"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M007",
+    "title": "office_established low unrelated in global → 24",
+    "note": "CASE M007: office_established low unrelated in global → 24\nSUBJECTIVE:\nUnrelated problem inside global period, low MDM.\nMechanical low back pain unrelated to recent fusion\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain unrelated to recent fusion\nPLAN:\nPlan: Unrelated problem inside global period, low MDM."
   },
   {
-    "id": "P08",
-    "title": "Epidural blood patch for post-dural-puncture headache",
-    "note": "SUBJECTIVE:\nIndication: positional headache after lumbar puncture.\n\nOBJECTIVE:\nProcedure: lumbar epidural blood patch with 20 mL autologous blood.\n\nASSESSMENT:\nHeadache resolved.\n\nPLAN:\nFollow up.",
-    "expectedIcdAnyOf": [
-      "G97.1"
-    ],
-    "expectedCptAnyOf": [
-      "62273"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M008",
+    "title": "office_established moderate unrelated in global → 24",
+    "note": "CASE M008: office_established moderate unrelated in global → 24\nSUBJECTIVE:\nUnrelated problem inside global period, moderate MDM.\nMechanical low back pain unrelated to recent fusion\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain unrelated to recent fusion\nPLAN:\nPlan: Unrelated problem inside global period, moderate MDM."
   },
   {
-    "id": "X01",
-    "title": "NEGATIONS: 'no cauda equina, no fracture, no myelopathy' with simple LBP",
-    "note": "SUBJECTIVE:\n45-year-old with low back pain for 2 weeks. Denies saddle anesthesia, bowel or bladder dysfunction.\n\nOBJECTIVE:\nNo evidence of cauda equina syndrome. No fracture on x-ray. No myelopathy. No radiculopathy.\n\nASSESSMENT:\n1. Acute low back pain, mechanical. Cauda equina syndrome ruled out.\n\nPLAN:\nPT, NSAIDs.",
-    "expectedIcdAnyOf": [
-      "M54.50",
-      "M54.59"
-    ],
-    "expectedCptAnyOf": [
-      "99213",
-      "99203"
-    ],
-    "forbiddenIcdPrefixes": [
-      "G83.4",
-      "S32",
-      "S22",
-      "M48.5",
-      "M80",
-      "M47.1",
-      "M50.0",
-      "M51.0"
-    ],
-    "forbiddenCptPrefixes": []
+    "id": "M009",
+    "title": "telehealth_established low → 95",
+    "note": "CASE M009: telehealth_established low → 95\nSUBJECTIVE:\nVideo telehealth visit with low MDM.\nLumbar radiculopathy follow-up on video\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar radiculopathy follow-up on video\nPLAN:\nPlan: Video telehealth visit with low MDM."
   },
   {
-    "id": "X02",
-    "title": "HISTORY ONLY: hx breast cancer in remission, hx diabetes; neck pain",
-    "note": "SUBJECTIVE:\nNeck pain 3 weeks. Past medical history: breast cancer in remission, treated 2015; diabetes.\n\nOBJECTIVE:\nNeuro intact.\n\nASSESSMENT:\n1. Cervicalgia.\n\nPLAN:\nPT.",
-    "expectedIcdAnyOf": [
-      "M54.2"
-    ],
-    "expectedCptAnyOf": [
-      "99213"
-    ],
-    "forbiddenIcdPrefixes": [
-      "C50"
-    ],
-    "forbiddenCptPrefixes": []
+    "id": "M010",
+    "title": "telehealth_established moderate → 95",
+    "note": "CASE M010: telehealth_established moderate → 95\nSUBJECTIVE:\nVideo telehealth visit with moderate MDM.\nLumbar radiculopathy follow-up on video\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar radiculopathy follow-up on video\nPLAN:\nPlan: Video telehealth visit with moderate MDM."
   },
   {
-    "id": "X03",
-    "title": "Codes typed into the note by the doctor",
-    "note": "SUBJECTIVE:\nLumbar radiculopathy follow-up.\n\nOBJECTIVE:\nUnchanged.\n\nASSESSMENT:\n1. M51.16 Intervertebral disc disorders with radiculopathy, lumbar region.\n\nPLAN:\nBill CPT 99214.",
-    "expectedIcdAnyOf": [
-      "M51.16"
-    ],
-    "expectedCptAnyOf": [
-      "99214"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M011",
+    "title": "telehealth_established high → 95",
+    "note": "CASE M011: telehealth_established high → 95\nSUBJECTIVE:\nVideo telehealth visit with high MDM.\nLumbar radiculopathy follow-up on video\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar radiculopathy follow-up on video\nPLAN:\nPlan: Video telehealth visit with high MDM."
   },
   {
-    "id": "X04",
-    "title": "Note = exact catalog wording 'Spinal stenosis, lumbar region with neurogenic claudication'",
-    "note": "ASSESSMENT:\nSpinal stenosis, lumbar region with neurogenic claudication",
-    "expectedIcdAnyOf": [
-      "M48.062"
-    ],
-    "expectedCptAnyOf": [],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M012",
+    "title": "telehealth_new low → 95",
+    "note": "CASE M012: telehealth_new low → 95\nSUBJECTIVE:\nVideo telehealth visit with low MDM.\nLumbar radiculopathy follow-up on video\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar radiculopathy follow-up on video\nPLAN:\nPlan: Video telehealth visit with low MDM."
   },
   {
-    "id": "X05",
-    "title": "Abbreviation-heavy surgeon shorthand",
-    "note": "SUBJECTIVE:\ns/p L4-5 TLIF 2019, now ASD L3-4 w/ HNP, LBP, LLE radic. DDD. ESI x2 failed.\n\nOBJECTIVE:\n+SLR L, EHL 4/5 L.\n\nASSESSMENT:\nASD L3-4 w/ HNP + L L4 radic.\n\nPLAN:\nPlan L3-4 ext fusion vs XLIF.",
-    "expectedIcdAnyOf": [
-      "M51.16",
-      "M51.26",
-      "M54.16",
-      "M48.061"
-    ],
-    "expectedCptAnyOf": [
-      "99214",
-      "99215"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": [
-      "22",
-      "63"
-    ]
+    "id": "M013",
+    "title": "telehealth_new moderate → 95",
+    "note": "CASE M013: telehealth_new moderate → 95\nSUBJECTIVE:\nVideo telehealth visit with moderate MDM.\nLumbar radiculopathy follow-up on video\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar radiculopathy follow-up on video\nPLAN:\nPlan: Video telehealth visit with moderate MDM."
   },
   {
-    "id": "X06",
-    "title": "Near-empty note",
-    "note": "Follow up.",
-    "expectedIcdAnyOf": [],
-    "expectedCptAnyOf": [],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M014",
+    "title": "telehealth_new high → 95",
+    "note": "CASE M014: telehealth_new high → 95\nSUBJECTIVE:\nVideo telehealth visit with high MDM.\nLumbar radiculopathy follow-up on video\nOBJECTIVE:\nASSESSMENT:\nAssessment: Lumbar radiculopathy follow-up on video\nPLAN:\nPlan: Video telehealth visit with high MDM."
   },
   {
-    "id": "X07",
-    "title": "Spanish-language note",
-    "note": "SUBJECTIVE:\nPaciente de 50 años con dolor lumbar irradiado a la pierna izquierda.\n\nOBJECTIVE:\nLasègue positivo a la izquierda.\n\nASSESSMENT:\n1. Hernia discal L5-S1 con radiculopatía izquierda.\n\nPLAN:\nFisioterapia.",
-    "expectedIcdAnyOf": [
-      "M51.17",
-      "M54.17"
-    ],
-    "expectedCptAnyOf": [
-      "99203",
-      "99213"
-    ],
-    "forbiddenIcdPrefixes": [],
-    "forbiddenCptPrefixes": []
+    "id": "M015",
+    "title": "E/M + TFESI left lumbar → 25 + laterality",
+    "note": "CASE M015: E/M + TFESI left lumbar → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit before left injection.\ndisc herniation at L4-L5\nOBJECTIVE:\nPerformed left lumbar transforaminal epidural steroid injection at L4-L5.\nASSESSMENT:\nAssessment: disc herniation at L4-L5\nPLAN:\nPlan: Separately significant office visit before left injection.\nProcedure performed: Performed left lumbar transforaminal epidural steroid injection at L4-L5."
   },
   {
-    "id": "X08",
-    "title": "Level tokens C5 / L4 / S1 / T4 (collide with C50 breast CA, L40 psoriasis, S1x neck injury, T40 opioid poisoning)",
-    "note": "SUBJECTIVE:\nPain at C5 and C6, L4, L5 and S1. Prior T4 rib pain.\n\nOBJECTIVE:\nTender at T4.\n\nASSESSMENT:\n1. Multilevel spondylosis.\n\nPLAN:\nPT.",
-    "expectedIcdAnyOf": [
-      "M47.81*",
-      "M47.89*"
-    ],
-    "expectedCptAnyOf": [
-      "99213"
-    ],
-    "forbiddenIcdPrefixes": [
-      "C50",
-      "C5",
-      "L4",
-      "L5",
-      "S1",
-      "T4"
-    ],
-    "forbiddenCptPrefixes": []
+    "id": "M016",
+    "title": "E/M + TFESI left cervical → 25 + laterality",
+    "note": "CASE M016: E/M + TFESI left cervical → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit before left injection.\ndisc herniation at C5-C6\nOBJECTIVE:\nPerformed left cervical transforaminal epidural steroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc herniation at C5-C6\nPLAN:\nPlan: Separately significant office visit before left injection.\nProcedure performed: Performed left cervical transforaminal epidural steroid injection at C5-C6."
+  },
+  {
+    "id": "M017",
+    "title": "E/M + TFESI left lumbar → 25 + laterality",
+    "note": "CASE M017: E/M + TFESI left lumbar → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit before left injection.\nstenosis at L4-L5\nOBJECTIVE:\nPerformed left lumbar transforaminal epidural steroid injection at L4-L5.\nASSESSMENT:\nAssessment: stenosis at L4-L5\nPLAN:\nPlan: Separately significant office visit before left injection.\nProcedure performed: Performed left lumbar transforaminal epidural steroid injection at L4-L5."
+  },
+  {
+    "id": "M018",
+    "title": "E/M + TFESI right lumbar → 25 + laterality",
+    "note": "CASE M018: E/M + TFESI right lumbar → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit before right injection.\ndisc herniation at L4-L5\nOBJECTIVE:\nPerformed right lumbar transforaminal epidural steroid injection at L4-L5.\nASSESSMENT:\nAssessment: disc herniation at L4-L5\nPLAN:\nPlan: Separately significant office visit before right injection.\nProcedure performed: Performed right lumbar transforaminal epidural steroid injection at L4-L5."
+  },
+  {
+    "id": "M019",
+    "title": "E/M + TFESI right cervical → 25 + laterality",
+    "note": "CASE M019: E/M + TFESI right cervical → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit before right injection.\ndisc herniation at C5-C6\nOBJECTIVE:\nPerformed right cervical transforaminal epidural steroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc herniation at C5-C6\nPLAN:\nPlan: Separately significant office visit before right injection.\nProcedure performed: Performed right cervical transforaminal epidural steroid injection at C5-C6."
+  },
+  {
+    "id": "M020",
+    "title": "E/M + TFESI right lumbar → 25 + laterality",
+    "note": "CASE M020: E/M + TFESI right lumbar → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit before right injection.\nstenosis at L4-L5\nOBJECTIVE:\nPerformed right lumbar transforaminal epidural steroid injection at L4-L5.\nASSESSMENT:\nAssessment: stenosis at L4-L5\nPLAN:\nPlan: Separately significant office visit before right injection.\nProcedure performed: Performed right lumbar transforaminal epidural steroid injection at L4-L5."
+  },
+  {
+    "id": "M021",
+    "title": "E/M + TFESI bilateral lumbar → 25 + laterality",
+    "note": "CASE M021: E/M + TFESI bilateral lumbar → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit before bilateral injection.\ndisc herniation at L4-L5\nOBJECTIVE:\nPerformed bilateral lumbar transforaminal epidural steroid injection at L4-L5.\nASSESSMENT:\nAssessment: disc herniation at L4-L5\nPLAN:\nPlan: Separately significant office visit before bilateral injection.\nProcedure performed: Performed bilateral lumbar transforaminal epidural steroid injection at L4-L5."
+  },
+  {
+    "id": "M022",
+    "title": "E/M + TFESI bilateral cervical → 25 + laterality",
+    "note": "CASE M022: E/M + TFESI bilateral cervical → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit before bilateral injection.\ndisc herniation at C5-C6\nOBJECTIVE:\nPerformed bilateral cervical transforaminal epidural steroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc herniation at C5-C6\nPLAN:\nPlan: Separately significant office visit before bilateral injection.\nProcedure performed: Performed bilateral cervical transforaminal epidural steroid injection at C5-C6."
+  },
+  {
+    "id": "M023",
+    "title": "E/M + TFESI bilateral lumbar → 25 + laterality",
+    "note": "CASE M023: E/M + TFESI bilateral lumbar → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit before bilateral injection.\nstenosis at L4-L5\nOBJECTIVE:\nPerformed bilateral lumbar transforaminal epidural steroid injection at L4-L5.\nASSESSMENT:\nAssessment: stenosis at L4-L5\nPLAN:\nPlan: Separately significant office visit before bilateral injection.\nProcedure performed: Performed bilateral lumbar transforaminal epidural steroid injection at L4-L5."
+  },
+  {
+    "id": "M024",
+    "title": "Injection transforaminal_esi left L5-S1",
+    "note": "CASE M024: Injection transforaminal_esi left L5-S1\nSUBJECTIVE:\nL5-S1 disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: left transforaminal esi L5-S1 performed today.\nASSESSMENT:\nAssessment: L5-S1 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: left transforaminal esi L5-S1 performed today."
+  },
+  {
+    "id": "M025",
+    "title": "Injection transforaminal_esi right L5-S1",
+    "note": "CASE M025: Injection transforaminal_esi right L5-S1\nSUBJECTIVE:\nL5-S1 disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: right transforaminal esi L5-S1 performed today.\nASSESSMENT:\nAssessment: L5-S1 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: right transforaminal esi L5-S1 performed today."
+  },
+  {
+    "id": "M026",
+    "title": "Injection transforaminal_esi bilateral L5-S1",
+    "note": "CASE M026: Injection transforaminal_esi bilateral L5-S1\nSUBJECTIVE:\nL5-S1 disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: bilateral transforaminal esi L5-S1 performed today.\nASSESSMENT:\nAssessment: L5-S1 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: bilateral transforaminal esi L5-S1 performed today."
+  },
+  {
+    "id": "M027",
+    "title": "Injection transforaminal_esi left L4-L5+L5-S1",
+    "note": "CASE M027: Injection transforaminal_esi left L4-L5+L5-S1\nSUBJECTIVE:\nTwo-level lumbar disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: left transforaminal esi L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Two-level lumbar disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: left transforaminal esi L4-L5 L5-S1 performed today."
+  },
+  {
+    "id": "M028",
+    "title": "Injection transforaminal_esi right L4-L5+L5-S1",
+    "note": "CASE M028: Injection transforaminal_esi right L4-L5+L5-S1\nSUBJECTIVE:\nTwo-level lumbar disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: right transforaminal esi L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Two-level lumbar disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: right transforaminal esi L4-L5 L5-S1 performed today."
+  },
+  {
+    "id": "M029",
+    "title": "Injection transforaminal_esi bilateral L4-L5+L5-S1",
+    "note": "CASE M029: Injection transforaminal_esi bilateral L4-L5+L5-S1\nSUBJECTIVE:\nTwo-level lumbar disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: bilateral transforaminal esi L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Two-level lumbar disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: bilateral transforaminal esi L4-L5 L5-S1 performed today."
+  },
+  {
+    "id": "M030",
+    "title": "Injection transforaminal_esi left C6-C7",
+    "note": "CASE M030: Injection transforaminal_esi left C6-C7\nSUBJECTIVE:\nC6-C7 disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: left transforaminal esi C6-C7 performed today.\nASSESSMENT:\nAssessment: C6-C7 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: left transforaminal esi C6-C7 performed today."
+  },
+  {
+    "id": "M031",
+    "title": "Injection transforaminal_esi right C6-C7",
+    "note": "CASE M031: Injection transforaminal_esi right C6-C7\nSUBJECTIVE:\nC6-C7 disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: right transforaminal esi C6-C7 performed today.\nASSESSMENT:\nAssessment: C6-C7 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: right transforaminal esi C6-C7 performed today."
+  },
+  {
+    "id": "M032",
+    "title": "Injection transforaminal_esi bilateral C6-C7",
+    "note": "CASE M032: Injection transforaminal_esi bilateral C6-C7\nSUBJECTIVE:\nC6-C7 disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: bilateral transforaminal esi C6-C7 performed today.\nASSESSMENT:\nAssessment: C6-C7 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: bilateral transforaminal esi C6-C7 performed today."
+  },
+  {
+    "id": "M033",
+    "title": "Injection medial_branch_block bilateral L4-L5+L5-S1",
+    "note": "CASE M033: Injection medial_branch_block bilateral L4-L5+L5-S1\nSUBJECTIVE:\nLumbar facet arthropathy\nOBJECTIVE:\nProcedure: bilateral medial branch block L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet arthropathy\nPLAN:\nProcedure performed: Procedure: bilateral medial branch block L4-L5 L5-S1 performed today."
+  },
+  {
+    "id": "M034",
+    "title": "Injection medial_branch_block left L4-L5+L5-S1",
+    "note": "CASE M034: Injection medial_branch_block left L4-L5+L5-S1\nSUBJECTIVE:\nLumbar facet arthropathy\nOBJECTIVE:\nProcedure: left medial branch block L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet arthropathy\nPLAN:\nProcedure performed: Procedure: left medial branch block L4-L5 L5-S1 performed today."
+  },
+  {
+    "id": "M035",
+    "title": "Injection medial_branch_block right L4-L5+L5-S1",
+    "note": "CASE M035: Injection medial_branch_block right L4-L5+L5-S1\nSUBJECTIVE:\nLumbar facet arthropathy\nOBJECTIVE:\nProcedure: right medial branch block L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet arthropathy\nPLAN:\nProcedure performed: Procedure: right medial branch block L4-L5 L5-S1 performed today."
+  },
+  {
+    "id": "M036",
+    "title": "Injection medial_branch_block bilateral C4-C5+C5-C6",
+    "note": "CASE M036: Injection medial_branch_block bilateral C4-C5+C5-C6\nSUBJECTIVE:\nCervical facet arthropathy\nOBJECTIVE:\nProcedure: bilateral medial branch block C4-C5 C5-C6 performed today.\nASSESSMENT:\nAssessment: Cervical facet arthropathy\nPLAN:\nProcedure performed: Procedure: bilateral medial branch block C4-C5 C5-C6 performed today."
+  },
+  {
+    "id": "M037",
+    "title": "Injection medial_branch_block left C4-C5+C5-C6",
+    "note": "CASE M037: Injection medial_branch_block left C4-C5+C5-C6\nSUBJECTIVE:\nCervical facet arthropathy\nOBJECTIVE:\nProcedure: left medial branch block C4-C5 C5-C6 performed today.\nASSESSMENT:\nAssessment: Cervical facet arthropathy\nPLAN:\nProcedure performed: Procedure: left medial branch block C4-C5 C5-C6 performed today."
+  },
+  {
+    "id": "M038",
+    "title": "Injection medial_branch_block right C4-C5+C5-C6",
+    "note": "CASE M038: Injection medial_branch_block right C4-C5+C5-C6\nSUBJECTIVE:\nCervical facet arthropathy\nOBJECTIVE:\nProcedure: right medial branch block C4-C5 C5-C6 performed today.\nASSESSMENT:\nAssessment: Cervical facet arthropathy\nPLAN:\nProcedure performed: Procedure: right medial branch block C4-C5 C5-C6 performed today."
+  },
+  {
+    "id": "M039",
+    "title": "Injection facet_rfa left L4-L5+L5-S1",
+    "note": "CASE M039: Injection facet_rfa left L4-L5+L5-S1\nSUBJECTIVE:\nLumbar facet RFA indication\nOBJECTIVE:\nProcedure: left facet rfa L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet RFA indication\nPLAN:\nProcedure performed: Procedure: left facet rfa L4-L5 L5-S1 performed today."
+  },
+  {
+    "id": "M040",
+    "title": "Injection facet_rfa right L4-L5+L5-S1",
+    "note": "CASE M040: Injection facet_rfa right L4-L5+L5-S1\nSUBJECTIVE:\nLumbar facet RFA indication\nOBJECTIVE:\nProcedure: right facet rfa L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet RFA indication\nPLAN:\nProcedure performed: Procedure: right facet rfa L4-L5 L5-S1 performed today."
+  },
+  {
+    "id": "M041",
+    "title": "Injection facet_rfa bilateral L4-L5+L5-S1",
+    "note": "CASE M041: Injection facet_rfa bilateral L4-L5+L5-S1\nSUBJECTIVE:\nLumbar facet RFA indication\nOBJECTIVE:\nProcedure: bilateral facet rfa L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet RFA indication\nPLAN:\nProcedure performed: Procedure: bilateral facet rfa L4-L5 L5-S1 performed today."
+  },
+  {
+    "id": "M042",
+    "title": "Injection facet_rfa left C5-C6",
+    "note": "CASE M042: Injection facet_rfa left C5-C6\nSUBJECTIVE:\nCervical facet RFA indication\nOBJECTIVE:\nProcedure: left facet rfa C5-C6 performed today.\nASSESSMENT:\nAssessment: Cervical facet RFA indication\nPLAN:\nProcedure performed: Procedure: left facet rfa C5-C6 performed today."
+  },
+  {
+    "id": "M043",
+    "title": "Injection facet_rfa right C5-C6",
+    "note": "CASE M043: Injection facet_rfa right C5-C6\nSUBJECTIVE:\nCervical facet RFA indication\nOBJECTIVE:\nProcedure: right facet rfa C5-C6 performed today.\nASSESSMENT:\nAssessment: Cervical facet RFA indication\nPLAN:\nProcedure performed: Procedure: right facet rfa C5-C6 performed today."
+  },
+  {
+    "id": "M044",
+    "title": "Injection facet_rfa bilateral C5-C6",
+    "note": "CASE M044: Injection facet_rfa bilateral C5-C6\nSUBJECTIVE:\nCervical facet RFA indication\nOBJECTIVE:\nProcedure: bilateral facet rfa C5-C6 performed today.\nASSESSMENT:\nAssessment: Cervical facet RFA indication\nPLAN:\nProcedure performed: Procedure: bilateral facet rfa C5-C6 performed today."
+  },
+  {
+    "id": "M045",
+    "title": "Injection si_joint_injection left n/a",
+    "note": "CASE M045: Injection si_joint_injection left n/a\nSUBJECTIVE:\nSacroiliitis with SI joint pain\nOBJECTIVE:\nProcedure: left si joint injection  performed today.\nASSESSMENT:\nAssessment: Sacroiliitis with SI joint pain\nPLAN:\nProcedure performed: Procedure: left si joint injection  performed today."
+  },
+  {
+    "id": "M046",
+    "title": "Injection si_joint_injection right n/a",
+    "note": "CASE M046: Injection si_joint_injection right n/a\nSUBJECTIVE:\nSacroiliitis with SI joint pain\nOBJECTIVE:\nProcedure: right si joint injection  performed today.\nASSESSMENT:\nAssessment: Sacroiliitis with SI joint pain\nPLAN:\nProcedure performed: Procedure: right si joint injection  performed today."
+  },
+  {
+    "id": "M047",
+    "title": "Injection si_joint_injection bilateral n/a",
+    "note": "CASE M047: Injection si_joint_injection bilateral n/a\nSUBJECTIVE:\nSacroiliitis with SI joint pain\nOBJECTIVE:\nProcedure: bilateral si joint injection  performed today.\nASSESSMENT:\nAssessment: Sacroiliitis with SI joint pain\nPLAN:\nProcedure performed: Procedure: bilateral si joint injection  performed today."
+  },
+  {
+    "id": "M048",
+    "title": "Injection interlaminar_esi none L4-L5",
+    "note": "CASE M048: Injection interlaminar_esi none L4-L5\nSUBJECTIVE:\nLumbar stenosis for interlaminar ESI\nOBJECTIVE:\nProcedure: none interlaminar esi L4-L5 performed today.\nASSESSMENT:\nAssessment: Lumbar stenosis for interlaminar ESI\nPLAN:\nProcedure performed: Procedure: none interlaminar esi L4-L5 performed today."
+  },
+  {
+    "id": "M049",
+    "title": "Injection trigger_point none trapezius+levator+paraspinal",
+    "note": "CASE M049: Injection trigger_point none trapezius+levator+paraspinal\nSUBJECTIVE:\nMyofascial pain with trigger points\nOBJECTIVE:\nProcedure: none trigger point trapezius levator paraspinal performed today.\nASSESSMENT:\nAssessment: Myofascial pain with trigger points\nPLAN:\nProcedure performed: Procedure: none trigger point trapezius levator paraspinal performed today."
+  },
+  {
+    "id": "M050",
+    "title": "Injection epidural_blood_patch none n/a",
+    "note": "CASE M050: Injection epidural_blood_patch none n/a\nSUBJECTIVE:\nPost-dural puncture headache\nOBJECTIVE:\nProcedure: none epidural blood patch  performed today.\nASSESSMENT:\nAssessment: Post-dural puncture headache\nPLAN:\nProcedure performed: Procedure: none epidural blood patch  performed today."
+  },
+  {
+    "id": "M051",
+    "title": "Surgery microdiscectomy left",
+    "note": "CASE M051: Surgery microdiscectomy left\nSUBJECTIVE:\nLeft L5-S1 disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: microdiscectomy L5-S1 left performed.\nASSESSMENT:\nAssessment: Left L5-S1 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: microdiscectomy L5-S1 left performed."
+  },
+  {
+    "id": "M052",
+    "title": "Surgery microdiscectomy right",
+    "note": "CASE M052: Surgery microdiscectomy right\nSUBJECTIVE:\nRight L4-L5 disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: microdiscectomy L4-L5 right performed.\nASSESSMENT:\nAssessment: Right L4-L5 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Procedure: microdiscectomy L4-L5 right performed."
+  },
+  {
+    "id": "M053",
+    "title": "Surgery si_joint_fusion left",
+    "note": "CASE M053: Surgery si_joint_fusion left\nSUBJECTIVE:\nLeft sacroiliitis for fusion\nOBJECTIVE:\nProcedure: si joint fusion  left performed.\nASSESSMENT:\nAssessment: Left sacroiliitis for fusion\nPLAN:\nProcedure performed: Procedure: si joint fusion  left performed."
+  },
+  {
+    "id": "M054",
+    "title": "Surgery si_joint_fusion right",
+    "note": "CASE M054: Surgery si_joint_fusion right\nSUBJECTIVE:\nRight sacroiliitis for fusion\nOBJECTIVE:\nProcedure: si joint fusion  right performed.\nASSESSMENT:\nAssessment: Right sacroiliitis for fusion\nPLAN:\nProcedure performed: Procedure: si joint fusion  right performed."
+  },
+  {
+    "id": "M055",
+    "title": "Surgery kyphoplasty none",
+    "note": "CASE M055: Surgery kyphoplasty none\nSUBJECTIVE:\nOsteoporotic T12 compression fracture initial\nOBJECTIVE:\nProcedure: kyphoplasty T12 none performed.\nASSESSMENT:\nAssessment: Osteoporotic T12 compression fracture initial\nPLAN:\nProcedure performed: Procedure: kyphoplasty T12 none performed."
+  },
+  {
+    "id": "M056",
+    "title": "Surgery kyphoplasty none",
+    "note": "CASE M056: Surgery kyphoplasty none\nSUBJECTIVE:\nOsteoporotic L1 compression fracture initial\nOBJECTIVE:\nProcedure: kyphoplasty L1 none performed.\nASSESSMENT:\nAssessment: Osteoporotic L1 compression fracture initial\nPLAN:\nProcedure performed: Procedure: kyphoplasty L1 none performed."
+  },
+  {
+    "id": "M057",
+    "title": "ACDF 2-level with cages/plate (NCCI 59)",
+    "note": "CASE M057: ACDF 2-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCervical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cages placed at C5-C6 and C6-C7.\nAnterior plate instrumentation across C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C5-C6 to C6-C7."
+  },
+  {
+    "id": "M058",
+    "title": "ACDF 3-level with cages/plate (NCCI 59)",
+    "note": "CASE M058: ACDF 3-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCervical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nInterbody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnterior plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C4-C5 to C5-C6 to C6-C7."
+  },
+  {
+    "id": "M059",
+    "title": "ACDF 2-level with cages/plate (NCCI 59)",
+    "note": "CASE M059: ACDF 2-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCervical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cages placed at C5-C6 and C6-C7.\nAnterior plate instrumentation across C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C5-C6 to C6-C7."
+  },
+  {
+    "id": "M060",
+    "title": "ACDF 3-level with cages/plate (NCCI 59)",
+    "note": "CASE M060: ACDF 3-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCervical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nInterbody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnterior plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C4-C5 to C5-C6 to C6-C7."
+  },
+  {
+    "id": "M061",
+    "title": "ACDF 2-level with cages/plate (NCCI 59)",
+    "note": "CASE M061: ACDF 2-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCervical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cages placed at C5-C6 and C6-C7.\nAnterior plate instrumentation across C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C5-C6 to C6-C7."
+  },
+  {
+    "id": "M062",
+    "title": "ACDF 3-level with cages/plate (NCCI 59)",
+    "note": "CASE M062: ACDF 3-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCervical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nInterbody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnterior plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C4-C5 to C5-C6 to C6-C7."
+  },
+  {
+    "id": "M063",
+    "title": "ACDF 2-level with cages/plate (NCCI 59)",
+    "note": "CASE M063: ACDF 2-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCervical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cages placed at C5-C6 and C6-C7.\nAnterior plate instrumentation across C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C5-C6 to C6-C7."
+  },
+  {
+    "id": "M064",
+    "title": "ACDF 3-level with cages/plate (NCCI 59)",
+    "note": "CASE M064: ACDF 3-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCervical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nInterbody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnterior plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C4-C5 to C5-C6 to C6-C7."
+  },
+  {
+    "id": "M065",
+    "title": "Microdiscectomy left with global modifier 58",
+    "note": "CASE M065: Microdiscectomy left with global modifier 58\nSUBJECTIVE:\nRecurrent L5-S1 disc herniation with radiculopathy\nOBJECTIVE:\nReturn procedure 58: left L5-S1 microdiscectomy performed in global period.\nASSESSMENT:\nAssessment: Recurrent L5-S1 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Return procedure 58: left L5-S1 microdiscectomy performed in global period."
+  },
+  {
+    "id": "M066",
+    "title": "Microdiscectomy right with global modifier 58",
+    "note": "CASE M066: Microdiscectomy right with global modifier 58\nSUBJECTIVE:\nRecurrent L5-S1 disc herniation with radiculopathy\nOBJECTIVE:\nReturn procedure 58: right L5-S1 microdiscectomy performed in global period.\nASSESSMENT:\nAssessment: Recurrent L5-S1 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Return procedure 58: right L5-S1 microdiscectomy performed in global period."
+  },
+  {
+    "id": "M067",
+    "title": "Microdiscectomy left with global modifier 78",
+    "note": "CASE M067: Microdiscectomy left with global modifier 78\nSUBJECTIVE:\nRecurrent L5-S1 disc herniation with radiculopathy\nOBJECTIVE:\nReturn procedure 78: left L5-S1 microdiscectomy performed in global period.\nASSESSMENT:\nAssessment: Recurrent L5-S1 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Return procedure 78: left L5-S1 microdiscectomy performed in global period."
+  },
+  {
+    "id": "M068",
+    "title": "Microdiscectomy right with global modifier 78",
+    "note": "CASE M068: Microdiscectomy right with global modifier 78\nSUBJECTIVE:\nRecurrent L5-S1 disc herniation with radiculopathy\nOBJECTIVE:\nReturn procedure 78: right L5-S1 microdiscectomy performed in global period.\nASSESSMENT:\nAssessment: Recurrent L5-S1 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Return procedure 78: right L5-S1 microdiscectomy performed in global period."
+  },
+  {
+    "id": "M069",
+    "title": "Microdiscectomy left with global modifier 79",
+    "note": "CASE M069: Microdiscectomy left with global modifier 79\nSUBJECTIVE:\nRecurrent L5-S1 disc herniation with radiculopathy\nOBJECTIVE:\nReturn procedure 79: left L5-S1 microdiscectomy performed in global period.\nASSESSMENT:\nAssessment: Recurrent L5-S1 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Return procedure 79: left L5-S1 microdiscectomy performed in global period."
+  },
+  {
+    "id": "M070",
+    "title": "Microdiscectomy right with global modifier 79",
+    "note": "CASE M070: Microdiscectomy right with global modifier 79\nSUBJECTIVE:\nRecurrent L5-S1 disc herniation with radiculopathy\nOBJECTIVE:\nReturn procedure 79: right L5-S1 microdiscectomy performed in global period.\nASSESSMENT:\nAssessment: Recurrent L5-S1 disc herniation with radiculopathy\nPLAN:\nProcedure performed: Return procedure 79: right L5-S1 microdiscectomy performed in global period."
+  },
+  {
+    "id": "M071",
+    "title": "Office office_established low cervicalgia",
+    "note": "CASE M071: Office office_established low cervicalgia\nSUBJECTIVE:\nlow complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: low complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M072",
+    "title": "Office office_new moderate muscle_spasm",
+    "note": "CASE M072: Office office_new moderate muscle_spasm\nSUBJECTIVE:\nmoderate complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: moderate complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M073",
+    "title": "Office office_established high coccydynia",
+    "note": "CASE M073: Office office_established high coccydynia\nSUBJECTIVE:\nhigh complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: high complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M074",
+    "title": "Office office_new low sciatica",
+    "note": "CASE M074: Office office_new low sciatica\nSUBJECTIVE:\nlow complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: low complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M075",
+    "title": "Office office_established moderate spondylolisthesis",
+    "note": "CASE M075: Office office_established moderate spondylolisthesis\nSUBJECTIVE:\nmoderate complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: moderate complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M076",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "note": "CASE M076: Office office_new high postlaminectomy_syndrome\nSUBJECTIVE:\nhigh complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: high complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M077",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "note": "CASE M077: Office office_established low ankylosing_spondylitis\nSUBJECTIVE:\nlow complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: low complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M078",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "note": "CASE M078: Office office_new moderate si_joint_dysfunction\nSUBJECTIVE:\nmoderate complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: moderate complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M079",
+    "title": "Office office_established high scoliosis",
+    "note": "CASE M079: Office office_established high scoliosis\nSUBJECTIVE:\nhigh complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M080",
+    "title": "Office office_new low low_back_pain",
+    "note": "CASE M080: Office office_new low low_back_pain\nSUBJECTIVE:\nlow complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: low complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M081",
+    "title": "Office office_established moderate cervicalgia",
+    "note": "CASE M081: Office office_established moderate cervicalgia\nSUBJECTIVE:\nmoderate complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: moderate complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M082",
+    "title": "Office office_new high muscle_spasm",
+    "note": "CASE M082: Office office_new high muscle_spasm\nSUBJECTIVE:\nhigh complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: high complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M083",
+    "title": "Office office_established low coccydynia",
+    "note": "CASE M083: Office office_established low coccydynia\nSUBJECTIVE:\nlow complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: low complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M084",
+    "title": "Office office_new moderate sciatica",
+    "note": "CASE M084: Office office_new moderate sciatica\nSUBJECTIVE:\nmoderate complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: moderate complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M085",
+    "title": "Office office_established high spondylolisthesis",
+    "note": "CASE M085: Office office_established high spondylolisthesis\nSUBJECTIVE:\nhigh complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: high complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M086",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "note": "CASE M086: Office office_new low postlaminectomy_syndrome\nSUBJECTIVE:\nlow complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: low complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M087",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "note": "CASE M087: Office office_established moderate ankylosing_spondylitis\nSUBJECTIVE:\nmoderate complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: moderate complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M088",
+    "title": "Office office_new high si_joint_dysfunction",
+    "note": "CASE M088: Office office_new high si_joint_dysfunction\nSUBJECTIVE:\nhigh complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: high complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M089",
+    "title": "Office office_established low scoliosis",
+    "note": "CASE M089: Office office_established low scoliosis\nSUBJECTIVE:\nlow complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: low complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M090",
+    "title": "Office office_new moderate low_back_pain",
+    "note": "CASE M090: Office office_new moderate low_back_pain\nSUBJECTIVE:\nmoderate complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: moderate complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M091",
+    "title": "Office office_established high cervicalgia",
+    "note": "CASE M091: Office office_established high cervicalgia\nSUBJECTIVE:\nhigh complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: high complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M092",
+    "title": "Office office_new low muscle_spasm",
+    "note": "CASE M092: Office office_new low muscle_spasm\nSUBJECTIVE:\nlow complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: low complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M093",
+    "title": "Office office_established moderate coccydynia",
+    "note": "CASE M093: Office office_established moderate coccydynia\nSUBJECTIVE:\nmoderate complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: moderate complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M094",
+    "title": "Office office_new high sciatica",
+    "note": "CASE M094: Office office_new high sciatica\nSUBJECTIVE:\nhigh complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: high complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M095",
+    "title": "Office office_established low spondylolisthesis",
+    "note": "CASE M095: Office office_established low spondylolisthesis\nSUBJECTIVE:\nlow complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: low complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M096",
+    "title": "Office office_new moderate postlaminectomy_syndrome",
+    "note": "CASE M096: Office office_new moderate postlaminectomy_syndrome\nSUBJECTIVE:\nmoderate complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: moderate complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M097",
+    "title": "Office office_established high ankylosing_spondylitis",
+    "note": "CASE M097: Office office_established high ankylosing_spondylitis\nSUBJECTIVE:\nhigh complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: high complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M098",
+    "title": "Office office_new low si_joint_dysfunction",
+    "note": "CASE M098: Office office_new low si_joint_dysfunction\nSUBJECTIVE:\nlow complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: low complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M099",
+    "title": "Office office_established moderate scoliosis",
+    "note": "CASE M099: Office office_established moderate scoliosis\nSUBJECTIVE:\nmoderate complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: moderate complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M100",
+    "title": "Office office_new high low_back_pain",
+    "note": "CASE M100: Office office_new high low_back_pain\nSUBJECTIVE:\nhigh complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: high complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M101",
+    "title": "Office office_established low cervicalgia",
+    "note": "CASE M101: Office office_established low cervicalgia\nSUBJECTIVE:\nlow complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: low complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M102",
+    "title": "Office office_new moderate muscle_spasm",
+    "note": "CASE M102: Office office_new moderate muscle_spasm\nSUBJECTIVE:\nmoderate complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: moderate complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M103",
+    "title": "Office office_established high coccydynia",
+    "note": "CASE M103: Office office_established high coccydynia\nSUBJECTIVE:\nhigh complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: high complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M104",
+    "title": "Office office_new low sciatica",
+    "note": "CASE M104: Office office_new low sciatica\nSUBJECTIVE:\nlow complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: low complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M105",
+    "title": "Office office_established moderate spondylolisthesis",
+    "note": "CASE M105: Office office_established moderate spondylolisthesis\nSUBJECTIVE:\nmoderate complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: moderate complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M106",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "note": "CASE M106: Office office_new high postlaminectomy_syndrome\nSUBJECTIVE:\nhigh complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: high complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M107",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "note": "CASE M107: Office office_established low ankylosing_spondylitis\nSUBJECTIVE:\nlow complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: low complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M108",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "note": "CASE M108: Office office_new moderate si_joint_dysfunction\nSUBJECTIVE:\nmoderate complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: moderate complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M109",
+    "title": "Office office_established high scoliosis",
+    "note": "CASE M109: Office office_established high scoliosis\nSUBJECTIVE:\nhigh complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M110",
+    "title": "Office office_new low low_back_pain",
+    "note": "CASE M110: Office office_new low low_back_pain\nSUBJECTIVE:\nlow complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: low complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M111",
+    "title": "Office office_established moderate cervicalgia",
+    "note": "CASE M111: Office office_established moderate cervicalgia\nSUBJECTIVE:\nmoderate complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: moderate complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M112",
+    "title": "Office office_new high muscle_spasm",
+    "note": "CASE M112: Office office_new high muscle_spasm\nSUBJECTIVE:\nhigh complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: high complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M113",
+    "title": "Office office_established low coccydynia",
+    "note": "CASE M113: Office office_established low coccydynia\nSUBJECTIVE:\nlow complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: low complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M114",
+    "title": "Office office_new moderate sciatica",
+    "note": "CASE M114: Office office_new moderate sciatica\nSUBJECTIVE:\nmoderate complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: moderate complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M115",
+    "title": "Office office_established high spondylolisthesis",
+    "note": "CASE M115: Office office_established high spondylolisthesis\nSUBJECTIVE:\nhigh complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: high complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M116",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "note": "CASE M116: Office office_new low postlaminectomy_syndrome\nSUBJECTIVE:\nlow complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: low complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M117",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "note": "CASE M117: Office office_established moderate ankylosing_spondylitis\nSUBJECTIVE:\nmoderate complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: moderate complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M118",
+    "title": "Office office_new high si_joint_dysfunction",
+    "note": "CASE M118: Office office_new high si_joint_dysfunction\nSUBJECTIVE:\nhigh complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: high complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M119",
+    "title": "Office office_established low scoliosis",
+    "note": "CASE M119: Office office_established low scoliosis\nSUBJECTIVE:\nlow complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: low complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M120",
+    "title": "Office office_new moderate low_back_pain",
+    "note": "CASE M120: Office office_new moderate low_back_pain\nSUBJECTIVE:\nmoderate complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: moderate complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M121",
+    "title": "Office office_established high cervicalgia",
+    "note": "CASE M121: Office office_established high cervicalgia\nSUBJECTIVE:\nhigh complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: high complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M122",
+    "title": "Office office_new low muscle_spasm",
+    "note": "CASE M122: Office office_new low muscle_spasm\nSUBJECTIVE:\nlow complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: low complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M123",
+    "title": "Office office_established moderate coccydynia",
+    "note": "CASE M123: Office office_established moderate coccydynia\nSUBJECTIVE:\nmoderate complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: moderate complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M124",
+    "title": "Office office_new high sciatica",
+    "note": "CASE M124: Office office_new high sciatica\nSUBJECTIVE:\nhigh complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: high complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M125",
+    "title": "Office office_established low spondylolisthesis",
+    "note": "CASE M125: Office office_established low spondylolisthesis\nSUBJECTIVE:\nlow complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: low complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M126",
+    "title": "Office office_new moderate postlaminectomy_syndrome",
+    "note": "CASE M126: Office office_new moderate postlaminectomy_syndrome\nSUBJECTIVE:\nmoderate complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: moderate complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M127",
+    "title": "Office office_established high ankylosing_spondylitis",
+    "note": "CASE M127: Office office_established high ankylosing_spondylitis\nSUBJECTIVE:\nhigh complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: high complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M128",
+    "title": "Office office_new low si_joint_dysfunction",
+    "note": "CASE M128: Office office_new low si_joint_dysfunction\nSUBJECTIVE:\nlow complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: low complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M129",
+    "title": "Office office_established moderate scoliosis",
+    "note": "CASE M129: Office office_established moderate scoliosis\nSUBJECTIVE:\nmoderate complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: moderate complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M130",
+    "title": "Office office_new high low_back_pain",
+    "note": "CASE M130: Office office_new high low_back_pain\nSUBJECTIVE:\nhigh complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: high complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M131",
+    "title": "Office office_established low cervicalgia",
+    "note": "CASE M131: Office office_established low cervicalgia\nSUBJECTIVE:\nlow complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: low complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M132",
+    "title": "Office office_new moderate muscle_spasm",
+    "note": "CASE M132: Office office_new moderate muscle_spasm\nSUBJECTIVE:\nmoderate complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: moderate complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M133",
+    "title": "Office office_established high coccydynia",
+    "note": "CASE M133: Office office_established high coccydynia\nSUBJECTIVE:\nhigh complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: high complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M134",
+    "title": "Office office_new low sciatica",
+    "note": "CASE M134: Office office_new low sciatica\nSUBJECTIVE:\nlow complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: low complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M135",
+    "title": "Office office_established moderate spondylolisthesis",
+    "note": "CASE M135: Office office_established moderate spondylolisthesis\nSUBJECTIVE:\nmoderate complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: moderate complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M136",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "note": "CASE M136: Office office_new high postlaminectomy_syndrome\nSUBJECTIVE:\nhigh complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: high complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M137",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "note": "CASE M137: Office office_established low ankylosing_spondylitis\nSUBJECTIVE:\nlow complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: low complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M138",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "note": "CASE M138: Office office_new moderate si_joint_dysfunction\nSUBJECTIVE:\nmoderate complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: moderate complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M139",
+    "title": "Office office_established high scoliosis",
+    "note": "CASE M139: Office office_established high scoliosis\nSUBJECTIVE:\nhigh complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M140",
+    "title": "Office office_new low low_back_pain",
+    "note": "CASE M140: Office office_new low low_back_pain\nSUBJECTIVE:\nlow complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: low complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M141",
+    "title": "Office office_established moderate cervicalgia",
+    "note": "CASE M141: Office office_established moderate cervicalgia\nSUBJECTIVE:\nmoderate complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: moderate complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M142",
+    "title": "Office office_new high muscle_spasm",
+    "note": "CASE M142: Office office_new high muscle_spasm\nSUBJECTIVE:\nhigh complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: high complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M143",
+    "title": "Office office_established low coccydynia",
+    "note": "CASE M143: Office office_established low coccydynia\nSUBJECTIVE:\nlow complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: low complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M144",
+    "title": "Office office_new moderate sciatica",
+    "note": "CASE M144: Office office_new moderate sciatica\nSUBJECTIVE:\nmoderate complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: moderate complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M145",
+    "title": "Office office_established high spondylolisthesis",
+    "note": "CASE M145: Office office_established high spondylolisthesis\nSUBJECTIVE:\nhigh complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: high complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M146",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "note": "CASE M146: Office office_new low postlaminectomy_syndrome\nSUBJECTIVE:\nlow complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: low complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M147",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "note": "CASE M147: Office office_established moderate ankylosing_spondylitis\nSUBJECTIVE:\nmoderate complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: moderate complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M148",
+    "title": "Office office_new high si_joint_dysfunction",
+    "note": "CASE M148: Office office_new high si_joint_dysfunction\nSUBJECTIVE:\nhigh complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: high complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M149",
+    "title": "Office office_established low scoliosis",
+    "note": "CASE M149: Office office_established low scoliosis\nSUBJECTIVE:\nlow complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: low complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M150",
+    "title": "Office office_new moderate low_back_pain",
+    "note": "CASE M150: Office office_new moderate low_back_pain\nSUBJECTIVE:\nmoderate complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: moderate complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M151",
+    "title": "Office office_established high cervicalgia",
+    "note": "CASE M151: Office office_established high cervicalgia\nSUBJECTIVE:\nhigh complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: high complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M152",
+    "title": "Office office_new low muscle_spasm",
+    "note": "CASE M152: Office office_new low muscle_spasm\nSUBJECTIVE:\nlow complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: low complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M153",
+    "title": "Office office_established moderate coccydynia",
+    "note": "CASE M153: Office office_established moderate coccydynia\nSUBJECTIVE:\nmoderate complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: moderate complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M154",
+    "title": "Office office_new high sciatica",
+    "note": "CASE M154: Office office_new high sciatica\nSUBJECTIVE:\nhigh complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: high complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M155",
+    "title": "Office office_established low spondylolisthesis",
+    "note": "CASE M155: Office office_established low spondylolisthesis\nSUBJECTIVE:\nlow complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: low complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M156",
+    "title": "Office office_new moderate postlaminectomy_syndrome",
+    "note": "CASE M156: Office office_new moderate postlaminectomy_syndrome\nSUBJECTIVE:\nmoderate complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: moderate complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M157",
+    "title": "Office office_established high ankylosing_spondylitis",
+    "note": "CASE M157: Office office_established high ankylosing_spondylitis\nSUBJECTIVE:\nhigh complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: high complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M158",
+    "title": "Office office_new low si_joint_dysfunction",
+    "note": "CASE M158: Office office_new low si_joint_dysfunction\nSUBJECTIVE:\nlow complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: low complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M159",
+    "title": "Office office_established moderate scoliosis",
+    "note": "CASE M159: Office office_established moderate scoliosis\nSUBJECTIVE:\nmoderate complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: moderate complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M160",
+    "title": "Office office_new high low_back_pain",
+    "note": "CASE M160: Office office_new high low_back_pain\nSUBJECTIVE:\nhigh complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: high complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M161",
+    "title": "Office office_established low cervicalgia",
+    "note": "CASE M161: Office office_established low cervicalgia\nSUBJECTIVE:\nlow complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: low complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M162",
+    "title": "Office office_new moderate muscle_spasm",
+    "note": "CASE M162: Office office_new moderate muscle_spasm\nSUBJECTIVE:\nmoderate complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: moderate complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M163",
+    "title": "Office office_established high coccydynia",
+    "note": "CASE M163: Office office_established high coccydynia\nSUBJECTIVE:\nhigh complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: high complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M164",
+    "title": "Office office_new low sciatica",
+    "note": "CASE M164: Office office_new low sciatica\nSUBJECTIVE:\nlow complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: low complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M165",
+    "title": "Office office_established moderate spondylolisthesis",
+    "note": "CASE M165: Office office_established moderate spondylolisthesis\nSUBJECTIVE:\nmoderate complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: moderate complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M166",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "note": "CASE M166: Office office_new high postlaminectomy_syndrome\nSUBJECTIVE:\nhigh complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: high complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M167",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "note": "CASE M167: Office office_established low ankylosing_spondylitis\nSUBJECTIVE:\nlow complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: low complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M168",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "note": "CASE M168: Office office_new moderate si_joint_dysfunction\nSUBJECTIVE:\nmoderate complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: moderate complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M169",
+    "title": "Office office_established high scoliosis",
+    "note": "CASE M169: Office office_established high scoliosis\nSUBJECTIVE:\nhigh complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M170",
+    "title": "Office office_new low low_back_pain",
+    "note": "CASE M170: Office office_new low low_back_pain\nSUBJECTIVE:\nlow complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: low complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M171",
+    "title": "Office office_established moderate cervicalgia",
+    "note": "CASE M171: Office office_established moderate cervicalgia\nSUBJECTIVE:\nmoderate complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: moderate complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M172",
+    "title": "Office office_new high muscle_spasm",
+    "note": "CASE M172: Office office_new high muscle_spasm\nSUBJECTIVE:\nhigh complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: high complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M173",
+    "title": "Office office_established low coccydynia",
+    "note": "CASE M173: Office office_established low coccydynia\nSUBJECTIVE:\nlow complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: low complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M174",
+    "title": "Office office_new moderate sciatica",
+    "note": "CASE M174: Office office_new moderate sciatica\nSUBJECTIVE:\nmoderate complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: moderate complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M175",
+    "title": "Office office_established high spondylolisthesis",
+    "note": "CASE M175: Office office_established high spondylolisthesis\nSUBJECTIVE:\nhigh complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: high complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M176",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "note": "CASE M176: Office office_new low postlaminectomy_syndrome\nSUBJECTIVE:\nlow complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: low complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M177",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "note": "CASE M177: Office office_established moderate ankylosing_spondylitis\nSUBJECTIVE:\nmoderate complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: moderate complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M178",
+    "title": "Office office_new high si_joint_dysfunction",
+    "note": "CASE M178: Office office_new high si_joint_dysfunction\nSUBJECTIVE:\nhigh complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: high complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M179",
+    "title": "Office office_established low scoliosis",
+    "note": "CASE M179: Office office_established low scoliosis\nSUBJECTIVE:\nlow complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: low complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M180",
+    "title": "Office office_new moderate low_back_pain",
+    "note": "CASE M180: Office office_new moderate low_back_pain\nSUBJECTIVE:\nmoderate complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: moderate complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M181",
+    "title": "Office office_established high cervicalgia",
+    "note": "CASE M181: Office office_established high cervicalgia\nSUBJECTIVE:\nhigh complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: high complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M182",
+    "title": "Office office_new low muscle_spasm",
+    "note": "CASE M182: Office office_new low muscle_spasm\nSUBJECTIVE:\nlow complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: low complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M183",
+    "title": "Office office_established moderate coccydynia",
+    "note": "CASE M183: Office office_established moderate coccydynia\nSUBJECTIVE:\nmoderate complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: moderate complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M184",
+    "title": "Office office_new high sciatica",
+    "note": "CASE M184: Office office_new high sciatica\nSUBJECTIVE:\nhigh complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: high complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M185",
+    "title": "Office office_established low spondylolisthesis",
+    "note": "CASE M185: Office office_established low spondylolisthesis\nSUBJECTIVE:\nlow complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: low complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M186",
+    "title": "Office office_new moderate postlaminectomy_syndrome",
+    "note": "CASE M186: Office office_new moderate postlaminectomy_syndrome\nSUBJECTIVE:\nmoderate complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: moderate complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M187",
+    "title": "Office office_established high ankylosing_spondylitis",
+    "note": "CASE M187: Office office_established high ankylosing_spondylitis\nSUBJECTIVE:\nhigh complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: high complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M188",
+    "title": "Office office_new low si_joint_dysfunction",
+    "note": "CASE M188: Office office_new low si_joint_dysfunction\nSUBJECTIVE:\nlow complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: low complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M189",
+    "title": "Office office_established moderate scoliosis",
+    "note": "CASE M189: Office office_established moderate scoliosis\nSUBJECTIVE:\nmoderate complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: moderate complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M190",
+    "title": "Office office_new high low_back_pain",
+    "note": "CASE M190: Office office_new high low_back_pain\nSUBJECTIVE:\nhigh complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: high complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M191",
+    "title": "Office office_established low cervicalgia",
+    "note": "CASE M191: Office office_established low cervicalgia\nSUBJECTIVE:\nlow complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: low complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M192",
+    "title": "Office office_new moderate muscle_spasm",
+    "note": "CASE M192: Office office_new moderate muscle_spasm\nSUBJECTIVE:\nmoderate complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: moderate complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M193",
+    "title": "Office office_established high coccydynia",
+    "note": "CASE M193: Office office_established high coccydynia\nSUBJECTIVE:\nhigh complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: high complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M194",
+    "title": "Office office_new low sciatica",
+    "note": "CASE M194: Office office_new low sciatica\nSUBJECTIVE:\nlow complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: low complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M195",
+    "title": "Office office_established moderate spondylolisthesis",
+    "note": "CASE M195: Office office_established moderate spondylolisthesis\nSUBJECTIVE:\nmoderate complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: moderate complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M196",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "note": "CASE M196: Office office_new high postlaminectomy_syndrome\nSUBJECTIVE:\nhigh complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: high complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M197",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "note": "CASE M197: Office office_established low ankylosing_spondylitis\nSUBJECTIVE:\nlow complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: low complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M198",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "note": "CASE M198: Office office_new moderate si_joint_dysfunction\nSUBJECTIVE:\nmoderate complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: moderate complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M199",
+    "title": "Office office_established high scoliosis",
+    "note": "CASE M199: Office office_established high scoliosis\nSUBJECTIVE:\nhigh complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M200",
+    "title": "Office office_new low low_back_pain",
+    "note": "CASE M200: Office office_new low low_back_pain\nSUBJECTIVE:\nlow complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: low complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M201",
+    "title": "Office office_established moderate cervicalgia",
+    "note": "CASE M201: Office office_established moderate cervicalgia\nSUBJECTIVE:\nmoderate complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: moderate complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M202",
+    "title": "Office office_new high muscle_spasm",
+    "note": "CASE M202: Office office_new high muscle_spasm\nSUBJECTIVE:\nhigh complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: high complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M203",
+    "title": "Office office_established low coccydynia",
+    "note": "CASE M203: Office office_established low coccydynia\nSUBJECTIVE:\nlow complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: low complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M204",
+    "title": "Office office_new moderate sciatica",
+    "note": "CASE M204: Office office_new moderate sciatica\nSUBJECTIVE:\nmoderate complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: moderate complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M205",
+    "title": "Office office_established high spondylolisthesis",
+    "note": "CASE M205: Office office_established high spondylolisthesis\nSUBJECTIVE:\nhigh complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: high complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M206",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "note": "CASE M206: Office office_new low postlaminectomy_syndrome\nSUBJECTIVE:\nlow complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: low complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M207",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "note": "CASE M207: Office office_established moderate ankylosing_spondylitis\nSUBJECTIVE:\nmoderate complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: moderate complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M208",
+    "title": "Office office_new high si_joint_dysfunction",
+    "note": "CASE M208: Office office_new high si_joint_dysfunction\nSUBJECTIVE:\nhigh complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: high complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M209",
+    "title": "Office office_established low scoliosis",
+    "note": "CASE M209: Office office_established low scoliosis\nSUBJECTIVE:\nlow complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: low complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M210",
+    "title": "Office office_new moderate low_back_pain",
+    "note": "CASE M210: Office office_new moderate low_back_pain\nSUBJECTIVE:\nmoderate complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: moderate complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M211",
+    "title": "Office office_established high cervicalgia",
+    "note": "CASE M211: Office office_established high cervicalgia\nSUBJECTIVE:\nhigh complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: high complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M212",
+    "title": "Office office_new low muscle_spasm",
+    "note": "CASE M212: Office office_new low muscle_spasm\nSUBJECTIVE:\nlow complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: low complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M213",
+    "title": "Office office_established moderate coccydynia",
+    "note": "CASE M213: Office office_established moderate coccydynia\nSUBJECTIVE:\nmoderate complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: moderate complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M214",
+    "title": "Office office_new high sciatica",
+    "note": "CASE M214: Office office_new high sciatica\nSUBJECTIVE:\nhigh complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: high complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M215",
+    "title": "Office office_established low spondylolisthesis",
+    "note": "CASE M215: Office office_established low spondylolisthesis\nSUBJECTIVE:\nlow complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: low complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M216",
+    "title": "Office office_new moderate postlaminectomy_syndrome",
+    "note": "CASE M216: Office office_new moderate postlaminectomy_syndrome\nSUBJECTIVE:\nmoderate complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: moderate complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M217",
+    "title": "Office office_established high ankylosing_spondylitis",
+    "note": "CASE M217: Office office_established high ankylosing_spondylitis\nSUBJECTIVE:\nhigh complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: high complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M218",
+    "title": "Office office_new low si_joint_dysfunction",
+    "note": "CASE M218: Office office_new low si_joint_dysfunction\nSUBJECTIVE:\nlow complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: low complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M219",
+    "title": "Office office_established moderate scoliosis",
+    "note": "CASE M219: Office office_established moderate scoliosis\nSUBJECTIVE:\nmoderate complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: moderate complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M220",
+    "title": "Office office_new high low_back_pain",
+    "note": "CASE M220: Office office_new high low_back_pain\nSUBJECTIVE:\nhigh complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: high complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M221",
+    "title": "Office office_established low cervicalgia",
+    "note": "CASE M221: Office office_established low cervicalgia\nSUBJECTIVE:\nlow complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: low complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M222",
+    "title": "Office office_new moderate muscle_spasm",
+    "note": "CASE M222: Office office_new moderate muscle_spasm\nSUBJECTIVE:\nmoderate complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: moderate complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M223",
+    "title": "Office office_established high coccydynia",
+    "note": "CASE M223: Office office_established high coccydynia\nSUBJECTIVE:\nhigh complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: high complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M224",
+    "title": "Office office_new low sciatica",
+    "note": "CASE M224: Office office_new low sciatica\nSUBJECTIVE:\nlow complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: low complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M225",
+    "title": "Office office_established moderate spondylolisthesis",
+    "note": "CASE M225: Office office_established moderate spondylolisthesis\nSUBJECTIVE:\nmoderate complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: moderate complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M226",
+    "title": "Office office_new high postlaminectomy_syndrome",
+    "note": "CASE M226: Office office_new high postlaminectomy_syndrome\nSUBJECTIVE:\nhigh complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: high complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M227",
+    "title": "Office office_established low ankylosing_spondylitis",
+    "note": "CASE M227: Office office_established low ankylosing_spondylitis\nSUBJECTIVE:\nlow complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: low complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M228",
+    "title": "Office office_new moderate si_joint_dysfunction",
+    "note": "CASE M228: Office office_new moderate si_joint_dysfunction\nSUBJECTIVE:\nmoderate complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: moderate complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M229",
+    "title": "Office office_established high scoliosis",
+    "note": "CASE M229: Office office_established high scoliosis\nSUBJECTIVE:\nhigh complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: high complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M230",
+    "title": "Office office_new low low_back_pain",
+    "note": "CASE M230: Office office_new low low_back_pain\nSUBJECTIVE:\nlow complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: low complexity office new for Mechanical low back pain."
+  },
+  {
+    "id": "M231",
+    "title": "Office office_established moderate cervicalgia",
+    "note": "CASE M231: Office office_established moderate cervicalgia\nSUBJECTIVE:\nmoderate complexity office established for Cervicalgia without radiculopathy.\nCervicalgia without radiculopathy\nOBJECTIVE:\nASSESSMENT:\nAssessment: Cervicalgia without radiculopathy\nPLAN:\nPlan: moderate complexity office established for Cervicalgia without radiculopathy."
+  },
+  {
+    "id": "M232",
+    "title": "Office office_new high muscle_spasm",
+    "note": "CASE M232: Office office_new high muscle_spasm\nSUBJECTIVE:\nhigh complexity office new for Muscle spasm of back.\nMuscle spasm of back\nOBJECTIVE:\nASSESSMENT:\nAssessment: Muscle spasm of back\nPLAN:\nPlan: high complexity office new for Muscle spasm of back."
+  },
+  {
+    "id": "M233",
+    "title": "Office office_established low coccydynia",
+    "note": "CASE M233: Office office_established low coccydynia\nSUBJECTIVE:\nlow complexity office established for Coccydynia after fall.\nCoccydynia after fall\nOBJECTIVE:\nASSESSMENT:\nAssessment: Coccydynia after fall\nPLAN:\nPlan: low complexity office established for Coccydynia after fall."
+  },
+  {
+    "id": "M234",
+    "title": "Office office_new moderate sciatica",
+    "note": "CASE M234: Office office_new moderate sciatica\nSUBJECTIVE:\nmoderate complexity office new for Right-sided sciatica.\nRight-sided sciatica\nOBJECTIVE:\nASSESSMENT:\nAssessment: Right-sided sciatica\nPLAN:\nPlan: moderate complexity office new for Right-sided sciatica."
+  },
+  {
+    "id": "M235",
+    "title": "Office office_established high spondylolisthesis",
+    "note": "CASE M235: Office office_established high spondylolisthesis\nSUBJECTIVE:\nhigh complexity office established for L4-L5 spondylolisthesis.\nL4-L5 spondylolisthesis\nOBJECTIVE:\nASSESSMENT:\nAssessment: L4-L5 spondylolisthesis\nPLAN:\nPlan: high complexity office established for L4-L5 spondylolisthesis."
+  },
+  {
+    "id": "M236",
+    "title": "Office office_new low postlaminectomy_syndrome",
+    "note": "CASE M236: Office office_new low postlaminectomy_syndrome\nSUBJECTIVE:\nlow complexity office new for Postlaminectomy syndrome.\nPostlaminectomy syndrome\nOBJECTIVE:\nASSESSMENT:\nAssessment: Postlaminectomy syndrome\nPLAN:\nPlan: low complexity office new for Postlaminectomy syndrome."
+  },
+  {
+    "id": "M237",
+    "title": "Office office_established moderate ankylosing_spondylitis",
+    "note": "CASE M237: Office office_established moderate ankylosing_spondylitis\nSUBJECTIVE:\nmoderate complexity office established for Ankylosing spondylitis lumbar.\nAnkylosing spondylitis lumbar\nOBJECTIVE:\nASSESSMENT:\nAssessment: Ankylosing spondylitis lumbar\nPLAN:\nPlan: moderate complexity office established for Ankylosing spondylitis lumbar."
+  },
+  {
+    "id": "M238",
+    "title": "Office office_new high si_joint_dysfunction",
+    "note": "CASE M238: Office office_new high si_joint_dysfunction\nSUBJECTIVE:\nhigh complexity office new for SI joint dysfunction.\nSI joint dysfunction\nOBJECTIVE:\nASSESSMENT:\nAssessment: SI joint dysfunction\nPLAN:\nPlan: high complexity office new for SI joint dysfunction."
+  },
+  {
+    "id": "M239",
+    "title": "Office office_established low scoliosis",
+    "note": "CASE M239: Office office_established low scoliosis\nSUBJECTIVE:\nlow complexity office established for Thoracic scoliosis.\nThoracic scoliosis\nOBJECTIVE:\nASSESSMENT:\nAssessment: Thoracic scoliosis\nPLAN:\nPlan: low complexity office established for Thoracic scoliosis."
+  },
+  {
+    "id": "M240",
+    "title": "Office office_new moderate low_back_pain",
+    "note": "CASE M240: Office office_new moderate low_back_pain\nSUBJECTIVE:\nmoderate complexity office new for Mechanical low back pain.\nMechanical low back pain\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain\nPLAN:\nPlan: moderate complexity office new for Mechanical low back pain."
   }
 ]

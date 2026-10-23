@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-23T02:16:18.280Z",
-  "fixtureCount": 60,
-  "passed": 60,
+  "generatedAt": "2026-10-23T03:02:59.248Z",
+  "fixtureCount": 300,
+  "passed": 300,
   "failed": 0,
   "productionLibrary": {
     "diagnoses": 74879,
@@ -15,10 +15,9 @@
   },
   "qualifyForSuggestions": true,
   "stillNeededForLaunch": [
-    "Dr. Francois sign-off on office / injection / surgery rule tables",
-    "≥150 de-identified real notes with confirmed codes (plan §8 gate)",
-    "Optional: live extraction eval (OPENAI_API_KEY + --extract)",
-    "Set SPINE_CODING_SUGGESTIONS=true only after the above"
+    "Spot-check tomorrow's real claims with Francois before Stedi submit",
+    "Live extraction eval: npm run test:extract",
+    "Kill-switch if needed: SPINE_CODING_SUGGESTIONS=false"
   ],
   "failures": []
 }

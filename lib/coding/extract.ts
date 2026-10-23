@@ -33,7 +33,14 @@ diagnoses[].condition MUST be snake_case from: disc_herniation, stenosis, radicu
 Map facet arthropathy / facet syndrome → spondylosis (not low_back_pain). Work injury strain → lumbar_strain or cervical_sprain (not muscle_spasm).
 region: cervical|thoracic|lumbar|lumbosacral|sacroiliac when known.
 with[] may include radiculopathy, myelopathy, neurogenic_claudication, initial, subsequent.
-diagnoses[].status: current|history|ruled_out|negated|suspected.`
+diagnoses[].status: current|history|ruled_out|negated|suspected.
+Modifier facts (never emit CPT modifier codes as text — only these flags):
+- decisionForSurgery true when MDM documents decision for major surgery today/day before → engine adds 57.
+- unrelatedToGlobalSurgery true for unrelated E/M inside a post-op global → engine adds 24.
+- significantSeparateProblem true when a separately significant E/M is done on the same day as a procedure → engine adds 25.
+- telehealth_* visit kinds → engine adds 95.
+- procedures[].side left/right/bilateral → engine adds LT/RT/50 when the rule allows.
+- procedures[].globalModifier 58 (staged), 78 (related return to OR), 79 (unrelated procedure in global), else null.`
 
 const factsSchema = {
   type: "object",
@@ -86,9 +93,12 @@ const factsSchema = {
           levels: { type: "array", items: { type: "string" } },
           side: { anyOf: [{ type: "string", enum: ["left", "right", "bilateral", "none"] }, { type: "null" }] },
           performed: { type: "boolean" },
+          globalModifier: {
+            anyOf: [{ type: "string", enum: ["58", "78", "79"] }, { type: "null" }],
+          },
           quote: { type: "string" },
         },
-        required: ["name", "levels", "side", "performed", "quote"],
+        required: ["name", "levels", "side", "performed", "globalModifier", "quote"],
       },
     },
     diagnoses: {

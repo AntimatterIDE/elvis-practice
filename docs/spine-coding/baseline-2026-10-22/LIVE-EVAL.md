@@ -18,3 +18,9 @@ level, one telehealth visit quote drop). Procedure CPT/ICD for claim gear-up
 on injections and OP notes passed in full.
 
 Suggestions flag: on (`SPINE_CODING_SUGGESTIONS` default true).
+
+## Golden facts + modifiers (offline)
+
+After modifier engine work: **300/300** qualify (`qualify-results.json`).
+See `MODIFIERS.md`. Live OpenAI extract rate is separate (still ~85% on the
+original 60 notes).

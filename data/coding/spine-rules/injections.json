@@ -38,7 +38,8 @@
       "cpt": "64493",
       "addonCpt": "64494",
       "thirdLevelCpt": "64495",
-      "bilateralModifier": "50"
+      "bilateralModifier": "50",
+      "lateralityModifiers": true
     },
     {
       "id": "mbb_cervical",
@@ -47,7 +48,8 @@
       "cpt": "64490",
       "addonCpt": "64491",
       "thirdLevelCpt": "64492",
-      "bilateralModifier": "50"
+      "bilateralModifier": "50",
+      "lateralityModifiers": true
     },
     {
       "id": "rfa_lumbar",

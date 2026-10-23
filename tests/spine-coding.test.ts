@@ -12,6 +12,7 @@ type Fixture = {
   expectedCptAnyOf: string[];
   expectedIcdAnyOf: string[];
   expectedModifiersAnyOf?: string[];
+  expectedModifiersOnCpt?: Record<string, string[]>;
   forbiddenCptPrefixes?: string[];
   forbiddenIcdPrefixes?: string[];
   forbiddenIcdExact?: string[];
@@ -78,6 +79,8 @@ const testLibrary = buildCodeLibrary(
       ["Z47.89", 1, "Aftercare"],
       ["Z98.1", 1, "Fusion status"],
       ["M41.86", 1, "Scoliosis adult"],
+      ["M41.84", 1, "Scoliosis thoracic"],
+      ["M41.9", 1, "Scoliosis unspecified"],
       ["M41.125", 1, "AIS"],
       ["S32.011A", 1, "L1 burst"],
       ["S13.4XXA", 1, "Cervical sprain"],
@@ -109,20 +112,31 @@ const testLibrary = buildCodeLibrary(
       ["99213", "", "A", "XXX"],
       ["99214", "", "A", "XXX"],
       ["99215", "", "A", "XXX"],
+      ["99242", "", "A", "XXX"],
       ["99243", "", "A", "XXX"],
       ["99244", "", "A", "XXX"],
+      ["99245", "", "A", "XXX"],
       ["99024", "", "B", "XXX"],
       ["72082", "", "A", "XXX"],
       ["72081", "", "A", "XXX"],
+      ["64479", "", "A", "XXX"],
+      ["64480", "", "A", "ZZZ"],
       ["64483", "", "A", "XXX"],
       ["64484", "", "A", "ZZZ"],
       ["62323", "", "A", "XXX"],
       ["62321", "", "A", "XXX"],
+      ["64490", "", "A", "XXX"],
+      ["64491", "", "A", "ZZZ"],
+      ["64492", "", "A", "ZZZ"],
       ["64493", "", "A", "XXX"],
       ["64494", "", "A", "ZZZ"],
+      ["64495", "", "A", "ZZZ"],
+      ["64633", "", "A", "XXX"],
+      ["64634", "", "A", "ZZZ"],
       ["64635", "", "A", "XXX"],
       ["64636", "", "A", "ZZZ"],
       ["27096", "", "A", "XXX"],
+      ["20552", "", "A", "XXX"],
       ["20553", "", "A", "XXX"],
       ["62273", "", "A", "XXX"],
       ["63030", "", "A", "090"],
@@ -137,18 +151,26 @@ const testLibrary = buildCodeLibrary(
       ["63048", "", "A", "ZZZ"],
       ["63045", "", "A", "090"],
       ["22513", "", "A", "090"],
+      ["22514", "", "A", "090"],
       ["22856", "", "A", "090"],
       ["22840", "", "A", "XXX"],
       ["22842", "", "A", "XXX"],
       ["22845", "", "A", "XXX"],
+      ["22846", "", "A", "XXX"],
       ["22853", "", "A", "XXX"],
       ["63650", "", "A", "XXX"],
       ["22850", "", "A", "XXX"],
       ["22830", "", "A", "XXX"],
       ["22558", "", "A", "090"],
+      ["22585", "", "A", "ZZZ"],
       ["22015", "", "A", "XXX"],
       ["27279", "", "A", "090"],
     ],
+  },
+  {
+    ptp: JSON.parse(readFileSync(path.join(process.cwd(), "data/coding/ncci-ptp.json"), "utf8")),
+    mue: JSON.parse(readFileSync(path.join(process.cwd(), "data/coding/mue.json"), "utf8")),
+    addon: JSON.parse(readFileSync(path.join(process.cwd(), "data/coding/addon-primaries.json"), "utf8")),
   },
 );
 
@@ -191,8 +213,8 @@ describe("office spine code generation", () => {
     expect(spineSuggestionsEnabled({ SPINE_CODING_SUGGESTIONS: "false" })).toBe(false);
   });
 
-  it(`covers ${fixtures.length} baseline fixtures (office + injections + surgery)`, () => {
-    expect(fixtures.length).toBe(60);
+  it(`covers ${fixtures.length} baseline fixtures (office + injections + surgery + modifiers)`, () => {
+    expect(fixtures.length).toBe(300);
   });
 
   for (const fixture of fixtures) {
@@ -242,6 +264,13 @@ describe("office spine code generation", () => {
       }
       for (const modifier of fixture.expectedModifiersAnyOf ?? []) {
         expect(modifiers).toContain(modifier);
+      }
+      for (const [cpt, need] of Object.entries(fixture.expectedModifiersOnCpt ?? {})) {
+        const line = result.lines.find((item) => item.cpt === cpt);
+        expect(line, `${fixture.id} missing CPT ${cpt} for modifier check`).toBeTruthy();
+        for (const modifier of need) {
+          expect(line!.modifiers, `${fixture.id} ${cpt} missing ${modifier}`).toContain(modifier);
+        }
       }
 
       // Office/injection fixtures: planned (not performed) surgery must not become CPT.
