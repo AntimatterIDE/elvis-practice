@@ -18,7 +18,7 @@ export type SuggestResult = {
 
 /**
  * Full suggestion path: extract → office rules → CMS/NCCI check.
- * Returns empty coding when the feature flag is off (production default).
+ * On by default; set SPINE_CODING_SUGGESTIONS=false to kill-switch.
  */
 export async function suggestVisitCodes(
   note: string,
