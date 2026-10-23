@@ -27,13 +27,13 @@ function readJson<T>(relative: string): T {
 
 /**
  * Live suggest path (same as visit pipeline /api/coding/suggest).
- * Staff session, or temporary x-spine-eval header for batch runs.
+ * Staff session required. Optional x-spine-eval only when SPINE_EVAL_TOKEN is set in env.
  */
 export async function POST(request: Request) {
   const staff = await getStaffSession();
   const evalHeader = request.headers.get("x-spine-eval")?.trim() ?? "";
-  const evalSecret = (process.env.SPINE_EVAL_TOKEN ?? "clinix-spine-eval-2026-10-23").trim();
-  const allowed = Boolean(staff) || (evalHeader.length > 0 && evalHeader === evalSecret);
+  const evalSecret = (process.env.SPINE_EVAL_TOKEN ?? "").trim();
+  const allowed = Boolean(staff) || (evalSecret.length > 0 && evalHeader === evalSecret);
   if (!allowed) {
     return Response.json({ message: "Sign in as staff to run the coding eval." }, { status: 401 });
   }
