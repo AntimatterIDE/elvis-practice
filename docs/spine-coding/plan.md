@@ -1,6 +1,6 @@
 # Spine coding plan — The Alignment Clinic
 
-Status: **Phase 0 live in production** (commit `66d9f73`, 2026-10-22) · Path of least resistance is the rollout driver (section 0) · Partner checklist: `/dev/coding-data` · Written 2026-10-22 · Billing input: Christina 2026-10-22 (sections 11–13)
+Status: Steps **1–3 done** (Phase 0 + NCCI validator live) · **Step 4 next** (office slice — section 0.1) · Path of least resistance is the rollout driver (section 0) · Partner checklist: `/dev/coding-data` · Written 2026-10-22 · Billing input: Christina 2026-10-22 (sections 11–13)
 
 ## 0. Path of least resistance (build order)
 
@@ -13,10 +13,44 @@ until steps 1–3 are green.
 | 1. CMS NCCI pack | **Done 2026-10-22** | Practitioner PTP spine subset (`ncci-ptp.json`), MUE, add-on primaries, Policy Manual PDFs under `docs/spine-coding/ncci-policy-manual-2024/` |
 | 2. Phase 0 deploy | **Done 2026-10-22** | Suggestions off; CMS ICD/PFS/HCPCS search; claim form search; Ready + Stedi library checks; bill as The Alignment Clinic + EIN |
 | 3. Wire NCCI/MUE/add-on validator | **Done 2026-10-22** | `claimCodeProblems` fails closed on NCCI pairs, over-MUE units, add-ons without a listed primary — Ready for bill + Stedi (same library) |
-| 4. Fact extract + TypeScript spine rules | Later | `gpt-5-mini` facts + quotes only; rules emit CPT/ICD numbers; still numbers-only until AMA |
+| 4. Fact extract + TypeScript spine rules | **Next — office slice first** | `gpt-5-mini` facts + quotes only; rules emit CPT/ICD numbers; still numbers-only until AMA. Start with section 0.1 below. |
 | 5. AMA CPT Data File (distributor) | When ready | Official descriptors, inclusion text, E/M tables — Clinix distributor license, not a clinic Codify seat |
 
 **Impenetrable stack:** LLM never invents codes → TypeScript rules (CMS + optional AMA text) → CMS validator (ICD billable, PFS, NCCI, MUE, add-on) → human review → same checks again before Stedi.
+
+### 0.1 Start step 4 now (office slice)
+
+Staff can already code by hand (CMS search + hard checks). Step 4 adds
+**suggestions** that still go through that same validator. Do not boil the
+ocean — ship one visit type first. Details for the full design live in
+sections 4.3 (fact extraction), 4.4 (spine coder), and 5.1 (office / consult /
+post-op rule table). Partner mirror: `/dev/coding-data`.
+
+1. **Scope.** Office / consult / post-op only first; then ESI/MBB; then one
+   surgery (e.g. TLIF). Fixtures from
+   [`baseline-2026-10-22/`](baseline-2026-10-22/) plus de-identified real
+   office notes when available.
+2. **Extractor.** New `lib/coding/extract.ts` — OpenAI `gpt-5-mini`,
+   structured JSON facts + quotes only (never CPT/ICD). Drop any fact whose
+   quote is not in the note. Send `store: false` (same pattern as the note
+   call). See section 4.3.
+3. **Rules.** New `lib/coding/spine.ts` +
+   `data/coding/spine-rules/office.json` — facts → CPT/ICD **numbers** → run
+   through existing `claimCodeProblems` (library + NCCI/MUE/add-on). Vitest:
+   facts in → expected lines out (no OpenAI in unit tests). See sections 4.4
+   and 5.1.
+4. **Visit desk.** “Suggestions (review)” stays **off by default** until the
+   office fixture set passes. Doctor can accept / edit / search; approve still
+   uses the library + NCCI checks.
+5. **Parallel (clinic / Anas).** Drop real consult/follow-up notes (or
+   de-identified text); start the AMA distributor application (step 5); put
+   the type 2 clinic NPI on the Practice page when found.
+
+**Do not**
+
+- Turn on suggestions for all spine surgery yet.
+- Call Scribe `coding-svc` or bring back ClaimX.
+- Wait on AMA to start step 4 — numbers + CMS rules are enough.
 
 ## 1. Summary
 

@@ -267,8 +267,13 @@ export const leastResistanceSteps = [
   },
   {
     step: 4,
-    title: "Fact extraction (gpt-5-mini) + TypeScript spine rules",
-    detail: "LLM returns facts + quotes only. Rules emit CPT/ICD numbers. CMS files validate. Still numbers-only until AMA lands.",
+    title: "Next — fact extract + rules (office slice first)",
+    detail:
+      "Start with office / consult / post-op only (then ESI/MBB, then one surgery). " +
+      "lib/coding/extract.ts: gpt-5-mini facts + quotes only, drop facts whose quote is missing, store: false. " +
+      "lib/coding/spine.ts + data/coding/spine-rules/office.json: facts → CPT/ICD numbers → claimCodeProblems. " +
+      "Visit desk suggestions stay off by default until fixtures pass. Do not wait on AMA; do not call Scribe coding-svc or ClaimX. " +
+      "Parallel: real consult notes, AMA distributor license, type 2 clinic NPI. Full write-up: docs/spine-coding/plan.md §0.1.",
   },
   {
     step: 5,
