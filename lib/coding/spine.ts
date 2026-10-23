@@ -377,7 +377,7 @@ function neutralizePlannedProcedures(facts: CodingFacts): CodingFacts {
       if (!procedure.performed) return procedure;
       const quote = procedure.quote.toLowerCase();
       const planned =
-        /(recommend|planned|schedule|consider|refer for|decision for|to undergo|tonight|emergent .{0,40}(decompression|discectomy|fusion))/i.test(
+        /(recommend|planned|schedule|consider|refer for|decision for|to undergo|tonight|emergent .{0,40}(decompression|discectomy|fusion)|revision fusion|removal and replacement)/i.test(
           quote,
         );
       const done =
