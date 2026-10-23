@@ -1,0 +1,169 @@
+{
+  "id": "surgery",
+  "version": "2026-10-22",
+  "signedOff": false,
+  "procedures": [
+    {
+      "id": "microdiscectomy_lumbar",
+      "name": "microdiscectomy",
+      "region": ["lumbar", "lumbosacral"],
+      "cpt": "63030",
+      "addonCpt": "63035",
+      "lateralityModifiers": true
+    },
+    {
+      "id": "acdf",
+      "name": "acdf",
+      "region": ["cervical"],
+      "cpt": "22551",
+      "addonCpt": "22552"
+    },
+    {
+      "id": "tlif",
+      "name": "tlif",
+      "region": ["lumbar", "lumbosacral"],
+      "cpt": "22633",
+      "addonCpt": "22634"
+    },
+    {
+      "id": "plif",
+      "name": "plif",
+      "region": ["lumbar", "lumbosacral"],
+      "cpt": "22630",
+      "addonCpt": "22632"
+    },
+    {
+      "id": "laminectomy_facetectomy_lumbar",
+      "name": "laminectomy_facetectomy",
+      "region": ["lumbar", "lumbosacral"],
+      "cpt": "63047",
+      "addonCpt": "63048"
+    },
+    {
+      "id": "laminectomy_facetectomy_cervical",
+      "name": "laminectomy_facetectomy",
+      "region": ["cervical"],
+      "cpt": "63045",
+      "addonCpt": "63048"
+    },
+    {
+      "id": "kyphoplasty_thoracic",
+      "name": "kyphoplasty",
+      "region": ["thoracic"],
+      "cpt": "22513",
+      "addonCpt": "22515"
+    },
+    {
+      "id": "kyphoplasty_lumbar",
+      "name": "kyphoplasty",
+      "region": ["lumbar"],
+      "cpt": "22514",
+      "addonCpt": "22515"
+    },
+    {
+      "id": "cervical_disc_arthroplasty",
+      "name": "cervical_disc_arthroplasty",
+      "region": ["cervical"],
+      "cpt": "22856",
+      "addonCpt": "22858"
+    },
+    {
+      "id": "posterior_cervical_fusion",
+      "name": "posterior_cervical_fusion",
+      "region": ["cervical"],
+      "cpt": "22600",
+      "addonCpt": "22614"
+    },
+    {
+      "id": "posterior_instrumentation_1",
+      "name": "posterior_instrumentation",
+      "cpt": "22840",
+      "maxLevels": 1
+    },
+    {
+      "id": "posterior_instrumentation_3_6",
+      "name": "posterior_instrumentation",
+      "cpt": "22842",
+      "minLevels": 3,
+      "maxLevels": 6
+    },
+    {
+      "id": "anterior_instrumentation_2_3",
+      "name": "anterior_instrumentation",
+      "cpt": "22845",
+      "minLevels": 2,
+      "maxLevels": 3
+    },
+    {
+      "id": "interbody_cage",
+      "name": "interbody_cage",
+      "cpt": "22853"
+    },
+    {
+      "id": "scs_percutaneous",
+      "name": "scs_percutaneous",
+      "cpt": "63650"
+    },
+    {
+      "id": "hardware_removal_posterior",
+      "name": "hardware_removal_posterior",
+      "cpt": "22850"
+    },
+    {
+      "id": "fusion_exploration",
+      "name": "fusion_exploration",
+      "cpt": "22830"
+    },
+    {
+      "id": "llif",
+      "name": "llif",
+      "region": ["lumbar", "lumbosacral"],
+      "cpt": "22558",
+      "addonCpt": "22585"
+    },
+    {
+      "id": "deep_wound_i_and_d",
+      "name": "deep_wound_i_and_d",
+      "cpt": "22015"
+    },
+    {
+      "id": "si_joint_fusion",
+      "name": "si_joint_fusion",
+      "cpt": "27279",
+      "lateralityModifiers": true
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "osteoporotic_fracture_initial",
+      "condition": "osteoporotic_fracture",
+      "withAny": ["initial"],
+      "icd": "M80.08XA"
+    },
+    {
+      "id": "dural_tear",
+      "condition": "dural_tear",
+      "icd": "G97.41"
+    },
+    {
+      "id": "hardware_pain",
+      "condition": "hardware_pain",
+      "icd": "T84.84XA"
+    },
+    {
+      "id": "aftercare_explant",
+      "condition": "aftercare_explant",
+      "icd": "Z47.2"
+    },
+    {
+      "id": "surgical_site_infection",
+      "condition": "surgical_site_infection",
+      "icd": "T81.42XA"
+    },
+    {
+      "id": "implant_infection",
+      "condition": "implant_infection",
+      "icd": "T84.7XXA"
+    }
+  ]
+}
