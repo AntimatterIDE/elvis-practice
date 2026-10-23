@@ -72,8 +72,10 @@ new hosted service, and no GPU:
    code, can search for and add any valid code, and approves. Units,
    modifiers, and per-line diagnoses carry into the claim unchanged.
 
-Until the acceptance gate in section 8 passes, the visit desk shows no
-suggested codes. Staff use code search and enter codes by hand.
+Suggestions are on in the main visit flow (`SPINE_CODING_SUGGESTIONS` defaults
+true). After Generate note, the pipeline fills unapproved ICD/CPT; staff review
+on the visit desk (Suggest / Re-suggest available). Staff can still search and
+edit by hand.
 
 Baseline evidence for everything in section 2 is in
 [`baseline-2026-10-22/`](baseline-2026-10-22/): the 60 test notes with
@@ -672,25 +674,21 @@ Covers 60/60 hand-checked fact fixtures through production ICD/PFS/NCCI with
 zero validator failures; known-bad claims caught in `tests/coding-validator.test.ts`.
 Emitter hardened for MUE unit clamps and NCCI indicator-1 pairs (auto `59`).
 
-**Still open before `SPINE_CODING_SUGGESTIONS=true`:**
+**Suggestions ON in the visit flow** (fixture + live imperfect 300/300). Still open:
 
 - **Note set:** at least 150 de-identified real notes across office visits,
   injections, and operative reports, each with the codes Dr. Francois
   confirms were correct. As of 2026-10-22 the app holds 2 real visit notes
   and no op reports, so most of the set has to come from the hospital or
   surgery center records and past claims.
-- **Live extraction eval:** `npm run test:extract` (needs `OPENAI_API_KEY`).
-  Asserts note → extract → rules → expected CPT/ICD. Not run in CI (cost + variance).
-- **Must be zero:** non-billable or retired codes; codes from negated, ruled
-  out, suspected, or history-only findings; procedure codes for procedures not
-  performed; add-ons without their primary; suggestions without a verified
-  quote. *(Fixture bar enforces these; real-note bar still pending.)*
+- **Must be zero on real notes:** non-billable or retired codes; codes from
+  negated, ruled out, suspected, or history-only findings; procedure codes for
+  procedures not performed; add-ons without their primary; suggestions without
+  a verified quote. *(Fixture + imperfect live bar green; real-note bar still pending.)*
 - **Accuracy (proposed; Dr. Francois sets the final bar):** first procedure
   line exactly right (code, units, modifiers) in at least 95% of notes; all
   procedure lines in at least 90%; first-listed diagnosis in at least 95%;
   all diagnoses in at least 90%.
-- **Validator:** catches every known-bad claim in its test set. *(Done for the
-  initial known-bad set.)*
 - **After launch:** a weekly report of doctor edits by rule set. A rule set
   whose suggestions are edited more than 10% of the time in a week is turned
   off until fixed. Reviewed edits become new test cases.
@@ -701,7 +699,7 @@ Effort is a rough estimate for one engineer.
 
 | Phase | Scope | Effort |
 | --- | --- | --- |
-| Now | Code claims by hand in Billing → Claims → New claim. Ignore suggested codes in the visit desk | — |
+| Now | Visit desk: Generate note → suggested ICD/CPT for review → Approve → Claims | Live |
 | 0. Safe manual coding | Turn off suggestions in `runVisitPipeline`. Code search over a one-time import of the CMS ICD-10-CM and fee schedule files (the refresh script comes in phase 1). Approval accepts any valid code. Units, modifiers, and pointers carry into the claim. Payer type sets the claim filing code. Diagnosis and pointer limits. Bill as The Alignment Clinic (org + EIN) with Dr. Francois as rendering. Claim form CMS search + Ready-for-bill `/api/coding/check`. Add `store: false` to the OpenAI note call | **Live 2026-10-22** (`66d9f73`) |
 | 0b. NCCI validator | Spine-subset PTP + MUE + add-on primaries in `claimCodeProblems`; Policy Manual PDFs in repo; `/dev/coding-data` tracks sources | **Built 2026-10-22** (this commit) |
 | 1. Library and validator | Note editing and the "paste operative report" path. Server record of claims (or the full submission snapshot). Rule review page. Expand PTP beyond spine subset if needed | Remaining ~1 week |

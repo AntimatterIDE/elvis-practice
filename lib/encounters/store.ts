@@ -331,6 +331,33 @@ function snapshot(encounter: Encounter): VisitSnapshot {
   };
 }
 
+async function suggestedCodesFromNote(note: string): Promise<{ icd10: VisitCode[]; billingCodes: VisitLine[] }> {
+  const library = codeLibrary();
+  const suggested = await suggestVisitCodes(note, { library });
+  if (!suggested.enabled) return { icd10: [], billingCodes: [] };
+  // Surface suggestions even when the validator flags something — staff fixes before Ready/Stedi.
+  const icd10: VisitCode[] = suggested.coding.diagnoses.map((item) => {
+    const checked = library.diagnoses.byCode.get(item.icd);
+    return {
+      code: item.icd,
+      description: checked?.description ?? "",
+      approved: false,
+    };
+  });
+  const billingCodes: VisitLine[] = suggested.coding.lines.map((line) => {
+    const checked = library.procedures.byCode.get(line.cpt);
+    return {
+      code: line.cpt,
+      description: checked?.description ?? "",
+      approved: false,
+      units: line.units,
+      modifiers: line.modifiers,
+      diagnoses: line.diagnosisPointers,
+    };
+  });
+  return { icd10, billingCodes };
+}
+
 export async function processEncounter(id: string, retry = false) {
   const existing = await getEncounter(id);
   if (!existing) return { ok: false as const, status: 404, message: "That visit could not be found." };
@@ -375,34 +402,7 @@ export async function processEncounter(id: string, retry = false) {
       },
       transcribe: transcribeAudio,
       writeNote: writeClinicalNote,
-      suggestCodes: async (note) => {
-        const library = codeLibrary();
-        const suggested = await suggestVisitCodes(note, { library });
-        if (!suggested.enabled) {
-          return { icd10: [], billingCodes: [] };
-        }
-        // Still surface suggestions when the validator flags something — staff must fix before Ready/Stedi.
-        const icd10: VisitCode[] = suggested.coding.diagnoses.map((item) => {
-          const checked = library.diagnoses.byCode.get(item.icd);
-          return {
-            code: item.icd,
-            description: checked?.description ?? "",
-            approved: false,
-          };
-        });
-        const billingCodes: VisitLine[] = suggested.coding.lines.map((line) => {
-          const checked = library.procedures.byCode.get(line.cpt);
-          return {
-            code: line.cpt,
-            description: checked?.description ?? "",
-            approved: false,
-            units: line.units,
-            modifiers: line.modifiers,
-            diagnoses: line.diagnosisPointers,
-          };
-        });
-        return { icd10, billingCodes };
-      },
+      suggestCodes: suggestedCodesFromNote,
       save: async (patch) => {
         await saveSnapshot(patch);
       },
@@ -411,6 +411,72 @@ export async function processEncounter(id: string, retry = false) {
     return { ok: true as const, encounter: saved ?? { ...existing, ...encounter, clinicianId: existing.clinicianId, patientLabel: existing.patientLabel, createdAt: existing.createdAt, updatedAt: existing.updatedAt } };
   } catch (error) {
     const message = error instanceof Error ? error.message : "The visit could not be processed.";
+    const saved = await getEncounter(id);
+    return { ok: false as const, status: 502, message, encounter: saved ?? undefined };
+  }
+}
+
+/** Fill or replace unapproved codes on a review/approved visit from the clinical note. */
+export async function suggestEncounterCodes(id: string, replace = false) {
+  const existing = await getEncounter(id);
+  if (!existing) return { ok: false as const, status: 404, message: "That visit could not be found." };
+  if (existing.status !== "review" && existing.status !== "approved") {
+    return { ok: false as const, status: 409, message: "Suggest codes after the note is ready for review." };
+  }
+  if (!existing.noteClinical.trim()) {
+    return { ok: false as const, status: 409, message: "This visit does not have a note yet." };
+  }
+  const hasCodes = existing.icd10.length > 0 || existing.billingCodes.length > 0;
+  if (hasCodes && !replace) return { ok: true as const, encounter: existing };
+
+  const startedAt = new Date().toISOString();
+  const supabase = client();
+  const claimed = await supabase
+    .from("encounters")
+    .update({
+      status: "generating_icd10",
+      error: null,
+      progress: { step: "generating_icd10", started_at: startedAt },
+      updated_at: startedAt,
+    })
+    .eq("id", id)
+    .in("status", ["review", "approved"])
+    .select("*")
+    .maybeSingle();
+  if (claimed.error) return { ok: false as const, status: 502, message: claimed.error.message };
+  if (!claimed.data) {
+    return { ok: false as const, status: 409, message: "This visit is already being processed.", encounter: existing };
+  }
+
+  try {
+    const codes = await suggestedCodesFromNote(existing.noteClinical);
+    const saved = await supabase
+      .from("encounters")
+      .update({
+        status: "review",
+        note_approved: existing.noteApproved,
+        icd10: codesJson(codes.icd10),
+        billing_codes: linesJson(codes.billingCodes),
+        progress: { step: "review", started_at: new Date().toISOString() },
+        error: null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id)
+      .select("*")
+      .single();
+    if (saved.error || !saved.data) throw new Error(saved.error?.message || "The codes could not be saved.");
+    return { ok: true as const, encounter: fromRow(saved.data as EncounterRow) };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Codes could not be suggested.";
+    await supabase
+      .from("encounters")
+      .update({
+        status: "review",
+        progress: { step: "review", started_at: new Date().toISOString() },
+        error: message,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id);
     const saved = await getEncounter(id);
     return { ok: false as const, status: 502, message, encounter: saved ?? undefined };
   }

@@ -23,6 +23,8 @@ const redirectHosts = (
       "./docs/spine-coding/baseline-2026-10-22/imperfect-cases.json",
     ],
     "/api/encounters/\\[id\\]": ["./data/coding/**/*.json"],
+    "/api/encounters/\\[id\\]/process": ["./data/coding/**/*.json"],
+    "/api/encounters/\\[id\\]/suggest": ["./data/coding/**/*.json"],
     "/admin/operations/claims/\\[id\\]": ["./data/coding/**/*.json"],
   },
   async redirects() {

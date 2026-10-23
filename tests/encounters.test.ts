@@ -79,6 +79,48 @@ describe("visit pipeline", () => {
     expect(result.progress).toEqual({ step: "review", startedAt: "2026-10-13T12:00:00.000Z" });
   });
 
+  it("suggests diagnosis and procedure codes after the note when wired", async () => {
+    const saved: VisitSnapshot[] = [];
+    const result = await runVisitPipeline(start, {
+      download: async () => ({ bytes: new Uint8Array([1, 2, 3]), contentType: "audio/webm" }),
+      transcribe: async () => "Lumbar stenosis with claudication.",
+      writeNote: async () => ({
+        medicalPractice: "Orthopedic surgery",
+        noteClinical: "SUBJECTIVE:\nLumbar stenosis with claudication.",
+      }),
+      suggestCodes: async () => ({
+        icd10: [{ code: "M48.062", description: "Spinal stenosis, lumbar region with neurogenic claudication", approved: false }],
+        billingCodes: [
+          {
+            code: "99213",
+            description: "",
+            approved: false,
+            units: 1,
+            modifiers: [],
+            diagnoses: ["M48.062"],
+          },
+        ],
+      }),
+      save: async (patch) => {
+        saved.push(patch);
+      },
+      now: () => "2026-10-13T12:00:00.000Z",
+    });
+
+    expect(saved.map((visit) => visit.status)).toEqual([
+      "transcribing",
+      "generating",
+      "generating_icd10",
+      "generating_cpt",
+      "review",
+    ]);
+    expect(result.status).toBe("review");
+    expect(result.icd10.map((code) => code.code)).toEqual(["M48.062"]);
+    expect(result.billingCodes.map((line) => line.code)).toEqual(["99213"]);
+    expect(result.icd10.every((code) => !code.approved)).toBe(true);
+    expect(result.billingCodes.every((line) => !line.approved)).toBe(true);
+  });
+
   it("skips transcription and the note when they are already written", async () => {
     let transcribed = false;
     const result = await runVisitPipeline(

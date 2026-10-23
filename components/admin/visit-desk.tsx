@@ -154,6 +154,28 @@ export function VisitDesk({
     setPhase(null);
   }
 
+  async function suggestCodes(id: string, replace: boolean) {
+    setPhase("working");
+    setMessage("");
+    setApproval(null);
+    try {
+      const response = await fetch(`/api/encounters/${id}/suggest`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ replace }),
+      });
+      const payload = (await response.json()) as { message?: string; encounter?: Encounter | null };
+      if (payload.encounter) {
+        apply(payload.encounter);
+        if (appointmentId) rememberVisit(appointmentId, payload.encounter.id);
+      }
+      if (!response.ok) setMessage(payload.message || "Codes could not be suggested.");
+    } catch {
+      setMessage("Codes could not be suggested. Try again when you have service.");
+    }
+    setPhase(null);
+  }
+
   async function putAudio(signedUrl: string, file: File) {
     const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     if (!anon) throw new Error("The practice database is not connected.");
@@ -360,7 +382,7 @@ export function VisitDesk({
       <PageHeader
         kicker="Clinic"
         title="Visits"
-        lede="Record a visit on this phone. Pause keeps the same visit open, and Record adds to it. Generate the note when the visit is over, then enter the codes."
+        lede="Record a visit on this phone. Pause keeps the same visit open, and Record adds to it. Generate the note when the visit is over — diagnosis and procedure suggestions fill in for review, then approve."
       />
       {appointmentId ? (
         <p className={`${panelClass} text-sm`}>
@@ -442,7 +464,7 @@ export function VisitDesk({
                 : phase === "uploading"
                   ? "Storing the recording. It stays on this phone until the upload finishes."
                   : phase === "working"
-                    ? "Working through the transcript and note."
+                    ? "Working through the transcript, note, and coding suggestions."
                     : "Webm, mp3, m4a, wav, or mp4. 25 MB or smaller for each segment."}
           </p>
           {recorder.notice ? <p className="mt-2 text-sm text-neutral-900">{recorder.notice}</p> : null}
@@ -487,9 +509,31 @@ export function VisitDesk({
               ) : null}
             </section>
           ) : null}
-          {canReview ? <VisitCodes codes={shownCodes} disabled={busy} onChange={changeCodes} /> : null}
+          {canReview ? (
+            <>
+              {shownCodes.diagnoses.length === 0 && shownCodes.lines.length === 0 ? (
+                <p className="mt-6 text-sm text-muted">No codes yet. Suggest from the note, or enter them below.</p>
+              ) : selected.icd10.some((code) => !code.approved) || selected.billingCodes.some((line) => !line.approved) ? (
+                <p className="mt-6 text-sm text-muted">Suggested from the note — review, edit if needed, then approve.</p>
+              ) : null}
+              <VisitCodes codes={shownCodes} disabled={busy} onChange={changeCodes} />
+            </>
+          ) : null}
           {canReview ? (
             <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() =>
+                  void suggestCodes(
+                    selected.id,
+                    shownCodes.diagnoses.length > 0 || shownCodes.lines.length > 0,
+                  )
+                }
+                disabled={busy}
+              >
+                {shownCodes.diagnoses.length > 0 || shownCodes.lines.length > 0 ? "Re-suggest codes" : "Suggest codes"}
+              </Button>
               {selected.status !== "approved" || approvalDirty ? (
                 <Button type="button" onClick={() => void saveApproval()} disabled={busy || !approvalReady || !approvalDirty}>
                   Approve note and codes
@@ -501,7 +545,7 @@ export function VisitDesk({
                 </Button>
               ) : (
                 <p className="text-sm text-muted">
-                  Approve the note and enter at least one diagnosis and one procedure, each procedure linked to its diagnoses. Then this visit can open in claims.
+                  Approve the note and at least one diagnosis and one procedure, each procedure linked to its diagnoses. Then this visit can open in claims.
                 </p>
               )}
             </div>

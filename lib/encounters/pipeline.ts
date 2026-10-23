@@ -78,10 +78,19 @@ export async function runVisitPipeline(start: VisitSnapshot, io: VisitIo): Promi
       visit = { ...visit, medicalPractice: note.medicalPractice, noteClinical: note.noteClinical };
     }
 
-    // Suggestions stay empty unless the caller wires suggestCodes and enables SPINE_CODING_SUGGESTIONS.
+    // After the note: extract facts → spine rules → suggested ICD/CPT (unapproved until staff confirms).
     if (io.suggestCodes && !visit.icd10.length && !visit.billingCodes.length && visit.noteClinical.trim()) {
+      visit = { ...visit, status: "generating_icd10", progress: stamp(io, "generating_icd10") };
+      await io.save(visit);
       const suggested = await io.suggestCodes(visit.noteClinical);
-      visit = { ...visit, icd10: suggested.icd10, billingCodes: suggested.billingCodes };
+      visit = {
+        ...visit,
+        icd10: suggested.icd10,
+        billingCodes: suggested.billingCodes,
+        status: "generating_cpt",
+        progress: stamp(io, "generating_cpt"),
+      };
+      await io.save(visit);
     }
 
     visit = { ...visit, status: "review", progress: stamp(io, "review"), error: null };
