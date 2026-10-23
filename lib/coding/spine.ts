@@ -395,6 +395,15 @@ function neutralizePlannedProcedures(facts: CodingFacts): CodingFacts {
       ) {
         return { ...procedure, performed: false };
       }
+      // Bare plan lines like "Right SI joint injection." / "medial branch blocks." with no performance language.
+      if (
+        !done &&
+        quote.length < 90 &&
+        /(injection|blocks?)\.?$/i.test(quote.trim()) &&
+        /^(medial_branch_block|si_joint_injection|transforaminal_esi|interlaminar_esi|facet_rfa)$/.test(procedure.name)
+      ) {
+        return { ...procedure, performed: false };
+      }
       return procedure;
     }),
   };
