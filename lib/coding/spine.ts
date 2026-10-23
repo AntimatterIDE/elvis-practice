@@ -361,7 +361,23 @@ export function codeVisit(
   const lines: CodedLine[] = [];
   const pointers = diagnoses.slice(0, 4).map((item) => item.icd);
   const visit = facts.visit;
-  if (visit) {
+
+  const performedProcedureLines: CodedLine[] = [];
+  for (const procedure of facts.procedures) {
+    if (!procedure.performed) continue;
+    const rule = matchProcedure(procedure, rules.procedures);
+    if (!rule) {
+      warnings.push(
+        `Procedure “${procedure.name}” was performed but no rule emits that CPT yet — code it by search.`,
+      );
+      continue;
+    }
+    performedProcedureLines.push(...emitProcedureLines(procedure, rule, pointers));
+  }
+
+  // Operative / procedure-day notes sometimes mis-tag visit as post_op_global; prefer the work done today.
+  const suppressPostOpVisit = visit?.kind === "post_op_global" && performedProcedureLines.length > 0;
+  if (visit && !suppressPostOpVisit) {
     const coded = visitCpt(visit.kind, visit.complexity, rules);
     if (coded) {
       lines.push({
@@ -375,19 +391,11 @@ export function codeVisit(
     } else {
       warnings.push(`No visit CPT mapping for kind “${visit.kind}”.`);
     }
+  } else if (suppressPostOpVisit) {
+    warnings.push("Skipped post_op_global visit because performed procedures were coded today.");
   }
 
-  for (const procedure of facts.procedures) {
-    if (!procedure.performed) continue;
-    const rule = matchProcedure(procedure, rules.procedures);
-    if (!rule) {
-      warnings.push(
-        `Procedure “${procedure.name}” was performed but no rule emits that CPT yet — code it by search.`,
-      );
-      continue;
-    }
-    lines.push(...emitProcedureLines(procedure, rule, pointers));
-  }
+  lines.push(...performedProcedureLines);
 
   const billed = clampUnitsToMue(applyNcciBypassModifiers(lines, library), library);
 
