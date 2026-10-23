@@ -87,6 +87,14 @@ const testLibrary = buildCodeLibrary(
       ["S14.124A", 1, "Central cord"],
       ["M79.18", 1, "Myofascial pain"],
       ["G97.1", 1, "Post dural puncture headache"],
+      ["M80.08XA", 1, "Osteoporotic fx initial"],
+      ["G97.41", 1, "Dural tear"],
+      ["T84.84XA", 1, "Hardware pain"],
+      ["Z47.2", 1, "Aftercare explant"],
+      ["T81.42XA", 1, "SSI"],
+      ["T84.7XXA", 1, "Implant infection"],
+      ["M51.36", 1, "DDD lumbar"],
+      ["M51.360", 1, "DDD lumbar other"],
     ],
   },
   {
@@ -117,6 +125,29 @@ const testLibrary = buildCodeLibrary(
       ["27096", "", "A", "XXX"],
       ["20553", "", "A", "XXX"],
       ["62273", "", "A", "XXX"],
+      ["63030", "", "A", "090"],
+      ["63035", "", "A", "ZZZ"],
+      ["22551", "", "A", "090"],
+      ["22552", "", "A", "ZZZ"],
+      ["22633", "", "A", "090"],
+      ["22630", "", "A", "090"],
+      ["22600", "", "A", "090"],
+      ["22614", "", "A", "ZZZ"],
+      ["63047", "", "A", "090"],
+      ["63048", "", "A", "ZZZ"],
+      ["63045", "", "A", "090"],
+      ["22513", "", "A", "090"],
+      ["22856", "", "A", "090"],
+      ["22840", "", "A", "XXX"],
+      ["22842", "", "A", "XXX"],
+      ["22845", "", "A", "XXX"],
+      ["22853", "", "A", "XXX"],
+      ["63650", "", "A", "XXX"],
+      ["22850", "", "A", "XXX"],
+      ["22830", "", "A", "XXX"],
+      ["22558", "", "A", "090"],
+      ["22015", "", "A", "XXX"],
+      ["27279", "", "A", "090"],
     ],
   },
 );
@@ -159,8 +190,8 @@ describe("office spine code generation", () => {
     expect(spineSuggestionsEnabled({ SPINE_CODING_SUGGESTIONS: "true" })).toBe(true);
   });
 
-  it(`covers ${fixtures.length} baseline fixtures (office + injections)`, () => {
-    expect(fixtures.length).toBe(47);
+  it(`covers ${fixtures.length} baseline fixtures (office + injections + surgery)`, () => {
+    expect(fixtures.length).toBe(60);
   });
 
   for (const fixture of fixtures) {
@@ -212,8 +243,11 @@ describe("office spine code generation", () => {
         expect(modifiers).toContain(modifier);
       }
 
-      // Planned surgery must not become CPT lines.
-      expect(cpts.some((code) => /^(630|225|226|228)/.test(code))).toBe(false);
+      // Office/injection fixtures: planned (not performed) surgery must not become CPT.
+      const plannedOnly = (fixture.facts.procedures ?? []).every((procedure) => !procedure.performed);
+      if (plannedOnly && !fixture.id.startsWith("S")) {
+        expect(cpts.some((code) => /^(630|225|226|228)/.test(code))).toBe(false);
+      }
     });
   }
 

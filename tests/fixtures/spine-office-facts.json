@@ -2163,5 +2163,699 @@
       "diagnoses": [],
       "injury": null
     }
+  },
+  {
+    "id": "S01",
+    "title": "OP: L5-S1 microdiscectomy (hemilaminotomy)",
+    "expectedCptAnyOf": [
+      "63030"
+    ],
+    "expectedIcdAnyOf": [
+      "M51.17",
+      "M51.27"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "microdiscectomy",
+          "levels": [
+            "L5-S1"
+          ],
+          "side": "left",
+          "performed": true,
+          "quote": "left L5-S1 hemilaminotomy and microdiscectomy with operating microscope"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "disc_herniation",
+          "region": "lumbar",
+          "levels": [
+            "L5-S1"
+          ],
+          "side": "left",
+          "with": [
+            "radiculopathy"
+          ],
+          "status": "current",
+          "quote": "left L5-S1 disc herniation with left S1 radiculopathy"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S02",
+    "title": "OP: 2-level ACDF C5-7 with cages, plate, allograft",
+    "expectedCptAnyOf": [
+      "22551",
+      "22552",
+      "22853",
+      "22845"
+    ],
+    "expectedIcdAnyOf": [
+      "M50.022",
+      "M50.023",
+      "M47.12"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "acdf",
+          "levels": [
+            "C5-C6",
+            "C6-C7"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "anterior cervical discectomy and fusion C5-C6 and C6-C7"
+        },
+        {
+          "name": "interbody_cage",
+          "levels": [
+            "C5-C6",
+            "C6-C7"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "two interbody cages"
+        },
+        {
+          "name": "anterior_instrumentation",
+          "levels": [
+            "C5",
+            "C6",
+            "C7"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "anterior plate C5-C7"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "spondylotic_myelopathy",
+          "region": "cervical",
+          "levels": [
+            "C5-C6",
+            "C6-C7"
+          ],
+          "side": null,
+          "with": [
+            "myelopathy"
+          ],
+          "status": "current",
+          "quote": "cervical spondylotic myelopathy, disc herniation C5-C6 and C6-C7"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S03",
+    "title": "OP: L4-5 TLIF with pedicle screws",
+    "expectedCptAnyOf": [
+      "22633",
+      "22630",
+      "22840",
+      "22853"
+    ],
+    "expectedIcdAnyOf": [
+      "M43.16",
+      "M48.062"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "tlif",
+          "levels": [
+            "L4-L5"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "transforaminal lumbar interbody fusion with cage, pedicle screw instrumentation L4-L5, posterolateral fusion"
+        },
+        {
+          "name": "posterior_instrumentation",
+          "levels": [
+            "L4-L5"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "pedicle screw instrumentation L4-L5"
+        },
+        {
+          "name": "interbody_cage",
+          "levels": [
+            "L4-L5"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "transforaminal lumbar interbody fusion with cage"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "spondylolisthesis",
+          "region": "lumbar",
+          "levels": [
+            "L4-L5"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "degenerative spondylolisthesis L4-L5 with stenosis and neurogenic claudication"
+        },
+        {
+          "condition": "stenosis",
+          "region": "lumbar",
+          "levels": [
+            "L4-L5"
+          ],
+          "side": null,
+          "with": [
+            "neurogenic_claudication"
+          ],
+          "status": "current",
+          "quote": "degenerative spondylolisthesis L4-L5 with stenosis and neurogenic claudication"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S04",
+    "title": "OP: L3-L5 decompressive laminectomy, no fusion",
+    "expectedCptAnyOf": [
+      "63047",
+      "63048"
+    ],
+    "expectedIcdAnyOf": [
+      "M48.062"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "laminectomy_facetectomy",
+          "levels": [
+            "L3-L4",
+            "L4-L5"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "decompressive laminectomy L3-L4 and L4-L5 with bilateral facetectomy and foraminotomy, without fusion"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "stenosis",
+          "region": "lumbar",
+          "levels": [
+            "L3-L4",
+            "L4-L5"
+          ],
+          "side": null,
+          "with": [
+            "neurogenic_claudication"
+          ],
+          "status": "current",
+          "quote": "lumbar spinal stenosis with neurogenic claudication L3-L4 and L4-L5"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S05",
+    "title": "OP: T12 balloon kyphoplasty",
+    "expectedCptAnyOf": [
+      "22513"
+    ],
+    "expectedIcdAnyOf": [
+      "M80.08XA"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "kyphoplasty",
+          "levels": [
+            "T12"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "T12 balloon kyphoplasty, bilateral transpedicular, fluoroscopic guidance"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "osteoporotic_fracture",
+          "region": "thoracic",
+          "levels": [
+            "T12"
+          ],
+          "side": null,
+          "with": [
+            "initial"
+          ],
+          "status": "current",
+          "quote": "age-related osteoporosis with current pathological fracture of vertebra, initial encounter"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S06",
+    "title": "OP: C5-6 cervical disc arthroplasty",
+    "expectedCptAnyOf": [
+      "22856"
+    ],
+    "expectedIcdAnyOf": [
+      "M50.122"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "cervical_disc_arthroplasty",
+          "levels": [
+            "C5-C6"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "total disc arthroplasty C5-C6, anterior approach, including discectomy"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "disc_herniation",
+          "region": "cervical",
+          "levels": [
+            "C5-C6"
+          ],
+          "side": "right",
+          "with": [
+            "radiculopathy"
+          ],
+          "status": "current",
+          "quote": "C5-C6 disc herniation with right C6 radiculopathy"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S07",
+    "title": "OP: posterior cervical laminectomy + fusion C3-C6",
+    "expectedCptAnyOf": [
+      "22600",
+      "22614",
+      "22842",
+      "63045",
+      "63015"
+    ],
+    "expectedIcdAnyOf": [
+      "M47.12",
+      "M48.02"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "laminectomy_facetectomy",
+          "levels": [
+            "C3-C4",
+            "C4-C5",
+            "C5-C6"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "posterior cervical laminectomy C3-C6"
+        },
+        {
+          "name": "posterior_cervical_fusion",
+          "levels": [
+            "C3-C4",
+            "C4-C5",
+            "C5-C6"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "posterior fusion C3-C6 with lateral mass screws"
+        },
+        {
+          "name": "posterior_instrumentation",
+          "levels": [
+            "C3",
+            "C4",
+            "C5",
+            "C6"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "posterior fusion C3-C6 with lateral mass screws"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "stenosis",
+          "region": "cervical",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "multilevel cervical stenosis with myelopathy"
+        },
+        {
+          "condition": "myelopathy",
+          "region": "cervical",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "multilevel cervical stenosis with myelopathy"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S08",
+    "title": "OP: percutaneous spinal cord stimulator trial",
+    "expectedCptAnyOf": [
+      "63650"
+    ],
+    "expectedIcdAnyOf": [
+      "M96.1"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "scs_percutaneous",
+          "levels": [],
+          "side": null,
+          "performed": true,
+          "quote": "percutaneous implantation of two epidural neurostimulator electrode arrays, fluoroscopic guidance"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "postlaminectomy_syndrome",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "postlaminectomy syndrome with chronic radicular pain"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S09",
+    "title": "OP: removal of posterior lumbar hardware + exploration of fusion",
+    "expectedCptAnyOf": [
+      "22850",
+      "22830"
+    ],
+    "expectedIcdAnyOf": [
+      "T84.84XA",
+      "Z47.2",
+      "M96.0"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "hardware_removal_posterior",
+          "levels": [],
+          "side": null,
+          "performed": true,
+          "quote": "removal of posterior segmental instrumentation L4-S1"
+        },
+        {
+          "name": "fusion_exploration",
+          "levels": [],
+          "side": null,
+          "performed": true,
+          "quote": "exploration of spinal fusion; fusion solid"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "hardware_pain",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "painful retained hardware after L4-S1 fusion"
+        },
+        {
+          "condition": "aftercare_explant",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "removal of posterior segmental instrumentation L4-S1 and exploration of spinal fusion"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S10",
+    "title": "OP: lateral lumbar interbody fusion L3-4",
+    "expectedCptAnyOf": [
+      "22558",
+      "22853",
+      "22845"
+    ],
+    "expectedIcdAnyOf": [
+      "M48.061",
+      "M51.36*",
+      "M51.36"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "llif",
+          "levels": [
+            "L3-L4"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "lateral transpsoas lumbar interbody fusion L3-L4 with cage and lateral plate"
+        },
+        {
+          "name": "interbody_cage",
+          "levels": [
+            "L3-L4"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "lateral transpsoas lumbar interbody fusion L3-L4 with cage and lateral plate"
+        },
+        {
+          "name": "anterior_instrumentation",
+          "levels": [
+            "L3",
+            "L4"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "with cage and lateral plate"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "degenerative_disc_disease",
+          "region": "lumbar",
+          "levels": [
+            "L3-L4"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "L3-L4 degenerative disc disease with foraminal stenosis"
+        },
+        {
+          "condition": "stenosis",
+          "region": "lumbar",
+          "levels": [
+            "L3-L4"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "L3-L4 degenerative disc disease with foraminal stenosis"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S11",
+    "title": "OP: I&D deep post-op lumbar wound infection",
+    "expectedCptAnyOf": [
+      "22015",
+      "10180"
+    ],
+    "expectedIcdAnyOf": [
+      "T81.42XA",
+      "T84.7XXA"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "deep_wound_i_and_d",
+          "levels": [],
+          "side": null,
+          "performed": true,
+          "quote": "incision and drainage of deep lumbar wound abscess, debridement to fascia"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "surgical_site_infection",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "deep incisional surgical site infection after lumbar fusion"
+        },
+        {
+          "condition": "implant_infection",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "deep incisional surgical site infection after lumbar fusion"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S12",
+    "title": "OP: SI joint fusion",
+    "expectedCptAnyOf": [
+      "27279"
+    ],
+    "expectedIcdAnyOf": [
+      "M53.3",
+      "M46.1",
+      "M53.2X8"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "si_joint_fusion",
+          "levels": [],
+          "side": "right",
+          "performed": true,
+          "quote": "percutaneous right sacroiliac joint arthrodesis with transfixing implants under fluoroscopy"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "si_joint_dysfunction",
+          "region": null,
+          "levels": [],
+          "side": "right",
+          "with": [],
+          "status": "current",
+          "quote": "right sacroiliac joint dysfunction refractory to injections"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "S13",
+    "title": "OP: laminectomy with incidental durotomy (G97.41)",
+    "expectedCptAnyOf": [
+      "63047"
+    ],
+    "expectedIcdAnyOf": [
+      "G97.41",
+      "M48.062"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "laminectomy_facetectomy",
+          "levels": [
+            "L4-L5"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "L4-L5 decompressive laminectomy"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "stenosis",
+          "region": "lumbar",
+          "levels": [
+            "L4-L5"
+          ],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "lumbar stenosis L4-L5"
+        },
+        {
+          "condition": "dural_tear",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Incidental durotomy repaired primarily"
+        }
+      ],
+      "injury": null
+    }
   }
 ]

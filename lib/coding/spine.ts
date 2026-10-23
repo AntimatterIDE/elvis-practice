@@ -260,10 +260,11 @@ function emitProcedureLines(
 ): CodedLine[] {
   const modifiers = procedureModifiers(procedure, rule);
   const count = levelCount(procedure);
+  const primaryUnits = !rule.addonCpt && count > 1 ? count : 1;
   const lines: CodedLine[] = [
     {
       cpt: rule.cpt,
-      units: 1,
+      units: primaryUnits,
       modifiers,
       diagnosisPointers: pointers,
       rule: rule.id,
@@ -283,7 +284,7 @@ function emitProcedureLines(
   if (count >= 3 && rule.thirdLevelCpt) {
     lines.push({
       cpt: rule.thirdLevelCpt,
-      units: 1,
+      units: Math.max(1, count - 2),
       modifiers: [],
       diagnosisPointers: pointers,
       rule: `${rule.id}.third`,

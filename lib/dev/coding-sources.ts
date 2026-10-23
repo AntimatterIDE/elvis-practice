@@ -267,11 +267,11 @@ export const leastResistanceSteps = [
   },
   {
     step: 4,
-    title: "Office + injections green — surgery next; suggestions gated",
+    title: "Baseline code generation green (60/60) — suggestions gated",
     detail:
-      "47/60 baseline fixtures pass (office + injections). Rule packs: office.json + injections.json. " +
-      "SPINE_CODING_SUGGESTIONS still off. Next: surgery pack for S01–S13, then enable suggestions for review. " +
-      "Need from clinic: real notes, AMA distributor app, type 2 NPI, Francois rule sign-off.",
+      "All 60 baseline fixtures pass facts→CPT/ICD. Packs: office + injections + surgery. " +
+      "SPINE_CODING_SUGGESTIONS still off. Next: Francois sign-off, real notes, then enable suggestions for review. " +
+      "Need from clinic: real notes, AMA distributor app, type 2 NPI, rule sign-off.",
   },
   {
     step: 5,
