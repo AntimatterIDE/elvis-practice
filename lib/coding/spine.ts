@@ -151,7 +151,10 @@ function regionMatches(factRegion: string | null | undefined, wanted: string[] |
   if (!wanted?.length) return true;
   if (!factRegion) return false;
   const region = factRegion.toLowerCase();
-  return wanted.some((entry) => entry.toLowerCase() === region);
+  if (wanted.some((entry) => entry.toLowerCase() === region)) return true;
+  // Broaden only lumbosacral facts onto lumbar rules (not the reverse — keeps L4-5 ≠ L5-S1).
+  if (region === "lumbosacral" && wanted.some((entry) => entry.toLowerCase() === "lumbar")) return true;
+  return false;
 }
 
 function withMatches(factWith: string[] | undefined, wanted: string[] | undefined) {
@@ -162,7 +165,12 @@ function withMatches(factWith: string[] | undefined, wanted: string[] | undefine
 
 function effectiveRegion(diagnosis: DiagnosisFacts) {
   const levels = (diagnosis.levels ?? []).map(normalizeLevel);
-  if (levels.some((level) => level.includes("L5-S1") || level === "L5S1")) return "lumbosacral";
+  if (levels.some((level) => level.includes("L5-S1") || level === "L5S1" || level.includes("S1"))) {
+    return "lumbosacral";
+  }
+  if (levels.some((level) => /^L\d/.test(level) || level.includes("L"))) return "lumbar";
+  if (levels.some((level) => /^C\d/.test(level) || level.startsWith("C"))) return "cervical";
+  if (levels.some((level) => /^T\d/.test(level) || level.startsWith("T"))) return "thoracic";
   return diagnosis.region?.toLowerCase() ?? null;
 }
 
@@ -318,6 +326,17 @@ function ensureSameDayVisitModifiers(lines: CodedLine[], facts: CodingFacts): Co
   });
 }
 
+/** Drop add-on CPT lines when their primary was not coded (common when OCR drops the main procedure). */
+function dropOrphanAddonLines(lines: CodedLine[], library?: CodeLibrary): CodedLine[] {
+  if (!library?.ncci || !lines.length) return lines;
+  const onClaim = new Set(lines.map((line) => line.cpt));
+  return lines.filter((line) => {
+    const primaries = library.ncci?.addonPrimaries.get(line.cpt);
+    if (!primaries?.size) return true;
+    return [...primaries].some((primary) => onClaim.has(primary));
+  });
+}
+
 /** When rules intentionally emit an NCCI indicator-1 pair, attach 59 so the claim is billable. */
 function applyNcciBypassModifiers(lines: CodedLine[], library?: CodeLibrary): CodedLine[] {
   if (!library?.ncci || lines.length < 2) return lines;
@@ -351,6 +370,20 @@ function clampUnitsToMue(lines: CodedLine[], library?: CodeLibrary): CodedLine[]
  * Pure rules: facts → CPT/ICD numbers. No network.
  * Packs: office (E/M + diagnoses + imaging) and injections (ESI/MBB/RFA/SI/TPI).
  */
+function neutralizePlannedProcedures(facts: CodingFacts): CodingFacts {
+  return {
+    ...facts,
+    procedures: facts.procedures.map((procedure) => {
+      if (!procedure.performed) return procedure;
+      const quote = procedure.quote.toLowerCase();
+      const planned = /(recommend|planned|schedule|consider|refer for|decision for|to undergo)/i.test(quote);
+      const done = /(performed|completed|underwent|injected|implanted|procedure:|operative)/i.test(quote);
+      if (planned && !done) return { ...procedure, performed: false };
+      return procedure;
+    }),
+  };
+}
+
 export function codeVisit(
   facts: CodingFacts,
   library?: CodeLibrary,
@@ -360,8 +393,19 @@ export function codeVisit(
   const warnings: string[] = [];
   const diagnoses: CodedDiagnosis[] = [];
   const seenIcd = new Set<string>();
+  facts = neutralizePlannedProcedures(facts);
 
-  for (const diagnosis of facts.diagnoses) {
+  for (const rawDiagnosis of facts.diagnoses) {
+    // Models sometimes emit accompanying findings as the primary condition name.
+    const diagnosis =
+      rawDiagnosis.condition === "neurogenic_claudication"
+        ? {
+            ...rawDiagnosis,
+            condition: "stenosis",
+            region: rawDiagnosis.region ?? "lumbar",
+            with: [...new Set([...(rawDiagnosis.with ?? []), "neurogenic_claudication"])],
+          }
+        : rawDiagnosis;
     if (diagnosis.status === "ruled_out" || diagnosis.status === "negated" || diagnosis.status === "suspected") {
       warnings.push(`Skipped ${diagnosis.condition} (${diagnosis.status}) — not coded as active disease.`);
       continue;
@@ -397,21 +441,34 @@ export function codeVisit(
     performedProcedureLines.push(...emitProcedureLines(procedure, rule, pointers));
   }
 
+  // Consult codes only when the note supports a true consultation request.
+  let codingVisit = visit;
+  if (codingVisit?.kind === "consult") {
+    const support = `${codingVisit.quote} ${facts.diagnoses.map((item) => item.quote).join(" ")}`.toLowerCase();
+    if (!/(request of|referred by|second opinion|consultation requested|consulted at)/i.test(support)) {
+      const kind: VisitKind = /new patient|new pt|establishing care/i.test(support)
+        ? "office_new"
+        : "office_established";
+      codingVisit = { ...codingVisit, kind };
+      warnings.push(`Remapped consult → ${kind} (no requesting-provider language).`);
+    }
+  }
+
   // Operative / procedure-day notes sometimes mis-tag visit as post_op_global; prefer the work done today.
-  const suppressPostOpVisit = visit?.kind === "post_op_global" && performedProcedureLines.length > 0;
-  if (visit && !suppressPostOpVisit) {
-    const coded = visitCpt(visit.kind, visit.complexity, rules);
+  const suppressPostOpVisit = codingVisit?.kind === "post_op_global" && performedProcedureLines.length > 0;
+  if (codingVisit && !suppressPostOpVisit) {
+    const coded = visitCpt(codingVisit.kind, codingVisit.complexity, rules);
     if (coded) {
       lines.push({
         cpt: coded.cpt,
         units: 1,
-        modifiers: visitModifiers(facts),
+        modifiers: visitModifiers({ ...facts, visit: codingVisit }),
         diagnosisPointers: pointers,
         rule: coded.rule,
-        quote: visit.quote,
+        quote: codingVisit.quote,
       });
     } else {
-      warnings.push(`No visit CPT mapping for kind “${visit.kind}”.`);
+      warnings.push(`No visit CPT mapping for kind “${codingVisit.kind}”.`);
     }
   } else if (suppressPostOpVisit) {
     warnings.push("Skipped post_op_global visit because performed procedures were coded today.");
@@ -419,10 +476,11 @@ export function codeVisit(
 
   lines.push(...performedProcedureLines);
 
-  const withVisitMods = ensureSameDayVisitModifiers(lines, facts);
-  const billed = clampUnitsToMue(applyNcciBypassModifiers(withVisitMods, library), library);
+  const withVisitMods = ensureSameDayVisitModifiers(lines, { ...facts, visit: codingVisit });
+  const withoutOrphans = dropOrphanAddonLines(withVisitMods, library);
+  const billed = clampUnitsToMue(applyNcciBypassModifiers(withoutOrphans, library), library);
 
-  if (!visit && !billed.length) {
+  if (!codingVisit && !billed.length) {
     warnings.push("No visit or performed procedure — nothing to suggest.");
   }
 
