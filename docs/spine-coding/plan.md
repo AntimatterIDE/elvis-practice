@@ -1,6 +1,6 @@
 # Spine coding plan — The Alignment Clinic
 
-Status: Steps **1–3 done** · **Step 4 baseline green** (**60/60** fact→code; suggestions still gated off pending Francois sign-off + real notes) · Path of least resistance is the rollout driver (section 0) · Partner checklist: `/dev/coding-data` · Written 2026-10-22 · Billing input: Christina 2026-10-22 (sections 11–13)
+Status: Steps **1–3 done** · **Step 4 qualified on fixtures** (**60/60** + production CMS/NCCI bar green — `npm run test:qualify`; suggestions still gated off pending Francois sign-off + real notes + extraction eval) · Path of least resistance is the rollout driver (section 0) · Partner checklist: `/dev/coding-data` · Written 2026-10-22 · Billing input: Christina 2026-10-22 (sections 11–13)
 
 ## 0. Path of least resistance (build order)
 
@@ -665,20 +665,32 @@ With no certified coder, the rules must be easy for a surgeon to check.
 
 ### Gate before a rule set suggests codes
 
+**Fixture + CMS/NCCI bar (engineering) — passed 2026-10-22.** Run
+`npm run test:qualify`. Results:
+[`baseline-2026-10-22/qualify-results.json`](baseline-2026-10-22/qualify-results.json).
+Covers 60/60 hand-checked fact fixtures through production ICD/PFS/NCCI with
+zero validator failures; known-bad claims caught in `tests/coding-validator.test.ts`.
+Emitter hardened for MUE unit clamps and NCCI indicator-1 pairs (auto `59`).
+
+**Still open before `SPINE_CODING_SUGGESTIONS=true`:**
+
 - **Note set:** at least 150 de-identified real notes across office visits,
   injections, and operative reports, each with the codes Dr. Francois
   confirms were correct. As of 2026-10-22 the app holds 2 real visit notes
   and no op reports, so most of the set has to come from the hospital or
   surgery center records and past claims.
+- **Live extraction eval:** `npm run test:extract` (needs `OPENAI_API_KEY`).
+  Asserts note → extract → rules → expected CPT/ICD. Not run in CI (cost + variance).
 - **Must be zero:** non-billable or retired codes; codes from negated, ruled
   out, suspected, or history-only findings; procedure codes for procedures not
   performed; add-ons without their primary; suggestions without a verified
-  quote.
+  quote. *(Fixture bar enforces these; real-note bar still pending.)*
 - **Accuracy (proposed; Dr. Francois sets the final bar):** first procedure
   line exactly right (code, units, modifiers) in at least 95% of notes; all
   procedure lines in at least 90%; first-listed diagnosis in at least 95%;
   all diagnoses in at least 90%.
-- **Validator:** catches every known-bad claim in its test set.
+- **Validator:** catches every known-bad claim in its test set. *(Done for the
+  initial known-bad set.)*
 - **After launch:** a weekly report of doctor edits by rule set. A rule set
   whose suggestions are edited more than 10% of the time in a week is turned
   off until fixed. Reviewed edits become new test cases.

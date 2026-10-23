@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-10-23T02:08:58.655Z",
+  "fixtureCount": 60,
+  "passed": 60,
+  "failed": 0,
+  "productionLibrary": {
+    "diagnoses": 74879,
+    "procedures": 19358,
+    "ncciPairs": 45694
+  },
+  "mustBeZero": {
+    "failedFixtures": 0,
+    "nonBillableOrRetired": 0,
+    "validatorProblems": 0
+  },
+  "qualifyForSuggestions": true,
+  "stillNeededForLaunch": [
+    "Dr. Francois sign-off on office / injection / surgery rule tables",
+    "≥150 de-identified real notes with confirmed codes (plan §8 gate)",
+    "Optional: live extraction eval (OPENAI_API_KEY + --extract)",
+    "Set SPINE_CODING_SUGGESTIONS=true only after the above"
+  ],
+  "failures": []
+}

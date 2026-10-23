@@ -97,7 +97,8 @@
     {
       "id": "interbody_cage",
       "name": "interbody_cage",
-      "cpt": "22853"
+      "cpt": "22853",
+      "unitsFromLevels": true
     },
     {
       "id": "scs_percutaneous",

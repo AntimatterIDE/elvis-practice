@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
+    "test:qualify": "vitest run tests/spine-coding.test.ts tests/spine-qualify.test.ts tests/coding-validator.test.ts && npx tsx scripts/qualify-spine-coding.ts",
+    "test:extract": "npx tsx scripts/eval-extraction.ts",
     "test:e2e": "playwright test",
     "seed": "node --experimental-strip-types scripts/seed-content.ts"
   },
