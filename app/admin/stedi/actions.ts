@@ -1,9 +1,17 @@
 "use server";
 
+import { claimCodeProblems } from "@/lib/coding/codes";
+import { codeLibrary } from "@/lib/coding/library";
 import { getStaffSession } from "@/lib/supabase/session";
 import { CORE, ELIGIBILITY, ENROLLMENTS, HEALTHCARE, PAYERS, isStediConfigured, publicStediMessage, stediFetch } from "@/lib/stedi/client";
 import { readRemits, summarizeEligibility } from "@/lib/stedi/parse";
-import { buildProfessionalClaim, compactDate, productionClaimProblems, type ClaimSubmissionInput } from "@/lib/stedi/payload";
+import {
+  buildProfessionalClaim,
+  claimContentProblems,
+  compactDate,
+  productionClaimProblems,
+  type ClaimSubmissionInput,
+} from "@/lib/stedi/payload";
 import { recordClearinghouse } from "@/lib/stedi/record";
 
 export type StediEvent = { kind: "submit" | "277ca" | "276" | "835" | "attachment" | "paper" | "error"; summary: string };
@@ -157,9 +165,13 @@ export async function submitProfessionalClaim(input: ClaimSubmissionInput) {
   if (input.stediClaimId) {
     return { ok: true, message: "This claim was already sent.", stediClaimId: input.stediClaimId, alreadySent: true };
   }
-  const problems = productionClaimProblems(input);
+  const problems = [
+    ...productionClaimProblems(input),
+    ...claimContentProblems(input),
+    ...claimCodeProblems(codeLibrary(), input),
+  ];
   if (problems.length) {
-    const message = problems[0];
+    const message = problems.join(" ");
     return { ok: false, message, event: { kind: "error" as const, summary: message } };
   }
   const built = buildProfessionalClaim(input);

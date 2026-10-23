@@ -298,6 +298,7 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
           id: nid("c"),
           patientId: input.patientId,
           payerName: input.payerName,
+          filingCode: input.filingCode,
           dateOfService: input.dateOfService,
           placeOfService: input.placeOfService,
           lines,

@@ -1,4 +1,12 @@
-import { audioByteLimit, audioExtension, audioPaths, type EncounterProgress, type EncounterStatus, type VisitCode } from "@/lib/encounters/types";
+import {
+  audioByteLimit,
+  audioExtension,
+  audioPaths,
+  type EncounterProgress,
+  type EncounterStatus,
+  type VisitCode,
+  type VisitLine,
+} from "@/lib/encounters/types";
 
 export type VisitSnapshot = {
   id: string;
@@ -9,7 +17,7 @@ export type VisitSnapshot = {
   medicalPractice: string;
   noteClinical: string;
   icd10: VisitCode[];
-  billingCodes: VisitCode[];
+  billingCodes: VisitLine[];
   progress: EncounterProgress | null;
   error: string | null;
 };
@@ -18,7 +26,6 @@ export type VisitIo = {
   download: (path: string) => Promise<{ bytes: Uint8Array; contentType: string }>;
   transcribe: (file: { bytes: Uint8Array; contentType: string; filename: string }) => Promise<string>;
   writeNote: (transcript: string) => Promise<{ medicalPractice: string; noteClinical: string }>;
-  codeNote: (note: string) => { icd10: VisitCode[]; billingCodes: VisitCode[] };
   save: (patch: VisitSnapshot) => Promise<void>;
   now?: () => string;
 };
@@ -66,38 +73,7 @@ export async function runVisitPipeline(start: VisitSnapshot, io: VisitIo): Promi
         await io.save(visit);
       }
       const note = await io.writeNote(visit.transcript);
-      visit = {
-        ...visit,
-        medicalPractice: note.medicalPractice,
-        noteClinical: note.noteClinical,
-        status: "generating_icd10",
-        progress: stamp(io, "generating_icd10"),
-      };
-      await io.save(visit);
-    }
-
-    const needsIcd = visit.icd10.length === 0;
-    const needsCpt = visit.billingCodes.length === 0;
-    if (needsIcd || needsCpt) {
-      const coded = io.codeNote(visit.noteClinical);
-      if (needsIcd) {
-        visit = {
-          ...visit,
-          icd10: coded.icd10,
-          status: "generating_icd10",
-          progress: stamp(io, "generating_icd10"),
-        };
-        await io.save(visit);
-      }
-      if (needsCpt) {
-        visit = {
-          ...visit,
-          billingCodes: coded.billingCodes,
-          status: "generating_cpt",
-          progress: stamp(io, "generating_cpt"),
-        };
-        await io.save(visit);
-      }
+      visit = { ...visit, medicalPractice: note.medicalPractice, noteClinical: note.noteClinical };
     }
 
     visit = { ...visit, status: "review", progress: stamp(io, "review"), error: null };

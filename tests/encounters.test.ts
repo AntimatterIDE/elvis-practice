@@ -1,38 +1,37 @@
 import { describe, expect, it } from "vitest";
-import { scoreCodes, levelForScore, suggestCodes } from "@/lib/encounters/codes";
-import { applyCodeApproval, approvalStatus } from "@/lib/encounters/approve";
+import { buildCodeLibrary } from "@/lib/coding/codes";
+import { approvalStatus, claimLinesFromEncounter, reviewCodes, type LineChoice } from "@/lib/encounters/approve";
 import { parseClinicalNote } from "@/lib/encounters/template";
 import { filesFromChunks } from "@/lib/encounters/local-audio";
 import { audioPaths } from "@/lib/encounters/types";
 import { runVisitPipeline, type VisitSnapshot } from "@/lib/encounters/pipeline";
 
-const diabetes = [{ code: "E11.9", description: "Type 2 diabetes mellitus without complications" }];
-
-describe("visit coding", () => {
-  it("scores a description word, its synonyms, and a partial token", () => {
-    const [match] = scoreCodes("diabetes", diabetes);
-    expect(match?.code).toBe("E11.9");
-    expect(match?.score).toBe(5.5);
-  });
-
-  it("gives an exact code token ten points", () => {
-    const [match] = scoreCodes("documented i10 today", [{ code: "I10", description: "Essential hypertension" }]);
-    expect(match?.score).toBe(10);
-  });
-
-  it("keeps the coding service level comparisons", () => {
-    expect(levelForScore(10)).toBe(1);
-    expect(levelForScore(2)).toBe(1);
-    expect(levelForScore(0.9)).toBe(2);
-    expect(levelForScore(0.86)).toBe(2);
-    expect(levelForScore(0.8)).toBe(3);
-    expect(levelForScore(0.5)).toBeNull();
-  });
-
-  it("drops scores that never clear the lowest level", () => {
-    expect(suggestCodes("pain", [{ code: "Z00", description: "zz" }])).toEqual([]);
-  });
-});
+const library = buildCodeLibrary(
+  {
+    release: "ICD-10-CM test",
+    effectiveFrom: "2026-10-01",
+    rows: [
+      ["M48.06", 0, "Spinal stenosis, lumbar region"],
+      ["M48.061", 1, "Spinal stenosis, lumbar region without neurogenic claudication"],
+      ["M48.062", 1, "Spinal stenosis, lumbar region with neurogenic claudication"],
+      ["M51.17", 1, "Intervertebral disc disorders with radiculopathy, lumbosacral region"],
+      ["M54.5", 0, "Low back pain"],
+      ["M54.50", 1, "Low back pain, unspecified"],
+      ["M54.16", 1, "Radiculopathy, lumbar region"],
+      ["G89.29", 1, "Other chronic pain"],
+    ],
+  },
+  {
+    release: "procedures test",
+    effectiveFrom: "2026-10-01",
+    rows: [
+      ["63047", "", "A", "090"],
+      ["63048", "", "A", "ZZZ"],
+      ["99213", "", "A", "XXX"],
+      ["J1010", "Injection, methylprednisolone acetate, 1 mg", "E", "XXX"],
+    ],
+  },
+);
 
 describe("clinical note parsing", () => {
   it("treats the first line as the specialty", () => {
@@ -59,40 +58,29 @@ describe("visit pipeline", () => {
     error: null,
   };
 
-  it("transcribes, writes the note, then stores codes", async () => {
+  it("transcribes, writes the note, then waits for the doctor's codes", async () => {
     const saved: VisitSnapshot[] = [];
     const result = await runVisitPipeline(start, {
       download: async () => ({ bytes: new Uint8Array([1, 2, 3]), contentType: "audio/webm" }),
       transcribe: async () => "Patient has knee pain.",
       writeNote: async () => ({ medicalPractice: "Orthopedic surgery", noteClinical: "SUBJECTIVE:\nKnee pain" }),
-      codeNote: () => ({
-        icd10: [{ code: "M25.569", description: "Pain in unspecified knee", level: 1, approved: false }],
-        billingCodes: [{ code: "99213", description: "Office visit", level: 1, approved: false }],
-      }),
       save: async (patch) => {
         saved.push(patch);
       },
       now: () => "2026-10-13T12:00:00.000Z",
     });
 
-    expect(saved.map((visit) => visit.status)).toEqual([
-      "transcribing",
-      "generating",
-      "generating_icd10",
-      "generating_icd10",
-      "generating_cpt",
-      "review",
-    ]);
+    expect(saved.map((visit) => visit.status)).toEqual(["transcribing", "generating", "review"]);
     expect(result.status).toBe("review");
     expect(result.transcript).toBe("Patient has knee pain.");
-    expect(result.icd10[0]?.code).toBe("M25.569");
-    expect(result.billingCodes[0]?.code).toBe("99213");
+    expect(result.noteClinical).toBe("SUBJECTIVE:\nKnee pain");
+    expect(result.icd10).toEqual([]);
+    expect(result.billingCodes).toEqual([]);
     expect(result.progress).toEqual({ step: "review", startedAt: "2026-10-13T12:00:00.000Z" });
   });
 
-  it("skips transcription and coding when those fields are already filled", async () => {
+  it("skips transcription and the note when they are already written", async () => {
     let transcribed = false;
-    let coded = false;
     const result = await runVisitPipeline(
       {
         ...start,
@@ -100,8 +88,8 @@ describe("visit pipeline", () => {
         transcript: "Already heard.",
         medicalPractice: "Orthopedic surgery",
         noteClinical: "SUBJECTIVE:\nKnee pain",
-        icd10: [{ code: "M25.569", description: "Pain in unspecified knee", level: 1, approved: false }],
-        billingCodes: [{ code: "99213", description: "Office visit", level: 1, approved: false }],
+        icd10: [{ code: "M54.50", description: "Low back pain, unspecified", approved: true }],
+        billingCodes: [{ code: "99213", description: "", approved: true, units: 1, modifiers: [], diagnoses: ["M54.50"] }],
       },
       {
         download: async () => {
@@ -114,17 +102,13 @@ describe("visit pipeline", () => {
         writeNote: async () => {
           throw new Error("should not write");
         },
-        codeNote: () => {
-          coded = true;
-          return { icd10: [], billingCodes: [] };
-        },
         save: async () => {},
       },
     );
     expect(transcribed).toBe(false);
-    expect(coded).toBe(false);
     expect(result.status).toBe("review");
     expect(result.icd10).toHaveLength(1);
+    expect(result.billingCodes[0]?.diagnoses).toEqual(["M54.50"]);
   });
 
   it("records an error when transcription fails", async () => {
@@ -136,7 +120,6 @@ describe("visit pipeline", () => {
           throw new Error("The recording could not be transcribed.");
         },
         writeNote: async () => ({ medicalPractice: "General Practice", noteClinical: "Note" }),
-        codeNote: () => ({ icd10: [], billingCodes: [] }),
         save: async (patch) => {
           saved.visit = patch;
         },
@@ -157,7 +140,6 @@ describe("visit pipeline", () => {
         },
         transcribe: async (file) => `heard ${file.filename}`,
         writeNote: async () => ({ medicalPractice: "Orthopedic surgery", noteClinical: "SUBJECTIVE:\nKnee pain" }),
-        codeNote: () => ({ icd10: [], billingCodes: [] }),
         save: async () => {},
       },
     );
@@ -185,15 +167,104 @@ describe("phone recording cache", () => {
 });
 
 describe("visit approval", () => {
-  const icd = [{ code: "M54.50", description: "Low back pain", level: 1 as const, approved: false }];
-  const cpt = [{ code: "99213", description: "Office visit", level: 1 as const, approved: false }];
+  const visitDiagnoses = ["M48.062", "M51.17", "M54.16", "M54.50", "G89.29"];
 
-  it("stays in review until the note and both code lists are approved", () => {
-    const diagnoses = applyCodeApproval(icd, ["M54.50"]);
-    const procedures = applyCodeApproval(cpt, []);
-    expect(diagnoses?.[0]?.approved).toBe(true);
-    expect(approvalStatus(true, diagnoses ?? [], procedures ?? [])).toBe("review");
-    expect(approvalStatus(true, diagnoses ?? [], applyCodeApproval(cpt, ["99213"]) ?? [])).toBe("approved");
-    expect(applyCodeApproval(icd, ["Z99"])).toBeNull();
+  function lineProblem(patch: Partial<LineChoice>) {
+    const line: LineChoice = { code: "63047", units: 1, modifiers: [], diagnoses: ["M48.062"], ...patch };
+    const reviewed = reviewCodes(library, { icd10: visitDiagnoses, billingCodes: [line] });
+    return reviewed.ok ? "" : reviewed.error;
+  }
+
+  it("accepts any valid code the doctor enters, with units, modifiers, and linked diagnoses", () => {
+    const reviewed = reviewCodes(library, {
+      icd10: ["m48.062", "M51.17", "M48062"],
+      billingCodes: [
+        { code: "63047", units: 1, modifiers: [], diagnoses: ["M48.062", "M51.17"] },
+        { code: "63048", units: 2, modifiers: ["59"], diagnoses: ["M48062"] },
+      ],
+    });
+    expect(reviewed).toEqual({
+      ok: true,
+      icd10: [
+        { code: "M48.062", description: "Spinal stenosis, lumbar region with neurogenic claudication", approved: true },
+        { code: "M51.17", description: "Intervertebral disc disorders with radiculopathy, lumbosacral region", approved: true },
+      ],
+      billingCodes: [
+        { code: "63047", description: "", approved: true, units: 1, modifiers: [], diagnoses: ["M48.062", "M51.17"] },
+        { code: "63048", description: "", approved: true, units: 2, modifiers: ["59"], diagnoses: ["M48.062"] },
+      ],
+    });
+  });
+
+  it("stays in review until the note, a diagnosis, and a procedure are approved", () => {
+    const diagnosisOnly = reviewCodes(library, { icd10: ["M54.50"], billingCodes: [] });
+    const visit = reviewCodes(library, {
+      icd10: ["M54.50"],
+      billingCodes: [{ code: "99213", units: 1, modifiers: ["25"], diagnoses: ["M54.50"] }],
+    });
+    if (!diagnosisOnly.ok || !visit.ok) throw new Error("Both code sets should be valid.");
+    expect(approvalStatus(true, diagnosisOnly.icd10, diagnosisOnly.billingCodes)).toBe("review");
+    expect(approvalStatus(false, visit.icd10, visit.billingCodes)).toBe("review");
+    expect(approvalStatus(true, visit.icd10, visit.billingCodes)).toBe("approved");
+  });
+
+  it("points a category code to its billable codes", () => {
+    expect(reviewCodes(library, { icd10: ["M54.5"], billingCodes: [] })).toEqual({
+      ok: false,
+      error: "M54.5 is a category, not a billable code. Use a more specific code, such as M54.50.",
+    });
+    expect(reviewCodes(library, { icd10: ["M48.06"], billingCodes: [] })).toEqual({
+      ok: false,
+      error: "M48.06 is a category, not a billable code. Use a more specific code, such as M48.061 or M48.062.",
+    });
+  });
+
+  it("rejects a procedure code that is not in the release", () => {
+    expect(lineProblem({ code: "J1030", units: 40 })).toBe("Line 1: J1030 is not a code in procedures test.");
+  });
+
+  it("checks the units, modifiers, and diagnosis links on each line", () => {
+    const units = "Line 1: units must be a whole number from 1 to 999.";
+    expect(lineProblem({ units: 0 })).toBe(units);
+    expect(lineProblem({ units: 1.5 })).toBe(units);
+    expect(lineProblem({ modifiers: ["5"] })).toBe(
+      "Line 1: 5 is not a modifier. A modifier is two letters or digits, such as 25, 59, LT, or RT.",
+    );
+    expect(lineProblem({ modifiers: ["LT", "lt"] })).toBe("Line 1: a modifier is listed twice.");
+    expect(lineProblem({ modifiers: ["22", "59", "LT", "RT", "XS"] })).toBe("Line 1: a line takes at most 4 modifiers.");
+    expect(lineProblem({ diagnoses: [] })).toBe("Line 1: link at least one diagnosis.");
+    expect(lineProblem({ diagnoses: visitDiagnoses })).toBe("Line 1: a line can point to at most 4 diagnoses.");
+    expect(lineProblem({ diagnoses: ["M51.16"] })).toBe("Line 1: M51.16 is not one of this visit's diagnoses.");
+    expect(lineProblem({ units: 3, modifiers: ["lt"], diagnoses: ["M54.16", "M48.062"] })).toBe("");
+  });
+
+  it("caps a visit at 12 diagnoses", () => {
+    const codes = Array.from({ length: 13 }, (_, index) => `M54.${index + 10}`);
+    const many = buildCodeLibrary(
+      { release: "ICD-10-CM test", effectiveFrom: "2026-10-01", rows: codes.map((code) => [code, 1, code]) },
+      { release: "procedures test", effectiveFrom: "2026-10-01", rows: [] },
+    );
+    expect(reviewCodes(many, { icd10: codes, billingCodes: [] })).toEqual({
+      ok: false,
+      error: "A claim can carry at most 12 diagnoses. Keep the 12 that support the procedures.",
+    });
+  });
+
+  it("points older lines without their own diagnoses at every approved diagnosis", () => {
+    const lines = claimLinesFromEncounter({
+      icd10: [
+        { code: "M54.50", description: "Low back pain, unspecified", approved: true },
+        { code: "M54.16", description: "Radiculopathy, lumbar region", approved: false },
+      ],
+      billingCodes: [
+        { code: "99213", description: "", approved: true, units: 1, modifiers: [], diagnoses: [] },
+        { code: "J1010", description: "", approved: false, units: 1, modifiers: [], diagnoses: [] },
+        { code: "63047", description: "", approved: true, units: 1, modifiers: ["LT"], diagnoses: ["M54.16"] },
+      ],
+    });
+    expect(lines).toEqual([
+      { code: "99213", description: "", units: 1, modifiers: [], diagnoses: ["M54.50"] },
+      { code: "63047", description: "", units: 1, modifiers: ["LT"], diagnoses: ["M54.16"] },
+    ]);
   });
 });

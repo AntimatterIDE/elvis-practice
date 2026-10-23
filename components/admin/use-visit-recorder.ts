@@ -390,7 +390,7 @@ export function useVisitRecorder(input: { patientLabel: string; appointmentId: s
         setEncounterId(session.encounterId);
         setMode(chunks.length > 0 ? "paused" : "idle");
         if (chunks.length > 0) {
-          setNotice("A recording for this visit is saved on this phone. Press Record to continue, or generate notes and codes.");
+          setNotice("A recording for this visit is saved on this phone. Press Record to continue, or generate the note.");
         }
       })
       .catch(() => undefined)

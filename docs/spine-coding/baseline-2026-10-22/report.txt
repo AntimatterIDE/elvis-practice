@@ -1,0 +1,372 @@
+PARITY with deployed site (case 01 GPT note): ICD IDENTICAL, CPT IDENTICAL
+CATALOG: 68215 ICD rows (50094 leaf, 18121 header/parent rows), 1321 CPT/HCPCS rows
+
+[E01] New pt L5-S1 HNP, left S1 radiculopathy (real GPT note from prod)
+  expected ICD M51.17|M51.27|M54.17 -> MISS | expected CPT 99204 -> MISS(not in catalog)
+  got ICD: M05.672(Rheumatoid arthritis of left ankle and); M05.612(Rheumatoid arthritis of left shoulder ); M05.622(Rheumatoid arthritis of left elbow wit); M05.632(Rheumatoid arthritis of left wrist wit); M05.642(Rheumatoid arthritis of left hand with); M05.652(Rheumatoid arthritis of left hip with ); M05.662(Rheumatoid arthritis of left knee with); M80.862(Other osteoporosis with current pathol); S86.192(Other injury of other muscle(s) and te); S86.892(Other injury of other muscle(s) and te)
+  got CPT: P9612(Catheterize for urine spec); 97036(Hydrotherapy); G6001(Echo guidance radiotherapy); 92526(Oral function therapy); 97016(Vasopneumatic device therapy); 97026(Infrared therapy); 97116(Gait training therapy); 97140(Manual therapy); 77261(Radiation therapy planning); 77262(Radiation therapy planning)
+  !! NOT BILLABLE (header/parent/retired) suggested: M80.862, S86.192, S86.892
+
+[E02] Est pt lumbar stenosis w/ neurogenic claudication L4-5
+  expected ICD M48.062 -> MISS | expected CPT 99214 -> MISS(not in catalog)
+  got ICD: I70.513(Atherosclerosis of nonautologous biolo); S34(Injury of lumbar and sacral spinal cor); M61.36(Calcification and ossification of musc); M61.361(Calcification and ossification of musc); M61.362(Calcification and ossification of musc); M61.369(Calcification and ossification of musc); T34.7(Frostbite with tissue necrosis of knee); T34.70(Frostbite with tissue necrosis of unsp); T34.71(Frostbite with tissue necrosis of righ); T34.72(Frostbite with tissue necrosis of left)
+  got CPT: 73590(X-ray exam of lower leg); G0307(Cbc without platelet); 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 78630(Cerebrospinal fluid scan); 93320(Doppler echo exam heart [if ); 93321(Doppler echo exam heart [if ); 93325(Doppler color flow add-on [i); 63620(SRS spinal lesion)
+  !! NOT BILLABLE (header/parent/retired) suggested: S34, M61.36, T34.7, T34.70, T34.71, T34.72
+
+[E03] New pt cervical spondylotic myelopathy C5-6/C6-7 (surgery recommended)
+  expected ICD M50.022|M50.023|M50.020|M47.12|M48.02 -> MISS | expected CPT 99205 -> MISS(not in catalog)
+  got ICD: S11.21(Laceration without foreign body of pha); S11.22(Laceration with foreign body of pharyn); S11.23(Puncture wound without foreign body of); S11.24(Puncture wound with foreign body of ph); Q71.1(Congenital absence of upper arm and fo); Q71.10(Congenital absence of unspecified uppe); Q71.11(Congenital absence of right upper arm ); Q71.12(Congenital absence of left upper arm a); D81.1(Severe combined immunodeficiency [SCID); F68.11(…… with predominantly psychological si)
+  got CPT: 76536(Us exam of head and neck); C2638(Brachytx, stranded, I-125); C2639(Brachytx,non-stranded,I-125); C2640(Brachytx, stranded, P-103); C2641(Brachytx, non-stranded,P-103); C2642(Brachytx, stranded, C-131); C2643(Brachytx, non-stranded,C-131); C2698(Brachytx, stranded, NOS); C2699(Brachytx, non-stranded, NOS); 80061(Lipid panel [only when bille)
+  !! NOT BILLABLE (header/parent/retired) suggested: S11.21, S11.22, S11.23, S11.24, Q71.1
+
+[E04] New pt C5-6 HNP, right C6 radiculopathy
+  expected ICD M50.122|M50.12*|M54.12 -> MISS | expected CPT 99204|99203 -> MISS(not in catalog)
+  got ICD: M05.631(Rheumatoid arthritis of right wrist wi); I83.215(Varicose veins of right lower extremit); I83.218(Varicose veins of right lower extremit); M05.611(Rheumatoid arthritis of right shoulder); M05.621(Rheumatoid arthritis of right elbow wi); M05.641(Rheumatoid arthritis of right hand wit); M05.651(Rheumatoid arthritis of right hip with); M05.661(Rheumatoid arthritis of right knee wit); M05.671(Rheumatoid arthritis of right ankle an); M05.841(Other rheumatoid arthritis with rheuma)
+  got CPT: P9612(Catheterize for urine spec); 82950(Glucose test [only when bill); 82951(Glucose tolerance test (GTT)); 76536(Us exam of head and neck); 0518U(Ther rx mntr 90+ pn&mtl hlth); 92508(Speech/hearing therapy); 92526(Oral function therapy); 97016(Vasopneumatic device therapy); 97018(Paraffin bath therapy); 97026(Infrared therapy)
+
+[E05] Post-op visit inside 90-day global (2 wk s/p L4-5 TLIF)
+  expected ICD Z47.89|Z98.1|Z48.89|Z48.81* -> MISS | expected CPT 99024 -> MISS(not in catalog)
+  got ICD: Z92.82(Status post administration of tPA (rtP); Z39.2(Encounter for routine postpartum follo); Q14.8(Other congenital malformations of post); S85.182(Other specified injury of posterior ti); S86.10(Unspecified injury of other muscle(s) ); S86.101(Unspecified injury of other muscle(s) ); S86.102(Unspecified injury of other muscle(s) ); S86.109(Unspecified injury of other muscle(s) ); S86.112(Strain of other muscle(s) and tendon(s); S86.12(Laceration of other muscle(s) and tend)
+  got CPT: P9612(Catheterize for urine spec); 36415(Routine venipuncture); 0042T(Ct perfusion w/contrast cbf); 0174T(Cad cxr with interp); 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 72158(Mri lumbar spine w/o & w/dye)
+  !! NOT BILLABLE (header/parent/retired) suggested: S85.182, S86.10, S86.101, S86.102, S86.109, S86.112, S86.12
+
+[E06] Decision for surgery visit (day before L4-5 TLIF) - should be E/M + 57, NOT surgery codes
+  expected ICD M43.16|M48.062 -> MISS | expected CPT 99215 -> MISS(not in catalog)
+  got ICD: M51.0(Thoracic, thoracolumbar and lumbosacra); M51.1(Thoracic, thoracolumbar and lumbosacra); Q42.0(Congenital absence, atresia and stenos); Q42.1(Congenital absence, atresia and stenos); Q42.2(Congenital absence, atresia and stenos); Q42.3(Congenital absence, atresia and stenos); K35.32(Acute appendicitis with perforation, l); K57.51(Diverticulosis of both small and large); K57.52(Diverticulitis of both small and large); D81.1(Severe combined immunodeficiency [SCID)
+  got CPT: 0174T(Cad cxr with interp); 78202(Liver imaging with flow); 78701(Kidney imaging with flow); 93320(Doppler echo exam heart [if ); 93321(Doppler echo exam heart [if ); 93325(Doppler color flow add-on [i); 80061(Lipid panel [only when bille); 82465(Assay bld/serum cholesterol ); 82947(Assay glucose blood quant [o); 82950(Glucose test [only when bill)
+  !! NOT BILLABLE (header/parent/retired) suggested: M51.0, M51.1
+
+[E07] Telehealth video f/u lumbar radiculopathy (needs 99213 + mod 95)
+  expected ICD M54.16 -> MISS | expected CPT 99213 -> MISS(not in catalog)
+  got ICD: M51.15(Intervertebral disc disorders with rad); M51.16(Intervertebral disc disorders with rad); M61.361(Calcification and ossification of musc); S81.811(Laceration without foreign body, right); S81.821(Laceration with foreign body, right lo); S81.831(Puncture wound without foreign body, r); S81.841(Puncture wound with foreign body, righ); S21.111(Laceration without foreign body of rig); S21.121(Laceration with foreign body of right ); S21.131(Puncture wound without foreign body of)
+  got CPT: 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 72158(Mri lumbar spine w/o & w/dye); 76380(CAT scan follow-up study); 76816(Ob us follow-up per fetus); 78202(Liver imaging with flow); 78701(Kidney imaging with flow)
+  !! NOT BILLABLE (header/parent/retired) suggested: S81.811, S81.821, S81.831, S81.841, S21.111, S21.121, S21.131
+
+[E08] Mechanical LBP + cervicalgia + spasm (M54.5 is INVALID since 10/2021)
+  expected ICD M54.50|M54.59|M54.2|M62.830 -> MISS | expected CPT 99213|99212 -> MISS(not in catalog)
+  got ICD: M54.51(Vertebrogenic low back pain); S39.01(Strain of muscle, fascia and tendon of); S39.012(Strain of muscle, fascia and tendon of); I83.81(Varicose veins of lower extremities wi); I83.811(Varicose veins of right lower extremit); I83.812(Varicose veins of left lower extremity); I83.813(Varicose veins of bilateral lower extr); I83.819(Varicose veins of unspecified lower ex); R10.30(Lower abdominal pain, unspecified); M61.36(Calcification and ossification of musc)
+  got CPT: 78701(Kidney imaging with flow); 92610(Evaluate swallowing function); 92611(Motion fluoroscopy/swallow); 92612(Endoscopy swallow tst (fees)); 97161(Pt eval low complex 20 min); 97165(Ot eval low complex 30 min); 97610(Low frequency non-thermal US); 72100(X-ray exam of lower spine); 72110(X-ray exam of lower spine); 72114(X-ray exam of lower spine)
+  !! NOT BILLABLE (header/parent/retired) suggested: S39.01, S39.012, I83.81, M61.36
+
+[E09] Thoracic disc herniation T7-8 with myelopathy
+  expected ICD M51.04|M54.6 -> HIT#1 | expected CPT 99205|99204 -> MISS(not in catalog)
+  got ICD: M51.04(Intervertebral disc disorders with mye); M51.0(Thoracic, thoracolumbar and lumbosacra); M51.1(Thoracic, thoracolumbar and lumbosacra); S21.21(Laceration without foreign body of bac); S21.211(Laceration without foreign body of rig); S21.212(Laceration without foreign body of lef); S21.219(Laceration without foreign body of uns); S21.22(Laceration with foreign body of back w); S21.221(Laceration with foreign body of right ); S21.222(Laceration with foreign body of left b)
+  got CPT: 72070(X-ray exam of thoracic spine); 72072(X-ray exam of thoracic spine); 72074(X-ray exam of thoracic spine); 76984(Dx intraop thoracic aorta us); 93303(Echo transthoracic); 93304(Echo transthoracic); G0307(Cbc without platelet); 0174T(Cad cxr with interp); 78202(Liver imaging with flow); 78701(Kidney imaging with flow)
+  !! FORBIDDEN suggested: 72070, 72072, 72074
+  !! NOT BILLABLE (header/parent/retired) suggested: M51.0, M51.1, S21.21, S21.211, S21.212, S21.219, S21.22, S21.221, S21.222
+
+[E10] Second-opinion consult, lumbar DDD w/ discogenic back pain (commercial consult code)
+  expected ICD M51.360|M51.369 -> MISS(not in catalog) | expected CPT 99244|99243 -> MISS(not in catalog)
+  got ICD: E11.22(Type 2 diabetes mellitus with diabetic); K71.3(Toxic liver disease with chronic persi); K71.4(Toxic liver disease with chronic lobul); K71.5(Toxic liver disease with chronic activ); M51.0(Thoracic, thoracolumbar and lumbosacra); M51.05(Intervertebral disc disorders with mye); M51.06(Intervertebral disc disorders with mye); M51.1(Thoracic, thoracolumbar and lumbosacra); M51.15(Intervertebral disc disorders with rad); M51.16(Intervertebral disc disorders with rad)
+  got CPT: 78202(Liver imaging with flow); 78701(Kidney imaging with flow); 93325(Doppler color flow add-on [i); G0307(Cbc without platelet); 0174T(Cad cxr with interp); 93320(Doppler echo exam heart [if ); 93321(Doppler echo exam heart [if ); 80061(Lipid panel [only when bille); 82465(Assay bld/serum cholesterol ); 82947(Assay glucose blood quant [o)
+  !! NOT BILLABLE (header/parent/retired) suggested: K71.5, M51.0, M51.1
+
+[E11] Right-sided sciatica without disc diagnosis
+  expected ICD M54.41|M54.31 -> MISS | expected CPT 99203|99213 -> MISS(not in catalog)
+  got ICD: I83.214(Varicose veins of right lower extremit); M61.361(Calcification and ossification of musc); T34.71(Frostbite with tissue necrosis of righ); M61.351(Calcification and ossification of musc); T34.61(Frostbite with tissue necrosis of righ); M05.641(Rheumatoid arthritis of right hand wit); M05.841(Other rheumatoid arthritis with rheuma); M80.841(Other osteoporosis with current pathol); M02.041(Arthropathy following intestinal bypas); D21.21(Benign neoplasm of connective and othe)
+  got CPT: G0141(Scr c/v cyto,autosys and md); C2640(Brachytx, stranded, P-103); C2641(Brachytx, non-stranded,P-103); C2642(Brachytx, stranded, C-131); C2643(Brachytx, non-stranded,C-131); G0141(Scr c/v cyto,autosys and md); Q0240(Casirivi and imdevi 600 mg); Q0243(Casirivimab and imdevimab); Q0244(Casirivi and imdevi 1200 mg); Q0245(Bamlanivimab and etesevima)
+  !! NOT BILLABLE (header/parent/retired) suggested: T34.71, T34.61, M80.841
+
+[E12] Coccydynia after fall
+  expected ICD M53.3 -> MISS | expected CPT 99203 -> MISS(not in catalog)
+  got ICD: I70.62(Atherosclerosis of nonbiological bypas); A69.22(Other neurologic disorders in Lyme dis); B06.09(Other neurological complications of ru); C06.8(Malignant neoplasm of overlapping site); C06.89(Malignant neoplasm of overlapping site); E11.49(Type 2 diabetes mellitus with other di); E65-E68(Overweight, obesity and other hyperali); G31.09(Other frontotemporal neurocognitive di); M70.86(Other soft tissue disorders related to); M70.861(Other soft tissue disorders related to)
+  got CPT: 97016(Vasopneumatic device therapy); P9612(Catheterize for urine spec); 92526(Oral function therapy); 92607(Ex for speech device rx 1hr); 92608(Ex for speech device rx addl); 92609(Use of speech device service); 97026(Infrared therapy); 97036(Hydrotherapy); 97116(Gait training therapy); 97610(Low frequency non-thermal US)
+  !! NOT BILLABLE (header/parent/retired) suggested: I70.62, C06.8, E65-E68, M70.86
+
+[E13] Adult degenerative scoliosis with stenosis
+  expected ICD M41.86|M41.87|M48.062 -> MISS | expected CPT 99214 -> MISS(not in catalog)
+  got ICD: M41.125(Adolescent idiopathic scoliosis, thora); M41.126(Adolescent idiopathic scoliosis, lumba); M51.0(Thoracic, thoracolumbar and lumbosacra); M51.05(Intervertebral disc disorders with mye); M51.06(Intervertebral disc disorders with mye); M51.1(Thoracic, thoracolumbar and lumbosacra); M51.15(Intervertebral disc disorders with rad); M51.16(Intervertebral disc disorders with rad); K41.0(Bilateral femoral hernia, with obstruc); K41.1(Bilateral femoral hernia, with gangren)
+  got CPT: 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 72158(Mri lumbar spine w/o & w/dye); 78202(Liver imaging with flow); 78701(Kidney imaging with flow); 93325(Doppler color flow add-on [i); G0307(Cbc without platelet)
+  !! NOT BILLABLE (header/parent/retired) suggested: M51.0, M51.1, K41.0, K41.1
+
+[E14] AIS 14yo, 45 deg thoracolumbar, scoliosis films taken in office
+  expected ICD M41.125 -> HIT#1 | expected CPT 99204|72082|72081 -> MISS
+  got ICD: M41.125(Adolescent idiopathic scoliosis, thora); S01.111(Laceration without foreign body of rig); S01.131(Puncture wound without foreign body of); S01.411(Laceration without foreign body of rig); S01.431(Puncture wound without foreign body of); D21.11(Benign neoplasm of connective and othe); D21.21(Benign neoplasm of connective and othe); I45.1(Other and unspecified right bundle-bra); I82.491(Acute embolism and thrombosis of other); I82.591(Chronic embolism and thrombosis of oth)
+  got CPT: Q0245(Bamlanivimab and etesevima); 86945(Blood product/irradiation); 0045U(Onc brst dux carc is 12 gene); 0245U(Onc thyr mut alys 10 gen&37); 0345U(Psyc genom alys pnl 15 gen); 0445U(Abeta42 & ptau181 eclia csf); 0450U(Onc mm lc-ms/ms monoc p-prtn); 0451U(Onc mm lc-ms/ms pep ion quan); 0452U(Onc bldr mthyl penk lte-qmsp); 0453U(Onc clrct ca cfdna qpcr asy)
+  !! NOT BILLABLE (header/parent/retired) suggested: S01.111, S01.131, S01.411, S01.431, I45.1
+
+[E15] Failed back surgery syndrome / postlaminectomy syndrome
+  expected ICD M96.1 -> MISS | expected CPT 99214 -> MISS(not in catalog)
+  got ICD: K71.3(Toxic liver disease with chronic persi); S34(Injury of lumbar and sacral spinal cor); S34.0(Concussion and edema of lumbar and sac); S34.01(Concussion and edema of lumbar spinal ); S34.1(Other and unspecified injury of lumbar); S34.10(Unspecified injury to lumbar spinal co); S34.101(Unspecified injury to L1 level of lumb); S34.102(Unspecified injury to L2 level of lumb); S34.103(Unspecified injury to L3 level of lumb); S34.104(Unspecified injury to L4 level of lumb)
+  got CPT: G0307(Cbc without platelet); 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 78630(Cerebrospinal fluid scan); 93320(Doppler echo exam heart [if ); 93321(Doppler echo exam heart [if ); 93325(Doppler color flow add-on [i); 63620(SRS spinal lesion); 63621(SRS spinal lesion addl)
+  !! NOT BILLABLE (header/parent/retired) suggested: S34, S34.0, S34.01, S34.1, S34.10, S34.101, S34.102, S34.103, S34.104
+
+[E16] Pseudarthrosis + broken S1 pedicle screw
+  expected ICD M96.0|T84.216A|T84.226A -> MISS | expected CPT 99214|99215 -> MISS(not in catalog)
+  got ICD: M61.362(Calcification and ossification of musc); Q72.12(Congenital absence of left thigh and l); S21.212(Laceration without foreign body of lef); S21.222(Laceration with foreign body of left b); S21.232(Puncture wound without foreign body of); S21.242(Puncture wound with foreign body of le); S21.412(Laceration without foreign body of lef); S21.422(Laceration with foreign body of left b); S21.432(Puncture wound without foreign body of); S21.442(Puncture wound with foreign body of le)
+  got CPT: 83718(Assay of lipoprotein [only w); 73718(Mri lower extremity w/o dye); 0018U(Onc thyr 10 microrna seq alg); 0318U(Ped whl gen mthyltn alys 50+); 0418U(Onc brst aug alg aly whl sl8); 0518U(Ther rx mntr 90+ pn&mtl hlth); 97018(Paraffin bath therapy); 73218(Mri upper extremity w/o dye); 74018(X-ray exam abdomen 1 view); 74181(Mri abdomen w/o dye)
+  !! NOT BILLABLE (header/parent/retired) suggested: S21.212, S21.222, S21.232, S21.242, S21.412, S21.422, S21.432, S21.442
+
+[E17] Cauda equina syndrome (emergency)
+  expected ICD G83.4|M51.26|M51.06 -> MISS | expected CPT 99205 -> MISS(not in catalog)
+  got ICD: M51.0(Thoracic, thoracolumbar and lumbosacra); M51.1(Thoracic, thoracolumbar and lumbosacra); D81.1(Severe combined immunodeficiency [SCID); M51.2(Other thoracic, thoracolumbar and lumb); M51.3(Other thoracic, thoracolumbar and lumb); M51.8(Other thoracic, thoracolumbar and lumb); M51.A(Other lumbar and lumbosacral annulus f); M61.36(Calcification and ossification of musc); M61.361(Calcification and ossification of musc); M61.362(Calcification and ossification of musc)
+  got CPT: 77047(Mri breast c-bilateral); 78202(Liver imaging with flow); 93325(Doppler color flow add-on [i); 97610(Low frequency non-thermal US); 73590(X-ray exam of lower leg); 78215(Liver and spleen imaging); 97610(Low frequency non-thermal US); 57155(Insert uteri tandems/ovoids); 78701(Kidney imaging with flow); 0039U(Dna antb 2strand hi avidity)
+  !! NOT BILLABLE (header/parent/retired) suggested: M51.0, M51.1, M51.2, M51.3, M51.8, M51.A, M61.36
+
+[E18] T10 metastasis w/ pathologic fx; HISTORY of breast cancer (must be Z85.3, not C50)
+  expected ICD C79.51|M84.58XA|Z85.3 -> MISS | expected CPT 99205|99204 -> MISS(not in catalog)
+  got ICD: M80.05(Age-related osteoporosis with current ); M80.051(Age-related osteoporosis with current ); M80.052(Age-related osteoporosis with current ); M80.059(Age-related osteoporosis with current ); M80.85(Other osteoporosis with current pathol); M80.851(Other osteoporosis with current pathol); M80.852(Other osteoporosis with current pathol); M80.859(Other osteoporosis with current pathol); M81.0(Age-related osteoporosis without curre); M81.8(Other osteoporosis without current pat)
+  got CPT: 93325(Doppler color flow add-on [i); 82465(Assay bld/serum cholesterol ); 82950(Glucose test [only when bill); 82951(Glucose tolerance test (GTT)); 0153U(Onc breast mrna 101 genes); 0635T(Ct breast w/3d uni c-/c+); 0857T(Opto-acoustic img breast uni); 81528(Oncology colorectal scr); 86945(Blood product/irradiation); G0541(No pt prsnt train initial 30)
+  !! NOT BILLABLE (header/parent/retired) suggested: M80.05, M80.051, M80.052, M80.059, M80.85, M80.851, M80.852, M80.859
+
+[E19] L2-3 discitis/osteomyelitis + epidural abscess, T2DM
+  expected ICD M46.26|M46.46|M46.36|G06.1|E11.9 -> MISS | expected CPT 99205 -> MISS(not in catalog)
+  got ICD: E11.354(Type 2 diabetes mellitus with prolifer); E13.354(Other specified diabetes mellitus with); E11.341(Type 2 diabetes mellitus with severe n); E11.349(Type 2 diabetes mellitus with severe n); M51.0(Thoracic, thoracolumbar and lumbosacra); M51.1(Thoracic, thoracolumbar and lumbosacra); D81.1(Severe combined immunodeficiency [SCID); E11.34(Type 2 diabetes mellitus with severe n); I83.201(Varicose veins of unspecified lower ex); I83.211(Varicose veins of right lower extremit)
+  got CPT: 73120(X-ray exam of hand); 78215(Liver and spleen imaging); 78230(Salivary gland imaging); 78232(Salivary gland function exam); C2638(Brachytx, stranded, I-125); C2639(Brachytx,non-stranded,I-125); C2640(Brachytx, stranded, P-103); C2641(Brachytx, non-stranded,P-103); C2642(Brachytx, stranded, C-131); C2643(Brachytx, non-stranded,C-131)
+  !! NOT BILLABLE (header/parent/retired) suggested: E11.354, E13.354, E11.341, E11.349, M51.0, M51.1, E11.34
+
+[E20] Ankylosing spondylitis, lumbar
+  expected ICD M45.6 -> MISS | expected CPT 99204 -> MISS(not in catalog)
+  got ICD: M51.0(Thoracic, thoracolumbar and lumbosacra); M51.1(Thoracic, thoracolumbar and lumbosacra); M51.05(Intervertebral disc disorders with mye); M51.06(Intervertebral disc disorders with mye); M51.15(Intervertebral disc disorders with rad); M51.16(Intervertebral disc disorders with rad); Q05.2(Lumbar spina bifida with hydrocephalus); G97.1(Other reaction to spinal and lumbar pu); M51(Thoracic, thoracolumbar, and lumbosacr); M51.2(Other thoracic, thoracolumbar and lumb)
+  got CPT: 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 72158(Mri lumbar spine w/o & w/dye); 90901(Biofeedback train any meth); 0174T(Cad cxr with interp); 78202(Liver imaging with flow); 78701(Kidney imaging with flow)
+  !! NOT BILLABLE (header/parent/retired) suggested: M51.0, M51.1, M51, M51.2
+
+[E21] Cervical spondylosis without myelopathy or radiculopathy
+  expected ICD M47.812 -> MISS | expected CPT 99213|99214 -> MISS(not in catalog)
+  got ICD: S11.21(Laceration without foreign body of pha); S11.23(Puncture wound without foreign body of); S11.22(Laceration with foreign body of pharyn); S11.24(Puncture wound with foreign body of ph); S11.81(Laceration without foreign body of oth); S11.83(Puncture wound without foreign body of); S11.91(Laceration without foreign body of uns); S11.93(Puncture wound without foreign body of); S21.11(Laceration without foreign body of fro); S21.111(Laceration without foreign body of rig)
+  got CPT: G0307(Cbc without platelet); 0174T(Cad cxr with interp); 70360(X-ray exam of neck); 70490(Ct soft tissue neck w/o dye); 70491(Ct soft tissue neck w/dye); 70498(Ct angiography neck); 70540(Mri orbit/face/neck w/o dye); 70542(Mri orbit/face/neck w/dye); 70547(Mr angiography neck w/o dye); 70548(Mr angiography neck w/dye)
+  !! NOT BILLABLE (header/parent/retired) suggested: S11.21, S11.23, S11.22, S11.24, S11.81, S11.83, S11.91, S11.93, S21.11, S21.111
+
+[E22] Lumbar facet arthropathy (spondylosis w/o radiculopathy)
+  expected ICD M47.816|M47.817 -> MISS | expected CPT 99213|99214 -> MISS(not in catalog)
+  got ICD: S21.21(Laceration without foreign body of bac); S21.211(Laceration without foreign body of rig); S21.212(Laceration without foreign body of lef); S21.219(Laceration without foreign body of uns); S21.23(Puncture wound without foreign body of); S21.231(Puncture wound without foreign body of); S21.232(Puncture wound without foreign body of); S21.239(Puncture wound without foreign body of); K41.0(Bilateral femoral hernia, with obstruc); S21.22(Laceration with foreign body of back w)
+  got CPT: G0307(Cbc without platelet); 78202(Liver imaging with flow); 78701(Kidney imaging with flow); 93325(Doppler color flow add-on [i); 0174T(Cad cxr with interp); 93320(Doppler echo exam heart [if ); 93321(Doppler echo exam heart [if ); 80061(Lipid panel [only when bille); 82465(Assay bld/serum cholesterol ); 82947(Assay glucose blood quant [o)
+  !! NOT BILLABLE (header/parent/retired) suggested: S21.21, S21.211, S21.212, S21.219, S21.23, S21.231, S21.232, S21.239, K41.0, S21.22
+
+[E23] OPLL cervical with myelopathy
+  expected ICD M48.8X2|M47.12|G99.2 -> MISS | expected CPT 99205|99204 -> MISS(not in catalog)
+  got ICD: M61.34(Calcification and ossification of musc); M61.341(Calcification and ossification of musc); M61.342(Calcification and ossification of musc); M61.349(Calcification and ossification of musc); M61.3(Calcification and ossification of musc); M61.31(Calcification and ossification of musc); M61.311(Calcification and ossification of musc); M61.312(Calcification and ossification of musc); M61.319(Calcification and ossification of musc); M61.32(Calcification and ossification of musc)
+  got CPT: G0307(Cbc without platelet); 0174T(Cad cxr with interp); 78202(Liver imaging with flow); 78701(Kidney imaging with flow); 93320(Doppler echo exam heart [if ); 93321(Doppler echo exam heart [if ); 93325(Doppler color flow add-on [i); 80061(Lipid panel [only when bille); 82465(Assay bld/serum cholesterol ); 82947(Assay glucose blood quant [o)
+  !! NOT BILLABLE (header/parent/retired) suggested: M61.34, M61.3, M61.31, M61.32
+
+[E24] Isthmic spondylolisthesis L5-S1 with spondylolysis
+  expected ICD M43.17|M43.07|M43.06 -> MISS | expected CPT 99204|99203 -> MISS(not in catalog)
+  got ICD: I83.813(Varicose veins of bilateral lower extr); K22.710(Barrett's esophagus with low grade dys); K31.A21(Gastric intestinal metaplasia with low); K41.0(Bilateral femoral hernia, with obstruc); S21.21(Laceration without foreign body of bac); S21.211(Laceration without foreign body of rig); S21.212(Laceration without foreign body of lef); S21.219(Laceration without foreign body of uns); S21.22(Laceration with foreign body of back w); S21.221(Laceration with foreign body of right )
+  got CPT: 78701(Kidney imaging with flow); 90901(Biofeedback train any meth); 0174T(Cad cxr with interp); 93321(Doppler echo exam heart [if ); 80061(Lipid panel [only when bille); 82951(Glucose tolerance test (GTT)); 83718(Assay of lipoprotein [only w); 92610(Evaluate swallowing function); 92611(Motion fluoroscopy/swallow); 92612(Endoscopy swallow tst (fees))
+  !! NOT BILLABLE (header/parent/retired) suggested: K41.0, S21.21, S21.211, S21.212, S21.219, S21.22, S21.221
+
+[E25] SI joint dysfunction / sacroiliitis
+  expected ICD M46.1|M53.3|M53.2X8 -> MISS | expected CPT 99203|99213 -> MISS(not in catalog)
+  got ICD: M21.241(Flexion deformity, right finger joints); M61.351(Calcification and ossification of musc); Q72.11(Congenital absence of right thigh and ); S71.111(Laceration without foreign body, right); S71.121(Laceration with foreign body, right th); S71.131(Puncture wound without foreign body, r); S71.141(Puncture wound with foreign body, righ); M21.851(Other specified acquired deformities o); M61.451(Other calcification of muscle, right t); M61.551(Other ossification of muscle, right th)
+  got CPT: 72200(X-ray exam sacroiliac joints); 72202(X-ray exam sacroiliac joints); 70328(X-ray exam of jaw joint); 70330(X-ray exam of jaw joints); 70336(Magnetic image jaw joint); 73221(Mri joint upr extrem w/o dye); 73222(Mri joint upr extrem w/dye); 73223(Mri joint upr extr w/o&w/dye); 73722(Mri joint of lwr extr w/dye); 73723(Mri joint lwr extr w/o&w/dye)
+  !! NOT BILLABLE (header/parent/retired) suggested: S71.111, S71.121, S71.131, S71.141
+
+[T01] L1 stable burst fx, ladder fall AT WORK (WC)
+  expected ICD S32.011A -> MISS(not in catalog) | expected CPT 99204|99203 -> MISS(not in catalog)
+  got ICD: S22.011(Stable burst fracture of first thoraci); S22.012(Unstable burst fracture of first thora); S22.001(Stable burst fracture of unspecified t); S22.002(Unstable burst fracture of unspecified); S22.021(Stable burst fracture of second thorac); S22.022(Unstable burst fracture of second thor); S22.031(Stable burst fracture of third thoraci); S22.032(Unstable burst fracture of third thora); S22.041(Stable burst fracture of fourth thorac); S22.042(Unstable burst fracture of fourth thor)
+  got CPT: 77086(Fracture assessment via dxa); 77072(X-rays for bone age); 0016M(Onc bladder mrna 219 gen alg); 97546(Work hardening add-on); 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 72158(Mri lumbar spine w/o & w/dye)
+  !! NOT BILLABLE (header/parent/retired) suggested: S22.011, S22.012, S22.001, S22.002, S22.021, S22.022, S22.031, S22.032, S22.041, S22.042
+
+[T02] Whiplash after MVA (no-fault)
+  expected ICD S13.4XXA -> MISS | expected CPT 99203 -> MISS(not in catalog)
+  got ICD: S14.142A(Brown-Sequard syndrome at C2 level of ); Z01.42(Encounter for cervical smear to confir); S14.142D(Brown-Sequard syndrome at C2 level of ); M50.02(Cervical disc disorder with myelopathy); M50.12(Cervical disc disorder with radiculopa); M50.22(Other cervical disc displacement, mid-); M50.32(Other cervical disc degeneration, mid-); M50.82(Other cervical disc disorders, mid-cer); M50.92(Cervical disc disorder, unspecified, m); M50.920(Unspecified cervical disc disorder, mi)
+  got CPT: 73502(X-ray exam hip uni 2-3 views); 73521(X-ray exam hips bi 2 views); 73522(X-ray exam hips bi 3-4 views); 73523(X-ray exam hips bi 5/> views); 0021U(Onc prst8 detcj 8 autoantb); 97112(Neuromuscular reeducation); 76120(Cine/video x-rays); 76125(Cine/video x-rays add-on); 77072(X-rays for bone age); 78452(Ht muscle image spect mult)
+  !! NOT BILLABLE (header/parent/retired) suggested: M50.02, M50.12, M50.22, M50.32, M50.82, M50.92
+
+[T03] Lumbar strain lifting at work (WC)
+  expected ICD S39.012A -> MISS | expected CPT 99203 -> MISS(not in catalog)
+  got ICD: M61.26(Paralytic calcification and ossificati); M61.261(Paralytic calcification and ossificati); M61.262(Paralytic calcification and ossificati); M61.269(Paralytic calcification and ossificati); V61.4(Person boarding or alighting a heavy t); M61.46(Other calcification of muscle, lower l); M61.461(Other calcification of muscle, right l); M61.462(Other calcification of muscle, left lo); M61.469(Other calcification of muscle, unspeci); M61.56(Other ossification of muscle, lower le)
+  got CPT: A4641(Radiopharm dx agent noc); A4642(In111 satumomab); A9500(Tc99m sestamibi); A9501(Technetium TC-99m teboroxime); A9502(Tc99m tetrofosmin); A9503(Tc99m medronate); A9504(Tc99m apcitide); A9505(TL201 thallium); A9506(Tc-99m graphite crucible); A9507(In111 capromab)
+  !! NOT BILLABLE (header/parent/retired) suggested: M61.26, V61.4, M61.46, M61.56
+
+[T04] Type II odontoid (dens) fracture, elderly fall
+  expected ICD S12.112A -> MISS(not in catalog) | expected CPT 99205|99204 -> MISS(not in catalog)
+  got ICD: Z01.42(Encounter for cervical smear to confir); S11.21(Laceration without foreign body of pha); S11.22(Laceration with foreign body of pharyn); S11.23(Puncture wound without foreign body of); S11.24(Puncture wound with foreign body of ph); Y31.XXXA(Falling, lying or running before or in); C91.1(Chronic lymphocytic leukemia of B-cell); C91.3(Prolymphocytic leukemia of B-cell type); C91.6(Prolymphocytic leukemia of T-cell type); C91.A(Mature B-cell leukemia Burkitt-type)
+  got CPT: 76977(Us bone density measure); 77078(Ct bone density axial); 77080(Dxa bone density axial); 77081(Dxa bone density/peripheral); 77085(Dxa bone density study); 86950(Leukacyte transfusion); G0541(No pt prsnt train initial 30); 0042T(Ct perfusion w/contrast cbf); 73000(X-ray exam of collar bone); 78580(Lung perfusion imaging)
+  !! NOT BILLABLE (header/parent/retired) suggested: S11.21, S11.22, S11.23, S11.24, C91.1, C91.3, C91.6, C91.A
+
+[T05] Osteoporotic T12 fx, SUBSEQUENT encounter routine healing (7th char D)
+  expected ICD M80.08XD -> MISS | expected CPT 99213 -> MISS(not in catalog)
+  got ICD: M80.061(Age-related osteoporosis with current ); M80.861(Other osteoporosis with current pathol); M80.06(Age-related osteoporosis with current ); M80.062(Age-related osteoporosis with current ); M80.069(Age-related osteoporosis with current ); M80.86(Other osteoporosis with current pathol); M80.862(Other osteoporosis with current pathol); M80.869(Other osteoporosis with current pathol); M81.0(Age-related osteoporosis without curre); M80.011(Age-related osteoporosis with current )
+  got CPT: 80061(Lipid panel [only when bille); 82465(Assay bld/serum cholesterol ); 36415(Routine venipuncture); 70160(X-ray exam of nasal bones); 70260(X-ray exam of skull); 70360(X-ray exam of neck); 71046(X-ray exam chest 2 views); 73060(X-ray exam of humerus); 73560(X-ray exam of knee 1 or 2); 73562(X-ray exam of knee 3)
+  !! NOT BILLABLE (header/parent/retired) suggested: M80.061, M80.861, M80.06, M80.062, M80.069, M80.86, M80.862, M80.869, M80.011
+
+[T06] Central cord syndrome after hyperextension fall
+  expected ICD S14.124A|S14.12* -> HIT#10 | expected CPT 99205|99223 -> MISS(not in catalog)
+  got ICD: S14.141A(Brown-Sequard syndrome at C1 level of ); S14.142A(Brown-Sequard syndrome at C2 level of ); S14.143A(Brown-Sequard syndrome at C3 level of ); S14.144A(Brown-Sequard syndrome at C4 level of ); S14.145A(Brown-Sequard syndrome at C5 level of ); S14.146A(Brown-Sequard syndrome at C6 level of ); S14.147A(Brown-Sequard syndrome at C7 level of ); S14.148A(Brown-Sequard syndrome at C8 level of ); S14.149A(Brown-Sequard syndrome at unspecified ); S14.121(Central cord syndrome at C1 level of c)
+  got CPT: 73200(Ct upper extremity w/o dye); 73201(Ct upper extremity w/dye); 73218(Mri upper extremity w/o dye); 73219(Mri upper extremity w/dye); 93930(Upper extremity study); 93931(Upper extremity study); 70350(X-ray head for orthodontia); 70450(Ct head/brain w/o dye); 70460(Ct head/brain w/dye); 70470(Ct head/brain w/o & w/dye)
+  !! NOT BILLABLE (header/parent/retired) suggested: S14.121
+
+[S01] OP: L5-S1 microdiscectomy (hemilaminotomy)
+  expected ICD M51.17|M51.27 -> MISS | expected CPT 63030 -> MISS(not in catalog)
+  got ICD: O00.202(Left ovarian pregnancy without intraut); S21.202(Unspecified open wound of left back wa); C44.209(Unspecified malignant neoplasm of skin); H02.20B(…… left eye, upper and lower eyelids); I80.202(Phlebitis and thrombophlebitis of unsp); M92.202(Unspecified juvenile osteochondrosis, ); S00.202(Unspecified superficial injury of left); S46.202(Unspecified injury of muscle, fascia a); S65.202(Unspecified injury of superficial palm); S75.202(Unspecified injury of greater saphenou)
+  got CPT: 78202(Liver imaging with flow); 93320(Doppler echo exam heart [if ); 73120(X-ray exam of hand); Q0220(Tixagev and cilgav, 300mg); 0020M(Onc cns alys 30000 dna loci); 0202U(Nfct ds 22 trgt sars-cov-2); 0420U(Onc urthl mrna xprsn 6 snp); 0520U(Ther rx mntr 200+ rx/sbsts); 78120(Red cell mass single); P2028(Cephalin floculation test)
+  !! NOT BILLABLE (header/parent/retired) suggested: S21.202, S00.202, S46.202, S65.202, S75.202
+
+[S02] OP: 2-level ACDF C5-7 with cages, plate, allograft
+  expected ICD M50.022|M50.023|M47.12 -> HIT#1 | expected CPT 22551|22552|22853|22845 -> MISS(not in catalog)
+  got ICD: M50.022(Cervical disc disorder at C5-C6 level ); M50.122(Cervical disc disorder at C5-C6 level ); M50.222(Other cervical disc displacement at C5); M50.322(Other cervical disc degeneration at C5); M50.822(Other cervical disc disorders at C5-C6); M50.922(Unspecified cervical disc disorder at ); M50.02(Cervical disc disorder with myelopathy); M50.12(Cervical disc disorder with radiculopa); M50.22(Other cervical disc displacement, mid-); M50.32(Other cervical disc degeneration, mid-)
+  got CPT: 86950(Leukacyte transfusion); 0050U(Trgt gen seq dna 194 genes); 0250U(Onc sld org neo dna 505 gene); 0350U(Rx metab/pcx dna 27 gen alys); 0450U(Onc mm lc-ms/ms monoc p-prtn); 0500U(Autoinflam ds vexas synd dna); 0501U(Onc clrc bld quan meas cfdna); 0502U(Hpv e6/e7 mrk hirsk typ crv); 0503U(Neuro alz ds βamyl&tau prtn); 0504U(Nfct ds uti id 17 path orgs)
+  !! NOT BILLABLE (header/parent/retired) suggested: M50.02, M50.12, M50.22, M50.32
+
+[S03] OP: L4-5 TLIF with pedicle screws
+  expected ICD M43.16|M48.062 -> MISS | expected CPT 22633|22630|22840|22853 -> MISS(not in catalog)
+  got ICD: Y36.300(War operations involving unspecified f); Y37.300(Military operations involving unspecif); K35.32(Acute appendicitis with perforation, l); K35.33(Acute appendicitis with perforation, l); G40.0(Localization-related (focal) (partial)); G40.00(Localization-related (focal) (partial)); G40.01(Localization-related (focal) (partial)); G40.1(Localization-related (focal) (partial)); G40.10(Localization-related (focal) (partial)); G40.11(Localization-related (focal) (partial))
+  got CPT: P3000(Screen pap by tech w md supv); P3001(Screening pap smear by phys); 70300(X-ray exam of teeth); 73000(X-ray exam of collar bone); 78300(Bone imaging limited area); 77300(Radiation therapy dose plan); 79300(Nuclr rx interstit colloid); Q3001(Brachytherapy Radioelements); P3000(Screen pap by tech w md supv); P3001(Screening pap smear by phys)
+  !! NOT BILLABLE (header/parent/retired) suggested: Y36.300, Y37.300, G40.0, G40.00, G40.01, G40.1, G40.10, G40.11
+
+[S04] OP: L3-L5 decompressive laminectomy, no fusion
+  expected ICD M48.062 -> MISS | expected CPT 63047|63048 -> MISS(not in catalog)
+  got ICD: Q42.1(Congenital absence, atresia and stenos); Q42.3(Congenital absence, atresia and stenos); B16.9(Acute hepatitis B without delta-agent ); F10.150(…… with delusions); F11.150(…… with delusions); F12.150(…… with delusions); F13.150(…… with delusions); F14.150(…… with delusions); F15.150(…… with delusions); F16.150(…… with delusions)
+  got CPT: 97150(Group therapeutic procedures); 70150(X-ray exam of facial bones); 74150(Ct abdomen w/o dye); G0307(Cbc without platelet); 0039U(Dna antb 2strand hi avidity); G0141(Scr c/v cyto,autosys and md); 70380(X-ray exam of salivary gland); 73120(X-ray exam of hand); 73130(X-ray exam of hand); 76536(Us exam of head and neck)
+
+[S05] OP: T12 balloon kyphoplasty
+  expected ICD M80.08XA -> MISS | expected CPT 22513 -> MISS(not in catalog)
+  got ICD: M80.0(Age-related osteoporosis with current ); M80.00(Age-related osteoporosis with current ); M80.01(Age-related osteoporosis with current ); M80.011(Age-related osteoporosis with current ); M80.012(Age-related osteoporosis with current ); M80.019(Age-related osteoporosis with current ); M80.02(Age-related osteoporosis with current ); M80.021(Age-related osteoporosis with current ); M80.022(Age-related osteoporosis with current ); M80.029(Age-related osteoporosis with current )
+  got CPT: G0307(Cbc without platelet); 0174T(Cad cxr with interp); 78202(Liver imaging with flow); 78701(Kidney imaging with flow); 93320(Doppler echo exam heart [if ); 93321(Doppler echo exam heart [if ); 93325(Doppler color flow add-on [i); 80061(Lipid panel [only when bille); 82465(Assay bld/serum cholesterol ); 82947(Assay glucose blood quant [o)
+  !! NOT BILLABLE (header/parent/retired) suggested: M80.0, M80.00, M80.01, M80.011, M80.012, M80.019, M80.02, M80.021, M80.022, M80.029
+
+[S06] OP: C5-6 cervical disc arthroplasty
+  expected ICD M50.122 -> MISS | expected CPT 22856 -> MISS(not in catalog)
+  got ICD: M05.251(Rheumatoid vasculitis with rheumatoid ); M08.251(Juvenile rheumatoid arthritis with sys); S21.251(Open bite of right back wall of thorax); M25.571(Pain in right ankle and joints of righ); C62.01(Malignant neoplasm of undescended righ); C62.11(Malignant neoplasm of descended right ); C62.91(Malignant neoplasm of right testis, un); C63.01(Malignant neoplasm of right epididymis); C63.11(Malignant neoplasm of right spermatic ); C64.1(Malignant neoplasm of right kidney, ex)
+  got CPT: 93325(Doppler color flow add-on [i); 0025U(Tenofovir liq chrom ur quan); 0225U(Nfct ds dna&rna 21 sarscov2); 0250U(Onc sld org neo dna 505 gene); 0258U(Ai psor mrna 50-100 gen alg); 0425U(Genom rpd seq alys ea cmprtr); 0525U(Onc sphrd cell cul 11-rx pnl); 78725(Kidney function study); 92507(Speech/hearing therapy); 92508(Speech/hearing therapy)
+  !! NOT BILLABLE (header/parent/retired) suggested: S21.251
+
+[S07] OP: posterior cervical laminectomy + fusion C3-C6
+  expected ICD M47.12|M48.02 -> MISS | expected CPT 22600|22614|22842|63045|63015 -> MISS(not in catalog)
+  got ICD: M50.02(Cervical disc disorder with myelopathy); M50.12(Cervical disc disorder with radiculopa); I63.533(Cerebral infarction due to unspecified); I66.23(Occlusion and stenosis of bilateral po); M50.0(Cervical disc disorder with myelopathy); M50.021(Cervical disc disorder at C4-C5 level ); M50.022(Cervical disc disorder at C5-C6 level ); M50.023(Cervical disc disorder at C6-C7 level ); M50.1(Cervical disc disorder with radiculopa); M50.121(Cervical disc disorder at C4-C5 level )
+  got CPT: 0400U(Ob xpnd car scr 145 genes); G0307(Cbc without platelet); 0174T(Cad cxr with interp); 78202(Liver imaging with flow); 78701(Kidney imaging with flow); 93320(Doppler echo exam heart [if ); 93321(Doppler echo exam heart [if ); 93325(Doppler color flow add-on [i); 80061(Lipid panel [only when bille); 82465(Assay bld/serum cholesterol )
+  !! NOT BILLABLE (header/parent/retired) suggested: M50.02, M50.12, M50.0, M50.1
+
+[S08] OP: percutaneous spinal cord stimulator trial
+  expected ICD M96.1 -> MISS | expected CPT 63650 -> MISS(not in catalog)
+  got ICD: N03.0(Chronic nephritic syndrome with minor ); N03.1(Chronic nephritic syndrome with focal ); N03.2(Chronic nephritic syndrome with diffus); N03.3(Chronic nephritic syndrome with diffus); N03.4(Chronic nephritic syndrome with diffus); N03.5(Chronic nephritic syndrome with diffus); N03.6(Chronic nephritic syndrome with dense ); N03.7(Chronic nephritic syndrome with diffus); N03.8(Chronic nephritic syndrome with other ); N03.9(Chronic nephritic syndrome with unspec)
+  got CPT: G0307(Cbc without platelet); 0174T(Cad cxr with interp); 78202(Liver imaging with flow); 78701(Kidney imaging with flow); 93320(Doppler echo exam heart [if ); 93321(Doppler echo exam heart [if ); 93325(Doppler color flow add-on [i); 80061(Lipid panel [only when bille); 82465(Assay bld/serum cholesterol ); 82947(Assay glucose blood quant [o)
+
+[S09] OP: removal of posterior lumbar hardware + exploration of fusion
+  expected ICD T84.84XA|Z47.2|M96.0 -> MISS | expected CPT 22850|22830 -> MISS(not in catalog)
+  got ICD: L89.100(…… unstageable); M75.100(Unspecified rotator cuff tear or ruptu); S13.100(Subluxation of unspecified cervical ve); S13.100A(…… initial encounter); S13.100D(…… subsequent encounter); S13.100S(…… sequela); S23.100(Subluxation of unspecified thoracic ve); S23.100A(…… initial encounter); S23.100D(…… subsequent encounter); S23.100S(…… sequela)
+  got CPT: 70100(X-ray exam of jaw); 71100(X-ray exam of ribs); 72100(X-ray exam of lower spine); 73100(X-ray exam of wrist); 76100(X-ray exam of body section); 86950(Leukacyte transfusion); 0042T(Ct perfusion w/contrast cbf); 76800(Us exam spinal canal); 78580(Lung perfusion imaging); 78597(Lung perfusion differential)
+  !! NOT BILLABLE (header/parent/retired) suggested: S13.100, S23.100
+
+[S10] OP: lateral lumbar interbody fusion L3-4
+  expected ICD M48.061|M51.36*|M51.36 -> MISS | expected CPT 22558|22853|22845 -> MISS(not in catalog)
+  got ICD: K50.81(Crohn's disease of both small and larg); K50.811(Crohn's disease of both small and larg); K50.812(Crohn's disease of both small and larg); K50.813(Crohn's disease of both small and larg); K50.814(Crohn's disease of both small and larg); K50.818(Crohn's disease of both small and larg); K50.819(Crohn's disease of both small and larg); K57.50(Diverticulosis of both small and large); K50.01(Crohn's disease of small intestine wit); K50.011(Crohn's disease of small intestine wit)
+  got CPT: 82950(Glucose test [only when bill); 86950(Leukacyte transfusion); 0050U(Trgt gen seq dna 194 genes); 0250U(Onc sld org neo dna 505 gene); 0350U(Rx metab/pcx dna 27 gen alys); 0450U(Onc mm lc-ms/ms monoc p-prtn); 0500U(Autoinflam ds vexas synd dna); 0501U(Onc clrc bld quan meas cfdna); 0502U(Hpv e6/e7 mrk hirsk typ crv); 0503U(Neuro alz ds βamyl&tau prtn)
+  !! NOT BILLABLE (header/parent/retired) suggested: K50.81, K50.01
+
+[S11] OP: I&D deep post-op lumbar wound infection
+  expected ICD T81.42XA|T84.7XXA -> MISS | expected CPT 22015|10180 -> MISS(not in catalog)
+  got ICD: T81.42(Infection following a procedure, deep ); O86.02(…… deep incisional site); T81.41(Infection following a procedure, super); L89.46(Pressure-induced deep tissue damage of); T81.43(Infection following a procedure, organ); L89.896(Pressure-induced deep tissue damage of); L89.96(Pressure-induced deep tissue damage of); N80.392(Deep endometriosis of the pelvic perit); O86.0(Infection of obstetric surgical wound); O86.01(…… superficial incisional site)
+  got CPT: 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 72158(Mri lumbar spine w/o & w/dye); 97602(Wound(s) care non-selective); 97605(Neg press wound tx < 50 cm); 97606(Neg press wound tx > 50 cm); 97608(Neg press wound tx >50 cm)
+  !! NOT BILLABLE (header/parent/retired) suggested: T81.42, T81.41, T81.43, O86.0
+
+[S12] OP: SI joint fusion
+  expected ICD M53.3|M46.1|M53.2X8 -> MISS | expected CPT 27279 -> MISS(not in catalog)
+  got ICD: M25.571(Pain in right ankle and joints of righ); M93.271(Osteochondritis dissecans, right ankle); M94.271(Chondromalacia, right ankle and joints); M14.611(Charcôt's joint, right shoulder); M14.621(Charcôt's joint, right elbow); M14.631(Charcôt's joint, right wrist); M14.641(Charcôt's joint, right hand); M14.651(Charcôt's joint, right hip); M14.661(Charcôt's joint, right knee); M14.671(Charcôt's joint, right ankle and foot)
+  got CPT: 72200(X-ray exam sacroiliac joints); 72202(X-ray exam sacroiliac joints); 70328(X-ray exam of jaw joint); 70330(X-ray exam of jaw joints); 70336(Magnetic image jaw joint); 73221(Mri joint upr extrem w/o dye); 73222(Mri joint upr extrem w/dye); 73223(Mri joint upr extr w/o&w/dye); 73722(Mri joint of lwr extr w/dye); 73723(Mri joint lwr extr w/o&w/dye)
+
+[S13] OP: laminectomy with incidental durotomy (G97.41)
+  expected ICD G97.41|M48.062 -> MISS | expected CPT 63047 -> MISS(not in catalog)
+  got ICD: M89.124(Partial physeal arrest, left proximal ); N99.524(Stenosis of incontinent stoma of urina); Q24.3(Pulmonary infundibular stenosis); Q24.4(Congenital subaortic stenosis); S01.24(Puncture wound with foreign body of no); S11.024(Puncture wound with foreign body of tr); S11.24(Puncture wound with foreign body of ph); S21.24(Puncture wound with foreign body of ba); S21.241(Puncture wound with foreign body of ri); S21.242(Puncture wound with foreign body of le)
+  got CPT: 0024U(Glyca nuc mr spectrsc quan); 0224U(Antibody sars-cov-2 titer(s)); 0240U(Nfct ds vir resp rna 3 trgt); 0241U(Nfct ds vir resp rna 4 trgt); 0242U(Trgt gen seq alys pnl 55-74); 0244U(Onc solid orgn dna 257 genes); 0245U(Onc thyr mut alys 10 gen&37); 0246U(Rbc dna gnotyp 16 bld groups); 0248U(Onc sphrd cell cul 12 rx pnl); 0424U(Onc prst8 xom alys 53 sncrna)
+  !! NOT BILLABLE (header/parent/retired) suggested: S01.24, S11.024, S11.24, S21.24, S21.241, S21.242
+
+[P01] Left L5-S1 transforaminal ESI
+  expected ICD M51.17|M54.17 -> MISS | expected CPT 64483 -> MISS(not in catalog)
+  got ICD: T81.523(Obstruction due to foreign body accide); H59.312(Postprocedural hemorrhage of left eye ); H59.322(Postprocedural hemorrhage of left eye ); H59.332(Postprocedural hematoma of left eye an); H59.342(Postprocedural hematoma of left eye an); H59.352(Postprocedural seroma of left eye and ); H59.362(Postprocedural seroma of left eye and ); H74.22(Discontinuity and dislocation of left ); H93.092(Unspecified degenerative and vascular ); I60.02(Nontraumatic subarachnoid hemorrhage f)
+  got CPT: 0042T(Ct perfusion w/contrast cbf); 74290(Contrast x-ray gallbladder); 73120(X-ray exam of hand); 78215(Liver and spleen imaging); 78230(Salivary gland imaging); 78232(Salivary gland function exam); C2638(Brachytx, stranded, I-125); C2639(Brachytx,non-stranded,I-125); C2640(Brachytx, stranded, P-103); C2641(Brachytx, non-stranded,P-103)
+  !! NOT BILLABLE (header/parent/retired) suggested: T81.523
+
+[P02] L5-S1 interlaminar ESI
+  expected ICD M48.062|M48.061|M54.16 -> MISS | expected CPT 62323 -> MISS(not in catalog)
+  got ICD: G97.83(Intracranial hypotension following lum); M48.06(Spinal stenosis, lumbar region); K40.0(Bilateral inguinal hernia, with obstru); K41.0(Bilateral femoral hernia, with obstruc); E08.37(Diabetes mellitus due to underlying co); E09.37(Drug or chemical induced diabetes mell); E10.37(Type 1 diabetes mellitus with diabetic); E11.37(Type 2 diabetes mellitus with diabetic); E13.37(Other specified diabetes mellitus with); G97.1(Other reaction to spinal and lumbar pu)
+  got CPT: G0307(Cbc without platelet); 0174T(Cad cxr with interp); 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 72158(Mri lumbar spine w/o & w/dye); 76380(CAT scan follow-up study); 76800(Us exam spinal canal)
+  !! NOT BILLABLE (header/parent/retired) suggested: M48.06, K40.0, K41.0, E08.37, E09.37, E10.37, E11.37, E13.37
+
+[P03] C7-T1 cervical interlaminar ESI
+  expected ICD M54.12|M50.12* -> HIT#2 | expected CPT 62321 -> MISS(not in catalog)
+  got ICD: M50.02(Cervical disc disorder with myelopathy); M50.12(Cervical disc disorder with radiculopa); M50.0(Cervical disc disorder with myelopathy); M50.021(Cervical disc disorder at C4-C5 level ); M50.022(Cervical disc disorder at C5-C6 level ); M50.023(Cervical disc disorder at C6-C7 level ); M50.1(Cervical disc disorder with radiculopa); M50.121(Cervical disc disorder at C4-C5 level ); M50.122(Cervical disc disorder at C5-C6 level ); M50.123(Cervical disc disorder at C6-C7 level )
+  got CPT: G0307(Cbc without platelet); 0174T(Cad cxr with interp); 76380(CAT scan follow-up study); 76816(Ob us follow-up per fetus); 78202(Liver imaging with flow); 78701(Kidney imaging with flow); 93320(Doppler echo exam heart [if ); 93321(Doppler echo exam heart [if ); 93325(Doppler color flow add-on [i); 80061(Lipid panel [only when bille)
+  !! NOT BILLABLE (header/parent/retired) suggested: M50.02, M50.12, M50.0, M50.1
+
+[P04] Bilateral L4-5, L5-S1 medial branch blocks
+  expected ICD M47.816|M47.817 -> MISS | expected CPT 64493|64494 -> MISS(not in catalog)
+  got ICD: S30-S39(Injuries to the abdomen, lower back, l); S34(Injury of lumbar and sacral spinal cor); S33(Dislocation and sprain of joints and l); G97.1(Other reaction to spinal and lumbar pu); G97.83(Intracranial hypotension following lum); M51(Thoracic, thoracolumbar, and lumbosacr); M51.0(Thoracic, thoracolumbar and lumbosacra); M51.1(Thoracic, thoracolumbar and lumbosacra); M51.2(Other thoracic, thoracolumbar and lumb); M51.3(Other thoracic, thoracolumbar and lumb)
+  got CPT: 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 72158(Mri lumbar spine w/o & w/dye); 90901(Biofeedback train any meth); 70330(X-ray exam of jaw joints); 72200(X-ray exam sacroiliac joints); 72202(X-ray exam sacroiliac joints)
+  !! NOT BILLABLE (header/parent/retired) suggested: S30-S39, S34, S33, M51, M51.0, M51.1, M51.2, M51.3
+
+[P05] Right L4-5, L5-S1 facet RFA
+  expected ICD M47.816|M47.817 -> MISS | expected CPT 64635|64636 -> MISS(not in catalog)
+  got ICD: H90.71(Mixed conductive and sensorineural hea); H90.A31(Mixed conductive and sensorineural hea); M80.031(Age-related osteoporosis with current ); M80.041(Age-related osteoporosis with current ); M80.071(Age-related osteoporosis with current ); M80.831(Other osteoporosis with current pathol); M80.841(Other osteoporosis with current pathol); M80.871(Other osteoporosis with current pathol); M90.641(Osteitis deformans in neoplastic disea); M90.671(Osteitis deformans in neoplastic disea)
+  got CPT: 76380(CAT scan follow-up study); 80061(Lipid panel [only when bille); 70380(X-ray exam of salivary gland); 73090(X-ray exam of forearm); 77790(Radiation handling); C2638(Brachytx, stranded, I-125); C2639(Brachytx,non-stranded,I-125); C2640(Brachytx, stranded, P-103); C2641(Brachytx, non-stranded,P-103); C2642(Brachytx, stranded, C-131)
+  !! NOT BILLABLE (header/parent/retired) suggested: M80.031, M80.041, M80.071, M80.831, M80.841, M80.871
+
+[P06] Right SI joint injection with fluoro
+  expected ICD M46.1|M53.3 -> MISS | expected CPT 27096|G0260 -> MISS(not in catalog)
+  got ICD: M25.571(Pain in right ankle and joints of righ); M93.271(Osteochondritis dissecans, right ankle); M94.271(Chondromalacia, right ankle and joints); M05.741(Rheumatoid arthritis with rheumatoid f); M05.771(Rheumatoid arthritis with rheumatoid f); H59.311(Postprocedural hemorrhage of right eye); H59.321(Postprocedural hemorrhage of right eye); H59.331(Postprocedural hematoma of right eye a); H59.341(Postprocedural hematoma of right eye a); H59.351(Postprocedural seroma of right eye and)
+  got CPT: 72200(X-ray exam sacroiliac joints); 72202(X-ray exam sacroiliac joints); G0307(Cbc without platelet); 97034(Contrast bath therapy); 0042T(Ct perfusion w/contrast cbf); 0174T(Cad cxr with interp); 70328(X-ray exam of jaw joint); 70330(X-ray exam of jaw joints); 70336(Magnetic image jaw joint); 73221(Mri joint upr extrem w/o dye)
+
+[P07] Trigger point injections, 3+ muscles
+  expected ICD M79.18|M62.830 -> MISS | expected CPT 20553 -> MISS(not in catalog)
+  got ICD: N94(Pain and other conditions associated w); I70.42(Atherosclerosis of autologous vein byp); T82.84(Pain due to cardiac and vascular prost); T82.847(Pain due to cardiac prosthetic devices); T82.848(Pain due to vascular prosthetic device); T83.84(Pain due to genitourinary prosthetic d); T85.84(Pain due to internal prosthetic device); T85.840(Pain due to nervous system prosthetic ); T85.848(Pain due to other internal prosthetic ); E13.354(Other specified diabetes mellitus with)
+  got CPT: 0174T(Cad cxr with interp); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 82465(Assay bld/serum cholesterol ); 82947(Assay glucose blood quant [o); 84478(Assay of triglycerides [only); G0141(Scr c/v cyto,autosys and md); 97024(Diathermy eg microwave); 97034(Contrast bath therapy); 97124(Massage therapy)
+  !! NOT BILLABLE (header/parent/retired) suggested: N94, I70.42, T82.84, T82.847, T82.848, T83.84, T85.84, T85.840, T85.848, E13.354
+
+[P08] Epidural blood patch for post-dural-puncture headache
+  expected ICD G97.1 -> MISS | expected CPT 62273 -> MISS(not in catalog)
+  got ICD: G44.20(Tension-type headache, unspecified); G44.0(Cluster headaches and other trigeminal); G44.05(Short lasting unilateral neuralgiform ); G44.82(Headache associated with sexual activi); O29.4(Spinal and epidural anesthesia induced); O74.5(Spinal and epidural anesthesia-induced); O89.4(Spinal and epidural anesthesia-induced); R51.0(Headache with orthostatic component, n); M99.20(…… of head region); S36.200(Unspecified injury of head of pancreas)
+  got CPT: P2029(Congo red blood test); P2033(Blood thymol turbidity); P2038(Blood mucoprotein); 78202(Liver imaging with flow); 93320(Doppler echo exam heart [if ); 0020M(Onc cns alys 30000 dna loci); 0202U(Nfct ds 22 trgt sars-cov-2); 0420U(Onc urthl mrna xprsn 6 snp); 0520U(Ther rx mntr 200+ rx/sbsts); 78120(Red cell mass single)
+  !! NOT BILLABLE (header/parent/retired) suggested: G44.20, G44.0, G44.05, O29.4, S36.200
+
+[X01] NEGATIONS: 'no cauda equina, no fracture, no myelopathy' with simple LBP
+  expected ICD M54.50|M54.59 -> MISS | expected CPT 99213|99203 -> MISS(not in catalog)
+  got ICD: G90.52(Complex regional pain syndrome I of lo); G90.521(Complex regional pain syndrome I of ri); G90.522(Complex regional pain syndrome I of le); G90.529(Complex regional pain syndrome I of un); I83.812(Varicose veins of left lower extremity); C72.1(Malignant neoplasm of cauda equina); S21.21(Laceration without foreign body of bac); S21.211(Laceration without foreign body of rig); S21.212(Laceration without foreign body of lef); S21.219(Laceration without foreign body of uns)
+  got CPT: 78202(Liver imaging with flow); 93325(Doppler color flow add-on [i); 92610(Evaluate swallowing function); 92611(Motion fluoroscopy/swallow); 92612(Endoscopy swallow tst (fees)); 72100(X-ray exam of lower spine); 72110(X-ray exam of lower spine); 72114(X-ray exam of lower spine); 72120(X-ray exam of lower spine); 78216(Liver & spleen image/flow)
+  !! NOT BILLABLE (header/parent/retired) suggested: G90.52, S21.21, S21.211, S21.212, S21.219
+
+[X02] HISTORY ONLY: hx breast cancer in remission, hx diabetes; neck pain
+  expected ICD M54.2 -> MISS | expected CPT 99213 -> MISS(not in catalog)
+  got ICD: G71.032(Autosomal recessive limb girdle muscul); G89.3(Neoplasm related pain (acute) (chronic); I70.32(Atherosclerosis of unspecified type of); I83.81(Varicose veins of lower extremities wi); I83.811(Varicose veins of right lower extremit); I83.812(Varicose veins of left lower extremity); I83.813(Varicose veins of bilateral lower extr); I83.819(Varicose veins of unspecified lower ex); M25.53(Pain in wrist); M25.531(Pain in right wrist)
+  got CPT: 0035U(Neuro csf prion prtn qual); 0153U(Onc breast mrna 101 genes); 0358U(Neuro alys β-amyl 1-42&1-40); 0399U(Neuro cere folate defncy srm); 0503U(Neuro alz ds βamyl&tau prtn); 0633T(Ct breast w/3d uni c-); 0634T(Ct breast w/3d uni c+); 0635T(Ct breast w/3d uni c-/c+); 0636T(Ct breast w/3d bi c-); 0637T(Ct breast w/3d bi c+)
+  !! NOT BILLABLE (header/parent/retired) suggested: I70.32, I83.81, M25.53
+
+[X03] Codes typed into the note by the doctor
+  expected ICD M51.16 -> HIT#2 | expected CPT 99214 -> MISS(not in catalog)
+  got ICD: M51.15(Intervertebral disc disorders with rad); M51.16(Intervertebral disc disorders with rad); M51.1(Thoracic, thoracolumbar and lumbosacra); M51.0(Thoracic, thoracolumbar and lumbosacra); M51.05(Intervertebral disc disorders with mye); M51.06(Intervertebral disc disorders with mye); M51.14(Intervertebral disc disorders with rad); M51.17(Intervertebral disc disorders with rad); M51.8(Other thoracic, thoracolumbar and lumb); M51.85(Other intervertebral disc disorders, t)
+  got CPT: 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 72158(Mri lumbar spine w/o & w/dye); 80061(Lipid panel [only when bille); 82465(Assay bld/serum cholesterol ); 82947(Assay glucose blood quant [o); 82950(Glucose test [only when bill)
+  !! NOT BILLABLE (header/parent/retired) suggested: M51.1, M51.0, M51.8
+
+[X04] Note = exact catalog wording 'Spinal stenosis, lumbar region with neurogenic claudication'
+  expected ICD M48.062 -> HIT#3 | expected CPT - -> n/a
+  got ICD: M48.06(Spinal stenosis, lumbar region); M48.061(…… without neurogenic claudication); M48.062(…… with neurogenic claudication); M51.05(Intervertebral disc disorders with mye); M51.06(Intervertebral disc disorders with mye); M51.15(Intervertebral disc disorders with rad); M51.16(Intervertebral disc disorders with rad); G97.1(Other reaction to spinal and lumbar pu); G97.83(Intracranial hypotension following lum); I70.21(Atherosclerosis of native arteries of )
+  got CPT: G0307(Cbc without platelet); 0174T(Cad cxr with interp); 72131(Ct lumbar spine w/o dye); 72132(Ct lumbar spine w/dye); 72133(Ct lumbar spine w/o & w/dye); 72148(Mri lumbar spine w/o dye); 72149(Mri lumbar spine w/dye); 72158(Mri lumbar spine w/o & w/dye); 76800(Us exam spinal canal); 78202(Liver imaging with flow)
+  !! NOT BILLABLE (header/parent/retired) suggested: M48.06, I70.21
+
+[X05] Abbreviation-heavy surgeon shorthand
+  expected ICD M51.16|M51.26|M54.16|M48.061 -> MISS | expected CPT 99214|99215 -> MISS(not in catalog)
+  got ICD: L23.7(Allergic contact dermatitis due to pla); L23.1(Allergic contact dermatitis due to adh); L24.7(Irritant contact dermatitis due to pla); L25.5(Unspecified contact dermatitis due to ); L40.3(Pustulosis palmaris et plantaris); L43(Lichen planus); L43.0(Hypertrophic lichen planus); L43.1(Bullous lichen planus); L43.3(Subacute (active) lichen planus); L43.8(Other lichen planus)
+  got CPT: 86950(Leukacyte transfusion); 97164(Pt re-eval est plan care); 97168(Ot re-eval est plan care); 0042T(Ct perfusion w/contrast cbf); 78071(Parathyrd planar w/wo subtrj); 78072(Parathyrd planar w/spect&ct); 78453(Ht muscle image planar sing); 78454(Ht musc image planar mult); 78472(Gated heart planar single); 78580(Lung perfusion imaging)
+  !! NOT BILLABLE (header/parent/retired) suggested: L43
+
+[X06] Near-empty note
+  expected ICD - -> n/a | expected CPT - -> n/a
+  got ICD: D78.2(Postprocedural hemorrhage of the splee); D78.22(Postprocedural hemorrhage of the splee); D78.3(Postprocedural hematoma and seroma of ); D78.31(Postprocedural hematoma of the spleen ); D78.32(Postprocedural hematoma of the spleen ); D78.33(Postprocedural seroma of the spleen fo); D78.34(Postprocedural seroma of the spleen fo); D82.3(Immunodeficiency following hereditary ); E08.37(Diabetes mellitus due to underlying co); E09.37(Drug or chemical induced diabetes mell)
+  got CPT: 76380(CAT scan follow-up study); 76816(Ob us follow-up per fetus)
+  !! NOT BILLABLE (header/parent/retired) suggested: D78.2, D78.3, E08.37, E09.37
+
+[X07] Spanish-language note
+  expected ICD M51.17|M54.17 -> MISS | expected CPT 99203|99213 -> MISS(not in catalog)
+  got ICD: A36.86(Diphtheritic conjunctivitis); A50(Congenital syphilis); A50.0(Early congenital syphilis, symptomatic); A50.01(Early congenital syphilitic oculopathy); A50.02(Early congenital syphilitic osteochond); A50.03(Early congenital syphilitic pharyngiti); A50.04(Early congenital syphilitic pneumonia); A50.05(Early congenital syphilitic rhinitis); A50.06(Early cutaneous congenital syphilis); A50.07(Early mucocutaneous congenital syphili)
+  got CPT: A9579(Gad-base MR contrast NOS,1ml); A9700(Echocardiography contrast); 86950(Leukacyte transfusion); 0050U(Trgt gen seq dna 194 genes); 0250U(Onc sld org neo dna 505 gene); 0350U(Rx metab/pcx dna 27 gen alys); 0450U(Onc mm lc-ms/ms monoc p-prtn); 0500U(Autoinflam ds vexas synd dna); 0501U(Onc clrc bld quan meas cfdna); 0502U(Hpv e6/e7 mrk hirsk typ crv)
+  !! NOT BILLABLE (header/parent/retired) suggested: A50, A50.0
+
+[X08] Level tokens C5 / L4 / S1 / T4 (collide with C50 breast CA, L40 psoriasis, S1x neck injury, T40 opioid poisoning)
+  expected ICD M47.81*|M47.89* -> MISS | expected CPT 99213 -> MISS(not in catalog)
+  got ICD: C41.3(Malignant neoplasm of ribs, sternum an); S11.0(Open wound of larynx and trachea); A21.0(Ulceroglandular tularemia); A21.1(Oculoglandular tularemia); A51.3(Secondary syphilis of skin and mucous ); B01.1(Varicella encephalitis, myelitis and e); B01.11(Varicella encephalitis and encephalomy); C21.8(Malignant neoplasm of overlapping site); C41.0(Malignant neoplasm of bones of skull a); C41.1(Malignant neoplasm of mandible)
+  got CPT: 0039U(Dna antb 2strand hi avidity); G0141(Scr c/v cyto,autosys and md); 70380(X-ray exam of salivary gland); 73120(X-ray exam of hand); 73130(X-ray exam of hand); 76536(Us exam of head and neck); 78215(Liver and spleen imaging); 78230(Salivary gland imaging); 78232(Salivary gland function exam); 57155(Insert uteri tandems/ovoids)
+  !! FORBIDDEN suggested: S11.0
+  !! NOT BILLABLE (header/parent/retired) suggested: S11.0, A51.3, B01.1
+
+================ SUMMARY ================
+cases: 60, coder runtime 40057 ms total
+ICD correct code in top 10: 7/59; correct at #1: 3
+CPT correct code in top 10: 0/58; correct at #1: 0
+cases where correct CPT is NOT EVEN IN THE CATALOG: 57/58
+cases where correct ICD is NOT EVEN IN THE CATALOG: 3/59
+spine-relevant suggestions: ICD 157/600, CPT 90/592
+non-billable ICD (headers/parents/retired) suggested: 289
+cases with forbidden suggestions (negated dx, unperformed surgery, unperformed imaging, active cancer from history): 2
+suggestions labeled level 1 (highest confidence): 1192/1192
+expected ICD codes missing from catalog: M51.360, M51.369, T84.216A, T84.226A, M84.58XA, S32.011A, S12.112A, T84.84XA, T84.7XXA
+expected CPT codes missing from catalog: 99204, 99214, 99205, 99203, 99024, 99215, 99213, 99212, 99244, 99243, 99223, 63030, 22551, 22552, 22853, 22845, 22633, 22630, 22840, 63047, 63048, 22513, 22856, 22600, 22614, 22842, 63045, 63015, 63650, 22850, 22830, 22558, 22015, 10180, 27279, 64483, 62323, 62321, 64493, 64494, 64635, 64636, 27096, G0260, 20553, 62273

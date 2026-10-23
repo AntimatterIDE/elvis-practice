@@ -1,3 +1,4 @@
+import { claimLineProblems, diagnosisKey, isFilingCode } from "@/lib/rcm/claim-rules";
 import type { PracticeProfile, Sex } from "@/lib/rcm/types";
 
 export type SubmissionLine = {
@@ -18,6 +19,7 @@ export type ClaimSubmissionInput = {
   stediClaimId?: string;
   tradingPartnerId: string;
   payerName: string;
+  filingCode?: string;
   dateOfService: string;
   placeOfService: string;
   patient: {
@@ -76,12 +78,14 @@ export function productionClaimProblems(input: ClaimSubmissionInput) {
   return problems;
 }
 
-export function compactDate(value: string) {
-  return value.replaceAll("-", "").slice(0, 8);
+// Only submission runs these, so a status check on an older claim is not blocked.
+export function claimContentProblems(input: ClaimSubmissionInput) {
+  const problems = isFilingCode(input.filingCode) ? [] : ["Choose the payer type on the claim before submitting."];
+  return [...problems, ...claimLineProblems(input.lines)];
 }
 
-export function diagnosisCode(value: string) {
-  return value.replaceAll(".", "").toUpperCase();
+export function compactDate(value: string) {
+  return value.replaceAll("-", "").slice(0, 8);
 }
 
 function gender(sex: Sex) {
@@ -114,13 +118,22 @@ export function billingIdentity(practice: ClaimSubmissionInput["practice"]) {
   };
 }
 
+function personName(value: string) {
+  const parts = value
+    .replace(/^dr\.?\s+/i, "")
+    .replace(/,?\s*m\.?d\.?$/i, "")
+    .split(/\s+/)
+    .filter(Boolean);
+  return { firstName: parts[0] || "Elvis", lastName: parts.slice(1).join(" ") || "Francois" };
+}
+
 export function buildProfessionalClaim(input: ClaimSubmissionInput) {
-  const included = input.lines.filter((line) => line.includeOnBill && line.cpt);
-  const diagnoses = [...new Set(included.flatMap((line) => line.diagnoses.filter(Boolean)))];
+  const included = input.lines
+    .filter((line) => line.includeOnBill && line.cpt)
+    .map((line) => ({ ...line, diagnoses: [...new Set(line.diagnoses.map(diagnosisKey).filter(Boolean))] }));
+  const diagnoses = [...new Set(included.flatMap((line) => line.diagnoses))];
   const billing = billingIdentity(input.practice);
-  const physician = input.practice.physicianName || included[0]?.physician || "Elvis Francois";
-  const [firstName, ...rest] = physician.replace(/,?\s*MD$/i, "").split(" ");
-  const lastName = rest.join(" ") || "Francois";
+  const { firstName, lastName } = personName(input.practice.physicianName || included[0]?.physician || "");
   const total = included.reduce((sum, line) => sum + line.charge * line.units, 0);
   const control = input.controlNumber.replace(/[^A-Za-z0-9]/g, "").slice(0, 20);
 
@@ -165,7 +178,7 @@ export function buildProfessionalClaim(input: ClaimSubmissionInput) {
         contactInformation: { name: billing.organizationName, phoneNumber: billing.phone },
       },
       claimInformation: {
-        claimFilingCode: "CI",
+        claimFilingCode: input.filingCode,
         patientControlNumber: control,
         claimChargeAmount: money(total),
         placeOfServiceCode: input.placeOfService || "11",
@@ -176,12 +189,10 @@ export function buildProfessionalClaim(input: ClaimSubmissionInput) {
         releaseInformationCode: "Y",
         healthCareCodeInformation: diagnoses.map((code, index) => ({
           diagnosisTypeCode: index === 0 ? "ABK" : "ABF",
-          diagnosisCode: diagnosisCode(code),
+          diagnosisCode: code,
         })),
         serviceLines: included.map((line, index) => {
-          const pointers = line.diagnoses
-            .map((code) => String(diagnoses.indexOf(code) + 1))
-            .filter((pointer) => pointer !== "0");
+          const pointers = line.diagnoses.map((code) => String(diagnoses.indexOf(code) + 1));
           return {
             serviceDate: compactDate(input.dateOfService),
             professionalService: {
@@ -191,14 +202,14 @@ export function buildProfessionalClaim(input: ClaimSubmissionInput) {
               lineItemChargeAmount: money(line.charge * line.units),
               measurementUnit: "UN",
               serviceUnitCount: String(line.units),
-              compositeDiagnosisCodePointers: { diagnosisCodePointers: pointers.length ? pointers : ["1"] },
+              compositeDiagnosisCodePointers: { diagnosisCodePointers: pointers },
             },
             providerControlNumber: `${control}${index + 1}`.slice(0, 30),
             renderingProvider: {
               providerType: "RenderingProvider",
               npi: billing.npi,
               taxonomyCode: billing.taxonomy,
-              firstName: firstName || "Elvis",
+              firstName,
               lastName,
             },
           };

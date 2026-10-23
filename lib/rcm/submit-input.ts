@@ -10,6 +10,7 @@ export function claimSubmissionInput(claim: Claim, patient: Patient, practice: P
     stediClaimId: claim.stediClaimId,
     tradingPartnerId: claim.tradingPartnerId || patient.coverages.find((coverage) => coverage.rank === "primary")?.tradingPartnerId || "",
     payerName: claim.payerName,
+    filingCode: claim.filingCode,
     dateOfService: claim.dateOfService,
     placeOfService: claim.placeOfService,
     patient: {
