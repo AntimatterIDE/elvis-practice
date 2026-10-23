@@ -7,9 +7,10 @@
       "drop_headers",
       "abbreviations",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "\n42–year–old male, new to practice, presents with three months of low back pain radiating down the left leg to the lateral foot. Reports numbness in the left lateral foot and weakness with plantar flexion. No other ssytemic complaints documented. New pt; otuside MRI reviewed.\n\n– Neuro/musculoskeletal exam:\n  – Positive straight leg riase on the left at 40 degrees.\n  – Diminished left Achliles (S1) reflex.\n  – Left gsatrocnemius (plantar flexion) strength 4/5.\n– Imaging:\n  – Outside lumbar spien MRI reviewed: large left paracenrtal L5–S1 disc herniation compressing the left S1 nerve root.\n\n1. Lumbar disc herniation at L5–S1 with left S1 radiculopathy — consistent with history, exam, and MRI findings.\n\n– Initiate pyhsical therapy focused on lumbar stabilization, core strengthening, and radicular smyptom management.\n– Start Medrol dose pack (methylprednisolone taper) for shrot course anti–inflammatory therapy.\n– Refre for left L5–S1\n  – Outside lumbar spien MRI reviewed: large left paracenrtal L5–S1 disc herniation compressing the left S1 nerve root.\n1. Lumbar disc herniation at L5–S1 with left S1 radiculopathy — consistent with history, exam, and MRI findings.\n– Refre for left L5–S1 transforaminal eipdural steroid injection for targeted radciular pain control."
+    "note": "\n42–year–old male, new to practice, presents with three months of low back pain radiating down the left leg to the lateral foot. Reports numbness in the left lateral foot and weakness with plantar flexion. No other ssytemic complaints documented. New pt; otuside MRI reviewed.\n\n– Neuro/musculoskeletal exam:\n  – Positive straight leg riase on the left at 40 degrees.\n  – Diminished left Achliles (S1) reflex.\n  – Left gsatrocnemius (plantar flexion) strength 4/5.\n– Imaging:\n  – Outside lumbar spien MRI reviewed: large left paracenrtal L5–S1 disc herniation compressing the left S1 nerve root.\n\n1. Lumbar disc herniation at L5–S1 with left S1 radiculopathy — consistent with history, exam, and MRI findings.\n\n– Initiate pyhsical therapy focused on lumbar stabilization, core strengthening, and radicular smyptom management.\n– Start Medrol dose pack (methylprednisolone taper) for shrot course anti–inflammatory therapy.\n– Refre for left L5–S1\n  – Outside lumbar spien MRI reviewed: large left paracenrtal L5–S1 disc herniation compressing the left S1 nerve root.\n1. Lumbar disc herniation at L5–S1 with left S1 radiculopathy — consistent with history, exam, and MRI findings.\n– Refre for left L5–S1 transforaminal eipdural steroid injection for targeted radciular pain control.\n- Refer for left L5–S1 transforaminal epidural steroid injection for targeted radicular pain control."
   },
   {
     "id": "E02",
@@ -20,9 +21,10 @@
       "abbreviations",
       "fax_junk",
       "word_typos",
-      "drop_sentence"
+      "drop_sentence",
+      "anchor_restore"
     ],
-    "note": "*** CONFIDENTIAL ***\n71-year-old female, established pt, with lumbar spnial stenosis at L4-L5. Neurogenic claudication: walks one block before bilaterla leg heaviness, relieved by stiting and leaning forward. Strength 5/5 bilateral lower extremities. Negative staright leg raise bilaterally. Pedal pusles intact. 1. Lumbar spinal stensois with neurogenic claudication, L4-L5. Cotninue home exercise program. Gabapentin 300 mg at bedtime. Discussed L4-L5 decompression if symptoms worsen. Retunr in 3 months. cc: referring PCP"
+    "note": "*** CONFIDENTIAL ***\n71-year-old female, established pt, with lumbar spnial stenosis at L4-L5. Neurogenic claudication: walks one block before bilaterla leg heaviness, relieved by stiting and leaning forward. Strength 5/5 bilateral lower extremities. Negative staright leg raise bilaterally. Pedal pusles intact. 1. Lumbar spinal stensois with neurogenic claudication, L4-L5. Cotninue home exercise program. Gabapentin 300 mg at bedtime. Discussed L4-L5 decompression if symptoms worsen. Retunr in 3 months. cc: referring PCP\n71-year-old female, established patient, with lumbar spinal stenosis at L4-L5. Neurogenic claudication: walks one block before bilateral leg heaviness, relieved by sitting and leaning forward.\nContinue home exercise program. Gabapentin 300 mg at bedtime. Discussed L4-L5 decompression if symptoms worsen. Return in 3 months. Moderate complexity MDM."
   },
   {
     "id": "E03",
@@ -32,9 +34,10 @@
       "ocr_typos",
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "63–year–old male with 6 months of progressive hand clumsiness, difficulty buttonnig shirts, and gait imbalance.\nSUBJECTIVE:\nOBJECTIVE:\nPositive Hoffmann sign bilaterally. Hyperrefleixa upper and lower extremities. Wide–based gait. Positive Romberg. MRI cerivcal spine reviewed: severe canal setnosis at C5–C6 and C6–C7 from disc–osteophyte complexes with T2 cord signal change at C5–C6.\nASSESSMENT:\n1. Cervical spondylotic myelopathy at C5–C6 and C6–C7.\nPLAN:\nRceommend anterior cervical discectomy and fsulon C5–C6 and C6–C7. Risks, benefits, alternatives discussed; pt agrees. High complexity MDM."
+    "note": "63–year–old male with 6 months of progressive hand clumsiness, difficulty buttonnig shirts, and gait imbalance.\nSUBJECTIVE:\nOBJECTIVE:\nPositive Hoffmann sign bilaterally. Hyperrefleixa upper and lower extremities. Wide–based gait. Positive Romberg. MRI cerivcal spine reviewed: severe canal setnosis at C5–C6 and C6–C7 from disc–osteophyte complexes with T2 cord signal change at C5–C6.\nASSESSMENT:\n1. Cervical spondylotic myelopathy at C5–C6 and C6–C7.\nPLAN:\nRceommend anterior cervical discectomy and fsulon C5–C6 and C6–C7. Risks, benefits, alternatives discussed; pt agrees. High complexity MDM.\nRecommend anterior cervical discectomy and fusion C5-C6 and C6-C7. Risks, benefits, alternatives discussed; patient agrees. High complexity MDM."
   },
   {
     "id": "E04",
@@ -44,9 +47,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "cc: referring PCP\n48-year-old female with right neck pain radiating to the right tuhmb and index finger for 8 weeks.\n\nPositive Spurling test on the right. Diminished right biecps and brachioradialis reflexes. Right wrsit extension 4/5. MRI reviewed: rigth foraminal disc herniation at C5-C6 compressing the right C6 nevre root.\n\n1. Cervical disc hernaition at C5-C6 with right C6 radiculopathy.\n\nPhysical therapy, NSAIDs, cevrical epidural steroid injection referral. Reutrn in 6 weeks.\nPage 2 of 3 — scanned from fax."
+    "note": "cc: referring PCP\n48-year-old female with right neck pain radiating to the right tuhmb and index finger for 8 weeks.\n\nPositive Spurling test on the right. Diminished right biecps and brachioradialis reflexes. Right wrsit extension 4/5. MRI reviewed: rigth foraminal disc herniation at C5-C6 compressing the right C6 nevre root.\n\n1. Cervical disc hernaition at C5-C6 with right C6 radiculopathy.\n\nPhysical therapy, NSAIDs, cevrical epidural steroid injection referral. Reutrn in 6 weeks.\nPage 2 of 3 — scanned from fax.\nPhysical therapy, NSAIDs, cervical epidural steroid injection referral. Return in 6 weeks."
   },
   {
     "id": "E05",
@@ -65,9 +69,10 @@
       "abbreviations",
       "fax_junk",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "Page 2 of 3 — scanned from fax.\nSUBJECTIVE:\n66-year-old female, established, garde 1 degenerative spondylolisthesis L4-L5 with severe stenosis and bilateral L5 radiculopathy. Failed 6 months PT, 2 epidural injections, medications.\n\nOBJECTIVE:\nFlexion-extension radiographs: 4 mm moiton at L4-L5.\n\nASSESSMENT:\n1. Degeneartive spondylolisthesis L4-L5.\n2. Lumbar spnial stenosis with neurogenic claudication.\n\nPLAN:\nDecision made today for L4-L5 lami\n66-year-old female, established, garde 1 degenerative spondylolisthesis L4-L5 with severe stenosis and bilateral L5 radiculopathy. Failed 6 months PT, 2 epidural injections, medications.\nASSESSMENT:\n1. Degeneartive spondylolisthesis L4-L5.\n2. Lumbar spnial stenosis with neurogenic claudication.\nDecision made today for L4-L5 laminectomy and transforaminal lumbar interbdoy fusion with pedicle screw instrumentation, scheduled tomorrow. High complexity MDM."
+    "note": "Page 2 of 3 — scanned from fax.\nSUBJECTIVE:\n66-year-old female, established, garde 1 degenerative spondylolisthesis L4-L5 with severe stenosis and bilateral L5 radiculopathy. Failed 6 months PT, 2 epidural injections, medications.\n\nOBJECTIVE:\nFlexion-extension radiographs: 4 mm moiton at L4-L5.\n\nASSESSMENT:\n1. Degeneartive spondylolisthesis L4-L5.\n2. Lumbar spnial stenosis with neurogenic claudication.\n\nPLAN:\nDecision made today for L4-L5 lami\n66-year-old female, established, garde 1 degenerative spondylolisthesis L4-L5 with severe stenosis and bilateral L5 radiculopathy. Failed 6 months PT, 2 epidural injections, medications.\nASSESSMENT:\n1. Degeneartive spondylolisthesis L4-L5.\n2. Lumbar spnial stenosis with neurogenic claudication.\nDecision made today for L4-L5 laminectomy and transforaminal lumbar interbdoy fusion with pedicle screw instrumentation, scheduled tomorrow. High complexity MDM.\n66-year-old female, established, grade 1 degenerative spondylolisthesis L4-L5 with severe stenosis and bilateral L5 radiculopathy. Failed 6 months PT, 2 epidural injections, medications.\nDecision made today for L4-L5 laminectomy and transforaminal lumbar interbody fusion with pedicle screw instrumentation, scheduled tomorrow. High complexity MDM."
   },
   {
     "id": "E07",
@@ -101,9 +106,10 @@
       "abbreviations",
       "word_typos",
       "drop_sentence",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "52–year–old with mid back pain, bilateral leg numbness, and unsteady gait. OBJECTIVE:\nSUBJECTIVE:\nHyperreflexai lower extremities, sustained clonus bilaterally. MRI thoracic spine: T7–T8 disc herniation compressing the spinal cord. ASSESSMENT:\n1. 2. Pain in thoracic spine. PLAN:\nSurigcal consultation for thoracic decompression. High complexity."
+    "note": "52–year–old with mid back pain, bilateral leg numbness, and unsteady gait. OBJECTIVE:\nSUBJECTIVE:\nHyperreflexai lower extremities, sustained clonus bilaterally. MRI thoracic spine: T7–T8 disc herniation compressing the spinal cord. ASSESSMENT:\n1. 2. Pain in thoracic spine. PLAN:\nSurigcal consultation for thoracic decompression. High complexity.\nSurgical consultation for thoracic decompression. High complexity."
   },
   {
     "id": "E10",
@@ -137,7 +143,8 @@
     "mutations": [
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
     "note": "29–year–old fell onto buttocks on ice 6 weeks ago; pain sitting.\nSUBJECTIVE:\nOBJECTIVE:\nPoint tenderness over the coccyx. No neurologic deficit.\nASSESSMENT:\n1. Coccydynia.\nPLAN:\nDonut cushion, NSAIDs. Consider coccygeal injection."
   },
@@ -149,7 +156,8 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "cc: referring PCP\n72-year-old with adult degenerative lumbar scoliosis, low back pain, bilateral leg pain with walking.\n\nStanding scloiosis films: 28-degree lumbar curve, ltaeral listhesis L3-L4.\n\n1. Adult degeneartive scoliosis, lumbar region.\n2. Lubmar spinal stenosis with neurogenic claudication.\n\nPT, consider injections; surgery discussed. Moderate MDM.\nPage 2 of 3 — scanned from fax."
   },
@@ -182,9 +190,10 @@
       "drop_headers",
       "abbreviations",
       "word_typos",
-      "drop_sentence"
+      "drop_sentence",
+      "anchor_restore"
     ],
-    "note": "62–year–old, 18 months after L5–S1 posterior fusion, recurrent low back pain. CT: nonunion at L5–S1, lucency around S1 screws, borken left S1 screw. 1. 2. Mechaincal breakdown of internal fixation devcie of vertebrae, initial encounter. Revisoin fusion with removal and repalcement of instrumentation."
+    "note": "62–year–old, 18 months after L5–S1 posterior fusion, recurrent low back pain. CT: nonunion at L5–S1, lucency around S1 screws, borken left S1 screw. 1. 2. Mechaincal breakdown of internal fixation devcie of vertebrae, initial encounter. Revisoin fusion with removal and repalcement of instrumentation.\n62-year-old, 18 months after L5-S1 posterior fusion, recurrent low back pain.\n1. Pseudarthrosis after fusion, L5-S1.\nRevision fusion with removal and replacement of instrumentation."
   },
   {
     "id": "E17",
@@ -194,9 +203,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Electronically signed.\n38-year-old with sudden severe low back pain, bilateral leg weakness, saddle anesthesia, and urinary retention.\n\nDecreased rectal tone, perianal numbness, bilateral ankle dorsiflexion 3/5. Eemrgency MRI: massive central L4-L5 disc herniation compressing the cauda equina.\n\n1. Cauda equina syndrome due to L4-L5 disc herniation.\n\nEmregent L4-L5 decompression and discectomy tonight. High complexity.\nDictated but not read."
+    "note": "Electronically signed.\n38-year-old with sudden severe low back pain, bilateral leg weakness, saddle anesthesia, and urinary retention.\n\nDecreased rectal tone, perianal numbness, bilateral ankle dorsiflexion 3/5. Eemrgency MRI: massive central L4-L5 disc herniation compressing the cauda equina.\n\n1. Cauda equina syndrome due to L4-L5 disc herniation.\n\nEmregent L4-L5 decompression and discectomy tonight. High complexity.\nDictated but not read.\nEmergent L4-L5 decompression and discectomy tonight. High complexity."
   },
   {
     "id": "E18",
@@ -218,9 +228,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Ditcated but not read.\n58-year-old diabetci male with severe low back pain and fevers; ESR and CRP elevated.\n\nMRI: L2-L3 discitsi and vertebral osteomyelitis with samll epidural abscess.\n\n1. Discitis and vertebral osteomyelitis, lumbar.\n2. Spinla epidural abscess.\n3. Type 2 diabetes mellitus.\n\nCT-guided biopsy and cultures, ID consult, IV antibiotics. High complexity.\n*** CONFIDENTIAL ***"
+    "note": "Ditcated but not read.\n58-year-old diabetci male with severe low back pain and fevers; ESR and CRP elevated.\n\nMRI: L2-L3 discitsi and vertebral osteomyelitis with samll epidural abscess.\n\n1. Discitis and vertebral osteomyelitis, lumbar.\n2. Spinla epidural abscess.\n3. Type 2 diabetes mellitus.\n\nCT-guided biopsy and cultures, ID consult, IV antibiotics. High complexity.\n*** CONFIDENTIAL ***\nMRI: L2-L3 discitis and vertebral osteomyelitis with small epidural abscess.\n2. Spinal epidural abscess."
   },
   {
     "id": "E20",
@@ -242,9 +253,10 @@
       "ocr_typos",
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "61–year–old with chronic axial neck pain.\nSUBJECTIVE:\nOBJECTIVE:\nNeurologically intact. X–rays reviewed: multilevel cervical spondylosis.\nASSESSMENT:\n1. Cervical spondylosis without myelopathy or radiculopthy.\nPLAN:\nPT, NSAIDs, consiedr facet blocks."
+    "note": "61–year–old with chronic axial neck pain.\nSUBJECTIVE:\nOBJECTIVE:\nNeurologically intact. X–rays reviewed: multilevel cervical spondylosis.\nASSESSMENT:\n1. Cervical spondylosis without myelopathy or radiculopthy.\nPLAN:\nPT, NSAIDs, consiedr facet blocks.\nPT, NSAIDs, consider facet blocks."
   },
   {
     "id": "E22",
@@ -254,7 +266,8 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "cc: referring PCP\n57-year-old with axial low back pain worse with extension.\n\nFacet laoding positive bilaterally. Neurologically intact.\n\n1. Lumbar spondylosis without myelopathy or radiculopathy (facet arthropathy).\n\nBilateral L4-L5, L5-S1 medial branch blocks.\nPage 2 of 3 — sacnned from fax."
   },
@@ -287,7 +300,8 @@
       "drop_headers",
       "ocr_typos",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "48–year–old with right buttock pain.\n\nPositive FABER, thigh thrust, compressoin on the right.\n\n1. Sacroiliitis, right.\n2. Sacroiliac joint dysfunction.\n\nRight SI joint injection."
   },
@@ -334,9 +348,10 @@
       "drop_headers",
       "ocr_typos",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "84–year–old fell at home.\n\nCT cervical spine: type II dens fracture, minimally displaced.\n\n1. Type II dens fracture, iintial encounter for closed fracture.\n\nCerivcal collar vs posterior C1–C2 fsulon discussed."
+    "note": "84–year–old fell at home.\n\nCT cervical spine: type II dens fracture, minimally displaced.\n\n1. Type II dens fracture, iintial encounter for closed fracture.\n\nCerivcal collar vs posterior C1–C2 fsulon discussed.\nCervical collar vs posterior C1-C2 fusion discussed."
   },
   {
     "id": "T05",
@@ -358,9 +373,10 @@
       "abbreviations",
       "word_typos",
       "truncate_soft",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "70–year–old fell forward hitting forehead.\nSUBJECTIVE:\nOBJECTIVE:\nUppre extremity weakness greater than lower; hand numbness.\nASSESSMENT:\n1. Cnetral cord syndrome at C4 levle of cervical spinal cord, iintial \nASSESSMENT:"
+    "note": "70–year–old fell forward hitting forehead.\nSUBJECTIVE:\nOBJECTIVE:\nUppre extremity weakness greater than lower; hand numbness.\nASSESSMENT:\n1. Cnetral cord syndrome at C4 levle of cervical spinal cord, iintial \nASSESSMENT:\nAdmit, MAP goals, surgical decompression discussion."
   },
   {
     "id": "X01",
@@ -405,7 +421,8 @@
     "mutations": [
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "cc: referring PCP\nSUBJECTIVE:\ns/p L4-5 TLIF 2019, now ASD L3-4 w/ HNP, LBP, LLE radic. DDD. ESI x2 failed.\n\nOBJECTIVE:\n+SLR L, EHL 4/5 L.\n\nASSESSMENT:\nASD L3-4 w/ HNP + L L4 radic.\n\nPLAN:\nPlan L3-4 ext fusion vs XLIF.\nPage 2 of 3 — scanned from fax."
   },
@@ -442,9 +459,10 @@
       "abbreviations",
       "fax_junk",
       "word_typos",
-      "drop_sentence"
+      "drop_sentence",
+      "anchor_restore"
     ],
-    "note": "*** CONFIDENTIAL ***\nSUBJECTIVE:\nIndication: left S1 radiculopathy from L5-S1 disc herniation. ASSESSMENT:\nTolerated well. PLAN:\nf/u 2 weeks. cc: referring PCP"
+    "note": "*** CONFIDENTIAL ***\nSUBJECTIVE:\nIndication: left S1 radiculopathy from L5-S1 disc herniation. ASSESSMENT:\nTolerated well. PLAN:\nf/u 2 weeks. cc: referring PCP\nProcedure: left L5-S1 transforaminal epidural steroid injection under fluoroscopy; contrast epidural spread, no vascular uptake; dexamethasone and lidocaine injected."
   },
   {
     "id": "P02",
@@ -453,9 +471,10 @@
     "mutations": [
       "drop_headers",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Indication: lmubar spinal stenosis with bilateral radciular pain.\n\nProcedure: L5–S1 interlaminar epiudral steroid injection, fluoroscopic guidance, loss of resistance.\n\nTolerated well.\n\nf/u."
+    "note": "Indication: lmubar spinal stenosis with bilateral radciular pain.\n\nProcedure: L5–S1 interlaminar epiudral steroid injection, fluoroscopic guidance, loss of resistance.\n\nTolerated well.\n\nf/u.\nProcedure: L5-S1 interlaminar epidural steroid injection, fluoroscopic guidance, loss of resistance."
   },
   {
     "id": "P03",
@@ -465,9 +484,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "cc: referring PCP\nIndication: cervical radiculopathy.\n\nProcedure: C7-T1 cervcial interlaminar epidural steroid injection with fluoroscopy.\n\nTolerated well.\n\nf/u.\nPage 2 of 3 — sacnned from fax."
+    "note": "cc: referring PCP\nIndication: cervical radiculopathy.\n\nProcedure: C7-T1 cervcial interlaminar epidural steroid injection with fluoroscopy.\n\nTolerated well.\n\nf/u.\nPage 2 of 3 — sacnned from fax.\nProcedure: C7-T1 cervical interlaminar epidural steroid injection with fluoroscopy."
   },
   {
     "id": "P04",
@@ -487,9 +507,10 @@
       "abbreviations",
       "fax_junk",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "Page 2 of 3 — scanned from fax.\nIndication: lumbar facet syndrome with >80% relief from two diagnostci blocks.\n\nProcedure: right L4-L5 and L5-S1 radiofrequency ablation of medila branch nerves under fluoroscopy\nProcedure: right L4-L5 and L5-S1 radiofrequency ablation of medila branch nerves under fluoroscopy, 80 C for 90 seconds."
+    "note": "Page 2 of 3 — scanned from fax.\nIndication: lumbar facet syndrome with >80% relief from two diagnostci blocks.\n\nProcedure: right L4-L5 and L5-S1 radiofrequency ablation of medila branch nerves under fluoroscopy\nProcedure: right L4-L5 and L5-S1 radiofrequency ablation of medila branch nerves under fluoroscopy, 80 C for 90 seconds.\nIndication: lumbar facet syndrome with >80% relief from two diagnostic blocks.\nProcedure: right L4-L5 and L5-S1 radiofrequency ablation of medial branch nerves under fluoroscopy, 80 C for 90 seconds."
   },
   {
     "id": "P06",
@@ -498,9 +519,10 @@
     "mutations": [
       "drop_headers",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Indication: right sacroiliitis.\n\nProcedure: rihgt sacroiliac joint injection with fuloroscopic guidance, contrast confirmed intra–articular, triamcinolnoe and bupivacaine.\n\nTolerated well.\n\nf/u."
+    "note": "Indication: right sacroiliitis.\n\nProcedure: rihgt sacroiliac joint injection with fuloroscopic guidance, contrast confirmed intra–articular, triamcinolnoe and bupivacaine.\n\nTolerated well.\n\nf/u.\nProcedure: right sacroiliac joint injection with fluoroscopic guidance, contrast confirmed intra-articular, triamcinolone and bupivacaine."
   },
   {
     "id": "P07",
@@ -509,9 +531,10 @@
     "mutations": [
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Electronically signed.\nSUBJECTIVE:\nIndication: myofascial pain of the lumbar paraspinals and gluteals.\n\nOBJECTIVE:\nProcedure: trigger point injectiosn into 4 muscles with lidocaine.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nStretching.\nDictated but not read."
+    "note": "Electronically signed.\nSUBJECTIVE:\nIndication: myofascial pain of the lumbar paraspinals and gluteals.\n\nOBJECTIVE:\nProcedure: trigger point injectiosn into 4 muscles with lidocaine.\n\nASSESSMENT:\nTolerated well.\n\nPLAN:\nStretching.\nDictated but not read.\nProcedure: trigger point injections into 4 muscles with lidocaine."
   },
   {
     "id": "P08",
@@ -522,9 +545,10 @@
       "ocr_typos",
       "abbreviations",
       "word_typos",
-      "drop_sentence"
+      "drop_sentence",
+      "anchor_restore"
     ],
-    "note": "Indication: positional headache afetr lumbar puncture. Headache resolved. f/u."
+    "note": "Indication: positional headache afetr lumbar puncture. Headache resolved. f/u.\nProcedure: lumbar epidural blood patch with 20 mL autologous blood."
   },
   {
     "id": "X04",
@@ -566,7 +590,8 @@
       "fax_junk",
       "word_typos",
       "truncate_soft",
-      "drop_sentence"
+      "drop_sentence",
+      "anchor_restore"
     ],
     "note": "Page 2 of 3 — scanned from fax. Preoperative diagnosis: cervical spondylotic myelopathy, disc herniation C5-C6 and C6-C7. Neuromonitoring sta\nPreoperative diagnosis: cervical spondylotic myelopathy, disc herniation C5-C6 and C6-C7. Procedure: anterior cervical discectomy and fusion C5-C6 and C6-C7, two interbody cages, anterior plate C5-C7, allograft. Neuromonitoring stable."
   },
@@ -577,9 +602,10 @@
     "mutations": [
       "drop_headers",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Diagnosis: degenerative spondylolisthesis L4–L5 with stenosis and neurogenic claudication.\n\nProcedure: L4–L5 laminectomy, bilateral foraminotomies, transfoarminal lumbar interbody fusion with cage, pedicle screw instrumentation L4–L5, posetrolateral fusion, local autograft and allograft.\n\nEBL 300 mL. No complications.\n\nAdmit."
+    "note": "Diagnosis: degenerative spondylolisthesis L4–L5 with stenosis and neurogenic claudication.\n\nProcedure: L4–L5 laminectomy, bilateral foraminotomies, transfoarminal lumbar interbody fusion with cage, pedicle screw instrumentation L4–L5, posetrolateral fusion, local autograft and allograft.\n\nEBL 300 mL. No complications.\n\nAdmit.\nProcedure: L4-L5 laminectomy, bilateral foraminotomies, transforaminal lumbar interbody fusion with cage, pedicle screw instrumentation L4-L5, posterolateral fusion, local autograft and allograft."
   },
   {
     "id": "S04",
@@ -588,9 +614,10 @@
     "mutations": [
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Electronically signed.\nSUBJECTIVE:\nDiagnosis: lumbar spinal stensois with neurogenic claudication L3-L4 and L4-L5.\n\nOBJECTIVE:\nProcedure: decompressive lamniectomy L3-L4 and L4-L5 with bilatearl facetectomy and foraminotomy, without fusion.\n\nASSESSMENT:\nEBL 150 mL.\n\nPLAN:\nAdmit overnight.\nDictated but not read."
+    "note": "Electronically signed.\nSUBJECTIVE:\nDiagnosis: lumbar spinal stensois with neurogenic claudication L3-L4 and L4-L5.\n\nOBJECTIVE:\nProcedure: decompressive lamniectomy L3-L4 and L4-L5 with bilatearl facetectomy and foraminotomy, without fusion.\n\nASSESSMENT:\nEBL 150 mL.\n\nPLAN:\nAdmit overnight.\nDictated but not read.\nProcedure: decompressive laminectomy L3-L4 and L4-L5 with bilateral facetectomy and foraminotomy, without fusion."
   },
   {
     "id": "S05",
@@ -600,9 +627,10 @@
       "drop_headers",
       "ocr_typos",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "78–year–old with acute otseoporotic T12 compression fracture; MRI mrarow edema.\n\nProcedure: T12 balloon kyphoplasty, bilateral transpedicular, fluoroscopic guidance, cmeent augmentation. No extravasation.\n\nDiagnosis: age–related osteoporosis with current pathological farcture of vertebra, initial encounter.\n\nDishcarge home."
+    "note": "78–year–old with acute otseoporotic T12 compression fracture; MRI mrarow edema.\n\nProcedure: T12 balloon kyphoplasty, bilateral transpedicular, fluoroscopic guidance, cmeent augmentation. No extravasation.\n\nDiagnosis: age–related osteoporosis with current pathological farcture of vertebra, initial encounter.\n\nDishcarge home.\nProcedure: T12 balloon kyphoplasty, bilateral transpedicular, fluoroscopic guidance, cement augmentation. No extravasation."
   },
   {
     "id": "S06",
@@ -612,9 +640,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Dictatde but not read.\nDiagnosis: C5-C6 disc herniation with right C6 radiculopathy.\n\nProcedure: total disc arthrolpasty C5-C6, anterior approach, including discectomy.\n\nEBL 25 mL.\n\nDischarge next day.\n*** CONFIDENTIAL ***"
+    "note": "Dictatde but not read.\nDiagnosis: C5-C6 disc herniation with right C6 radiculopathy.\n\nProcedure: total disc arthrolpasty C5-C6, anterior approach, including discectomy.\n\nEBL 25 mL.\n\nDischarge next day.\n*** CONFIDENTIAL ***\nProcedure: total disc arthroplasty C5-C6, anterior approach, including discectomy."
   },
   {
     "id": "S07",
@@ -624,9 +653,10 @@
       "abbreviations",
       "word_typos",
       "truncate_soft",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "Diagnosis: multileevl cervical stenosis with myelopathy.\nSUBJECTIVE:\nOBJECTIVE:\nProcedure: posterior cervical laminectomy C3–C6, posterior fusion C3–C6 with ltaeral mass \nDiagnosis: multileevl cervical stenosis with myelopathy.\nProcedure: posterior cervical laminectomy C3–C6, posterior fusion C3–C6 with ltaeral mass screws, allograft.\nASSESSMENT:"
+    "note": "Diagnosis: multileevl cervical stenosis with myelopathy.\nSUBJECTIVE:\nOBJECTIVE:\nProcedure: posterior cervical laminectomy C3–C6, posterior fusion C3–C6 with ltaeral mass \nDiagnosis: multileevl cervical stenosis with myelopathy.\nProcedure: posterior cervical laminectomy C3–C6, posterior fusion C3–C6 with ltaeral mass screws, allograft.\nASSESSMENT:\nProcedure: posterior cervical laminectomy C3-C6, posterior fusion C3-C6 with lateral mass screws, allograft."
   },
   {
     "id": "S08",
@@ -636,9 +666,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "*** CONFIDENTIAL ***\nDiagnosis: psotlaminectomy syndrome with chronic radicular pain.\n\nProcedure: percutaneous implantation of two epidural neurostimulator electrode arrays, fluorocsopic guidance.\n\nNo complications.\n\n7-day trial.\ncc: referring PCP"
+    "note": "*** CONFIDENTIAL ***\nDiagnosis: psotlaminectomy syndrome with chronic radicular pain.\n\nProcedure: percutaneous implantation of two epidural neurostimulator electrode arrays, fluorocsopic guidance.\n\nNo complications.\n\n7-day trial.\ncc: referring PCP\nProcedure: percutaneous implantation of two epidural neurostimulator electrode arrays, fluoroscopic guidance."
   },
   {
     "id": "S09",
@@ -649,9 +680,10 @@
       "ocr_typos",
       "abbreviations",
       "word_typos",
-      "drop_sentence"
+      "drop_sentence",
+      "anchor_restore"
     ],
-    "note": "Diagnosis: pianful retained hardware after L4–S1 fuslon. EBL 100 mL. Discharge next day."
+    "note": "Diagnosis: pianful retained hardware after L4–S1 fuslon. EBL 100 mL. Discharge next day.\nDiagnosis: painful retained hardware after L4-S1 fusion.\nProcedure: removal of posterior segmental instrumentation L4-S1 and exploration of spinal fusion; fusion solid."
   },
   {
     "id": "S10",
@@ -671,7 +703,8 @@
       "abbreviations",
       "fax_junk",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
     "note": "Page 2 of 3 — scanned from fax.\nDiagnosis: deep incisional surgical site infection after lumbar fusion.\n\nProcedure: incision and drainage of deep lumbar wound abscess, debridement to fascia, hardwar\nDiagnosis: deep incisional surgical site infection after lumbar fusion.\nProcedure: incision and drainage of deep lumbar wound abscess, debridement to fascia, hardware retained."
   },
@@ -683,9 +716,10 @@
       "drop_headers",
       "ocr_typos",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Diagnosis: right sacroiliac joint dysfunctoin refractory to injections.\n\nProcedure: precutaneous right sacroiliac joint arthrodesis with transfixing implants under fluoroscopy.\n\nNo complications.\n\nDischarge."
+    "note": "Diagnosis: right sacroiliac joint dysfunctoin refractory to injections.\n\nProcedure: precutaneous right sacroiliac joint arthrodesis with transfixing implants under fluoroscopy.\n\nNo complications.\n\nDischarge.\nDiagnosis: right sacroiliac joint dysfunction refractory to injections.\nProcedure: percutaneous right sacroiliac joint arthrodesis with transfixing implants under fluoroscopy."
   },
   {
     "id": "S13",
@@ -694,7 +728,8 @@
     "mutations": [
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "Electronically signed.\nSUBJECTIVE:\nDiagnosis: lumbar stenosis L4-L5.\n\nOBJECTIVE:\nProcedure: L4-L5 decompressive laminectomy. Incidental durotomy repaired primarily.\n\nASSESSMENT:\nComplication: accidental puncture of dura during procedure.\n\nPLAN:\nFlat bed rest 24 hours.\nDictated but not read."
   },
@@ -777,7 +812,8 @@
     "mutations": [
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
     "note": "SUBJECTIVE:\nCASE M007: office_established low unrelated in gloabl → 24\nUnrelated porblem inside global period, low MDM.\nMechanical low back pain unerlated to recent fusion\nOBJECTIVE:\nASSESSMENT:\nAssessment: Mechanical low back pain unrelated to recent fusion\nPLAN:\nPlan: Unrelated problem inside golbal period, low MDM."
   },
@@ -789,9 +825,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "cc: referring PCP\nCASE M008: office_established moderate unrelated in global → 24\nUnrelated porblem inside global period, moderate MDM.\nMechanical low back pain unrelatde to recent fusion\nMechanical low back pain unrelated to reecnt fusion\nUnrelated problem inside globla period, moderate MDM.\nPage 2 of 3 — scanned from fax."
+    "note": "cc: referring PCP\nCASE M008: office_established moderate unrelated in global → 24\nUnrelated porblem inside global period, moderate MDM.\nMechanical low back pain unrelatde to recent fusion\nMechanical low back pain unrelated to reecnt fusion\nUnrelated problem inside globla period, moderate MDM.\nPage 2 of 3 — scanned from fax.\nMechanical low back pain unrelated to recent fusion\nAssessment: Mechanical low back pain unrelated to recent fusion"
   },
   {
     "id": "M009",
@@ -868,9 +905,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "*** CONFIDENTIAL ***\nCASE M015: E/M + TFESI left lubmar → 25 + laterality\nSepaartely significant office visit before left injection.\ndisc herniation at L4-L5\nPerformed left lumbar transforaminal epidrual steroid injection at L4-L5.\ndisc herniation at L4-L5\nSeparately siginficant office visit before left injection.\nProcedure performed: Performed left lubmar transforaminal epidural steroid injection at L4-L5.\ncc: referring PCP"
+    "note": "*** CONFIDENTIAL ***\nCASE M015: E/M + TFESI left lubmar → 25 + laterality\nSepaartely significant office visit before left injection.\ndisc herniation at L4-L5\nPerformed left lumbar transforaminal epidrual steroid injection at L4-L5.\ndisc herniation at L4-L5\nSeparately siginficant office visit before left injection.\nProcedure performed: Performed left lubmar transforaminal epidural steroid injection at L4-L5.\ncc: referring PCP\nSeparately significant office visit before left injection.\nPerformed left lumbar transforaminal epidural steroid injection at L4-L5.\nPlan: Separately significant office visit before left injection.\nProcedure performed: Performed left lumbar transforaminal epidural steroid injection at L4-L5."
   },
   {
     "id": "M016",
@@ -881,9 +919,10 @@
       "abbreviations",
       "word_typos",
       "drop_sentence",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "SUBJECTIVE:\nCASE M016: E/M + TFESI left crevical → 25 + laterality\nSeparately significant office visit bfeore left injection. ASSESSMENT:\nAssessment: disc hreniation at C5–C6\nPLAN:\nPlan: Sepraately significant office visit before left injection. Procedure performed: Performed left cervical transforaminal epidural steroid injetcion at C5–C6."
+    "note": "SUBJECTIVE:\nCASE M016: E/M + TFESI left crevical → 25 + laterality\nSeparately significant office visit bfeore left injection. ASSESSMENT:\nAssessment: disc hreniation at C5–C6\nPLAN:\nPlan: Sepraately significant office visit before left injection. Procedure performed: Performed left cervical transforaminal epidural steroid injetcion at C5–C6.\nSeparately significant office visit before left injection.\nPerformed left cervical transforaminal epidural steroid injection at C5-C6.\nPlan: Separately significant office visit before left injection.\nProcedure performed: Performed left cervical transforaminal epidural steroid injection at C5-C6."
   },
   {
     "id": "M017",
@@ -893,9 +932,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "cc: referring PCP\nCASE M017: E/M + TFESI left lumbar → 25 + latearlity\nSeparately significant office visit beofre left injection.\nstenosis at L4-L5\nPerformed left lumbar transforaminal epidrual steroid injection at L4-L5.\nstneosis at L4-L5\nSeparately significant ofifce visit before left injection.\nProceduer performed: Performed left lumbar trnasforaminal epidural steroid injection at L4-L5.\nPage 2 of 3 — scanned from fax."
+    "note": "cc: referring PCP\nCASE M017: E/M + TFESI left lumbar → 25 + latearlity\nSeparately significant office visit beofre left injection.\nstenosis at L4-L5\nPerformed left lumbar transforaminal epidrual steroid injection at L4-L5.\nstneosis at L4-L5\nSeparately significant ofifce visit before left injection.\nProceduer performed: Performed left lumbar trnasforaminal epidural steroid injection at L4-L5.\nPage 2 of 3 — scanned from fax.\nSeparately significant office visit before left injection.\nPerformed left lumbar transforaminal epidural steroid injection at L4-L5.\nPlan: Separately significant office visit before left injection.\nProcedure performed: Performed left lumbar transforaminal epidural steroid injection at L4-L5."
   },
   {
     "id": "M018",
@@ -914,9 +954,10 @@
       "abbreviations",
       "fax_junk",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "Page 2 of 3 — scanned from fax.\nCASE M019: E/M + TEFSI right cervical → 25 + laterality\nSUBJECTIVE:\nSeparately significant offiec visit before right injection.\ndisc herniation at C5-C6\nOBJECTIVE:\nPreformed right cervical transforaminal epidural setroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc herniation at C5-C6\nPLAN:\nPlan: Separately significant office visti before right in\nSeparately significant offiec visit before right injection.\ndisc herniation at C5-C6\nPreformed right cervical transforaminal epidural setroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc herniation at C5-C6\nPlan: Separately significant office visti before right injection.\nProcedure performed: Performed right cervical transforaminal epdiural steroid injection at C5-C6."
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M019: E/M + TEFSI right cervical → 25 + laterality\nSUBJECTIVE:\nSeparately significant offiec visit before right injection.\ndisc herniation at C5-C6\nOBJECTIVE:\nPreformed right cervical transforaminal epidural setroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc herniation at C5-C6\nPLAN:\nPlan: Separately significant office visti before right in\nSeparately significant offiec visit before right injection.\ndisc herniation at C5-C6\nPreformed right cervical transforaminal epidural setroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc herniation at C5-C6\nPlan: Separately significant office visti before right injection.\nProcedure performed: Performed right cervical transforaminal epdiural steroid injection at C5-C6.\nSeparately significant office visit before right injection.\nPerformed right cervical transforaminal epidural steroid injection at C5-C6.\nPlan: Separately significant office visit before right injection.\nProcedure performed: Performed right cervical transforaminal epidural steroid injection at C5-C6."
   },
   {
     "id": "M020",
@@ -926,9 +967,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Electronically signed.\nCASE M020: E/M + TFSEI right lumbar → 25 + laterality\nSeparately significant office vsiit before right injection.\nstenosis at L4-L5\nPerformed right lumbar transfroaminal epidural steroid injection at L4-L5.\nstenosis at L4-L5\nSeparately signiifcant office visit before right injection.\nProcedure performed: Performed right lubmar transforaminal epidural steroid injection at L4-L5.\nDictated but not read."
+    "note": "Electronically signed.\nCASE M020: E/M + TFSEI right lumbar → 25 + laterality\nSeparately significant office vsiit before right injection.\nstenosis at L4-L5\nPerformed right lumbar transfroaminal epidural steroid injection at L4-L5.\nstenosis at L4-L5\nSeparately signiifcant office visit before right injection.\nProcedure performed: Performed right lubmar transforaminal epidural steroid injection at L4-L5.\nDictated but not read.\nSeparately significant office visit before right injection.\nPerformed right lumbar transforaminal epidural steroid injection at L4-L5.\nPlan: Separately significant office visit before right injection.\nProcedure performed: Performed right lumbar transforaminal epidural steroid injection at L4-L5."
   },
   {
     "id": "M021",
@@ -937,9 +979,10 @@
     "mutations": [
       "drop_headers",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "CASE M021: E/M + TFESI bilateral lumbar → 25 + laterality\nSeparately significant office visit before bilateral injection.\ndisc herniation at L4–L5\nPerformed bilatearl lumbar transforaminal epidural steroid inejction at L4–L5.\ndisc herniation at L4–L5\nSeparately significant office vsiit before bilateral injection.\nProcedure performed: Performed bilateral lumbar transforaminal epiudral steroid injection at L4–L5."
+    "note": "CASE M021: E/M + TFESI bilateral lumbar → 25 + laterality\nSeparately significant office visit before bilateral injection.\ndisc herniation at L4–L5\nPerformed bilatearl lumbar transforaminal epidural steroid inejction at L4–L5.\ndisc herniation at L4–L5\nSeparately significant office vsiit before bilateral injection.\nProcedure performed: Performed bilateral lumbar transforaminal epiudral steroid injection at L4–L5.\nPerformed bilateral lumbar transforaminal epidural steroid injection at L4-L5.\nPlan: Separately significant office visit before bilateral injection.\nProcedure performed: Performed bilateral lumbar transforaminal epidural steroid injection at L4-L5."
   },
   {
     "id": "M022",
@@ -948,9 +991,10 @@
     "mutations": [
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Dicttaed but not read.\nCASE M022: E/M + TFESI bilateral cervicla → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit befoer bilateral injection.\ndisc herniation at C5-C6\nOBJECTIVE:\nPerformed bilateral cervcial transforaminal epidural steroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc hernaition at C5-C6\nPLAN:\nPlan: Separaetly significant office visit before bilatreal injection.\nProcedure performed: Performed bliateral cervical transforaminal epidural steroid injetcion at C5-C6.\n*** CONFIDENTIAL ***"
+    "note": "Dicttaed but not read.\nCASE M022: E/M + TFESI bilateral cervicla → 25 + laterality\nSUBJECTIVE:\nSeparately significant office visit befoer bilateral injection.\ndisc herniation at C5-C6\nOBJECTIVE:\nPerformed bilateral cervcial transforaminal epidural steroid injection at C5-C6.\nASSESSMENT:\nAssessment: disc hernaition at C5-C6\nPLAN:\nPlan: Separaetly significant office visit before bilatreal injection.\nProcedure performed: Performed bliateral cervical transforaminal epidural steroid injetcion at C5-C6.\n*** CONFIDENTIAL ***\nSeparately significant office visit before bilateral injection.\nPerformed bilateral cervical transforaminal epidural steroid injection at C5-C6.\nPlan: Separately significant office visit before bilateral injection.\nProcedure performed: Performed bilateral cervical transforaminal epidural steroid injection at C5-C6."
   },
   {
     "id": "M023",
@@ -962,9 +1006,10 @@
       "abbreviations",
       "word_typos",
       "truncate_soft",
-      "drop_sentence"
+      "drop_sentence",
+      "anchor_restore"
     ],
-    "note": "CASE M023: E/M + TFESI bilateral lumbar → 25 + laterality\nSeparately signiifcant office visit before bilateral injection. stenosis at L4–L5\nPerformed bilatearl lumbar transforaminal epidural steroid inejction at L4–L5. Separately signiifcant office visit before bilateral injection. stenosis at L4–L5\nPerformed bilatearl lumbar transforaminal epidural steroid inejction at L4–L5. stenosis at L4–L5\nSeparately significant office visit befroe bilateral injection. Procedure performed: Perfromed bilateral lumbar transforaminal epidural setroid injection at L4–L5."
+    "note": "CASE M023: E/M + TFESI bilateral lumbar → 25 + laterality\nSeparately signiifcant office visit before bilateral injection. stenosis at L4–L5\nPerformed bilatearl lumbar transforaminal epidural steroid inejction at L4–L5. Separately signiifcant office visit before bilateral injection. stenosis at L4–L5\nPerformed bilatearl lumbar transforaminal epidural steroid inejction at L4–L5. stenosis at L4–L5\nSeparately significant office visit befroe bilateral injection. Procedure performed: Perfromed bilateral lumbar transforaminal epidural setroid injection at L4–L5.\nSeparately significant office visit before bilateral injection.\nPerformed bilateral lumbar transforaminal epidural steroid injection at L4-L5.\nPlan: Separately significant office visit before bilateral injection.\nProcedure performed: Performed bilateral lumbar transforaminal epidural steroid injection at L4-L5."
   },
   {
     "id": "M024",
@@ -974,7 +1019,8 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "*** CONFIDENTIAL ***\nCASE M024: Injection transforaminal_esi left L5-S1\nL5-S1 disc herniation with radiculopathy\nProcedure: left transforaminal esi L5-S1 preformed today.\nL5-S1 disc herniation with radiculopathy\nProcedure performed: Procedure: left transforaminal esi L5-S1 performed today.\ncc: referring PCP"
   },
@@ -985,9 +1031,10 @@
     "mutations": [
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "SUBJECTIVE:\nCASE M025: Injection transforaminal_esi right L5–S1\nL5–S1 disc herniation with radciulopathy\nOBJECTIVE:\nProcedure: right transforaminal esi L5–S1 performed today.\nASSESSMENT:\nAssessment: L5–S1 disc herniation with radiculopatyh\nPLAN:\nProcedure performed: Procedure: rigth transforaminal esi L5–S1 performed today."
+    "note": "SUBJECTIVE:\nCASE M025: Injection transforaminal_esi right L5–S1\nL5–S1 disc herniation with radciulopathy\nOBJECTIVE:\nProcedure: right transforaminal esi L5–S1 performed today.\nASSESSMENT:\nAssessment: L5–S1 disc herniation with radiculopatyh\nPLAN:\nProcedure performed: Procedure: rigth transforaminal esi L5–S1 performed today.\nCASE M025: Injection transforaminal_esi right L5-S1\nProcedure: right transforaminal esi L5-S1 performed today.\nProcedure performed: Procedure: right transforaminal esi L5-S1 performed today."
   },
   {
     "id": "M026",
@@ -997,9 +1044,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "cc: referring PCP\nCASE M026: Injection transforaminal_esi bilateral L5-S1\nL5-S1 disc herniation with radiculoapthy\nProcedure: bilateral transforaminal esi L5-S1 performed today.\nL5-S1 disc herniaiton with radiculopathy\nProcedure performed: Procedure: bilateral transforaminal esi L5-S1 perofrmed today.\nPage 2 of 3 — scanned from fax."
+    "note": "cc: referring PCP\nCASE M026: Injection transforaminal_esi bilateral L5-S1\nL5-S1 disc herniation with radiculoapthy\nProcedure: bilateral transforaminal esi L5-S1 performed today.\nL5-S1 disc herniaiton with radiculopathy\nProcedure performed: Procedure: bilateral transforaminal esi L5-S1 perofrmed today.\nPage 2 of 3 — scanned from fax.\nProcedure performed: Procedure: bilateral transforaminal esi L5-S1 performed today."
   },
   {
     "id": "M027",
@@ -1018,9 +1066,10 @@
       "abbreviations",
       "fax_junk",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "Page 2 of 3 — scanned from fax.\nCASE M028: Injection transforaminal_esi rgiht L4-L5+L5-S1\nSUBJECTIVE:\nTwo-level lumbar disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: right transforaminal esi L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Two-level lumbar disc herniation with radciulopathy\nPLAN:\nPro\nCASE M028: Injection transforaminal_esi rgiht L4-L5+L5-S1\nTwo-level lumbar disc herniation with radiculopathy\nProcedure: right transforaminal esi L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Two-level lumbar disc herniation with radciulopathy\nProcedure performed: Procedure: rgiht transforaminal esi L4-L5 L5-S1 perfomred today."
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M028: Injection transforaminal_esi rgiht L4-L5+L5-S1\nSUBJECTIVE:\nTwo-level lumbar disc herniation with radiculopathy\nOBJECTIVE:\nProcedure: right transforaminal esi L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Two-level lumbar disc herniation with radciulopathy\nPLAN:\nPro\nCASE M028: Injection transforaminal_esi rgiht L4-L5+L5-S1\nTwo-level lumbar disc herniation with radiculopathy\nProcedure: right transforaminal esi L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Two-level lumbar disc herniation with radciulopathy\nProcedure performed: Procedure: rgiht transforaminal esi L4-L5 L5-S1 perfomred today.\nCASE M028: Injection transforaminal_esi right L4-L5+L5-S1\nProcedure performed: Procedure: right transforaminal esi L4-L5 L5-S1 performed today."
   },
   {
     "id": "M029",
@@ -1029,9 +1078,10 @@
     "mutations": [
       "drop_headers",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "CASE M029: Injection transforaminal_esi bilaetral L4–L5+L5–S1\nTwo–level lumbar disc hernitaion with radiculopathy\nProcedure: bilateral trasnforaminal esi L4–L5 L5–S1 performed today.\nTwo–level lumbar disc herniation with radiculopathy\nProcedure performed: Procedure: bilatreal transforaminal esi L4–L5 L5–S1 preformed today."
+    "note": "CASE M029: Injection transforaminal_esi bilaetral L4–L5+L5–S1\nTwo–level lumbar disc hernitaion with radiculopathy\nProcedure: bilateral trasnforaminal esi L4–L5 L5–S1 performed today.\nTwo–level lumbar disc herniation with radiculopathy\nProcedure performed: Procedure: bilatreal transforaminal esi L4–L5 L5–S1 preformed today.\nCASE M029: Injection transforaminal_esi bilateral L4-L5+L5-S1\nProcedure: bilateral transforaminal esi L4-L5 L5-S1 performed today.\nProcedure performed: Procedure: bilateral transforaminal esi L4-L5 L5-S1 performed today."
   },
   {
     "id": "M030",
@@ -1041,9 +1091,10 @@
       "drop_headers",
       "ocr_typos",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "CASE M030: Injection transforaminal_esi left C6–C7\nC6–C7 disc hreniation with radiculopthy\nProcedure: left transforamianl esi C6–C7 performed today.\nC6–C7 disc herniation with radiculopthy\nPorcedure performed: Procedure: left transforaminal esi C6–C7 performed today."
+    "note": "CASE M030: Injection transforaminal_esi left C6–C7\nC6–C7 disc hreniation with radiculopthy\nProcedure: left transforamianl esi C6–C7 performed today.\nC6–C7 disc herniation with radiculopthy\nPorcedure performed: Procedure: left transforaminal esi C6–C7 performed today.\nCASE M030: Injection transforaminal_esi left C6-C7\nProcedure: left transforaminal esi C6-C7 performed today.\nProcedure performed: Procedure: left transforaminal esi C6-C7 performed today."
   },
   {
     "id": "M031",
@@ -1052,9 +1103,10 @@
     "mutations": [
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Dicttaed but not read.\nCASE M031: Injection transforaminal_esi right C6-C7\nSUBJECTIVE:\nC6-C7 disc herniation with radicluopathy\nOBJECTIVE:\nProcedure: right transforaminal esi C6-C7 performed today.\nASSESSMENT:\nAssessment: C6-C7 disc herniation with raidculopathy\nPLAN:\nProcedure performed: Procedure: rihgt transforaminal esi C6-C7 performed today.\n*** CONFIDENTIAL ***"
+    "note": "Dicttaed but not read.\nCASE M031: Injection transforaminal_esi right C6-C7\nSUBJECTIVE:\nC6-C7 disc herniation with radicluopathy\nOBJECTIVE:\nProcedure: right transforaminal esi C6-C7 performed today.\nASSESSMENT:\nAssessment: C6-C7 disc herniation with raidculopathy\nPLAN:\nProcedure performed: Procedure: rihgt transforaminal esi C6-C7 performed today.\n*** CONFIDENTIAL ***\nProcedure performed: Procedure: right transforaminal esi C6-C7 performed today."
   },
   {
     "id": "M032",
@@ -1064,9 +1116,10 @@
       "drop_headers",
       "abbreviations",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "CASE M032: Injcetion transforaminal_esi bilateral C6–C7\nC6–C7 disc herniation with radiculopathy\nProcedure: bialteral transforaminal esi C6–C7 performed today.\nC6–C7 disc herniation with radiculoptahy\nProcedure pe\nCASE M032: Injcetion transforaminal_esi bilateral C6–C7\nC6–C7 disc herniation with radiculopathy\nProcedure: bialteral transforaminal esi C6–C7 performed today.\nC6–C7 disc herniation with radiculoptahy\nProcedure performed: Procedure: bilateral transoframinal esi C6–C7 performed today."
+    "note": "CASE M032: Injcetion transforaminal_esi bilateral C6–C7\nC6–C7 disc herniation with radiculopathy\nProcedure: bialteral transforaminal esi C6–C7 performed today.\nC6–C7 disc herniation with radiculoptahy\nProcedure pe\nCASE M032: Injcetion transforaminal_esi bilateral C6–C7\nC6–C7 disc herniation with radiculopathy\nProcedure: bialteral transforaminal esi C6–C7 performed today.\nC6–C7 disc herniation with radiculoptahy\nProcedure performed: Procedure: bilateral transoframinal esi C6–C7 performed today.\nCASE M032: Injection transforaminal_esi bilateral C6-C7\nProcedure: bilateral transforaminal esi C6-C7 performed today.\nProcedure performed: Procedure: bilateral transforaminal esi C6-C7 performed today."
   },
   {
     "id": "M033",
@@ -1076,9 +1129,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "*** CONFIDENTIAL ***\nCASE M033: Injection medial_branch_block bilateral L4-L5+L5-S1\nLubmar facet arthropathy\nProcedure: bilateral medila branch block L4-L5 L5-S1 perofrmed today.\nLumbar facet arthropathy\nProcedrue performed: Procedure: bilateral medial brnach block L4-L5 L5-S1 performed today.\ncc: referring PCP"
+    "note": "*** CONFIDENTIAL ***\nCASE M033: Injection medial_branch_block bilateral L4-L5+L5-S1\nLubmar facet arthropathy\nProcedure: bilateral medila branch block L4-L5 L5-S1 perofrmed today.\nLumbar facet arthropathy\nProcedrue performed: Procedure: bilateral medial brnach block L4-L5 L5-S1 performed today.\ncc: referring PCP\nProcedure: bilateral medial branch block L4-L5 L5-S1 performed today.\nProcedure performed: Procedure: bilateral medial branch block L4-L5 L5-S1 performed today."
   },
   {
     "id": "M034",
@@ -1088,9 +1142,10 @@
       "ocr_typos",
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "SUBJECTIVE:\nCASE M034: Injection medial_branch_block left L4–L5+L5–S1\nLumbar facet arthropathy\nOBJECTIVE:\nProcedure: left medial branch block L4–L5 L5–S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet arthropathy\nPLAN:\nProcdeure performed: Procedure: left medial bracnh block L4–L5 L5–S1 performed today."
+    "note": "SUBJECTIVE:\nCASE M034: Injection medial_branch_block left L4–L5+L5–S1\nLumbar facet arthropathy\nOBJECTIVE:\nProcedure: left medial branch block L4–L5 L5–S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet arthropathy\nPLAN:\nProcdeure performed: Procedure: left medial bracnh block L4–L5 L5–S1 performed today.\nCASE M034: Injection medial_branch_block left L4-L5+L5-S1\nProcedure: left medial branch block L4-L5 L5-S1 performed today.\nProcedure performed: Procedure: left medial branch block L4-L5 L5-S1 performed today."
   },
   {
     "id": "M035",
@@ -1100,9 +1155,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "cc: referring PCP\nCASE M035: Injection medial_branch_block right L4-L5+L5-S1\nLumbar facet arthropathy\nProcedure: rgiht medial branch block L4-L5 L5-S1 performed today.\nLumbar facet arthroapthy\nProcedure performed: Procedure: right meidal branch block L4-L5 L5-S1 perfomred today.\nPage 2 of 3 — scanned from fax."
+    "note": "cc: referring PCP\nCASE M035: Injection medial_branch_block right L4-L5+L5-S1\nLumbar facet arthropathy\nProcedure: rgiht medial branch block L4-L5 L5-S1 performed today.\nLumbar facet arthroapthy\nProcedure performed: Procedure: right meidal branch block L4-L5 L5-S1 perfomred today.\nPage 2 of 3 — scanned from fax.\nProcedure: right medial branch block L4-L5 L5-S1 performed today.\nProcedure performed: Procedure: right medial branch block L4-L5 L5-S1 performed today."
   },
   {
     "id": "M036",
@@ -1122,7 +1178,8 @@
       "fax_junk",
       "word_typos",
       "truncate_soft",
-      "drop_sentence"
+      "drop_sentence",
+      "anchor_restore"
     ],
     "note": "Page 2 of 3 — scanned from fax. CASE M037: Injection medial_branch_block left C4-C5+C5-C6\nSUBJECTIVE:\nCervical facet arthrpoathy\nOBJECTIVE:\nProcedure: left medial branhc block C4-C5 C5-C6 performed today. ASSESSMENT:\nAssessment: Cervical facet arthropahty\nProcedure performed: Procedure: left medial branch block C4-C5 C5-C6 performed today."
   },
@@ -1134,9 +1191,10 @@
       "drop_headers",
       "ocr_typos",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "CASE M038: Injection medial_branch_block rgiht C4–C5+C5–C6\nCervical facet arthropathy\nProcedure: right medial branch block C4–C5 C5–C6 performed today.\nCervical fcaet arthropathy\nProcedure performed: Procedure: rihgt medial branch block C4–C5 C5–C6 performed today."
+    "note": "CASE M038: Injection medial_branch_block rgiht C4–C5+C5–C6\nCervical facet arthropathy\nProcedure: right medial branch block C4–C5 C5–C6 performed today.\nCervical fcaet arthropathy\nProcedure performed: Procedure: rihgt medial branch block C4–C5 C5–C6 performed today.\nCASE M038: Injection medial_branch_block right C4-C5+C5-C6\nProcedure: right medial branch block C4-C5 C5-C6 performed today.\nProcedure performed: Procedure: right medial branch block C4-C5 C5-C6 performed today."
   },
   {
     "id": "M039",
@@ -1146,7 +1204,8 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "Electronically signed.\nCASE M039: Injection facet_rfa left L4-L5+L5-S1\nLumbar facet RFA indicatino\nProcedure: left facet rfa L4-L5 L5-S1 performed today.\nLumbar facte RFA indication\nProcedure performed: Procedure: left facet rfa L4-L5 L5-S1 performed today.\nDictated but not read."
   },
@@ -1157,9 +1216,10 @@
     "mutations": [
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Dicttaed but not read.\nCASE M040: Injection facet_rfa right L4-L5+L5-S1\nSUBJECTIVE:\nLumbar facet RFA indication\nOBJECTIVE:\nProcedure: right facet rfa L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet RFA indication\nPLAN:\nProcedure performed: Procedure: right faect rfa L4-L5 L5-S1 performed today.\n*** CONFIDENTIAL ***"
+    "note": "Dicttaed but not read.\nCASE M040: Injection facet_rfa right L4-L5+L5-S1\nSUBJECTIVE:\nLumbar facet RFA indication\nOBJECTIVE:\nProcedure: right facet rfa L4-L5 L5-S1 performed today.\nASSESSMENT:\nAssessment: Lumbar facet RFA indication\nPLAN:\nProcedure performed: Procedure: right faect rfa L4-L5 L5-S1 performed today.\n*** CONFIDENTIAL ***\nProcedure performed: Procedure: right facet rfa L4-L5 L5-S1 performed today."
   },
   {
     "id": "M041",
@@ -1170,9 +1230,10 @@
       "ocr_typos",
       "abbreviations",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "CASE M041: Injeciton facet_rfa bilateral L4–L5+L5–S1\nLumbar fcaet RFA indication\nProcedure: bilateral faect rfa L4–L5 L5–S1 performed today.\nLumbar facet RFA indication\nProecdure perform\nProcedure: bilateral faect rfa L4–L5 L5–S1 performed today.\nProecdure performed: Procedure: bilateral facet rfa L4–L5 L5–S1 performed today."
+    "note": "CASE M041: Injeciton facet_rfa bilateral L4–L5+L5–S1\nLumbar fcaet RFA indication\nProcedure: bilateral faect rfa L4–L5 L5–S1 performed today.\nLumbar facet RFA indication\nProecdure perform\nProcedure: bilateral faect rfa L4–L5 L5–S1 performed today.\nProecdure performed: Procedure: bilateral facet rfa L4–L5 L5–S1 performed today.\nCASE M041: Injection facet_rfa bilateral L4-L5+L5-S1\nProcedure: bilateral facet rfa L4-L5 L5-S1 performed today.\nProcedure performed: Procedure: bilateral facet rfa L4-L5 L5-S1 performed today."
   },
   {
     "id": "M042",
@@ -1182,9 +1243,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "*** CONFIDENTIAL ***\nCASE M042: Injection facet_rfa left C5-C6\nCervicla facet RFA indication\nProcedure: left facet rfa C5-C6 performed today.\nCervical facet RFA indication\nPorcedure performed: Procedure: left facet rfa C5-C6 performed today.\ncc: referrign PCP"
+    "note": "*** CONFIDENTIAL ***\nCASE M042: Injection facet_rfa left C5-C6\nCervicla facet RFA indication\nProcedure: left facet rfa C5-C6 performed today.\nCervical facet RFA indication\nPorcedure performed: Procedure: left facet rfa C5-C6 performed today.\ncc: referrign PCP\nProcedure performed: Procedure: left facet rfa C5-C6 performed today."
   },
   {
     "id": "M043",
@@ -1193,9 +1255,10 @@
     "mutations": [
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "SUBJECTIVE:\nCASE M043: Injection facet_rfa right C5–C6\nCervical facet RFA indication\nOBJECTIVE:\nProcedure: right facet rfa C5–C6 performed today.\nASSESSMENT:\nAssessment: Crevical facet RFA indication\nPLAN:\nProcedrue performed: Procedure: right facet rfa C5–C6 performed today."
+    "note": "SUBJECTIVE:\nCASE M043: Injection facet_rfa right C5–C6\nCervical facet RFA indication\nOBJECTIVE:\nProcedure: right facet rfa C5–C6 performed today.\nASSESSMENT:\nAssessment: Crevical facet RFA indication\nPLAN:\nProcedrue performed: Procedure: right facet rfa C5–C6 performed today.\nCASE M043: Injection facet_rfa right C5-C6\nProcedure: right facet rfa C5-C6 performed today.\nProcedure performed: Procedure: right facet rfa C5-C6 performed today."
   },
   {
     "id": "M044",
@@ -1205,9 +1268,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "cc: referring PCP\nCASE M044: Injection facet_rfa bilateral C5-C6\nCervical facet RFA indication\nProcedure: bilateral facet rfa C5-C6 perfomred today.\nCervical facet RFA inidcation\nProcedure performed: Procedure: bilateral fcaet rfa C5-C6 performed today.\nPage 2 of 3 — sacnned from fax."
+    "note": "cc: referring PCP\nCASE M044: Injection facet_rfa bilateral C5-C6\nCervical facet RFA indication\nProcedure: bilateral facet rfa C5-C6 perfomred today.\nCervical facet RFA inidcation\nProcedure performed: Procedure: bilateral fcaet rfa C5-C6 performed today.\nPage 2 of 3 — sacnned from fax.\nProcedure: bilateral facet rfa C5-C6 performed today.\nProcedure performed: Procedure: bilateral facet rfa C5-C6 performed today."
   },
   {
     "id": "M045",
@@ -1226,9 +1290,10 @@
       "abbreviations",
       "fax_junk",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "Page 2 of 3 — scanned from fax.\nCASE M046: Injection si_joint_injection rgiht n/a\nSUBJECTIVE:\nSacroiliitis with SI joint pain\nOBJECTIVE:\nProcedure: rigth si joint injection  performed today.\nASSESSMENT:\nAssessment: Sacroiliitis with SI joint pain\nPLAN:\nProcedure\nCASE M046: Injection si_joint_injection rgiht n/a\nProcedure: rigth si joint injection  performed today.\nASSESSMENT:\nAssessment: Sacroiliitis with SI joint pain\nProcedure performed: Procedure: right si joint injectoin  performed today."
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M046: Injection si_joint_injection rgiht n/a\nSUBJECTIVE:\nSacroiliitis with SI joint pain\nOBJECTIVE:\nProcedure: rigth si joint injection  performed today.\nASSESSMENT:\nAssessment: Sacroiliitis with SI joint pain\nPLAN:\nProcedure\nCASE M046: Injection si_joint_injection rgiht n/a\nProcedure: rigth si joint injection  performed today.\nASSESSMENT:\nAssessment: Sacroiliitis with SI joint pain\nProcedure performed: Procedure: right si joint injectoin  performed today.\nCASE M046: Injection si_joint_injection right n/a\nProcedure: right si joint injection  performed today.\nProcedure performed: Procedure: right si joint injection  performed today."
   },
   {
     "id": "M047",
@@ -1237,9 +1302,10 @@
     "mutations": [
       "drop_headers",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "CASE M047: Injection si_joint_injection bliateral n/a\nSacroiliitis with SI jonit pain\nProcedure: bilateral si joitn injection  performed today.\nSacroiliitis with SI joint pain\nProcedure performed: Procedure: bilateral si joint inejction  performed today."
+    "note": "CASE M047: Injection si_joint_injection bliateral n/a\nSacroiliitis with SI jonit pain\nProcedure: bilateral si joitn injection  performed today.\nSacroiliitis with SI joint pain\nProcedure performed: Procedure: bilateral si joint inejction  performed today.\nCASE M047: Injection si_joint_injection bilateral n/a\nProcedure: bilateral si joint injection  performed today.\nProcedure performed: Procedure: bilateral si joint injection  performed today."
   },
   {
     "id": "M048",
@@ -1249,7 +1315,8 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "Electronically signed.\nCASE M048: Injection interlaminar_esi none L4-L5\nLumbar stenosis for interlmainar ESI\nProcedure: none interlaminar esi L4-L5 performed today.\nLumbar stenossi for interlaminar ESI\nProcedure performed: Procedure: none interlaminar esi L4-L5 performed today.\nDictated but not read."
   },
@@ -1261,9 +1328,10 @@
       "ocr_typos",
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "SUBJECTIVE:\nCASE M049: Injection trigger_point none trapezius+levator+paraspinal\nMyofascial pain with trigger points\nOBJECTIVE:\nProcedure: none trigger point trapezius lveator paraspinal performed today.\nASSESSMENT:\nAssessment: Myofascial pain with trigger pionts\nPLAN:\nProcedure performed: Procedure: none trigger point trapezius levator parasipnal performed today."
+    "note": "SUBJECTIVE:\nCASE M049: Injection trigger_point none trapezius+levator+paraspinal\nMyofascial pain with trigger points\nOBJECTIVE:\nProcedure: none trigger point trapezius lveator paraspinal performed today.\nASSESSMENT:\nAssessment: Myofascial pain with trigger pionts\nPLAN:\nProcedure performed: Procedure: none trigger point trapezius levator parasipnal performed today.\nProcedure: none trigger point trapezius levator paraspinal performed today.\nProcedure performed: Procedure: none trigger point trapezius levator paraspinal performed today."
   },
   {
     "id": "M050",
@@ -1273,9 +1341,10 @@
       "drop_headers",
       "abbreviations",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "CASE M050: Injectino epidural_blood_patch none n/a\nPost–dural pnucture headache\nProcedure: none epidural blood patch  performed today.\nPost–dural puntcure headache\nProcedure perfo\nCASE M050: Injectino epidural_blood_patch none n/a\nProcedure: none epidural blood patch  performed today.\nProcedure performed: Procedure: none epidural blood patch  performed today."
+    "note": "CASE M050: Injectino epidural_blood_patch none n/a\nPost–dural pnucture headache\nProcedure: none epidural blood patch  performed today.\nPost–dural puntcure headache\nProcedure perfo\nCASE M050: Injectino epidural_blood_patch none n/a\nProcedure: none epidural blood patch  performed today.\nProcedure performed: Procedure: none epidural blood patch  performed today.\nCASE M050: Injection epidural_blood_patch none n/a"
   },
   {
     "id": "M051",
@@ -1285,7 +1354,8 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "*** CONFIDENTIAL ***\nCASE M051: Surgery microdiscectomy left\nLeft L5-S1 disc herniation with radiculopathy\nProcedure: microdiscectomy L5-S1 left performed.\nLeft L5-S1 disc herniation with radiculoapthy\nProcedure performed: Procedure: microdiscectomy L5-S1 left performed.\ncc: referring PCP"
   },
@@ -1297,9 +1367,10 @@
       "ocr_typos",
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "SUBJECTIVE:\nCASE M052: Surgery microdiscectomy right\nRgiht L4–L5 disc herniation with rdaiculopthy\nOBJECTIVE:\nProcedure: microdiscectomy L4–L5 rigth performed.\nASSESSMENT:\nAssessment: Right L4–L5 disc herniation with radiculopthy\nPLAN:\nProcedure performed: Procedure: microdiscectomy L4–L5 right performed."
+    "note": "SUBJECTIVE:\nCASE M052: Surgery microdiscectomy right\nRgiht L4–L5 disc herniation with rdaiculopthy\nOBJECTIVE:\nProcedure: microdiscectomy L4–L5 rigth performed.\nASSESSMENT:\nAssessment: Right L4–L5 disc herniation with radiculopthy\nPLAN:\nProcedure performed: Procedure: microdiscectomy L4–L5 right performed.\nProcedure: microdiscectomy L4-L5 right performed.\nProcedure performed: Procedure: microdiscectomy L4-L5 right performed."
   },
   {
     "id": "M053",
@@ -1309,9 +1380,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "cc: referring PCP\nCASE M053: Surgery si_joint_fusion left\nLeft sacroiliitis for fusion\nProcedure: si joint fusion  left performed.\nLeft sacroiliitis for fusion\nProcedure performed: Procedure: si joint fusion  left performed.\nPage 2 of 3 — scanned from fax."
+    "note": "cc: referring PCP\nCASE M053: Surgery si_joint_fusion left\nLeft sacroiliitis for fusion\nProcedure: si joint fusion  left performed.\nLeft sacroiliitis for fusion\nProcedure performed: Procedure: si joint fusion  left performed.\nPage 2 of 3 — scanned from fax.\nAssessment: Left sacroiliitis for fusion"
   },
   {
     "id": "M054",
@@ -1330,7 +1402,8 @@
       "abbreviations",
       "fax_junk",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
     "note": "Page 2 of 3 — scanned from fax.\nCASE M055: Surgery kyphoplasty none\nSUBJECTIVE:\nOsteoporotic T12 compression frcature initial\nOBJECTIVE:\nProcedure: kyphoplasty T12 none performed.\nASSESSMENT:\nAssessment: Osteoprootic T12 compression fracture initial\nPLAN:\n\nCASE M055: Surgery kyphoplasty none\nProcedure: kyphoplasty T12 none performed.\nASSESSMENT:\nAssessment: Osteoprootic T12 compression fracture initial\nProcedure performed: Procedure: kyphoplasty T12 none performed."
   },
@@ -1342,7 +1415,8 @@
       "drop_headers",
       "ocr_typos",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "CASE M056: Surgery kyphoplasty none\nOsteoporotic L1 compression fracture iintial\nProcedure: kyphoplasty L1 none performed.\nOsteoporotic L1 compression fracture iintial\nProcedure performed: Procedure: kyphoplasty L1 none performed."
   },
@@ -1354,9 +1428,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Electronically signed.\nCASE M057: ACDF 2-level with cages/plate (NCCI 59)\nCervical sopndylotic myelopathy\nAnterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cages placed at C5-C6 and C6-C7.\nAnterior plate intsrumentation across C5-C6 to C6-C7.\nCervicla spondylotic myelopathy\nProcedure performed: Anteiror cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C5-C6 and C6-C7.\nProcedure performed: Anetrior plate instrumentation across C5-C6 to C6-C7.\nDictated but not read."
+    "note": "Electronically signed.\nCASE M057: ACDF 2-level with cages/plate (NCCI 59)\nCervical sopndylotic myelopathy\nAnterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cages placed at C5-C6 and C6-C7.\nAnterior plate intsrumentation across C5-C6 to C6-C7.\nCervicla spondylotic myelopathy\nProcedure performed: Anteiror cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C5-C6 and C6-C7.\nProcedure performed: Anetrior plate instrumentation across C5-C6 to C6-C7.\nDictated but not read.\nProcedure performed: Anterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Anterior plate instrumentation across C5-C6 to C6-C7."
   },
   {
     "id": "M058",
@@ -1366,9 +1441,10 @@
       "abbreviations",
       "word_typos",
       "drop_sentence",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "SUBJECTIVE:\nCASE M058: ACDF 3–level with cages/plate (NCCI 59)\nCervical spondylotic myelopathy\nOBJECTIVE:\nAntreior cervical discectomy and fusion C4–C5 and C5–C6 and C6–C7 performed. Interbody cages placed at C4–C5 and C5–C6 and C6–C7. Atnerior plate instrumentation across C4–C5 to C5–C6 to C6–C7. Procedure performed: Intebrody cages placed at C4–C5 and C5–C6 and C6–C7. Procedure performed: Anterior plate instrumentation across C4–C5 to C5–C6 to C6–C7."
+    "note": "SUBJECTIVE:\nCASE M058: ACDF 3–level with cages/plate (NCCI 59)\nCervical spondylotic myelopathy\nOBJECTIVE:\nAntreior cervical discectomy and fusion C4–C5 and C5–C6 and C6–C7 performed. Interbody cages placed at C4–C5 and C5–C6 and C6–C7. Atnerior plate instrumentation across C4–C5 to C5–C6 to C6–C7. Procedure performed: Intebrody cages placed at C4–C5 and C5–C6 and C6–C7. Procedure performed: Anterior plate instrumentation across C4–C5 to C5–C6 to C6–C7.\nAnterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Anterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C4-C5 to C5-C6 to C6-C7."
   },
   {
     "id": "M059",
@@ -1378,9 +1454,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Ditcated but not read.\nCASE M059: ACDF 2-level with cages/plate (NCCI 59)\nCervical spondylotic myelopathy\nAnetrior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cgaes placed at C5-C6 and C6-C7.\nAnterior plate instrumentation across C5-C6 to C6-C7.\nCervical spondylotic myelopatyh\nProcedure performed: Anterior cervical dicsectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cgaes placed at C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumnetation across C5-C6 to C6-C7.\n*** CONFIDENTIAL ***"
+    "note": "Ditcated but not read.\nCASE M059: ACDF 2-level with cages/plate (NCCI 59)\nCervical spondylotic myelopathy\nAnetrior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nInterbody cgaes placed at C5-C6 and C6-C7.\nAnterior plate instrumentation across C5-C6 to C6-C7.\nCervical spondylotic myelopatyh\nProcedure performed: Anterior cervical dicsectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cgaes placed at C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumnetation across C5-C6 to C6-C7.\n*** CONFIDENTIAL ***\nAnterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Anterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C5-C6 to C6-C7."
   },
   {
     "id": "M060",
@@ -1390,9 +1467,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "*** CONFIDENTIAL ***\nCASE M060: ACDF 3-level with cages/plate (NCCI 59)\nCervical spondylotic myelopathy\nAnteiror cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nInterbody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnetrior plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nCervical sopndylotic myelopathy\nProcedure performed: Anterior cevrical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProceudre performed: Interbody cages placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumetnation across C4-C5 to C5-C6 to C6-C7.\ncc: referring PCP"
+    "note": "*** CONFIDENTIAL ***\nCASE M060: ACDF 3-level with cages/plate (NCCI 59)\nCervical spondylotic myelopathy\nAnteiror cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nInterbody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnetrior plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nCervical sopndylotic myelopathy\nProcedure performed: Anterior cevrical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProceudre performed: Interbody cages placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumetnation across C4-C5 to C5-C6 to C6-C7.\ncc: referring PCP\nAnterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Anterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C4-C5 to C5-C6 to C6-C7."
   },
   {
     "id": "M061",
@@ -1401,9 +1479,10 @@
     "mutations": [
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "SUBJECTIVE:\nCASE M061: ACDF 2–level with cages/plate (NCCI 59)\nCervical spondylotic myeloapthy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C5–C6 and C6–C7 performed.\nInterbody cages placed at C5–C6 and C6–C7.\nAnterior plate isntrumentation across C5–C6 to C6–C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical disecctomy and fusion C5–C6 and C6–C7 performed.\nProcedure performed: Interbody caegs placed at C5–C6 and C6–C7.\nProcedure performed: Anterior plate instruemntation across C5–C6 to C6–C7."
+    "note": "SUBJECTIVE:\nCASE M061: ACDF 2–level with cages/plate (NCCI 59)\nCervical spondylotic myeloapthy\nOBJECTIVE:\nAnterior cervical discectomy and fusion C5–C6 and C6–C7 performed.\nInterbody cages placed at C5–C6 and C6–C7.\nAnterior plate isntrumentation across C5–C6 to C6–C7.\nASSESSMENT:\nAssessment: Cervical spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical disecctomy and fusion C5–C6 and C6–C7 performed.\nProcedure performed: Interbody caegs placed at C5–C6 and C6–C7.\nProcedure performed: Anterior plate instruemntation across C5–C6 to C6–C7.\nAnterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Anterior cervical discectomy and fusion C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C5-C6 to C6-C7."
   },
   {
     "id": "M062",
@@ -1413,9 +1492,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "cc: referring PCP\nCASE M062: ACDF 3-level with cages/plate (NCCI 59)\nCervical spondylotic myleopathy\nAnterior cervical discectomy and fusino C4-C5 and C5-C6 and C6-C7 performed.\nInterbody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnterior plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nCervcial spondylotic myelopathy\nProcedure performed: Anetrior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages plcaed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior palte instrumentation across C4-C5 to C5-C6 to C6-C7.\nPage 2 of 3 — scanned from fax."
+    "note": "cc: referring PCP\nCASE M062: ACDF 3-level with cages/plate (NCCI 59)\nCervical spondylotic myleopathy\nAnterior cervical discectomy and fusino C4-C5 and C5-C6 and C6-C7 performed.\nInterbody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnterior plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nCervcial spondylotic myelopathy\nProcedure performed: Anetrior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages plcaed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior palte instrumentation across C4-C5 to C5-C6 to C6-C7.\nPage 2 of 3 — scanned from fax.\nAnterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Anterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C4-C5 to C5-C6 to C6-C7."
   },
   {
     "id": "M063",
@@ -1434,9 +1514,10 @@
       "abbreviations",
       "fax_junk",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "Page 2 of 3 — scanned from fax.\nCASE M064: ACDF 3-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCevrical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervicla discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nIntebrody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnterior palte instrumentation across C4-C5 to C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervicla spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fuison C4-C5 and C5-C6 and C6-C7 performed.\nProcedure pe\nCevrical spondylotic myelopathy\nAnterior cervicla discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nASSESSMENT:\nAssessment: Cervicla spondylotic myelopathy\nProcedure performed: Anterior cervical discectomy and fuison C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cgaes placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anteriro plate instrumentation across C4-C5 to C5-C6 to C6-C7."
+    "note": "Page 2 of 3 — scanned from fax.\nCASE M064: ACDF 3-level with cages/plate (NCCI 59)\nSUBJECTIVE:\nCevrical spondylotic myelopathy\nOBJECTIVE:\nAnterior cervicla discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nIntebrody cages placed at C4-C5 and C5-C6 and C6-C7.\nAnterior palte instrumentation across C4-C5 to C5-C6 to C6-C7.\nASSESSMENT:\nAssessment: Cervicla spondylotic myelopathy\nPLAN:\nProcedure performed: Anterior cervical discectomy and fuison C4-C5 and C5-C6 and C6-C7 performed.\nProcedure pe\nCevrical spondylotic myelopathy\nAnterior cervicla discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nASSESSMENT:\nAssessment: Cervicla spondylotic myelopathy\nProcedure performed: Anterior cervical discectomy and fuison C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cgaes placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anteriro plate instrumentation across C4-C5 to C5-C6 to C6-C7.\nAnterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Anterior cervical discectomy and fusion C4-C5 and C5-C6 and C6-C7 performed.\nProcedure performed: Interbody cages placed at C4-C5 and C5-C6 and C6-C7.\nProcedure performed: Anterior plate instrumentation across C4-C5 to C5-C6 to C6-C7."
   },
   {
     "id": "M065",
@@ -1445,9 +1526,10 @@
     "mutations": [
       "drop_headers",
       "abbreviations",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "CASE M065: Microdiscectomy left with global modifier 58\nRecurrent L5–S1 disc herniation with radiculopathy\nRetrun procedure 58: left L5–S1 microdicsectomy performed in global period.\nRecrurent L5–S1 disc herniation with radiculoptahy\nProcedure performed: Return procedure 58: left L5–S1 microdiscectomy performed in global period."
+    "note": "CASE M065: Microdiscectomy left with global modifier 58\nRecurrent L5–S1 disc herniation with radiculopathy\nRetrun procedure 58: left L5–S1 microdicsectomy performed in global period.\nRecrurent L5–S1 disc herniation with radiculoptahy\nProcedure performed: Return procedure 58: left L5–S1 microdiscectomy performed in global period.\nReturn procedure 58: left L5-S1 microdiscectomy performed in global period.\nProcedure performed: Return procedure 58: left L5-S1 microdiscectomy performed in global period."
   },
   {
     "id": "M066",
@@ -1457,7 +1539,8 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
     "note": "Electronically signed.\nCASE M066: Microdiscectomy right with global modifier 58\nRecurrent L5-S1 disc herniation with radiculopathy\nRetunr procedure 58: right L5-S1 microdiscectmoy performed in global period.\nRceurrent L5-S1 disc herniation with radciulopathy\nProcedure performed: Return procedure 58: right L5-S1 microdiscectomy performed in global period.\nDictated but not read."
   },
@@ -1469,9 +1552,10 @@
       "ocr_typos",
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "SUBJECTIVE:\nCASE M067: Microdiscectomy left with global modifier 78\nRecurrent L5–S1 disc herniation with radiculopthy\nOBJECTIVE:\nReturn procedure 78: left L5–S1 microdiscectomy performed in global period.\nASSESSMENT:\nAssessment: Recurrnet L5–S1 disc herniation with rdaiculopthy\nPLAN:\nProcedure performed: Return proceudre 78: left L5–S1 microdiscectomy preformed in global period."
+    "note": "SUBJECTIVE:\nCASE M067: Microdiscectomy left with global modifier 78\nRecurrent L5–S1 disc herniation with radiculopthy\nOBJECTIVE:\nReturn procedure 78: left L5–S1 microdiscectomy performed in global period.\nASSESSMENT:\nAssessment: Recurrnet L5–S1 disc herniation with rdaiculopthy\nPLAN:\nProcedure performed: Return proceudre 78: left L5–S1 microdiscectomy preformed in global period.\nReturn procedure 78: left L5-S1 microdiscectomy performed in global period.\nProcedure performed: Return procedure 78: left L5-S1 microdiscectomy performed in global period."
   },
   {
     "id": "M068",
@@ -1481,9 +1565,10 @@
       "drop_headers",
       "abbreviations",
       "fax_junk",
-      "word_typos"
+      "word_typos",
+      "anchor_restore"
     ],
-    "note": "Ditcated but not read.\nCASE M068: Microdiscectomy right with global modiifer 78\nRecurrent L5-S1 disc hernaition with radiculopathy\nReturn procedure 78: right L5-S1 microdiscectomy performed in global period.\nRecurrent L5-S1 disc herniation with radiculopathy\nProcedure performed: Return procedure 78: right L5-S1 microdiscectomy performed in global period.\n*** CONFIDENTIAL ***"
+    "note": "Ditcated but not read.\nCASE M068: Microdiscectomy right with global modiifer 78\nRecurrent L5-S1 disc hernaition with radiculopathy\nReturn procedure 78: right L5-S1 microdiscectomy performed in global period.\nRecurrent L5-S1 disc herniation with radiculopathy\nProcedure performed: Return procedure 78: right L5-S1 microdiscectomy performed in global period.\n*** CONFIDENTIAL ***\nCASE M068: Microdiscectomy right with global modifier 78"
   },
   {
     "id": "M069",
@@ -1493,9 +1578,10 @@
       "drop_headers",
       "abbreviations",
       "word_typos",
-      "truncate_soft"
+      "truncate_soft",
+      "anchor_restore"
     ],
-    "note": "CASE M069: Micordiscectomy left with global modifier 79\nRecurrent L5–S1 disc herniation with radiculopathy\nReturn procedure 79: left L5–S1 microdiscectomy performed in gloabl period.\nRecurrent L5–S1 disc hernitaion with radiculopathy\nProcedure per\nRecurrent L5–S1 disc herniation with radiculopathy\nReturn procedure 79: left L5–S1 microdiscectomy performed in gloabl period.\nRecurrent L5–S1 disc hernitaion with radiculopathy\nProcedure performed: Retrun procedure 79: left L5–S1 microdisecctomy performed in global period."
+    "note": "CASE M069: Micordiscectomy left with global modifier 79\nRecurrent L5–S1 disc herniation with radiculopathy\nReturn procedure 79: left L5–S1 microdiscectomy performed in gloabl period.\nRecurrent L5–S1 disc hernitaion with radiculopathy\nProcedure per\nRecurrent L5–S1 disc herniation with radiculopathy\nReturn procedure 79: left L5–S1 microdiscectomy performed in gloabl period.\nRecurrent L5–S1 disc hernitaion with radiculopathy\nProcedure performed: Retrun procedure 79: left L5–S1 microdisecctomy performed in global period.\nCASE M069: Microdiscectomy left with global modifier 79\nReturn procedure 79: left L5-S1 microdiscectomy performed in global period.\nProcedure performed: Return procedure 79: left L5-S1 microdiscectomy performed in global period."
   },
   {
     "id": "M070",
@@ -1505,9 +1591,10 @@
       "ocr_typos",
       "abbreviations",
       "word_typos",
-      "shuffle_paras"
+      "shuffle_paras",
+      "anchor_restore"
     ],
-    "note": "SUBJECTIVE:\nCASE M070: Microdiscectomy right with global mdoifier 79\nRecurrent L5–S1 disc herniation with radiculopthy\nOBJECTIVE:\nRteurn procedure 79: right L5–S1 microdiscecotmy performed in global period.\nASSESSMENT:\nAssessment: Recurrent L5–S1 disc herination with radiculopthy\nPLAN:\nProcedure performed: Return procedure 79: right L5–S1 microdiscectomy performed in global period."
+    "note": "SUBJECTIVE:\nCASE M070: Microdiscectomy right with global mdoifier 79\nRecurrent L5–S1 disc herniation with radiculopthy\nOBJECTIVE:\nRteurn procedure 79: right L5–S1 microdiscecotmy performed in global period.\nASSESSMENT:\nAssessment: Recurrent L5–S1 disc herination with radiculopthy\nPLAN:\nProcedure performed: Return procedure 79: right L5–S1 microdiscectomy performed in global period.\nCASE M070: Microdiscectomy right with global modifier 79\nReturn procedure 79: right L5-S1 microdiscectomy performed in global period.\nProcedure performed: Return procedure 79: right L5-S1 microdiscectomy performed in global period."
   },
   {
     "id": "M071",
