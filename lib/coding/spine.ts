@@ -1,7 +1,14 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { claimCodeProblems, type CodeLibrary } from "@/lib/coding/codes";
-import type { CodingFacts, Complexity, DiagnosisFacts, FactStatus, VisitKind } from "@/lib/coding/facts";
+import type {
+  CodingFacts,
+  Complexity,
+  DiagnosisFacts,
+  FactStatus,
+  ProcedureFacts,
+  VisitKind,
+} from "@/lib/coding/facts";
 
 export type CodedLine = {
   cpt: string;
@@ -41,34 +48,91 @@ type DiagnosisRule = {
 type ProcedureRule = {
   id: string;
   name: string;
+  region?: string[];
   cpt: string;
+  addonCpt?: string;
+  thirdLevelCpt?: string;
+  lateralityModifiers?: boolean;
+  bilateralModifier?: string;
+  minLevels?: number;
+  maxLevels?: number;
 };
 
-type OfficeRules = {
+type RulePack = {
+  id: string;
+  version: string;
+  visitCodes?: Record<string, VisitCodeTable>;
+  procedures?: ProcedureRule[];
+  diagnoses?: DiagnosisRule[];
+};
+
+export type SpineRules = {
   id: string;
   version: string;
   visitCodes: Record<string, VisitCodeTable>;
-  procedures?: ProcedureRule[];
+  procedures: ProcedureRule[];
   diagnoses: DiagnosisRule[];
 };
 
-let cachedRules: OfficeRules | null = null;
+let cachedRules: SpineRules | null = null;
 
-export function loadOfficeRules(source?: unknown): OfficeRules {
-  if (source) {
-    cachedRules = null;
-    return source as OfficeRules;
-  }
-  cachedRules ??= JSON.parse(
-    readFileSync(path.join(process.cwd(), "data/coding/spine-rules/office.json"), "utf8"),
-  ) as OfficeRules;
-  return cachedRules;
+function rulesDir() {
+  return path.join(process.cwd(), "data/coding/spine-rules");
 }
 
-/** Clear the on-disk cache (tests that rewrite office.json). */
+function readPack(fileName: string): RulePack {
+  return JSON.parse(readFileSync(path.join(rulesDir(), fileName), "utf8")) as RulePack;
+}
+
+/** Merge office + injections (+ any other *.json packs) into one rule set. */
+export function loadSpineRules(source?: SpineRules | RulePack): SpineRules {
+  if (source) {
+    cachedRules = null;
+    return {
+      id: source.id,
+      version: source.version,
+      visitCodes: source.visitCodes ?? {},
+      procedures: source.procedures ?? [],
+      diagnoses: source.diagnoses ?? [],
+    };
+  }
+  if (cachedRules) return cachedRules;
+
+  const dir = rulesDir();
+  if (!existsSync(dir)) {
+    throw new Error("Spine rule packs are missing from data/coding/spine-rules.");
+  }
+  const files = readdirSync(dir)
+    .filter((file) => file.endsWith(".json"))
+    .sort((left, right) => {
+      // Office first so visit tables win; other packs append procedures/diagnoses.
+      if (left === "office.json") return -1;
+      if (right === "office.json") return 1;
+      return left.localeCompare(right);
+    });
+
+  const merged: SpineRules = { id: "spine", version: "", visitCodes: {}, procedures: [], diagnoses: [] };
+  for (const file of files) {
+    const pack = readPack(file);
+    merged.version = merged.version ? `${merged.version}+${pack.version}` : pack.version;
+    if (pack.visitCodes) Object.assign(merged.visitCodes, pack.visitCodes);
+    if (pack.procedures) merged.procedures.push(...pack.procedures);
+    if (pack.diagnoses) merged.diagnoses.push(...pack.diagnoses);
+  }
+  cachedRules = merged;
+  return merged;
+}
+
+/** @deprecated Prefer loadSpineRules — kept for existing imports/tests. */
+export function loadOfficeRules(source?: unknown): SpineRules {
+  return loadSpineRules(source as SpineRules | undefined);
+}
+
 export function resetOfficeRulesCache() {
   cachedRules = null;
 }
+
+export const resetSpineRulesCache = resetOfficeRulesCache;
 
 function normalizeLevel(value: string) {
   return value.toUpperCase().replace(/\s+/g, "").replace(/\//g, "-").replace(/TO/g, "-");
@@ -94,11 +158,29 @@ function withMatches(factWith: string[] | undefined, wanted: string[] | undefine
   return wanted.some((entry) => have.has(entry.toLowerCase()));
 }
 
-/** Prefer lumbosacral HNP when levels mention L5-S1 even if region says lumbar. */
 function effectiveRegion(diagnosis: DiagnosisFacts) {
   const levels = (diagnosis.levels ?? []).map(normalizeLevel);
   if (levels.some((level) => level.includes("L5-S1") || level === "L5S1")) return "lumbosacral";
   return diagnosis.region?.toLowerCase() ?? null;
+}
+
+function procedureRegion(procedure: ProcedureFacts) {
+  if (procedure.levels?.length) {
+    const joined = procedure.levels.map(normalizeLevel).join(" ");
+    if (/^C|T1[0-2]|T[1-9]/.test(joined) && !joined.includes("L")) {
+      if (joined.includes("T") && !joined.startsWith("C")) return "thoracic";
+      return "cervical";
+    }
+    if (joined.includes("L5-S1") || joined.includes("S1")) return "lumbosacral";
+    if (joined.includes("L")) return "lumbar";
+  }
+  return null;
+}
+
+function levelCount(procedure: ProcedureFacts) {
+  const levels = procedure.levels ?? [];
+  if (levels.length) return levels.length;
+  return 1;
 }
 
 function matchDiagnosis(diagnosis: DiagnosisFacts, rules: DiagnosisRule[]): DiagnosisRule | null {
@@ -125,7 +207,22 @@ function matchDiagnosis(diagnosis: DiagnosisFacts, rules: DiagnosisRule[]): Diag
   return candidates[0] ?? null;
 }
 
-function visitCpt(kind: VisitKind, complexity: Complexity, rules: OfficeRules): { cpt: string; rule: string } | null {
+function matchProcedure(procedure: ProcedureFacts, rules: ProcedureRule[]): ProcedureRule | null {
+  const region = procedureRegion(procedure);
+  const count = levelCount(procedure);
+  const candidates = rules.filter((rule) => {
+    if (rule.name !== procedure.name) return false;
+    if (!regionMatches(region, rule.region)) return false;
+    if (rule.minLevels != null && count < rule.minLevels) return false;
+    if (rule.maxLevels != null && count > rule.maxLevels) return false;
+    return true;
+  });
+  if (!candidates.length) return null;
+  candidates.sort((left, right) => (right.region?.length ?? 0) - (left.region?.length ?? 0));
+  return candidates[0] ?? null;
+}
+
+function visitCpt(kind: VisitKind, complexity: Complexity, rules: SpineRules): { cpt: string; rule: string } | null {
   const table = rules.visitCodes[kind];
   if (!table) return null;
   if ("code" in table) return { cpt: table.code, rule: `visit.${kind}` };
@@ -144,14 +241,66 @@ function visitModifiers(facts: CodingFacts): string[] {
   return modifiers;
 }
 
+function procedureModifiers(procedure: ProcedureFacts, rule: ProcedureRule): string[] {
+  const modifiers: string[] = [];
+  if (procedure.side === "bilateral" && rule.bilateralModifier) {
+    modifiers.push(rule.bilateralModifier);
+  } else if (rule.lateralityModifiers) {
+    if (procedure.side === "left") modifiers.push("LT");
+    if (procedure.side === "right") modifiers.push("RT");
+    if (procedure.side === "bilateral") modifiers.push("50");
+  }
+  return modifiers;
+}
+
+function emitProcedureLines(
+  procedure: ProcedureFacts,
+  rule: ProcedureRule,
+  pointers: string[],
+): CodedLine[] {
+  const modifiers = procedureModifiers(procedure, rule);
+  const count = levelCount(procedure);
+  const lines: CodedLine[] = [
+    {
+      cpt: rule.cpt,
+      units: 1,
+      modifiers,
+      diagnosisPointers: pointers,
+      rule: rule.id,
+      quote: procedure.quote,
+    },
+  ];
+  if (count >= 2 && rule.addonCpt) {
+    lines.push({
+      cpt: rule.addonCpt,
+      units: rule.thirdLevelCpt ? 1 : Math.max(1, count - 1),
+      modifiers: [],
+      diagnosisPointers: pointers,
+      rule: `${rule.id}.addon`,
+      quote: procedure.quote,
+    });
+  }
+  if (count >= 3 && rule.thirdLevelCpt) {
+    lines.push({
+      cpt: rule.thirdLevelCpt,
+      units: 1,
+      modifiers: [],
+      diagnosisPointers: pointers,
+      rule: `${rule.id}.third`,
+      quote: procedure.quote,
+    });
+  }
+  return lines;
+}
+
 /**
  * Pure rules: facts → CPT/ICD numbers. No network.
- * Office / consult / post-op + in-office imaging. Surgery/injection CPT come later.
+ * Packs: office (E/M + diagnoses + imaging) and injections (ESI/MBB/RFA/SI/TPI).
  */
 export function codeVisit(
   facts: CodingFacts,
   library?: CodeLibrary,
-  rules: OfficeRules = loadOfficeRules(),
+  rules: SpineRules = loadSpineRules(),
   dateOfService = "2026-10-22",
 ): CodeVisitResult {
   const warnings: string[] = [];
@@ -168,7 +317,7 @@ export function codeVisit(
       if (diagnosis.status === "history") {
         warnings.push(`Skipped history “${diagnosis.condition}” — no Z-code rule.`);
       } else {
-        warnings.push(`No office rule matched diagnosis “${diagnosis.condition}” (${diagnosis.region ?? "no region"}).`);
+        warnings.push(`No rule matched diagnosis “${diagnosis.condition}” (${diagnosis.region ?? "no region"}).`);
       }
       continue;
     }
@@ -194,28 +343,22 @@ export function codeVisit(
     } else {
       warnings.push(`No visit CPT mapping for kind “${visit.kind}”.`);
     }
-  } else {
-    warnings.push("No visit fact — no E/M or post-op CPT suggested.");
   }
 
-  const procedureRules = rules.procedures ?? [];
   for (const procedure of facts.procedures) {
     if (!procedure.performed) continue;
-    const rule = procedureRules.find((entry) => entry.name === procedure.name);
+    const rule = matchProcedure(procedure, rules.procedures);
     if (!rule) {
       warnings.push(
-        `Procedure “${procedure.name}” was performed but office rules do not emit that CPT yet — code it by search.`,
+        `Procedure “${procedure.name}” was performed but no rule emits that CPT yet — code it by search.`,
       );
       continue;
     }
-    lines.push({
-      cpt: rule.cpt,
-      units: 1,
-      modifiers: [],
-      diagnosisPointers: pointers,
-      rule: rule.id,
-      quote: procedure.quote,
-    });
+    lines.push(...emitProcedureLines(procedure, rule, pointers));
+  }
+
+  if (!visit && !lines.length) {
+    warnings.push("No visit or performed procedure — nothing to suggest.");
   }
 
   if (library) {

@@ -1,0 +1,104 @@
+{
+  "id": "injections",
+  "version": "2026-10-22",
+  "signedOff": false,
+  "procedures": [
+    {
+      "id": "tfesi_lumbar",
+      "name": "transforaminal_esi",
+      "region": ["lumbar", "lumbosacral", "sacral"],
+      "cpt": "64483",
+      "addonCpt": "64484",
+      "lateralityModifiers": true
+    },
+    {
+      "id": "tfesi_cervical",
+      "name": "transforaminal_esi",
+      "region": ["cervical", "thoracic"],
+      "cpt": "64479",
+      "addonCpt": "64480",
+      "lateralityModifiers": true
+    },
+    {
+      "id": "interlaminar_esi_lumbar",
+      "name": "interlaminar_esi",
+      "region": ["lumbar", "lumbosacral", "sacral"],
+      "cpt": "62323"
+    },
+    {
+      "id": "interlaminar_esi_cervical",
+      "name": "interlaminar_esi",
+      "region": ["cervical", "thoracic"],
+      "cpt": "62321"
+    },
+    {
+      "id": "mbb_lumbar",
+      "name": "medial_branch_block",
+      "region": ["lumbar", "lumbosacral", "sacral"],
+      "cpt": "64493",
+      "addonCpt": "64494",
+      "thirdLevelCpt": "64495",
+      "bilateralModifier": "50"
+    },
+    {
+      "id": "mbb_cervical",
+      "name": "medial_branch_block",
+      "region": ["cervical", "thoracic"],
+      "cpt": "64490",
+      "addonCpt": "64491",
+      "thirdLevelCpt": "64492",
+      "bilateralModifier": "50"
+    },
+    {
+      "id": "rfa_lumbar",
+      "name": "facet_rfa",
+      "region": ["lumbar", "lumbosacral", "sacral"],
+      "cpt": "64635",
+      "addonCpt": "64636",
+      "lateralityModifiers": true
+    },
+    {
+      "id": "rfa_cervical",
+      "name": "facet_rfa",
+      "region": ["cervical", "thoracic"],
+      "cpt": "64633",
+      "addonCpt": "64634",
+      "lateralityModifiers": true
+    },
+    {
+      "id": "si_joint_injection",
+      "name": "si_joint_injection",
+      "cpt": "27096",
+      "lateralityModifiers": true
+    },
+    {
+      "id": "trigger_point_3plus",
+      "name": "trigger_point",
+      "cpt": "20553",
+      "minLevels": 3
+    },
+    {
+      "id": "trigger_point_1_2",
+      "name": "trigger_point",
+      "cpt": "20552",
+      "maxLevels": 2
+    },
+    {
+      "id": "epidural_blood_patch",
+      "name": "epidural_blood_patch",
+      "cpt": "62273"
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "myofascial_pain",
+      "condition": "myofascial_pain",
+      "icd": "M79.18"
+    },
+    {
+      "id": "post_dural_puncture_headache",
+      "condition": "post_dural_puncture_headache",
+      "icd": "G97.1"
+    }
+  ]
+}

@@ -1792,5 +1792,376 @@
       ],
       "injury": null
     }
+  },
+  {
+    "id": "P01",
+    "title": "Left L5-S1 transforaminal ESI",
+    "expectedCptAnyOf": [
+      "64483"
+    ],
+    "expectedIcdAnyOf": [
+      "M51.17",
+      "M54.17"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "transforaminal_esi",
+          "levels": [
+            "L5-S1"
+          ],
+          "side": "left",
+          "performed": true,
+          "quote": "left L5-S1 transforaminal epidural steroid injection under fluoroscopy"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "disc_herniation",
+          "region": "lumbar",
+          "levels": [
+            "L5-S1"
+          ],
+          "side": "left",
+          "with": [
+            "radiculopathy"
+          ],
+          "status": "current",
+          "quote": "left S1 radiculopathy from L5-S1 disc herniation"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "P02",
+    "title": "L5-S1 interlaminar ESI",
+    "expectedCptAnyOf": [
+      "62323"
+    ],
+    "expectedIcdAnyOf": [
+      "M48.062",
+      "M48.061",
+      "M54.16"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "interlaminar_esi",
+          "levels": [
+            "L5-S1"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "L5-S1 interlaminar epidural steroid injection, fluoroscopic guidance"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "stenosis",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "lumbar spinal stenosis with bilateral radicular pain"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "P03",
+    "title": "C7-T1 cervical interlaminar ESI",
+    "expectedCptAnyOf": [
+      "62321"
+    ],
+    "expectedIcdAnyOf": [
+      "M54.12",
+      "M50.12*"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "interlaminar_esi",
+          "levels": [
+            "C7-T1"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "C7-T1 cervical interlaminar epidural steroid injection with fluoroscopy"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "radiculopathy",
+          "region": "cervical",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "cervical radiculopathy"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "P04",
+    "title": "Bilateral L4-5, L5-S1 medial branch blocks",
+    "expectedCptAnyOf": [
+      "64493",
+      "64494"
+    ],
+    "expectedIcdAnyOf": [
+      "M47.816",
+      "M47.817"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "medial_branch_block",
+          "levels": [
+            "L4-L5",
+            "L5-S1"
+          ],
+          "side": "bilateral",
+          "performed": true,
+          "quote": "bilateral lumbar medial branch blocks at L4-L5 and L5-S1 facet joints under fluoroscopy"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "spondylosis",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "lumbar facet arthropathy, axial low back pain"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "P05",
+    "title": "Right L4-5, L5-S1 facet RFA",
+    "expectedCptAnyOf": [
+      "64635",
+      "64636"
+    ],
+    "expectedIcdAnyOf": [
+      "M47.816",
+      "M47.817"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "facet_rfa",
+          "levels": [
+            "L4-L5",
+            "L5-S1"
+          ],
+          "side": "right",
+          "performed": true,
+          "quote": "right L4-L5 and L5-S1 radiofrequency ablation of medial branch nerves under fluoroscopy"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "spondylosis",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "lumbar facet syndrome with >80% relief from two diagnostic blocks"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "P06",
+    "title": "Right SI joint injection with fluoro",
+    "expectedCptAnyOf": [
+      "27096",
+      "G0260"
+    ],
+    "expectedIcdAnyOf": [
+      "M46.1",
+      "M53.3"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "si_joint_injection",
+          "levels": [],
+          "side": "right",
+          "performed": true,
+          "quote": "right sacroiliac joint injection with fluoroscopic guidance"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "sacroiliitis",
+          "region": null,
+          "levels": [],
+          "side": "right",
+          "with": [],
+          "status": "current",
+          "quote": "right sacroiliitis"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "P07",
+    "title": "Trigger point injections, 3+ muscles",
+    "expectedCptAnyOf": [
+      "20553"
+    ],
+    "expectedIcdAnyOf": [
+      "M79.18",
+      "M62.830"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "trigger_point",
+          "levels": [
+            "paraspinal_l",
+            "paraspinal_r",
+            "gluteal_l",
+            "gluteal_r"
+          ],
+          "side": null,
+          "performed": true,
+          "quote": "trigger point injections into 4 muscles with lidocaine"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "myofascial_pain",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "myofascial pain of the lumbar paraspinals and gluteals"
+        },
+        {
+          "condition": "muscle_spasm",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "myofascial pain of the lumbar paraspinals and gluteals"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "P08",
+    "title": "Epidural blood patch for post-dural-puncture headache",
+    "expectedCptAnyOf": [
+      "62273"
+    ],
+    "expectedIcdAnyOf": [
+      "G97.1"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [
+        {
+          "name": "epidural_blood_patch",
+          "levels": [],
+          "side": null,
+          "performed": true,
+          "quote": "lumbar epidural blood patch with 20 mL autologous blood"
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "post_dural_puncture_headache",
+          "region": null,
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "positional headache after lumbar puncture"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "X04",
+    "title": "Note = exact catalog wording 'Spinal stenosis, lumbar region with neurogenic claudication'",
+    "expectedCptAnyOf": [],
+    "expectedIcdAnyOf": [
+      "M48.062"
+    ],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "stenosis",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [
+            "neurogenic_claudication"
+          ],
+          "status": "current",
+          "quote": "Spinal stenosis, lumbar region with neurogenic claudication"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "X06",
+    "title": "Near-empty note",
+    "expectedCptAnyOf": [],
+    "expectedIcdAnyOf": [],
+    "forbiddenCptPrefixes": [],
+    "forbiddenIcdPrefixes": [],
+    "facts": {
+      "visit": null,
+      "procedures": [],
+      "diagnoses": [],
+      "injury": null
+    }
   }
 ]

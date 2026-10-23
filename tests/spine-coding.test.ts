@@ -85,6 +85,8 @@ const testLibrary = buildCodeLibrary(
       ["S12.112A", 1, "Dens fx"],
       ["M80.08XD", 1, "Osteoporotic fx subsequent"],
       ["S14.124A", 1, "Central cord"],
+      ["M79.18", 1, "Myofascial pain"],
+      ["G97.1", 1, "Post dural puncture headache"],
     ],
   },
   {
@@ -104,6 +106,17 @@ const testLibrary = buildCodeLibrary(
       ["99024", "", "B", "XXX"],
       ["72082", "", "A", "XXX"],
       ["72081", "", "A", "XXX"],
+      ["64483", "", "A", "XXX"],
+      ["64484", "", "A", "ZZZ"],
+      ["62323", "", "A", "XXX"],
+      ["62321", "", "A", "XXX"],
+      ["64493", "", "A", "XXX"],
+      ["64494", "", "A", "ZZZ"],
+      ["64635", "", "A", "XXX"],
+      ["64636", "", "A", "ZZZ"],
+      ["27096", "", "A", "XXX"],
+      ["20553", "", "A", "XXX"],
+      ["62273", "", "A", "XXX"],
     ],
   },
 );
@@ -132,11 +145,12 @@ function isForbiddenIcd(code: string, pattern: string) {
 describe("office spine code generation", () => {
   resetOfficeRulesCache();
 
-  it("loads the office rule pack", () => {
+  it("loads merged spine rule packs", () => {
     const rules = loadOfficeRules();
-    expect(rules.id).toBe("office");
+    expect(rules.visitCodes.office_new).toBeTruthy();
     const officeNew = rules.visitCodes.office_new as Record<string, string>;
     expect(officeNew.moderate).toBe("99204");
+    expect(rules.procedures.some((rule) => rule.name === "transforaminal_esi")).toBe(true);
     expect(rules.diagnoses.length).toBeGreaterThan(40);
   });
 
@@ -145,8 +159,8 @@ describe("office spine code generation", () => {
     expect(spineSuggestionsEnabled({ SPINE_CODING_SUGGESTIONS: "true" })).toBe(true);
   });
 
-  it(`covers all ${fixtures.length} office baseline fixtures`, () => {
-    expect(fixtures.length).toBe(37);
+  it(`covers ${fixtures.length} baseline fixtures (office + injections)`, () => {
+    expect(fixtures.length).toBe(47);
   });
 
   for (const fixture of fixtures) {
@@ -161,15 +175,23 @@ describe("office spine code generation", () => {
       const icds = result.diagnoses.map((item) => item.icd);
       const modifiers = result.lines.flatMap((line) => line.modifiers);
 
-      expect(
-        fixture.expectedCptAnyOf.some((code) => cpts.includes(code)),
-        `${fixture.id} CPT got [${cpts.join(", ")}] expected any of [${fixture.expectedCptAnyOf.join(", ")}] warnings=${result.warnings.join(" | ")}`,
-      ).toBe(true);
+      if (fixture.expectedCptAnyOf.length) {
+        expect(
+          fixture.expectedCptAnyOf.some((code) => cpts.includes(code)),
+          `${fixture.id} CPT got [${cpts.join(", ")}] expected any of [${fixture.expectedCptAnyOf.join(", ")}] warnings=${result.warnings.join(" | ")}`,
+        ).toBe(true);
+      } else {
+        expect(cpts, `${fixture.id} expected no CPT`).toEqual([]);
+      }
 
-      expect(
-        fixture.expectedIcdAnyOf.some((pattern) => icds.some((code) => matchesPattern(code, pattern))),
-        `${fixture.id} ICD got [${icds.join(", ")}] expected any of [${fixture.expectedIcdAnyOf.join(", ")}]`,
-      ).toBe(true);
+      if (fixture.expectedIcdAnyOf.length) {
+        expect(
+          fixture.expectedIcdAnyOf.some((pattern) => icds.some((code) => matchesPattern(code, pattern))),
+          `${fixture.id} ICD got [${icds.join(", ")}] expected any of [${fixture.expectedIcdAnyOf.join(", ")}]`,
+        ).toBe(true);
+      } else {
+        expect(icds, `${fixture.id} expected no ICD`).toEqual([]);
+      }
 
       for (const prefix of fixture.forbiddenCptPrefixes ?? []) {
         expect(
