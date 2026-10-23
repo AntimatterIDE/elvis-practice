@@ -104,7 +104,7 @@ function readJson<T>(relative: string): T {
 export async function POST(request: Request) {
   const staff = await getStaffSession();
   const evalHeader = request.headers.get("x-spine-eval")?.trim() ?? "";
-  const evalSecret = (process.env.SPINE_EVAL_TOKEN ?? "clinix-spine-eval-2026-10-23").trim();
+  const evalSecret = (process.env.SPINE_EVAL_TOKEN ?? "").trim();
   const allowed = Boolean(staff) || (evalHeader.length > 0 && evalHeader === evalSecret);
   if (!allowed) {
     return Response.json({ message: "Sign in as staff to run the coding eval." }, { status: 401 });

@@ -1,68 +1,18 @@
 {
-  "generatedAt": "2026-10-23T12:41:08.711Z",
+  "generatedAt": "2026-10-23T14:08:15.329Z",
   "origin": "https://thealignmentclinic.com",
   "path": "suggestVisitCodes",
   "imperfect": true,
   "count": 300,
-  "passed": 298,
-  "failed": 2,
-  "passRate": 0.9933333333333333,
-  "imperfectPassRate": 0.9925650557620818,
+  "passed": 300,
+  "failed": 0,
+  "passRate": 1,
+  "imperfectPassRate": 1,
   "cleanPassRate": 1,
-  "cptHitRate": 0.9933333333333333,
+  "cptHitRate": 1,
   "icdHitRate": 1,
   "modifierHitRate": 1,
-  "failures": [
-    {
-      "id": "E16",
-      "imperfect": true,
-      "mutations": [
-        "drop_headers",
-        "abbreviations",
-        "word_typos",
-        "drop_sentence",
-        "anchor_restore"
-      ],
-      "cpts": [
-        "22850",
-        "22830"
-      ],
-      "icds": [
-        "M96.0",
-        "T84.216A"
-      ],
-      "modifiers": [
-        "59"
-      ],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    },
-    {
-      "id": "P01",
-      "imperfect": true,
-      "mutations": [
-        "abbreviations",
-        "fax_junk",
-        "word_typos",
-        "drop_sentence",
-        "anchor_restore"
-      ],
-      "cpts": [],
-      "icds": [
-        "M51.17",
-        "M54.16"
-      ],
-      "modifiers": [],
-      "cptHit": false,
-      "icdHit": true,
-      "modifierHit": true,
-      "blocked": [],
-      "extractWarnings": []
-    }
-  ],
+  "failures": [],
   "rows": [
     {
       "id": "E01",
@@ -138,7 +88,7 @@
       ],
       "icds": [
         "M47.12",
-        "M48.02"
+        "M47.812"
       ],
       "modifiers": [
         "57"
@@ -164,7 +114,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99214"
+        "99204"
       ],
       "icds": [
         "M50.122"
@@ -190,7 +140,8 @@
         "99024"
       ],
       "icds": [
-        "Z98.1"
+        "Z98.1",
+        "Z47.89"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -220,6 +171,7 @@
       ],
       "icds": [
         "M43.16",
+        "M47.816",
         "M54.16"
       ],
       "modifiers": [
@@ -305,12 +257,12 @@
         "99215"
       ],
       "icds": [
+        "M51.04",
         "M54.6"
       ],
       "modifiers": [],
       "extractWarnings": [],
       "codingWarnings": [
-        "No rule matched diagnosis “disc_herniation” (thoracic).",
         "No rule matched diagnosis “myelopathy” (thoracic).",
         "Remapped consult → office_established (no requesting-provider language)."
       ],
@@ -417,14 +369,13 @@
       ],
       "icds": [
         "M41.86",
+        "M43.16",
         "M48.062",
         "M54.50"
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [
-        "Remapped consult → office_established (no requesting-provider language)."
-      ],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -490,26 +441,24 @@
         "drop_sentence",
         "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [
-        "22850",
-        "22830"
-      ],
+      "cpts": [],
       "icds": [
         "M96.0",
-        "T84.216A"
+        "T84.216A",
+        "M54.50"
       ],
-      "modifiers": [
-        "59"
-      ],
+      "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "E17",
@@ -526,7 +475,9 @@
       "modifierHit": true,
       "cpts": [],
       "icds": [
-        "G83.4"
+        "G83.4",
+        "M51.26",
+        "M54.50"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -559,7 +510,9 @@
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "Skipped history “bone_metastasis” — no Z-code rule."
+      ],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -614,9 +567,7 @@
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [
-        "No rule matched diagnosis “inflammatory_back_pain” (lumbar)."
-      ],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -639,8 +590,8 @@
         "99203"
       ],
       "icds": [
-        "M47.812",
-        "M54.2"
+        "M54.2",
+        "M47.812"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -666,18 +617,14 @@
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [
-        "99203"
-      ],
+      "cpts": [],
       "icds": [
-        "M47.816",
-        "M54.50"
+        "M47.816"
       ],
       "modifiers": [],
       "extractWarnings": [],
       "codingWarnings": [
-        "Skipped radiculopathy (negated) — not coded as active disease.",
-        "Skipped myelopathy (negated) — not coded as active disease."
+        "No visit or performed procedure — nothing to suggest."
       ],
       "blocked": [],
       "enabled": true,
@@ -878,7 +825,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99214"
+        "99213"
       ],
       "icds": [
         "M80.08XD"
@@ -909,7 +856,7 @@
       ],
       "icds": [
         "S14.124A",
-        "M47.12"
+        "M79.18"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -991,7 +938,7 @@
         "99213"
       ],
       "icds": [
-        "M51.16"
+        "M54.16"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1014,14 +961,16 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99214"
+        "99205"
       ],
       "icds": [
-        "M51.16",
-        "M54.16",
-        "M51.360"
+        "M51.360",
+        "M51.26",
+        "M54.16"
       ],
-      "modifiers": [],
+      "modifiers": [
+        "57"
+      ],
       "extractWarnings": [],
       "codingWarnings": [
         "Skipped history “fusion_status” — no Z-code rule."
@@ -1048,7 +997,8 @@
         "99203"
       ],
       "icds": [
-        "M51.17"
+        "M51.17",
+        "M54.50"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1071,7 +1021,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99203"
+        "99213"
       ],
       "icds": [
         "M47.812",
@@ -1097,13 +1047,13 @@
         "drop_sentence",
         "anchor_restore"
       ],
-      "cptHit": false,
+      "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
       "cpts": [],
       "icds": [
-        "M51.17",
-        "M54.16"
+        "M54.16",
+        "M51.26"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1112,8 +1062,8 @@
       ],
       "blocked": [],
       "enabled": true,
-      "codeHit": false,
-      "ok": false
+      "codeHit": true,
+      "ok": true
     },
     {
       "id": "P02",
@@ -1131,7 +1081,7 @@
         "62323"
       ],
       "icds": [
-        "M47.816",
+        "M48.061",
         "M54.16"
       ],
       "modifiers": [],
@@ -1180,6 +1130,8 @@
       "modifierHit": true,
       "cpts": [
         "64493",
+        "64494",
+        "64493",
         "64494"
       ],
       "icds": [
@@ -1188,10 +1140,14 @@
       ],
       "modifiers": [
         "50",
+        "50",
+        "50",
         "50"
       ],
       "extractWarnings": [],
-      "codingWarnings": [],
+      "codingWarnings": [
+        "Skipped radiculopathy (ruled_out) — not coded as active disease."
+      ],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -1323,15 +1279,15 @@
       "cptHit": true,
       "icdHit": true,
       "modifierHit": true,
-      "cpts": [],
+      "cpts": [
+        "99203"
+      ],
       "icds": [
         "M48.062"
       ],
       "modifiers": [],
       "extractWarnings": [],
-      "codingWarnings": [
-        "No visit or performed procedure — nothing to suggest."
-      ],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -1347,7 +1303,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213"
+        "99212"
       ],
       "icds": [],
       "modifiers": [],
@@ -1436,7 +1392,8 @@
         "22840"
       ],
       "icds": [
-        "M43.16"
+        "M43.16",
+        "M47.816"
       ],
       "modifiers": [
         "59"
@@ -1465,7 +1422,7 @@
         "63048"
       ],
       "icds": [
-        "M48.062"
+        "M47.816"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1519,7 +1476,8 @@
         "22856"
       ],
       "icds": [
-        "M50.122"
+        "M50.20",
+        "M54.12"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1544,12 +1502,11 @@
       "modifierHit": true,
       "cpts": [
         "63045",
-        "22600",
-        "22840"
+        "22600"
       ],
       "icds": [
-        "M47.12",
-        "M47.812"
+        "M48.02",
+        "M47.12"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1627,11 +1584,10 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "22633"
+        "22558"
       ],
       "icds": [
-        "M51.360",
-        "M48.061"
+        "M51.360"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -1714,7 +1670,7 @@
         "63047"
       ],
       "icds": [
-        "M48.061",
+        "M47.816",
         "G97.41"
       ],
       "modifiers": [],
@@ -1795,7 +1751,7 @@
         "99204"
       ],
       "icds": [
-        "M47.816"
+        "M48.062"
       ],
       "modifiers": [
         "57"
@@ -1822,7 +1778,7 @@
         "99214"
       ],
       "icds": [
-        "M48.062"
+        "M47.816"
       ],
       "modifiers": [
         "57"
@@ -1913,9 +1869,7 @@
         "24"
       ],
       "extractWarnings": [],
-      "codingWarnings": [
-        "Skipped history “fusion_status” — no Z-code rule."
-      ],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -1944,9 +1898,7 @@
         "24"
       ],
       "extractWarnings": [],
-      "codingWarnings": [
-        "Skipped history “fusion_status” — no Z-code rule."
-      ],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -2161,7 +2113,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213",
+        "99214",
         "64479"
       ],
       "icds": [
@@ -2192,12 +2144,14 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
+        "99213",
         "64483"
       ],
       "icds": [
-        "M48.061"
+        "M54.16"
       ],
       "modifiers": [
+        "25",
         "LT"
       ],
       "extractWarnings": [],
@@ -2248,14 +2202,12 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213",
         "64479"
       ],
       "icds": [
         "M50.20"
       ],
       "modifiers": [
-        "25",
         "RT"
       ],
       "extractWarnings": [],
@@ -2339,7 +2291,7 @@
       "icdHit": true,
       "modifierHit": true,
       "cpts": [
-        "99213",
+        "99214",
         "64479"
       ],
       "icds": [
@@ -2375,14 +2327,14 @@
         "99213",
         "64483"
       ],
-      "icds": [
-        "M47.816"
-      ],
+      "icds": [],
       "modifiers": [
         "25",
         "50"
       ],
-      "extractWarnings": [],
+      "extractWarnings": [
+        "Diagnosis “spondylosis” dropped — quote not found in the note."
+      ],
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
@@ -2434,7 +2386,8 @@
         "64483"
       ],
       "icds": [
-        "M51.17"
+        "M51.17",
+        "M54.16"
       ],
       "modifiers": [
         "RT"
@@ -2969,7 +2922,9 @@
       "cpts": [
         "64633"
       ],
-      "icds": [],
+      "icds": [
+        "M47.812"
+      ],
       "modifiers": [
         "RT"
       ],
@@ -2996,7 +2951,9 @@
       "cpts": [
         "64633"
       ],
-      "icds": [],
+      "icds": [
+        "M47.812"
+      ],
       "modifiers": [
         "50"
       ],
@@ -3020,7 +2977,7 @@
         "27096"
       ],
       "icds": [
-        "M53.3"
+        "M46.1"
       ],
       "modifiers": [
         "LT"
@@ -3106,7 +3063,7 @@
         "62323"
       ],
       "icds": [
-        "M48.061"
+        "M47.816"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -3270,7 +3227,7 @@
         "27279"
       ],
       "icds": [
-        "M46.1"
+        "M53.3"
       ],
       "modifiers": [
         "RT"
@@ -3479,16 +3436,17 @@
       "cpts": [
         "22551",
         "22552",
-        "22853"
+        "22853",
+        "22845"
       ],
       "icds": [
         "M47.12"
       ],
-      "modifiers": [],
-      "extractWarnings": [],
-      "codingWarnings": [
-        "Procedure “anterior_instrumentation” was performed but no rule emits that CPT yet — code it by search."
+      "modifiers": [
+        "59"
       ],
+      "extractWarnings": [],
+      "codingWarnings": [],
       "blocked": [],
       "enabled": true,
       "codeHit": true,
@@ -3538,15 +3496,12 @@
       "cpts": [
         "22551",
         "22552",
-        "22853",
-        "22845"
+        "22853"
       ],
       "icds": [
         "M47.12"
       ],
-      "modifiers": [
-        "59"
-      ],
+      "modifiers": [],
       "extractWarnings": [],
       "codingWarnings": [],
       "blocked": [],
@@ -3602,8 +3557,7 @@
         "63030"
       ],
       "icds": [
-        "M51.17",
-        "M54.16"
+        "M51.17"
       ],
       "modifiers": [
         "LT",
@@ -4061,7 +4015,7 @@
         "99205"
       ],
       "icds": [
-        "M79.18"
+        "M62.830"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -5367,7 +5321,7 @@
         "99215"
       ],
       "icds": [
-        "M53.3"
+        "M54.50"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -6876,7 +6830,7 @@
         "99204"
       ],
       "icds": [
-        "M62.830"
+        "M79.18"
       ],
       "modifiers": [],
       "extractWarnings": [],
@@ -6953,11 +6907,11 @@
       "cpts": [
         "99214"
       ],
-      "icds": [
-        "M43.16"
-      ],
+      "icds": [],
       "modifiers": [],
-      "extractWarnings": [],
+      "extractWarnings": [
+        "Diagnosis “spondylolisthesis” dropped — quote not found in the note."
+      ],
       "codingWarnings": [],
       "blocked": [],
       "enabled": true,
@@ -7897,7 +7851,7 @@
         "99205"
       ],
       "icds": [
-        "M79.18"
+        "M62.830"
       ],
       "modifiers": [],
       "extractWarnings": [],

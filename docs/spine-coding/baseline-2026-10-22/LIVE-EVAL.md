@@ -24,3 +24,15 @@ Suggestions flag: on (`SPINE_CODING_SUGGESTIONS` default true).
 After modifier engine work: **300/300** qualify (`qualify-results.json`).
 See `MODIFIERS.md`. Live OpenAI extract rate is separate (still ~85% on the
 original 60 notes).
+
+
+## Live imperfect suggestVisitCodes (2026-10-23)
+
+Production path `suggestVisitCodes` (same as visit UI), **269 imperfect / 31 clean**:
+
+| Metric | Result |
+| --- | --- |
+| Strict (CPT + ICD + modifiers + no block) | **300/300 (100%)** |
+| CPT / ICD / modifier hit | 100% / 100% / 100% |
+
+Artifact: `live-suggest-imperfect-eval.json`. Golden facts offline qualify remains 300/300.
