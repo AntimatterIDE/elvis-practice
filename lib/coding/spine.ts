@@ -56,6 +56,8 @@ type ProcedureRule = {
   bilateralModifier?: string;
   minLevels?: number;
   maxLevels?: number;
+  /** When true, primary line units = level count (e.g. interbody cages). Default units are always 1. */
+  unitsFromLevels?: boolean;
 };
 
 type RulePack = {
@@ -260,7 +262,7 @@ function emitProcedureLines(
 ): CodedLine[] {
   const modifiers = procedureModifiers(procedure, rule);
   const count = levelCount(procedure);
-  const primaryUnits = !rule.addonCpt && count > 1 ? count : 1;
+  const primaryUnits = rule.unitsFromLevels ? Math.max(1, count) : 1;
   const lines: CodedLine[] = [
     {
       cpt: rule.cpt,
@@ -292,6 +294,35 @@ function emitProcedureLines(
     });
   }
   return lines;
+}
+
+/** When rules intentionally emit an NCCI indicator-1 pair, attach 59 so the claim is billable. */
+function applyNcciBypassModifiers(lines: CodedLine[], library?: CodeLibrary): CodedLine[] {
+  if (!library?.ncci || lines.length < 2) return lines;
+  const next = lines.map((line) => ({ ...line, modifiers: [...line.modifiers] }));
+  for (let i = 0; i < next.length; i += 1) {
+    for (let j = 0; j < next.length; j += 1) {
+      if (i === j) continue;
+      const indicator = library.ncci.ptp.get(`${next[i].cpt}|${next[j].cpt}`);
+      if (indicator !== 1) continue;
+      const hasBypass = [...next[i].modifiers, ...next[j].modifiers].some((modifier) =>
+        ["59", "XE", "XP", "XS", "XU", "25", "57", "58", "78", "79", "LT", "RT", "50"].includes(modifier),
+      );
+      if (hasBypass) continue;
+      // Prefer the later / secondary line (add-on, plate, exploration).
+      if (!next[j].modifiers.includes("59")) next[j].modifiers.push("59");
+    }
+  }
+  return next;
+}
+
+function clampUnitsToMue(lines: CodedLine[], library?: CodeLibrary): CodedLine[] {
+  if (!library?.ncci) return lines;
+  return lines.map((line) => {
+    const mue = library.ncci?.mue.get(line.cpt);
+    if (mue == null || line.units <= mue) return line;
+    return { ...line, units: mue };
+  });
 }
 
 /**
@@ -358,14 +389,16 @@ export function codeVisit(
     lines.push(...emitProcedureLines(procedure, rule, pointers));
   }
 
-  if (!visit && !lines.length) {
+  const billed = clampUnitsToMue(applyNcciBypassModifiers(lines, library), library);
+
+  if (!visit && !billed.length) {
     warnings.push("No visit or performed procedure — nothing to suggest.");
   }
 
   if (library) {
     const problems = claimCodeProblems(library, {
       dateOfService,
-      lines: lines.map((line) => ({
+      lines: billed.map((line) => ({
         cpt: line.cpt,
         modifiers: line.modifiers,
         diagnoses: line.diagnosisPointers,
@@ -376,5 +409,5 @@ export function codeVisit(
     warnings.push(...problems.map((problem) => `Validator: ${problem}`));
   }
 
-  return { lines, diagnoses, warnings };
+  return { lines: billed, diagnoses, warnings };
 }

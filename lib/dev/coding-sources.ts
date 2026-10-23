@@ -267,10 +267,10 @@ export const leastResistanceSteps = [
   },
   {
     step: 4,
-    title: "Baseline code generation green (60/60) — suggestions gated",
+    title: "Qualified on fixtures (60/60 + CMS/NCCI) — suggestions gated",
     detail:
-      "All 60 baseline fixtures pass facts→CPT/ICD. Packs: office + injections + surgery. " +
-      "SPINE_CODING_SUGGESTIONS still off. Next: Francois sign-off, real notes, then enable suggestions for review. " +
+      "npm run test:qualify is green (facts→codes on production library, NCCI/MUE clean). " +
+      "SPINE_CODING_SUGGESTIONS still off until Francois sign-off, ≥150 real notes, and live extraction eval. " +
       "Need from clinic: real notes, AMA distributor app, type 2 NPI, rule sign-off.",
   },
   {
