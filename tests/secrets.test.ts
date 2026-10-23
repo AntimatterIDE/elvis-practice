@@ -9,6 +9,10 @@ const allowed = new Set([
   "lib/stedi/record.ts",
   "lib/agreements/store.ts",
   "lib/chart-files/store.ts",
+  "lib/consultations/store.ts",
+  "lib/encounters/store.ts",
+  "lib/journal/hero.ts",
+  "lib/journal/store.ts",
   "app/admin/actions.ts",
   "scripts/seed-content.ts",
 ]);
