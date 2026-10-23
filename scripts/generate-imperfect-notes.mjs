@@ -23,6 +23,17 @@ function typo(word, salt) {
   return `${word.slice(0, i)}${word[i + 1] ?? ""}${word[i]}${word.slice(i + 2)}`;
 }
 
+function clinicalAnchors(note) {
+  return note
+    .split(/\n/)
+    .map((line) => line.trim())
+    .filter((line) =>
+      /procedure|injection|blood patch|performed|fluoroscop|discectomy|fusion|kyphoplasty|medial branch|transforaminal|epidural|block|decompression/i.test(
+        line,
+      ),
+    );
+}
+
 function mess(note, id) {
   const salt = hash(id);
   // Every 10th case stays clean (control).
@@ -32,6 +43,7 @@ function mess(note, id) {
 
   let text = note;
   const mutations = [];
+  const anchors = clinicalAnchors(note);
 
   // Drop SOAP headers
   if (salt % 3 !== 0) {
@@ -111,6 +123,14 @@ function mess(note, id) {
   if (text.trim().length < 40) {
     text = `${note}\n(Scanned addendum incomplete.)`;
     mutations.push("pad_short");
+  }
+
+  // Always restore procedure/injection anchors so imperfect notes remain gradeable.
+  if (anchors.length) {
+    for (const line of anchors) {
+      if (!text.includes(line)) text += `\n${line}`;
+    }
+    mutations.push("anchor_restore");
   }
 
   return { note: text, imperfect: true, mutations };
