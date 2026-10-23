@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { claimCodeProblems, type CodeLibrary } from "@/lib/coding/codes";
-import type { CodingFacts, Complexity, DiagnosisFacts, VisitKind } from "@/lib/coding/facts";
+import type { CodingFacts, Complexity, DiagnosisFacts, FactStatus, VisitKind } from "@/lib/coding/facts";
 
 export type CodedLine = {
   cpt: string;
@@ -34,13 +34,21 @@ type DiagnosisRule = {
   side?: string;
   levelsAny?: string[];
   preferRegion?: string;
+  status?: FactStatus;
   icd: string;
+};
+
+type ProcedureRule = {
+  id: string;
+  name: string;
+  cpt: string;
 };
 
 type OfficeRules = {
   id: string;
   version: string;
   visitCodes: Record<string, VisitCodeTable>;
+  procedures?: ProcedureRule[];
   diagnoses: DiagnosisRule[];
 };
 
@@ -48,12 +56,18 @@ let cachedRules: OfficeRules | null = null;
 
 export function loadOfficeRules(source?: unknown): OfficeRules {
   if (source) {
+    cachedRules = null;
     return source as OfficeRules;
   }
   cachedRules ??= JSON.parse(
     readFileSync(path.join(process.cwd(), "data/coding/spine-rules/office.json"), "utf8"),
   ) as OfficeRules;
   return cachedRules;
+}
+
+/** Clear the on-disk cache (tests that rewrite office.json). */
+export function resetOfficeRulesCache() {
+  cachedRules = null;
 }
 
 function normalizeLevel(value: string) {
@@ -88,10 +102,11 @@ function effectiveRegion(diagnosis: DiagnosisFacts) {
 }
 
 function matchDiagnosis(diagnosis: DiagnosisFacts, rules: DiagnosisRule[]): DiagnosisRule | null {
-  if (diagnosis.status !== "current") return null;
   const region = effectiveRegion(diagnosis);
   const candidates = rules.filter((rule) => {
     if (rule.condition !== diagnosis.condition) return false;
+    const requiredStatus = rule.status ?? "current";
+    if (diagnosis.status !== requiredStatus) return false;
     if (rule.side && rule.side !== diagnosis.side) return false;
     if (!regionMatches(region, rule.region)) return false;
     if (!withMatches(diagnosis.with, rule.withAny)) return false;
@@ -99,10 +114,12 @@ function matchDiagnosis(diagnosis: DiagnosisFacts, rules: DiagnosisRule[]): Diag
     return true;
   });
   if (!candidates.length) return null;
-  // Prefer the most specific rule (withAny / levelsAny / preferRegion).
   candidates.sort((left, right) => {
     const score = (rule: DiagnosisRule) =>
-      (rule.withAny?.length ?? 0) * 10 + (rule.levelsAny?.length ?? 0) * 5 + (rule.preferRegion ? 2 : 0) + (rule.side ? 1 : 0);
+      (rule.withAny?.length ?? 0) * 10 +
+      (rule.levelsAny?.length ?? 0) * 5 +
+      (rule.region?.length ? 2 : 0) +
+      (rule.side ? 1 : 0);
     return score(right) - score(left);
   });
   return candidates[0] ?? null;
@@ -128,8 +145,8 @@ function visitModifiers(facts: CodingFacts): string[] {
 }
 
 /**
- * Pure rules: facts → CPT/ICD numbers. No network. Office / consult / post-op first.
- * Performed procedures are ignored in this slice (injections/surgery come later).
+ * Pure rules: facts → CPT/ICD numbers. No network.
+ * Office / consult / post-op + in-office imaging. Surgery/injection CPT come later.
  */
 export function codeVisit(
   facts: CodingFacts,
@@ -142,13 +159,17 @@ export function codeVisit(
   const seenIcd = new Set<string>();
 
   for (const diagnosis of facts.diagnoses) {
-    if (diagnosis.status !== "current") {
-      warnings.push(`Skipped ${diagnosis.condition} (${diagnosis.status}) — only current findings become ICD codes.`);
+    if (diagnosis.status === "ruled_out" || diagnosis.status === "negated" || diagnosis.status === "suspected") {
+      warnings.push(`Skipped ${diagnosis.condition} (${diagnosis.status}) — not coded as active disease.`);
       continue;
     }
     const rule = matchDiagnosis(diagnosis, rules.diagnoses);
     if (!rule) {
-      warnings.push(`No office rule matched diagnosis “${diagnosis.condition}” (${diagnosis.region ?? "no region"}).`);
+      if (diagnosis.status === "history") {
+        warnings.push(`Skipped history “${diagnosis.condition}” — no Z-code rule.`);
+      } else {
+        warnings.push(`No office rule matched diagnosis “${diagnosis.condition}” (${diagnosis.region ?? "no region"}).`);
+      }
       continue;
     }
     if (seenIcd.has(rule.icd)) continue;
@@ -156,20 +177,12 @@ export function codeVisit(
     diagnoses.push({ icd: rule.icd, rule: rule.id, quote: diagnosis.quote });
   }
 
-  for (const procedure of facts.procedures) {
-    if (procedure.performed) {
-      warnings.push(
-        `Procedure “${procedure.name}” was performed but office rules do not emit surgery/injection CPT yet — code it by search.`,
-      );
-    }
-  }
-
   const lines: CodedLine[] = [];
+  const pointers = diagnoses.slice(0, 4).map((item) => item.icd);
   const visit = facts.visit;
   if (visit) {
     const coded = visitCpt(visit.kind, visit.complexity, rules);
     if (coded) {
-      const pointers = diagnoses.slice(0, 4).map((item) => item.icd);
       lines.push({
         cpt: coded.cpt,
         units: 1,
@@ -183,6 +196,26 @@ export function codeVisit(
     }
   } else {
     warnings.push("No visit fact — no E/M or post-op CPT suggested.");
+  }
+
+  const procedureRules = rules.procedures ?? [];
+  for (const procedure of facts.procedures) {
+    if (!procedure.performed) continue;
+    const rule = procedureRules.find((entry) => entry.name === procedure.name);
+    if (!rule) {
+      warnings.push(
+        `Procedure “${procedure.name}” was performed but office rules do not emit that CPT yet — code it by search.`,
+      );
+      continue;
+    }
+    lines.push({
+      cpt: rule.cpt,
+      units: 1,
+      modifiers: [],
+      diagnosisPointers: pointers,
+      rule: rule.id,
+      quote: procedure.quote,
+    });
   }
 
   if (library) {

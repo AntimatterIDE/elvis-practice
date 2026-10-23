@@ -267,11 +267,11 @@ export const leastResistanceSteps = [
   },
   {
     step: 4,
-    title: "In progress — fact extract + rules (office slice)",
+    title: "Office code generation green — suggestions still gated",
     detail:
-      "Landed: extract.ts (gpt-5-mini, store: false), spine.ts + office.json, tests/spine-coding.test.ts (E01/E02/E05–E08 facts). " +
-      "Suggestions still gated by SPINE_CODING_SUGGESTIONS (default off). Next: more office fixtures from baseline, then enable for review. " +
-      "Do not wait on AMA; do not call Scribe coding-svc or ClaimX. Parallel: real consult notes, AMA distributor app, type 2 NPI.",
+      "37/37 office baseline fixtures pass facts→CPT/ICD (tests/spine-coding.test.ts). extract.ts + spine.ts + office.json. " +
+      "SPINE_CODING_SUGGESTIONS still off. Next: injection/surgery rule packs, then enable suggestions for review. " +
+      "Do not call Scribe coding-svc or ClaimX. Parallel: real consult notes, AMA distributor app, type 2 NPI.",
   },
   {
     step: 5,
