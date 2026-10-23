@@ -1,11 +1,16 @@
 #!/usr/bin/env node
 /**
  * Hits production /api/dev/spine-eval in batches (uses Vercel OPENAI_API_KEY).
- * Usage: node scripts/run-prod-spine-eval.mjs
+ * Requires a staff session cookie: SPINE_EVAL_COOKIE="sb-...=..."
+ * Usage: SPINE_EVAL_COOKIE='...' node scripts/run-prod-spine-eval.mjs
  */
 const origin = process.env.SPINE_EVAL_ORIGIN || "https://thealignmentclinic.com";
-const token = process.env.SPINE_EVAL_TOKEN || "clinix-spine-eval-2026-10-23";
+const cookie = process.env.SPINE_EVAL_COOKIE || "";
 const batchSize = Number(process.env.SPINE_EVAL_BATCH || 8);
+if (!cookie) {
+  console.error("Set SPINE_EVAL_COOKIE to a staff session cookie from thealignmentclinic.com");
+  process.exit(1);
+}
 
 const allIds = [
   "E01","E02","E03","E04","E05","E06","E07","E08","E09","E10",
@@ -25,7 +30,7 @@ for (let i = 0; i < allIds.length; i += batchSize) {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "x-spine-eval": token,
+      cookie,
     },
     body: JSON.stringify({ ids }),
   });

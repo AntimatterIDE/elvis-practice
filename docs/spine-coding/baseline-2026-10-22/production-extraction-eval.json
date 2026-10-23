@@ -1,0 +1,981 @@
+{
+  "generatedAt": "2026-10-23T02:53:42.800Z",
+  "origin": "https://thealignmentclinic.com",
+  "count": 60,
+  "passed": 51,
+  "failed": 9,
+  "passRate": 0.85,
+  "failures": [
+    {
+      "id": "E03",
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": []
+    },
+    {
+      "id": "E07",
+      "cpts": [],
+      "icds": [
+        "M54.16"
+      ],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note."
+      ],
+      "validatorProblems": []
+    },
+    {
+      "id": "E08",
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50",
+        "M54.2",
+        "M62.830"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": []
+    },
+    {
+      "id": "E20",
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": []
+    },
+    {
+      "id": "E21",
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M47.812"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": []
+    },
+    {
+      "id": "E22",
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": []
+    },
+    {
+      "id": "T03",
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "S39.012A"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": []
+    },
+    {
+      "id": "X02",
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": []
+    },
+    {
+      "id": "X03",
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M51.16"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": []
+    }
+  ],
+  "rows": [
+    {
+      "id": "E01",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E02",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M48.062"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E03",
+      "cptHit": false,
+      "icdHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": false
+    },
+    {
+      "id": "E04",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M50.122"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E05",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99024"
+      ],
+      "icds": [
+        "Z98.1"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E06",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M43.16",
+        "M48.062",
+        "M54.16"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E07",
+      "cptHit": false,
+      "icdHit": true,
+      "cpts": [],
+      "icds": [
+        "M54.16"
+      ],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note."
+      ],
+      "validatorProblems": [],
+      "ok": false
+    },
+    {
+      "id": "E08",
+      "cptHit": false,
+      "icdHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50",
+        "M54.2",
+        "M62.830"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": false
+    },
+    {
+      "id": "E09",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M51.04",
+        "M54.6"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E10",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99244"
+      ],
+      "icds": [
+        "M51.360"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E11",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.41",
+        "M54.50"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E12",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E13",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M41.86",
+        "M48.062"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E14",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M41.125"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E15",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M96.1",
+        "M54.16"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E16",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M96.0",
+        "T84.216A"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E17",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "G83.4",
+        "M51.16"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E18",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "C79.51",
+        "M84.58XA"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E19",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M46.26",
+        "G06.1"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E20",
+      "cptHit": false,
+      "icdHit": true,
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": false
+    },
+    {
+      "id": "E21",
+      "cptHit": false,
+      "icdHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M47.812"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": false
+    },
+    {
+      "id": "E22",
+      "cptHit": false,
+      "icdHit": false,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": false
+    },
+    {
+      "id": "E23",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E24",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M43.17"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "E25",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M46.1",
+        "M53.3"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "T01",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "S32.011A"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "T02",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "S13.4XXA"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "T03",
+      "cptHit": false,
+      "icdHit": true,
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "S39.012A"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": false
+    },
+    {
+      "id": "T04",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "S12.112A"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "T05",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M80.08XD"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "T06",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "S14.124A"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "X01",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "X02",
+      "cptHit": false,
+      "icdHit": true,
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": false
+    },
+    {
+      "id": "X03",
+      "cptHit": false,
+      "icdHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M51.16"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": false
+    },
+    {
+      "id": "X05",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M51.26",
+        "M54.16",
+        "M51.360",
+        "M54.50"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "X07",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "X08",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M47.812",
+        "M47.819"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "P01",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "64483"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "X04",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M48.062"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "X06",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "P02",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "62323"
+      ],
+      "icds": [
+        "M48.061"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "P03",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "62321"
+      ],
+      "icds": [
+        "M54.12"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "P04",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "64493",
+        "64494"
+      ],
+      "icds": [
+        "M47.816",
+        "M54.50"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "P05",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "64635",
+        "64636"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "P06",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "27096"
+      ],
+      "icds": [
+        "M46.1"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "P07",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "20553"
+      ],
+      "icds": [
+        "M79.18"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "P08",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "62273"
+      ],
+      "icds": [
+        "G97.1"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S01",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S02",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "22551",
+        "22552"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S03",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "22633",
+        "22853",
+        "63047",
+        "22840"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S04",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "63047",
+        "63048"
+      ],
+      "icds": [
+        "M48.062"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S05",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "22513"
+      ],
+      "icds": [
+        "M80.08XA"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S06",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "22856"
+      ],
+      "icds": [
+        "M50.122"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S07",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "63045",
+        "22600"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S08",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "63650"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S09",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "22850"
+      ],
+      "icds": [
+        "T84.84XA",
+        "Z98.1"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S10",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "22558"
+      ],
+      "icds": [
+        "M51.360",
+        "M48.061"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S11",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "22015"
+      ],
+      "icds": [
+        "T81.42XA",
+        "Z47.89"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S12",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "27279"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    },
+    {
+      "id": "S13",
+      "cptHit": true,
+      "icdHit": true,
+      "cpts": [
+        "63047"
+      ],
+      "icds": [
+        "M48.061",
+        "G97.41"
+      ],
+      "extractWarnings": [],
+      "validatorProblems": [],
+      "ok": true
+    }
+  ]
+}
