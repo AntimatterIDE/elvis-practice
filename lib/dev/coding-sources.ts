@@ -267,13 +267,11 @@ export const leastResistanceSteps = [
   },
   {
     step: 4,
-    title: "Next — fact extract + rules (office slice first)",
+    title: "In progress — fact extract + rules (office slice)",
     detail:
-      "Start with office / consult / post-op only (then ESI/MBB, then one surgery). " +
-      "lib/coding/extract.ts: gpt-5-mini facts + quotes only, drop facts whose quote is missing, store: false. " +
-      "lib/coding/spine.ts + data/coding/spine-rules/office.json: facts → CPT/ICD numbers → claimCodeProblems. " +
-      "Visit desk suggestions stay off by default until fixtures pass. Do not wait on AMA; do not call Scribe coding-svc or ClaimX. " +
-      "Parallel: real consult notes, AMA distributor license, type 2 clinic NPI. Full write-up: docs/spine-coding/plan.md §0.1.",
+      "Landed: extract.ts (gpt-5-mini, store: false), spine.ts + office.json, tests/spine-coding.test.ts (E01/E02/E05–E08 facts). " +
+      "Suggestions still gated by SPINE_CODING_SUGGESTIONS (default off). Next: more office fixtures from baseline, then enable for review. " +
+      "Do not wait on AMA; do not call Scribe coding-svc or ClaimX. Parallel: real consult notes, AMA distributor app, type 2 NPI.",
   },
   {
     step: 5,
