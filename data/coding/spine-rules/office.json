@@ -62,8 +62,14 @@
     {
       "id": "hnp_lumbar_other",
       "condition": "disc_herniation",
-      "region": ["lumbar"],
+      "region": ["lumbar", "lumbosacral"],
       "icd": "M51.26"
+    },
+    {
+      "id": "hnp_cervical_other",
+      "condition": "disc_herniation",
+      "region": ["cervical"],
+      "icd": "M50.20"
     },
     {
       "id": "hnp_myelopathy_thoracic",
@@ -102,7 +108,7 @@
     {
       "id": "stenosis_lumbar",
       "condition": "stenosis",
-      "region": ["lumbar"],
+      "region": ["lumbar", "lumbosacral"],
       "icd": "M48.061"
     },
     {
@@ -132,8 +138,14 @@
     {
       "id": "radiculopathy_lumbar",
       "condition": "radiculopathy",
-      "region": ["lumbar"],
+      "region": ["lumbar", "lumbosacral"],
       "icd": "M54.16"
+    },
+    {
+      "id": "radiculopathy_lumbosacral",
+      "condition": "radiculopathy",
+      "region": ["lumbosacral"],
+      "icd": "M54.17"
     },
     {
       "id": "radiculopathy_cervical",
@@ -152,6 +164,11 @@
       "condition": "sciatica",
       "side": "left",
       "icd": "M54.31"
+    },
+    {
+      "id": "sciatica_unspecified",
+      "condition": "sciatica",
+      "icd": "M54.40"
     },
     {
       "id": "low_back_pain",
@@ -204,8 +221,14 @@
     {
       "id": "spondylosis_lumbar",
       "condition": "spondylosis",
-      "region": ["lumbar"],
+      "region": ["lumbar", "lumbosacral"],
       "icd": "M47.816"
+    },
+    {
+      "id": "spondylosis_lumbosacral",
+      "condition": "spondylosis",
+      "region": ["lumbosacral"],
+      "icd": "M47.817"
     },
     {
       "id": "spondylosis_unspecified",

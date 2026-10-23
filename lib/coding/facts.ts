@@ -71,9 +71,49 @@ export function normalizeForQuote(text: string) {
     .trim();
 }
 
+/** Common OCR / abbreviation noise from faxed or imperfect notes. */
+function softenOcr(text: string) {
+  return normalizeForQuote(text)
+    .replace(/fuslon/g, "fusion")
+    .replace(/radiculopthy/g, "radiculopathy")
+    .replace(/stenosls/g, "stenosis")
+    .replace(/spondylolisthes[il]s/g, "spondylolisthesis")
+    .replace(/\bpt\b/g, "patient")
+    .replace(/\bf\/u\b/g, "follow up")
+    .replace(/\bs\/p\b/g, "status post")
+    .replace(/\bh\/o\b/g, "history of")
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function significantTokens(text: string) {
+  return softenOcr(text)
+    .split(" ")
+    .filter((token) => token.length >= 3 && !["the", "and", "with", "for", "from", "this", "that", "was"].includes(token));
+}
+
+/** True when the quote appears verbatim or as a tolerant token match (OCR / truncation). */
 export function quoteInNote(note: string, quote: string) {
   if (!quote.trim()) return false;
-  return normalizeForQuote(note).includes(normalizeForQuote(quote));
+  const softNote = softenOcr(note);
+  const softQuote = softenOcr(quote);
+  if (!softQuote) return false;
+  if (softNote.includes(softQuote)) return true;
+
+  const tokens = significantTokens(quote);
+  if (tokens.length < 2) return softNote.includes(softQuote);
+  // Require most content words, in order, so truncated/OCR notes still ground facts.
+  const need = Math.max(2, Math.ceil(tokens.length * 0.7));
+  let from = 0;
+  let hit = 0;
+  for (const token of tokens) {
+    const at = softNote.indexOf(token, from);
+    if (at === -1) continue;
+    hit += 1;
+    from = at + token.length;
+  }
+  return hit >= need;
 }
 
 /** Drop any fact whose quote is missing from the note. Never invents codes. */
@@ -202,6 +242,9 @@ export function parseCodingFacts(value: unknown): CodingFacts {
     failed_back_surgery_syndrome: "postlaminectomy_syndrome",
     neck_pain: "cervicalgia",
     mid_back_pain: "thoracic_pain",
+    si_joint_pain: "sacroiliitis",
+    sacroiliac_pain: "sacroiliitis",
+    si_dysfunction: "si_joint_dysfunction",
   };
 
   const procedures = (Array.isArray(record.procedures) ? record.procedures : [])
