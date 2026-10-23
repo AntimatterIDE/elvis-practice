@@ -267,11 +267,11 @@ export const leastResistanceSteps = [
   },
   {
     step: 4,
-    title: "Office code generation green — suggestions still gated",
+    title: "Office + injections green — surgery next; suggestions gated",
     detail:
-      "37/37 office baseline fixtures pass facts→CPT/ICD (tests/spine-coding.test.ts). extract.ts + spine.ts + office.json. " +
-      "SPINE_CODING_SUGGESTIONS still off. Next: injection/surgery rule packs, then enable suggestions for review. " +
-      "Do not call Scribe coding-svc or ClaimX. Parallel: real consult notes, AMA distributor app, type 2 NPI.",
+      "47/60 baseline fixtures pass (office + injections). Rule packs: office.json + injections.json. " +
+      "SPINE_CODING_SUGGESTIONS still off. Next: surgery pack for S01–S13, then enable suggestions for review. " +
+      "Need from clinic: real notes, AMA distributor app, type 2 NPI, Francois rule sign-off.",
   },
   {
     step: 5,
