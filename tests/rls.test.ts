@@ -51,7 +51,8 @@ async function asRole(db: PGlite, role: "anon" | "authenticated", userId?: strin
   await db.exec(`set role ${role}`);
 }
 
-describe("row level security", () => {
+// Each case boots a fresh PGlite + applies every migration; cold starts exceed 5s.
+describe("row level security", { timeout: 20_000 }, () => {
   it("lets anonymous visitors read only published, offered, approved rows", async () => {
     const db = await database();
     await asRole(db, "anon");
