@@ -76,7 +76,8 @@ function mess(note, id) {
 
   // Mild truncation only — keep clinical keywords so coding remains testable.
   if (salt % 5 === 1) {
-    const keep = /(procedure|stenosis|injection|fusion|blood patch|herniation|radiculopathy|spondyl|myelopathy|fracture|assessment|performed)/i;
+    const keep =
+    /(procedure|stenosis|injection|fusion|blood patch|herniation|radiculopathy|spondyl|myelopathy|fracture|assessment|performed|transforaminal|epidural|medial branch|trigger point|kyphoplasty|neurogenic|claudication)/i;
     const lines = text.split("\n");
     const protectedLines = lines.filter((line) => keep.test(line));
     const cut = Math.floor(text.length * 0.75);
