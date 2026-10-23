@@ -1,0 +1,9372 @@
+{
+  "generatedAt": "2026-10-23T03:36:28.633Z",
+  "origin": "https://thealignmentclinic.com",
+  "path": "suggestVisitCodes",
+  "imperfect": true,
+  "count": 300,
+  "passed": 245,
+  "failed": 55,
+  "passRate": 0.8166666666666667,
+  "imperfectPassRate": 0.8104089219330854,
+  "cleanPassRate": 0.8709677419354839,
+  "cptHitRate": 0.92,
+  "icdHitRate": 0.8866666666666667,
+  "modifierHitRate": 0.9766666666666667,
+  "failures": [
+    {
+      "id": "E02",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated",
+        "drop_sentence"
+      ],
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M48.062"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "E03",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "57"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "E08",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50",
+        "M54.2",
+        "M62.830"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "E12",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "E13",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "99244"
+      ],
+      "icds": [
+        "M41.86",
+        "M48.062",
+        "M43.16",
+        "M54.50"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "E15",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M96.1",
+        "M54.16"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "E17",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "G83.4",
+        "M51.26"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": false,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "E20",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M45.6",
+        "M54.50"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "E21",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M47.812",
+        "M54.2"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "E22",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "64493",
+        "64494"
+      ],
+      "icds": [
+        "M47.819",
+        "M54.50"
+      ],
+      "modifiers": [
+        "50",
+        "50"
+      ],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "X02",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "X03",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [],
+      "icds": [],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note.",
+        "Diagnosis “radiculopathy” dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "X05",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M51.26",
+        "M54.16",
+        "M54.50",
+        "M51.360"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "X07",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.31"
+      ],
+      "modifiers": [],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "X08",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated",
+        "shuffle_paras"
+      ],
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "M54.2",
+        "M54.50",
+        "M54.6"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "P02",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cpts": [
+        "62323"
+      ],
+      "icds": [],
+      "modifiers": [],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "P05",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "64635",
+        "64636"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "RT",
+        "RT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "P08",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cpts": [
+        "99212"
+      ],
+      "icds": [
+        "G97.1"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "S02",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "22551",
+        "22552"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": false,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "S04",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "63047",
+        "63048"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "S09",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cpts": [
+        "22850"
+      ],
+      "icds": [
+        "T84.84XA"
+      ],
+      "modifiers": [],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": false,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "S10",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cpts": [
+        "22633"
+      ],
+      "icds": [
+        "M51.360",
+        "M48.061"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": false,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M001",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated",
+        "shuffle_paras"
+      ],
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [
+        "57"
+      ],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M002",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cpts": [
+        "99213"
+      ],
+      "icds": [],
+      "modifiers": [
+        "57"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M003",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [
+        "57"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M008",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": false,
+      "blocked": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M014",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "99205"
+      ],
+      "icds": [],
+      "modifiers": [
+        "95"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": [
+        "Diagnosis “radiculopathy” dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M015",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M51.26"
+      ],
+      "modifiers": [
+        "25",
+        "LT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M016",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "drop_sentence",
+        "shuffle_paras"
+      ],
+      "cpts": [
+        "99213",
+        "64479"
+      ],
+      "icds": [],
+      "modifiers": [
+        "25",
+        "LT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M017",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "64483"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": false,
+      "blocked": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M018",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M51.26"
+      ],
+      "modifiers": [
+        "25",
+        "RT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M019",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "99213",
+        "64479"
+      ],
+      "icds": [],
+      "modifiers": [
+        "25",
+        "RT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M020",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M48.061"
+      ],
+      "modifiers": [
+        "25",
+        "RT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M021",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M51.26"
+      ],
+      "modifiers": [
+        "25",
+        "50"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M022",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "99213",
+        "64479"
+      ],
+      "icds": [],
+      "modifiers": [
+        "25",
+        "50"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M023",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [
+        "25",
+        "50"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M026",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "64483"
+      ],
+      "icds": [],
+      "modifiers": [
+        "50"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": [
+        "Diagnosis “disc_herniation” dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M029",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [],
+      "icds": [],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": false,
+      "blocked": [],
+      "extractWarnings": [
+        "Procedure “transforaminal_esi” dropped — quote not found in the note.",
+        "Diagnosis “disc_herniation” dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M034",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cpts": [
+        "64493",
+        "64494"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "LT",
+        "LT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M035",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "64493",
+        "64494"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "RT",
+        "RT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M039",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "64635",
+        "64636"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "LT",
+        "LT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M040",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "64635",
+        "64636"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "RT",
+        "RT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M041",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "64635",
+        "64636"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "50",
+        "50"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M045",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cpts": [
+        "27096"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M055",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "22513"
+      ],
+      "icds": [
+        "M80.08XD"
+      ],
+      "modifiers": [],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M059",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "22853",
+        "22845"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [
+        "Line 1: 22853 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102).",
+        "Line 2: 22845 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102)."
+      ],
+      "extractWarnings": [
+        "Procedure “acdf” dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M060",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "22853",
+        "22845"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [
+        "Line 1: 22853 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102).",
+        "Line 2: 22845 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102)."
+      ],
+      "extractWarnings": [
+        "Procedure “acdf” dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M100",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated",
+        "shuffle_paras"
+      ],
+      "cpts": [],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M120",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cpts": [],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M130",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M153",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    },
+    {
+      "id": "M184",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cpts": [],
+      "icds": [],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note.",
+        "Diagnosis “sciatica” dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M205",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cpts": [],
+      "icds": [],
+      "modifiers": [],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note.",
+        "Diagnosis “spondylolisthesis” dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M214",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cpts": [
+        "99205"
+      ],
+      "icds": [],
+      "modifiers": [],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": [
+        "Diagnosis “sciatica” dropped — quote not found in the note."
+      ]
+    },
+    {
+      "id": "M235",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M43.17"
+      ],
+      "modifiers": [],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "blocked": [],
+      "extractWarnings": []
+    }
+  ],
+  "rows": [
+    {
+      "id": "E01",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M51.17",
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “radiculopathy” (lumbosacral)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E02",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated",
+        "drop_sentence"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M48.062"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “neurogenic_claudication” (lumbar)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "E03",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "57"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "E04",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M50.122",
+        "M54.12"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E05",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99024"
+      ],
+      "icds": [
+        "Z47.89"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E06",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M43.16",
+        "M48.062"
+      ],
+      "modifiers": [
+        "57"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E07",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M54.16"
+      ],
+      "modifiers": [
+        "95"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E08",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50",
+        "M54.2",
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "E09",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "drop_sentence",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M51.04",
+        "M54.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “myelopathy” (thoracic)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E10",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99244"
+      ],
+      "icds": [
+        "M51.360",
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E11",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M54.41",
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “radiculopathy” (lumbosacral)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E12",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "E13",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99244"
+      ],
+      "icds": [
+        "M41.86",
+        "M48.062",
+        "M43.16",
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “sciatica” (lumbar)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "E14",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204",
+        "72082"
+      ],
+      "icds": [
+        "M41.125"
+      ],
+      "modifiers": [
+        "25"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E15",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M96.1",
+        "M54.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "E16",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated",
+        "drop_sentence"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M96.0",
+        "T84.216A",
+        "T84.84XA"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E17",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": false,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "G83.4",
+        "M51.26"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "E18",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "C79.51",
+        "M84.58XA"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "Skipped history “aftercare” — no Z-code rule."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E19",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M46.26"
+      ],
+      "modifiers": [],
+      "extractWarnings": [
+        "Diagnosis “epidural_abscess” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E20",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M45.6",
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "E21",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M47.812",
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "E22",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "64493",
+        "64494"
+      ],
+      "icds": [
+        "M47.819",
+        "M54.50"
+      ],
+      "modifiers": [
+        "50",
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "E23",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E24",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M43.17",
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "E25",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M46.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "T01",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "S32.011A"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “workrelated” (no region)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "T02",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "S13.4XXA"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "T03",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "S39.012A"
+      ],
+      "modifiers": [],
+      "extractWarnings": [
+        "Injury fact dropped — quote not found in the note."
+      ],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "T04",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "S12.112A"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "T05",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M80.08XD"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "T06",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "truncated",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "S14.124A",
+        "M47.12"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "X01",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [
+        "Diagnosis “radiculopathy” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "Skipped cauda_equina_syndrome (ruled_out) — not coded as active disease.",
+        "Skipped myelopathy (negated) — not coded as active disease."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "X02",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "X03",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [],
+      "icds": [],
+      "modifiers": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note.",
+        "Diagnosis “radiculopathy” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "X05",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M51.26",
+        "M54.16",
+        "M54.50",
+        "M51.360"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "X07",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.31"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “disc_herniation” (lumbosacral).",
+        "No rule matched diagnosis “radiculopathy” (lumbosacral)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "X08",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated",
+        "shuffle_paras"
+      ],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99202"
+      ],
+      "icds": [
+        "M54.2",
+        "M54.50",
+        "M54.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "Skipped history “thoracic_pain” — no Z-code rule."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "P01",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64483"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “radiculopathy” (lumbosacral)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "P02",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "62323"
+      ],
+      "icds": [],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “stenosis” (lumbosacral).",
+        "No rule matched diagnosis “radiculopathy” (lumbosacral)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "P03",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "62321"
+      ],
+      "icds": [
+        "M54.12"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "P04",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64493",
+        "64494"
+      ],
+      "icds": [
+        "M47.816",
+        "M54.50"
+      ],
+      "modifiers": [
+        "50",
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "P05",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "64635",
+        "64636"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "RT",
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "P06",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "27096"
+      ],
+      "icds": [
+        "M46.1"
+      ],
+      "modifiers": [
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "P07",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "20553"
+      ],
+      "icds": [
+        "M79.18"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "P08",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99212"
+      ],
+      "icds": [
+        "G97.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "X04",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M48.062"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "X06",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "S01",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “radiculopathy” (lumbosacral)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "S02",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": false,
+      "cpts": [
+        "22551",
+        "22552"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “disc_herniation” (cervical)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": false
+    },
+    {
+      "id": "S03",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63047",
+        "22633"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "S04",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "63047",
+        "63048"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "S05",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22513"
+      ],
+      "icds": [
+        "M80.08XA"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "S06",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22856"
+      ],
+      "icds": [
+        "M50.122"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "S07",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "truncated",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63045"
+      ],
+      "icds": [
+        "M48.02",
+        "M47.12"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "S08",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63650"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "S09",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": false,
+      "cpts": [
+        "22850"
+      ],
+      "icds": [
+        "T84.84XA"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": false
+    },
+    {
+      "id": "S10",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": false,
+      "cpts": [
+        "22633"
+      ],
+      "icds": [
+        "M51.360",
+        "M48.061"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "S11",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22015"
+      ],
+      "icds": [
+        "T81.42XA"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "S12",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "27279"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "S13",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63047"
+      ],
+      "icds": [
+        "M48.061",
+        "G97.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M001",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated",
+        "shuffle_paras"
+      ],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [
+        "57"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M002",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [],
+      "modifiers": [
+        "57"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M003",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [
+        "57"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M004",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M48.062"
+      ],
+      "modifiers": [
+        "57"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M005",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M48.062"
+      ],
+      "modifiers": [
+        "57"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M006",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M48.062"
+      ],
+      "modifiers": [
+        "57"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M007",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [
+        "24"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M008",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": false,
+      "cpts": [],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M009",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M54.16"
+      ],
+      "modifiers": [
+        "95"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M010",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "truncated",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M54.16"
+      ],
+      "modifiers": [
+        "95"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M011",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M54.16"
+      ],
+      "modifiers": [
+        "95"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M012",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.16"
+      ],
+      "modifiers": [
+        "95"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M013",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.16"
+      ],
+      "modifiers": [
+        "95"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M014",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [],
+      "modifiers": [
+        "95"
+      ],
+      "extractWarnings": [
+        "Diagnosis “radiculopathy” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M015",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M51.26"
+      ],
+      "modifiers": [
+        "25",
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M016",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "drop_sentence",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99213",
+        "64479"
+      ],
+      "icds": [],
+      "modifiers": [
+        "25",
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “disc_herniation” (cervical)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M017",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": false,
+      "cpts": [
+        "64483"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note."
+      ],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M018",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M51.26"
+      ],
+      "modifiers": [
+        "25",
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M019",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99213",
+        "64479"
+      ],
+      "icds": [],
+      "modifiers": [
+        "25",
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “disc_herniation” (cervical)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M020",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M48.061"
+      ],
+      "modifiers": [
+        "25",
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M021",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M51.26"
+      ],
+      "modifiers": [
+        "25",
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M022",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99213",
+        "64479"
+      ],
+      "icds": [],
+      "modifiers": [
+        "25",
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "No rule matched diagnosis “disc_herniation” (cervical)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M023",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99213",
+        "64483"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [
+        "25",
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M024",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64483"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M025",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64483"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M026",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "64483"
+      ],
+      "icds": [],
+      "modifiers": [
+        "50"
+      ],
+      "extractWarnings": [
+        "Diagnosis “disc_herniation” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "No rule matched diagnosis “radiculopathy” (lumbosacral)."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M027",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64483",
+        "64484"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "LT",
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M028",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64483",
+        "64484"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "RT",
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M029",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": false,
+      "cpts": [],
+      "icds": [],
+      "modifiers": [],
+      "extractWarnings": [
+        "Procedure “transforaminal_esi” dropped — quote not found in the note.",
+        "Diagnosis “disc_herniation” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M030",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64479"
+      ],
+      "icds": [
+        "M50.122",
+        "M54.12"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M031",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64479"
+      ],
+      "icds": [
+        "M50.122"
+      ],
+      "modifiers": [
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M032",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64479"
+      ],
+      "icds": [
+        "M50.122"
+      ],
+      "modifiers": [
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M033",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64493",
+        "64494"
+      ],
+      "icds": [
+        "M47.816"
+      ],
+      "modifiers": [
+        "50",
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M034",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "64493",
+        "64494"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "LT",
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M035",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "64493",
+        "64494"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "RT",
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M036",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64490",
+        "64491"
+      ],
+      "icds": [
+        "M47.812"
+      ],
+      "modifiers": [
+        "50",
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M037",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64490",
+        "64491"
+      ],
+      "icds": [
+        "M47.812"
+      ],
+      "modifiers": [
+        "LT",
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M038",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64490",
+        "64491"
+      ],
+      "icds": [
+        "M47.812"
+      ],
+      "modifiers": [
+        "RT",
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M039",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "64635",
+        "64636"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "LT",
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M040",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "64635",
+        "64636"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "RT",
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M041",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "64635",
+        "64636"
+      ],
+      "icds": [
+        "M47.819"
+      ],
+      "modifiers": [
+        "50",
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M042",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64633"
+      ],
+      "icds": [
+        "M47.812"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M043",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64633"
+      ],
+      "icds": [
+        "M47.812"
+      ],
+      "modifiers": [
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M044",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "64633"
+      ],
+      "icds": [
+        "M47.812"
+      ],
+      "modifiers": [
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M045",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "27096"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M046",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "27096"
+      ],
+      "icds": [
+        "M46.1"
+      ],
+      "modifiers": [
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M047",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "27096"
+      ],
+      "icds": [
+        "M46.1"
+      ],
+      "modifiers": [
+        "50"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M048",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "62323"
+      ],
+      "icds": [
+        "M48.061"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M049",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "20553"
+      ],
+      "icds": [
+        "M79.18"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M050",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "62273"
+      ],
+      "icds": [
+        "G97.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M051",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M052",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "M51.16"
+      ],
+      "modifiers": [
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M053",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "27279"
+      ],
+      "icds": [
+        "M46.1"
+      ],
+      "modifiers": [
+        "LT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M054",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "27279"
+      ],
+      "icds": [
+        "M46.1"
+      ],
+      "modifiers": [
+        "RT"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M055",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "22513"
+      ],
+      "icds": [
+        "M80.08XD"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M056",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22514"
+      ],
+      "icds": [
+        "M80.08XA"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M057",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22551",
+        "22552",
+        "22853",
+        "22845"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M058",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "drop_sentence",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22551",
+        "22552",
+        "22853",
+        "22845"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M059",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22853",
+        "22845"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "extractWarnings": [
+        "Procedure “acdf” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "Validator: Line 1: 22853 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102).",
+        "Validator: Line 2: 22845 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102)."
+      ],
+      "blocked": [
+        "Line 1: 22853 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102).",
+        "Line 2: 22845 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102)."
+      ],
+      "enabled": true,
+      "codeHit": true,
+      "ok": false
+    },
+    {
+      "id": "M060",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22853",
+        "22845"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "extractWarnings": [
+        "Procedure “acdf” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "Validator: Line 1: 22853 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102).",
+        "Validator: Line 2: 22845 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102)."
+      ],
+      "blocked": [
+        "Line 1: 22853 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102).",
+        "Line 2: 22845 is an add-on. Put one of its primary codes on the same claim (for example 22100, 22101, 22102)."
+      ],
+      "enabled": true,
+      "codeHit": true,
+      "ok": false
+    },
+    {
+      "id": "M061",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22551",
+        "22552",
+        "22853",
+        "22845"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M062",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22551",
+        "22552",
+        "22853",
+        "22845"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M063",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22551",
+        "22552",
+        "22853",
+        "22845"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M064",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "22551",
+        "22552",
+        "22853",
+        "22845"
+      ],
+      "icds": [
+        "M47.12"
+      ],
+      "modifiers": [
+        "59"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M065",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "LT",
+        "58"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M066",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "RT",
+        "58"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M067",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "LT",
+        "78"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M068",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "RT",
+        "78"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M069",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "LT",
+        "79"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M070",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "63030"
+      ],
+      "icds": [
+        "M51.17"
+      ],
+      "modifiers": [
+        "RT",
+        "79"
+      ],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M071",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [
+        "Skipped radiculopathy (ruled_out) — not coded as active disease."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M072",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M073",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M074",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M075",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M076",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M077",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M078",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M079",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M080",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M081",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M082",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M083",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M084",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M085",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M086",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M087",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M088",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M089",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M090",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M091",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M092",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M093",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M094",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M095",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M096",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M097",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M098",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M099",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M100",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated",
+        "shuffle_paras"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M101",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M102",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M103",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M104",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M105",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M106",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M107",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M108",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M109",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M110",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M111",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M112",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M113",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M114",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M115",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M116",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M117",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M118",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M119",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M120",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M121",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M122",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M123",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M124",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M125",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M126",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M127",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M128",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M129",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M130",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": false,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M131",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M132",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M133",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M134",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M135",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M136",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M137",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M138",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M139",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M140",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M141",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M142",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M143",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M144",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M145",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M146",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M147",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M148",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M149",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M150",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M151",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M152",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M153",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M154",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M155",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M156",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M157",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M158",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M159",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M160",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M161",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M162",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M163",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M164",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M165",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M166",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M167",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M168",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M169",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M170",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M171",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M172",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M173",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M174",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M175",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M176",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M177",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M178",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M179",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M180",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M181",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M182",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M183",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M184",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [],
+      "icds": [],
+      "modifiers": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note.",
+        "Diagnosis “sciatica” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M185",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M186",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M187",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M188",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M189",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M190",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M191",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M192",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M193",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M194",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M195",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M196",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M197",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M198",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M199",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M200",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M201",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M202",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M203",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M204",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M205",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": false,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [],
+      "icds": [],
+      "modifiers": [],
+      "extractWarnings": [
+        "Visit fact dropped — quote not found in the note.",
+        "Diagnosis “spondylolisthesis” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [
+        "No visit or performed procedure — nothing to suggest."
+      ],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M206",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M207",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M208",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M209",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M210",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M211",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M212",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M213",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M214",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [],
+      "modifiers": [],
+      "extractWarnings": [
+        "Diagnosis “sciatica” dropped — quote not found in the note."
+      ],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M215",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M216",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M217",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M218",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M219",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "drop_sentence"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M220",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M221",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M222",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M223",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M224",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M225",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M43.16"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M226",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M227",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M228",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M229",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M230",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M231",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M54.2"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M232",
+      "imperfect": true,
+      "mutations": [
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M62.830"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M233",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M234",
+      "imperfect": false,
+      "mutations": [
+        "clean_control"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.41"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M235",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": false,
+      "modifierHit": true,
+      "cpts": [
+        "99215"
+      ],
+      "icds": [
+        "M43.17"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": false,
+      "ok": false
+    },
+    {
+      "id": "M236",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "ocr_typos",
+        "abbreviations",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99203"
+      ],
+      "icds": [
+        "M96.1"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M237",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99214"
+      ],
+      "icds": [
+        "M45.6"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M238",
+      "imperfect": true,
+      "mutations": [
+        "abbreviations",
+        "word_typos",
+        "shuffle_paras"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99205"
+      ],
+      "icds": [
+        "M53.3"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M239",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99213"
+      ],
+      "icds": [
+        "M41.84"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    },
+    {
+      "id": "M240",
+      "imperfect": true,
+      "mutations": [
+        "drop_headers",
+        "abbreviations",
+        "fax_junk",
+        "word_typos",
+        "truncated"
+      ],
+      "cptHit": true,
+      "icdHit": true,
+      "modifierHit": true,
+      "cpts": [
+        "99204"
+      ],
+      "icds": [
+        "M54.50"
+      ],
+      "modifiers": [],
+      "extractWarnings": [],
+      "codingWarnings": [],
+      "blocked": [],
+      "enabled": true,
+      "codeHit": true,
+      "ok": true
+    }
+  ]
+}
