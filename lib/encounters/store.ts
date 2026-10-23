@@ -1,5 +1,6 @@
 import "server-only";
 import { codeLibrary } from "@/lib/coding/library";
+import { suggestVisitCodes } from "@/lib/coding/suggest";
 import { approvalStatus, reviewCodes, type LineChoice } from "@/lib/encounters/approve";
 import { transcribeAudio, writeClinicalNote } from "@/lib/encounters/openai";
 import { runVisitPipeline, type VisitSnapshot } from "@/lib/encounters/pipeline";
@@ -374,6 +375,26 @@ export async function processEncounter(id: string, retry = false) {
       },
       transcribe: transcribeAudio,
       writeNote: writeClinicalNote,
+      suggestCodes: async (note) => {
+        const suggested = await suggestVisitCodes(note, { library: codeLibrary() });
+        if (!suggested.enabled || suggested.blocked.length) {
+          return { icd10: [], billingCodes: [] };
+        }
+        const icd10: VisitCode[] = suggested.coding.diagnoses.map((item) => ({
+          code: item.icd,
+          description: "",
+          approved: false,
+        }));
+        const billingCodes: VisitLine[] = suggested.coding.lines.map((line) => ({
+          code: line.cpt,
+          description: "",
+          approved: false,
+          units: line.units,
+          modifiers: line.modifiers,
+          diagnoses: line.diagnosisPointers,
+        }));
+        return { icd10, billingCodes };
+      },
       save: async (patch) => {
         await saveSnapshot(patch);
       },

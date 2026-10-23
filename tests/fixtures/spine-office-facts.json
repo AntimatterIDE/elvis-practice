@@ -1,0 +1,243 @@
+[
+  {
+    "id": "E01",
+    "title": "New pt L5-S1 HNP with radiculopathy",
+    "expectedCptAnyOf": ["99204"],
+    "expectedIcdAnyOf": ["M51.17", "M51.27", "M54.17"],
+    "forbiddenCptPrefixes": ["721", "720", "722", "723"],
+    "facts": {
+      "visit": {
+        "kind": "office_new",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Documented moderate complexity medical decision making."
+      },
+      "procedures": [
+        {
+          "name": "transforaminal_esi",
+          "levels": ["L5-S1"],
+          "side": "left",
+          "performed": false,
+          "quote": "Refer for left L5–S1 transforaminal epidural steroid injection for targeted radicular pain control."
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "disc_herniation",
+          "region": "lumbar",
+          "levels": ["L5-S1"],
+          "side": "left",
+          "with": ["radiculopathy"],
+          "status": "current",
+          "quote": "Lumbar disc herniation at L5–S1 with left S1 radiculopathy"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E02",
+    "title": "Est pt lumbar stenosis with neurogenic claudication",
+    "expectedCptAnyOf": ["99214"],
+    "expectedIcdAnyOf": ["M48.062"],
+    "forbiddenCptPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "moderate",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Moderate complexity MDM."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "stenosis",
+          "region": "lumbar",
+          "levels": ["L4-L5"],
+          "side": null,
+          "with": ["neurogenic_claudication"],
+          "status": "current",
+          "quote": "Lumbar spinal stenosis with neurogenic claudication, L4-L5."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E05",
+    "title": "Post-op visit inside 90-day global",
+    "expectedCptAnyOf": ["99024"],
+    "expectedIcdAnyOf": ["Z47.89", "Z98.1", "Z48.89"],
+    "forbiddenCptPrefixes": ["9920", "9921", "22", "63"],
+    "facts": {
+      "visit": {
+        "kind": "post_op_global",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Visit within the 90-day global period."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "aftercare",
+          "region": "lumbar",
+          "levels": ["L4-L5"],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Status post L4-L5 TLIF, routine postoperative course."
+        },
+        {
+          "condition": "fusion_status",
+          "region": "lumbar",
+          "levels": ["L4-L5"],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "2 weeks status post L4-L5 transforaminal lumbar interbody fusion with posterior instrumentation"
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E06",
+    "title": "Decision for surgery — E/M + 57, no surgery CPT",
+    "expectedCptAnyOf": ["99215"],
+    "expectedModifiersAnyOf": ["57"],
+    "expectedIcdAnyOf": ["M43.16", "M48.062"],
+    "forbiddenCptPrefixes": ["22", "63"],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "high",
+        "totalMinutes": null,
+        "decisionForSurgery": true,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Decision made today for L4-L5 laminectomy and transforaminal lumbar interbody fusion"
+      },
+      "procedures": [
+        {
+          "name": "tlif",
+          "levels": ["L4-L5"],
+          "side": null,
+          "performed": false,
+          "quote": "Decision made today for L4-L5 laminectomy and transforaminal lumbar interbody fusion with pedicle screw instrumentation, scheduled tomorrow."
+        }
+      ],
+      "diagnoses": [
+        {
+          "condition": "spondylolisthesis",
+          "region": "lumbar",
+          "levels": ["L4-L5"],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Degenerative spondylolisthesis L4-L5."
+        },
+        {
+          "condition": "stenosis",
+          "region": "lumbar",
+          "levels": ["L4-L5"],
+          "side": null,
+          "with": ["neurogenic_claudication"],
+          "status": "current",
+          "quote": "Lumbar spinal stenosis with neurogenic claudication."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E07",
+    "title": "Telehealth video follow-up",
+    "expectedCptAnyOf": ["99213"],
+    "expectedModifiersAnyOf": ["95"],
+    "expectedIcdAnyOf": ["M54.16"],
+    "forbiddenCptPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "telehealth_established",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Telehealth video visit; patient at home, provider in office."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "radiculopathy",
+          "region": "lumbar",
+          "levels": ["L4-L5"],
+          "side": "right",
+          "with": [],
+          "status": "current",
+          "quote": "Lumbar radiculopathy, right, improving."
+        }
+      ],
+      "injury": null
+    }
+  },
+  {
+    "id": "E08",
+    "title": "Mechanical LBP + cervicalgia — never M54.5",
+    "expectedCptAnyOf": ["99213", "99212"],
+    "expectedIcdAnyOf": ["M54.50", "M54.59", "M54.2", "M62.830"],
+    "forbiddenIcdExact": ["M54.5"],
+    "forbiddenCptPrefixes": [],
+    "facts": {
+      "visit": {
+        "kind": "office_established",
+        "complexity": "low",
+        "totalMinutes": null,
+        "decisionForSurgery": false,
+        "unrelatedToGlobalSurgery": false,
+        "significantSeparateProblem": false,
+        "quote": "Low complexity."
+      },
+      "procedures": [],
+      "diagnoses": [
+        {
+          "condition": "low_back_pain",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Low back pain."
+        },
+        {
+          "condition": "cervicalgia",
+          "region": "cervical",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Cervicalgia."
+        },
+        {
+          "condition": "muscle_spasm",
+          "region": "lumbar",
+          "levels": [],
+          "side": null,
+          "with": [],
+          "status": "current",
+          "quote": "Muscle spasm of back."
+        }
+      ],
+      "injury": null
+    }
+  }
+]

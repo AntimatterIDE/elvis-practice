@@ -1,0 +1,172 @@
+{
+  "id": "office",
+  "version": "2026-10-22",
+  "signedOff": false,
+  "visitCodes": {
+    "office_new": {
+      "straightforward": "99202",
+      "low": "99203",
+      "moderate": "99204",
+      "high": "99205"
+    },
+    "office_established": {
+      "straightforward": "99212",
+      "low": "99213",
+      "moderate": "99214",
+      "high": "99215"
+    },
+    "consult": {
+      "straightforward": "99242",
+      "low": "99243",
+      "moderate": "99244",
+      "high": "99245"
+    },
+    "telehealth_new": {
+      "straightforward": "99202",
+      "low": "99203",
+      "moderate": "99204",
+      "high": "99205"
+    },
+    "telehealth_established": {
+      "straightforward": "99212",
+      "low": "99213",
+      "moderate": "99214",
+      "high": "99215"
+    },
+    "post_op_global": {
+      "code": "99024"
+    }
+  },
+  "diagnoses": [
+    {
+      "id": "hnp_radiculopathy_lumbosacral",
+      "condition": "disc_herniation",
+      "region": ["lumbosacral"],
+      "withAny": ["radiculopathy"],
+      "icd": "M51.17"
+    },
+    {
+      "id": "hnp_radiculopathy_lumbar",
+      "condition": "disc_herniation",
+      "region": ["lumbar"],
+      "withAny": ["radiculopathy"],
+      "icd": "M51.16"
+    },
+    {
+      "id": "hnp_myelopathy_cervical_c56",
+      "condition": "disc_herniation",
+      "region": ["cervical"],
+      "withAny": ["myelopathy"],
+      "icd": "M50.022"
+    },
+    {
+      "id": "hnp_radiculopathy_cervical_c56",
+      "condition": "disc_herniation",
+      "region": ["cervical"],
+      "withAny": ["radiculopathy"],
+      "icd": "M50.122"
+    },
+    {
+      "id": "stenosis_lumbar_nc",
+      "condition": "stenosis",
+      "region": ["lumbar", "lumbosacral"],
+      "withAny": ["neurogenic_claudication"],
+      "icd": "M48.062"
+    },
+    {
+      "id": "stenosis_lumbar",
+      "condition": "stenosis",
+      "region": ["lumbar"],
+      "icd": "M48.061"
+    },
+    {
+      "id": "stenosis_cervical",
+      "condition": "stenosis",
+      "region": ["cervical"],
+      "icd": "M48.02"
+    },
+    {
+      "id": "spondylolisthesis_lumbar",
+      "condition": "spondylolisthesis",
+      "region": ["lumbar"],
+      "icd": "M43.16"
+    },
+    {
+      "id": "spondylolisthesis_lumbosacral",
+      "condition": "spondylolisthesis",
+      "region": ["lumbosacral"],
+      "icd": "M43.17"
+    },
+    {
+      "id": "radiculopathy_lumbar",
+      "condition": "radiculopathy",
+      "region": ["lumbar"],
+      "icd": "M54.16"
+    },
+    {
+      "id": "radiculopathy_cervical",
+      "condition": "radiculopathy",
+      "region": ["cervical"],
+      "icd": "M54.12"
+    },
+    {
+      "id": "sciatica_right",
+      "condition": "sciatica",
+      "side": "right",
+      "icd": "M54.41"
+    },
+    {
+      "id": "sciatica_left",
+      "condition": "sciatica",
+      "side": "left",
+      "icd": "M54.31"
+    },
+    {
+      "id": "low_back_pain",
+      "condition": "low_back_pain",
+      "icd": "M54.50"
+    },
+    {
+      "id": "neck_pain",
+      "condition": "neck_pain",
+      "icd": "M54.2"
+    },
+    {
+      "id": "cervicalgia",
+      "condition": "cervicalgia",
+      "icd": "M54.2"
+    },
+    {
+      "id": "muscle_spasm_back",
+      "condition": "muscle_spasm",
+      "icd": "M62.830"
+    },
+    {
+      "id": "myelopathy_cervical",
+      "condition": "myelopathy",
+      "region": ["cervical"],
+      "icd": "M47.12"
+    },
+    {
+      "id": "postlaminectomy_syndrome",
+      "condition": "postlaminectomy_syndrome",
+      "icd": "M96.1"
+    },
+    {
+      "id": "aftercare",
+      "condition": "aftercare",
+      "icd": "Z47.89"
+    },
+    {
+      "id": "fusion_status",
+      "condition": "fusion_status",
+      "icd": "Z98.1"
+    },
+    {
+      "id": "scoliosis_thoracolumbar",
+      "condition": "scoliosis",
+      "region": ["thoracolumbar", "thoracic", "lumbar"],
+      "icd": "M41.86"
+    }
+  ]
+}

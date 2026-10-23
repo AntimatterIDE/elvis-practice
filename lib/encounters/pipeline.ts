@@ -26,6 +26,8 @@ export type VisitIo = {
   download: (path: string) => Promise<{ bytes: Uint8Array; contentType: string }>;
   transcribe: (file: { bytes: Uint8Array; contentType: string; filename: string }) => Promise<string>;
   writeNote: (transcript: string) => Promise<{ medicalPractice: string; noteClinical: string }>;
+  /** Optional. When present and spine suggestions are enabled, fills review codes from facts+rules. */
+  suggestCodes?: (note: string) => Promise<{ icd10: VisitCode[]; billingCodes: VisitLine[] }>;
   save: (patch: VisitSnapshot) => Promise<void>;
   now?: () => string;
 };
@@ -74,6 +76,12 @@ export async function runVisitPipeline(start: VisitSnapshot, io: VisitIo): Promi
       }
       const note = await io.writeNote(visit.transcript);
       visit = { ...visit, medicalPractice: note.medicalPractice, noteClinical: note.noteClinical };
+    }
+
+    // Suggestions stay empty unless the caller wires suggestCodes and enables SPINE_CODING_SUGGESTIONS.
+    if (io.suggestCodes && !visit.icd10.length && !visit.billingCodes.length && visit.noteClinical.trim()) {
+      const suggested = await io.suggestCodes(visit.noteClinical);
+      visit = { ...visit, icd10: suggested.icd10, billingCodes: suggested.billingCodes };
     }
 
     visit = { ...visit, status: "review", progress: stamp(io, "review"), error: null };
