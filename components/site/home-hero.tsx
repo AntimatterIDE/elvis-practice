@@ -21,6 +21,7 @@ export function HomeHero() {
         wind={0.35}
         billow={0.75}
         speed={0.55}
+        interactive={false}
       />
       <div className="pointer-events-none relative z-10 mx-auto flex min-h-[calc(100svh-10.5rem)] w-full max-w-6xl flex-col justify-center px-5 py-10 md:px-8 md:py-14">
         <div className="pointer-events-auto max-w-[40rem]">
