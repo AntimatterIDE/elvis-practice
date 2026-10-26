@@ -8,16 +8,16 @@ export function HomeHero() {
   return (
     <section className="relative bg-[#c5e2f8]">
       <CloudAtlas
-        className="home-hero-art absolute inset-x-0 top-0 h-[calc(100svh-10.5rem)] w-full"
+        className="home-hero-art absolute inset-0 h-full w-full"
         backgroundColor="#c5e2f8"
         colors={["#ffffff", "#eef6fc"]}
         opacity={0.96}
         anchor="bottom"
-        height={1.35}
-        coverage={2}
-        density={0.22}
-        scale={1.8}
-        towers={3}
+        height={0.82}
+        coverage={1.15}
+        density={0.2}
+        scale={1.45}
+        towers={0.45}
         wind={0.35}
         billow={0.75}
         speed={0.55}
