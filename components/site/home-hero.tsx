@@ -1,63 +1,60 @@
 import Link from "next/link";
-import { HeroArtwork, PracticeName } from "@/components/site/brand";
+import { CloudAtlas } from "@/components/react-bits/cloud-atlas";
 import { IconArrow } from "@/components/site/icons";
+import { Promises } from "@/components/site/promises";
 import { practice } from "@/lib/site";
 
 export function HomeHero() {
   return (
-    <section className="px-5 pb-8 pt-6 md:px-8 md:pb-16 md:pt-14">
-      <style>{`
-        .home-hero-grid { display: grid; align-items: center; }
-        .home-hero-copy { order: 2; }
-        .home-hero-figure { order: 1; }
-        .home-hero-art { position: relative; height: 18rem; width: 100%; max-width: 20rem; margin-inline: auto; }
-        @media (min-width: 768px) {
-          .home-hero-grid { grid-template-columns: minmax(0, 1.15fr) minmax(13rem, 0.85fr); column-gap: 2rem; }
-          .home-hero-copy { order: 1; }
-          .home-hero-figure { order: 2; }
-          .home-hero-art { height: 20rem; max-width: none; }
-        }
-        @media (min-width: 1024px) {
-          .home-hero-grid { column-gap: 3rem; }
-          .home-hero-art { height: 28rem; }
-        }
-      `}</style>
-      <div className="home-hero-grid mx-auto grid max-w-6xl items-center gap-2 md:grid-cols-[minmax(0,1.15fr)_minmax(13rem,0.85fr)] md:gap-8 lg:gap-12">
-        <div className="home-hero-copy order-2 md:order-1">
-          <h1 className="max-w-4xl">
-            <PracticeName
-              goldClassName="font-display text-[clamp(2.1rem,4.6vw,3.4rem)] font-medium leading-[0.98] tracking-[-0.03em]"
-              blueClassName="mt-2 font-display text-[clamp(2.8rem,6.8vw,5.4rem)] font-semibold leading-[0.94] tracking-[-0.035em]"
-            />
+    <section className="relative bg-[#c5e2f8]">
+      <CloudAtlas
+        className="home-hero-art absolute inset-x-0 top-0 h-[calc(100svh-10.5rem)] w-full"
+        backgroundColor="#c5e2f8"
+        colors={["#ffffff", "#eef6fc"]}
+        opacity={0.96}
+        anchor="bottom"
+        height={1.35}
+        coverage={2}
+        density={0.22}
+        scale={1.8}
+        towers={3}
+        wind={0.35}
+        billow={0.75}
+        speed={0.55}
+      />
+      <div className="pointer-events-none relative z-10 mx-auto flex min-h-[calc(100svh-10.5rem)] w-full max-w-6xl flex-col justify-center px-5 py-10 md:px-8 md:py-14">
+        <div className="pointer-events-auto max-w-[40rem]">
+          <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-clinic-blue">
+            {practice.specialty}
+          </p>
+          <h1 className="mt-4 font-sans text-[clamp(2.45rem,5.6vw,4.85rem)] font-bold leading-[0.9] tracking-[-0.05em] text-ink">
+            <span className="block">The Alignment</span> <span className="block">Clinic of</span>{" "}
+            <span className="block">Spine Surgery</span> <span className="block">& Orthopedics</span>
           </h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted md:text-lg">
             {practice.physicianName} is an orthopedic spine surgeon. The work of this practice is to understand the
             problem, explain it clearly, and decide the next step with you.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             <Link
               href="/contact"
-              className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-oxide-deep px-6 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-oxide-ink"
+              className="inline-flex h-12 items-center justify-center rounded-full bg-oxide-deep px-6 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-oxide-ink"
             >
               Contact the practice
-              <IconArrow className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />
             </Link>
             <Link
               href="/about"
-              className="inline-flex h-12 items-center justify-center rounded-full border border-line bg-card px-6 text-sm font-semibold text-ink transition-colors duration-200 hover:border-oxide/40"
+              className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-ink"
             >
               About the clinic
+              <IconArrow className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none" />
             </Link>
           </div>
-          <p className="mt-5 max-w-md text-sm leading-relaxed text-muted">
-            New patients are welcome. Request a call from the contact page. Do not include insurance numbers or dates of birth.
+          <p className="mt-4 max-w-md text-sm leading-relaxed text-muted">
+            New patients are welcome. Request a call from the contact page. Do not include insurance numbers or dates of
+            birth.
           </p>
-        </div>
-        <div className="home-hero-figure order-1 md:order-2">
-          <div className="home-hero-art">
-            <HeroArtwork className="mx-auto h-72 w-full max-w-xs md:h-80 md:max-w-none lg:h-[28rem]" />
-          </div>
-          <p className="kicker mt-1 text-center text-ink">{practice.specialty}</p>
+          <Promises />
         </div>
       </div>
     </section>
