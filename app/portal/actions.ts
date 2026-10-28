@@ -5,8 +5,9 @@ import { redirect } from "next/navigation";
 import { listChartFiles, prepareChartUpload } from "@/lib/chart-files/store";
 import type { Appointment, Patient } from "@/lib/rcm/types";
 import { clearPortalCookie, readPortalCookie, writePortalCookie } from "@/lib/portal/cookie";
+import { cleanPortalInvoices } from "@/lib/portal/mailbox";
 import { getPortalStore } from "@/lib/portal/repository";
-import type { IntakeForm, PortalMessage } from "@/lib/portal/types";
+import type { IntakeForm, PortalInvoice, PortalMessage } from "@/lib/portal/types";
 import { portalUploadSlot } from "@/lib/portal/uploads";
 import { rateLimit } from "@/lib/rate-limit";
 import { getStaffSession } from "@/lib/supabase/session";
@@ -56,6 +57,25 @@ export async function submitIntakeAction(
   return { done: true };
 }
 
+export async function submitOwnIntakeAction(
+  _previous: { error?: string; done?: boolean },
+  formData: FormData,
+): Promise<{ error?: string; done?: boolean }> {
+  const patientId = await signedInPatient();
+  if (!patientId) return { error: "Sign in required." };
+  if (!rateLimit(await clientKey(`portal-intake:${patientId}`), 8, 10 * 60 * 1000)) {
+    return { error: "Too many attempts. Wait a few minutes and try again." };
+  }
+  const answers: Record<string, string> = {};
+  for (const [key, value] of formData.entries()) {
+    if (!key.startsWith("a.") || typeof value !== "string") continue;
+    answers[key.slice(2)] = value;
+  }
+  const result = await getPortalStore().submitOwn(patientId, answers);
+  if (!result.ok) return { error: result.error };
+  return { done: true };
+}
+
 export async function issuePortalLoginAction(input: {
   patientId: string;
   email: string;
@@ -84,6 +104,7 @@ export async function pushPortalChartsAction(input: {
   patients: Patient[];
   appointments: Appointment[];
   removedAppointmentIds?: string[];
+  invoices?: PortalInvoice[];
 }) {
   if (!(await getStaffSession())) return { ok: false as const, error: "Sign in required." };
   const patients = Array.isArray(input?.patients) ? input.patients.slice(0, 100) : [];
@@ -91,7 +112,8 @@ export async function pushPortalChartsAction(input: {
   const removedAppointmentIds = Array.isArray(input?.removedAppointmentIds)
     ? input.removedAppointmentIds.filter((id) => typeof id === "string").slice(0, 500)
     : [];
-  const result = await getPortalStore().pushCharts({ patients, appointments, removedAppointmentIds });
+  const invoices = input && "invoices" in input && input.invoices !== undefined ? cleanPortalInvoices(input.invoices) : undefined;
+  const result = await getPortalStore().pushCharts({ patients, appointments, removedAppointmentIds, invoices });
   if (!result.ok) return { ok: false as const, error: result.error };
   return { ok: true as const };
 }

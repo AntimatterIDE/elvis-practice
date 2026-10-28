@@ -9,6 +9,7 @@ import type {
   IntakeInvite,
   IntakeMap,
   PortalDb,
+  PortalInvoice,
   PortalMessage,
   PortalPatientRecord,
 } from "@/lib/portal/types";
@@ -291,6 +292,38 @@ export function submitIntake(db: PortalDb, token: string, raw: Record<string, st
   };
 }
 
+export function updateOwnIntake(db: PortalDb, patientId: string, raw: Record<string, string>, now = new Date()): Mutation<null> {
+  const index = db.patients.findIndex((patient) => patient.id === patientId);
+  const current = db.patients[index];
+  if (!current) return fail("Sign in required.");
+  const cleaned = cleanAnswers(db.form.fields, raw);
+  if (!cleaned.ok) return cleaned;
+  const built = patientFromAnswers(db.form.fields, cleaned.answers, current.id, current.mrn, current.chart.createdAt || now.toISOString());
+  const intake = built.documents.find((document) => document.name === "New patient intake");
+  const documents = current.chart.documents.some((document) => document.name === "New patient intake")
+    ? current.chart.documents.map((document) =>
+        document.name === "New patient intake" ? { ...document, status: "received" as const, note: document.note || "Submitted online" } : document,
+      )
+    : [...current.chart.documents, ...(intake ? [intake] : [])];
+  const patients = db.patients.slice();
+  patients[index] = {
+    ...current,
+    chart: {
+      ...built,
+      allergies: current.chart.allergies,
+      medications: current.chart.medications,
+      cases: current.chart.cases,
+      accountNotes: current.chart.accountNotes,
+      documents,
+      portalStatus: current.chart.portalStatus === "none" ? "active" : current.chart.portalStatus,
+    },
+    answers: cleaned.answers,
+    fields: db.form.fields,
+    updatedAt: now.toISOString(),
+  };
+  return { ok: true, db: { ...db, patients }, value: null };
+}
+
 function assertChart(chart: Patient, patientId: string) {
   if (!chart || chart.id !== patientId) return "That chart does not match this patient.";
   if (!chart.firstName?.trim() || !chart.lastName?.trim()) return "The chart needs a first and last name.";
@@ -391,12 +424,18 @@ export function revokeSession(db: PortalDb, tokenHash: string): PortalDb {
   return { ...db, sessions: db.sessions.filter((session) => session.tokenHash !== tokenHash) };
 }
 
+function invoicesFor(patientId: string, invoices: PortalInvoice[] | undefined, previous: PortalInvoice[] | undefined) {
+  if (!invoices) return previous ?? [];
+  return invoices.filter((invoice) => invoice.patientId === patientId).slice(0, 40);
+}
+
 export function pushCharts(
   db: PortalDb,
   patients: Patient[],
   appointments: Appointment[],
   now = new Date(),
   removedAppointmentIds: string[] = [],
+  invoices?: PortalInvoice[],
 ): PortalDb {
   const accepted = patients.filter((chart) => chart?.id && assertChart(chart, chart.id) === null).slice(0, 100);
   if (!accepted.length) return db;
@@ -416,6 +455,7 @@ export function pushCharts(
       answers: {},
       fields: [],
       messages: [],
+      invoices: invoicesFor(chart.id, invoices, []),
       updatedAt: now.toISOString(),
     });
   }
@@ -431,6 +471,7 @@ export function pushCharts(
         mrn: patient.mrn || chart.mrn,
         intakeAnswers: chart.intakeAnswers ?? patient.chart.intakeAnswers,
       },
+      invoices: invoicesFor(patient.id, invoices, patient.invoices),
       updatedAt: now.toISOString(),
     };
   });

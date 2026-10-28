@@ -6,6 +6,7 @@ import type {
   IntakeField,
   PatientPortalView,
   PortalDb,
+  PortalInvoice,
   PortalVisitView,
 } from "@/lib/portal/types";
 
@@ -57,7 +58,10 @@ function answerLabel(field: IntakeField, value: string) {
   return value;
 }
 
-export function toPortalView(patient: { chart: Patient; answers: Record<string, string>; fields: IntakeField[] }, visits: Appointment[]): PatientPortalView {
+export function toPortalView(
+  patient: { chart: Patient; answers: Record<string, string>; fields: IntakeField[]; invoices?: PortalInvoice[] },
+  visits: Appointment[],
+): PatientPortalView {
   const chart = patient.chart;
   const addressLine = [chart.address, chart.city, chart.state, chart.postalCode].filter(Boolean).join(", ");
   const emergency = [chart.emergencyName, chart.emergencyRelation, chart.emergencyPhone].filter(Boolean).join(" · ");
@@ -97,7 +101,17 @@ export function toPortalView(patient: { chart: Patient; answers: Record<string, 
       .map((medication) => [medication.name, medication.dose, medication.frequency].filter(Boolean).join(" ")),
     documents: chart.documents.map((document) => ({ name: document.name, status: document.status })),
     answers,
+    savedAnswers: Object.fromEntries(Object.entries(patient.answers).filter(([key]) => !key.startsWith("__"))),
     visits: portalVisits,
+    invoices: (patient.invoices ?? []).map((invoice) => ({
+      id: invoice.id,
+      date: invoice.date,
+      description: invoice.description,
+      charge: invoice.charge,
+      paid: invoice.paid,
+      owed: invoice.owed,
+      status: invoice.status,
+    })),
   };
 }
 

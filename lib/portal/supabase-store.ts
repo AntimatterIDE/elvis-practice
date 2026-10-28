@@ -14,6 +14,7 @@ import {
   notePortalFile,
   pushCharts,
   readSession,
+  updateOwnIntake,
   revokeSession,
   saveForm,
   seePortalMessages,
@@ -217,7 +218,7 @@ async function persistDiff(before: PortalDb, after: PortalDb) {
       id: patient.id,
       mrn: patient.mrn,
       chart: asJson(patient.chart),
-      answers: asJson(answersWithMailbox(patient.answers, patient.messages)),
+      answers: asJson(answersWithMailbox(patient.answers, patient.messages, patient.invoices)),
       fields: asJson(patient.fields),
       created_at: patient.chart.createdAt || patient.updatedAt,
       updated_at: patient.updatedAt,
@@ -354,6 +355,9 @@ export const supabaseStore: PortalStore = {
   submit(token, answers) {
     return mutate((db) => submitIntake(db, token, answers));
   },
+  submitOwn(patientId, answers) {
+    return mutate((db) => updateOwnIntake(db, patientId, answers));
+  },
   async issueLogin(input) {
     const password = generatePassword();
     const passwordHash = await hashPassword(password);
@@ -411,7 +415,7 @@ export const supabaseStore: PortalStore = {
   pushCharts(input) {
     return mutate((db) => ({
       ok: true,
-      db: pushCharts(db, input.patients, input.appointments, new Date(), input.removedAppointmentIds ?? []),
+      db: pushCharts(db, input.patients, input.appointments, new Date(), input.removedAppointmentIds ?? [], input.invoices),
       value: { saved: input.patients.length },
     }));
   },

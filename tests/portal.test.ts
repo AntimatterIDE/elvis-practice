@@ -2,7 +2,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { addPortalMessage, createInvite, createPortalDb, issueLogin, pushCharts, saveForm, submitIntake } from "@/lib/portal/engine";
+import { addPortalMessage, createInvite, createPortalDb, issueLogin, pushCharts, saveForm, submitIntake, updateOwnIntake } from "@/lib/portal/engine";
 import { attachMailbox } from "@/lib/portal/mailbox";
 import { emptyVitals, withChart } from "@/lib/rcm/chart";
 import { fileStore } from "@/lib/portal/file-store";
@@ -91,6 +91,45 @@ describe("practice roster", () => {
     const skipped = pushCharts(removed, [{ ...chart, id: "p_blank", lastName: "" }], []);
     expect(skipped.patients.map((patient) => patient.id)).toEqual(["p_ada"]);
   });
+
+  it("keeps charges on a chart until the desk sends a new list", () => {
+    const chart = {
+      ...withChart({
+        firstName: "Ada",
+        lastName: "Lovelace",
+        dateOfBirth: "1990-01-01",
+        sex: "female",
+        phone: "404-555-0100",
+        email: "ada@example.com",
+        address: "",
+        city: "",
+        state: "",
+        postalCode: "",
+        payerName: "",
+        memberId: "",
+      }),
+      id: "p_ada",
+    };
+    const invoice = {
+      id: "c1",
+      patientId: "p_ada",
+      date: "2026-10-01",
+      description: "Office visit",
+      charge: 200,
+      paid: 0,
+      owed: 40,
+      status: "submitted",
+    };
+    const saved = pushCharts(createPortalDb(), [chart], [], new Date("2026-10-14T16:00:00.000Z"), [], [invoice]);
+    expect(saved.patients[0]?.invoices?.[0]?.owed).toBe(40);
+    const kept = pushCharts(saved, [{ ...chart, phone: "404-555-0199" }], []);
+    expect(kept.patients[0]?.invoices?.[0]?.description).toBe("Office visit");
+    const cleared = pushCharts(kept, [chart], [], new Date(), [], []);
+    expect(cleared.patients[0]?.invoices).toEqual([]);
+    const view = toPortalView(saved.patients[0]!, []);
+    expect(view.invoices[0]?.owed).toBe(40);
+    expect(JSON.stringify(view.savedAnswers)).not.toContain("Office visit");
+  });
 });
 
 describe("patient intake", () => {
@@ -116,6 +155,38 @@ describe("patient intake", () => {
     expect(patient?.chart.intakeAnswers?.some((answer) => answer.value === "Low back pain")).toBe(true);
     const again = submitIntake(submitted.db, created.value.token, answersFor());
     expect(again.ok).toBe(false);
+  });
+
+  it("updates the signed-in chart without opening a second one", () => {
+    const created = createInvite(createPortalDb(), { name: "Maya", email: "maya@example.com" });
+    expect(created.ok).toBe(true);
+    if (!created.ok) return;
+    const submitted = submitIntake(created.db, created.value.token, answersFor(created.db));
+    expect(submitted.ok).toBe(true);
+    if (!submitted.ok) return;
+    const patient = submitted.db.patients[0];
+    if (!patient) throw new Error("missing patient");
+    const withAllergy = {
+      ...submitted.db,
+      patients: submitted.db.patients.map((item) => ({
+        ...item,
+        chart: {
+          ...item.chart,
+          allergies: [{ id: "a1", substance: "Penicillin", reaction: "Rash", severity: "mild" as const }],
+        },
+      })),
+    };
+    const answers = answersFor(withAllergy);
+    const phone = withAllergy.form.fields.find((field) => field.mapsTo === "phone");
+    if (phone) answers[phone.id] = "404-555-0111";
+    const updated = updateOwnIntake(withAllergy, patient.id, answers);
+    expect(updated.ok).toBe(true);
+    if (!updated.ok) return;
+    expect(updated.db.patients).toHaveLength(1);
+    expect(updated.db.patients[0]?.id).toBe(patient.id);
+    expect(updated.db.patients[0]?.chart.phone).toBe("404-555-0111");
+    expect(updated.db.patients[0]?.chart.allergies[0]?.substance).toBe("Penicillin");
+    expect(updated.db.patients[0]?.chart.documents.find((document) => document.name === "New patient intake")?.status).toBe("received");
   });
 
   it("hides the visit note from the patient view", () => {

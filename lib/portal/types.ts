@@ -92,6 +92,17 @@ export type PortalMessage = {
   seenByPractice: boolean;
 };
 
+export type PortalInvoice = {
+  id: string;
+  patientId: string;
+  date: string;
+  description: string;
+  charge: number;
+  paid: number;
+  owed: number;
+  status: string;
+};
+
 export type PortalPatientRecord = {
   id: string;
   mrn: string;
@@ -100,6 +111,7 @@ export type PortalPatientRecord = {
   fields: IntakeField[];
   updatedAt: string;
   messages?: PortalMessage[];
+  invoices?: PortalInvoice[];
 };
 
 export type PortalDb = {
@@ -159,6 +171,16 @@ export type PortalVisitView = {
   visitType: string;
 };
 
+export type PortalInvoiceView = {
+  id: string;
+  date: string;
+  description: string;
+  charge: number;
+  paid: number;
+  owed: number;
+  status: string;
+};
+
 export type PatientPortalView = {
   id: string;
   mrn: string;
@@ -177,7 +199,9 @@ export type PatientPortalView = {
   medications: string[];
   documents: { name: string; status: string }[];
   answers: { label: string; value: string }[];
+  savedAnswers: Record<string, string>;
   visits: PortalVisitView[];
+  invoices: PortalInvoiceView[];
 };
 
 export type PortalResult<T> = { ok: true; value: T } | { ok: false; error: string };
@@ -194,6 +218,7 @@ export type PortalStore = {
   >;
   publicInvite: (token: string) => Promise<PublicInviteResult>;
   submit: (token: string, answers: Record<string, string>) => Promise<PortalResult<{ patientId: string }>>;
+  submitOwn: (patientId: string, answers: Record<string, string>) => Promise<PortalResult<null>>;
   issueLogin: (input: {
     patientId: string;
     email: string;
@@ -209,6 +234,7 @@ export type PortalStore = {
     patients: Patient[];
     appointments: Appointment[];
     removedAppointmentIds?: string[];
+    invoices?: PortalInvoice[];
   }) => Promise<PortalResult<{ saved: number }>>;
   removePatients: (ids: string[]) => Promise<PortalResult<{ removed: number }>>;
   messagesFor: (patientId: string) => Promise<PortalMessage[]>;

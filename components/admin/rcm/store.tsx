@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
 import { applyPrimaryCoverage, emptyVitals, normalizeAppointment, normalizeLine, normalizePatient, normalizeState, withChart } from "@/lib/rcm/chart";
+import { invoicesFromClaims } from "@/lib/portal/invoices";
+import type { PortalInvoice } from "@/lib/portal/types";
 import { STORAGE_KEY, createSeedState } from "@/lib/rcm/seed";
 import type {
   Appointment,
@@ -41,7 +43,7 @@ const serverState = createSeedState();
 const serverSnapshot: DeskSnapshot = { ...serverState, rosterReady: false, syncError: "" };
 const listeners = new Set<() => void>();
 const portalListeners = new Set<
-  (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[] }) => void
+  (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[]; invoices: PortalInvoice[] }) => void
 >();
 const removedAppointmentIds = new Set<string>();
 const removalListeners = new Set<(ids: string[]) => void>();
@@ -107,6 +109,7 @@ function notifyPortalPush() {
     patients: clientState.patients,
     appointments: clientState.appointments,
     removedAppointmentIds: [...removedAppointmentIds],
+    invoices: invoicesFromClaims(clientState.claims ?? []),
   };
   for (const listener of portalListeners) listener(snap);
 }
@@ -143,7 +146,7 @@ export function subscribePortalRemoval(listener: (ids: string[]) => void) {
 }
 
 export function subscribePortalPush(
-  listener: (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[] }) => void,
+  listener: (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[]; invoices: PortalInvoice[] }) => void,
 ) {
   portalListeners.add(listener);
   return () => {
