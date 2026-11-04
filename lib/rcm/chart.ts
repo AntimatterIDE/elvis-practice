@@ -27,7 +27,7 @@ const documentSlots: [string, string][] = [
   ["new-patient-intake", "New patient intake"],
   ["referral", "Referral or authorization"],
   ["outside-imaging", "Imaging from another office"],
-  ["outside-records", "Records for review"],
+  ["outside-records", "Doctor records"],
   ["no-fault-comp", "No-fault or workers' compensation papers"],
   ["medicare-form", "Medicare form"],
   ["hospital-records", "Hospital or surgery records"],

@@ -1104,7 +1104,7 @@ function Documents({ patient }: { patient: Patient }) {
   return (
     <div className="grid gap-4">
       <p className="max-w-2xl text-sm text-muted">
-        Agreements sent to this person are listed here, including the signed copy. Records an attorney sent go on the Files tab, under Records for review.
+        Agreements sent to this person are listed here, including the signed copy. Doctor records from another office go on the Files tab, under Doctor records.
       </p>
       <SendAgreement patientId={patient.id} name={patientName(patient)} email={patient.email} />
     </div>

@@ -13,7 +13,7 @@ const hints: Record<string, string> = {
   "new-patient-intake": "Answers from the intake link stay with this item.",
   referral: "The referral, or the plan's authorization, when one is required.",
   "outside-imaging": "A photo, a video, or a PDF of films or a report from another office.",
-  "outside-records": "PDFs or Word files an attorney or another office sent for Elvis to review before the visit.",
+  "outside-records": "Medical records from another doctor or office. PDF or Word. Save them here so they stay on this patient’s chart.",
   "no-fault-comp": "The carrier's no-fault or workers' compensation papers. This page does not file with the carrier.",
   "medicare-form": "A completed Medicare form, such as an ABN. This page does not generate the CMS form.",
   "hospital-records": "Discharge papers, an operative note, or other hospital records.",
@@ -140,7 +140,7 @@ export function ChartFiles({
   return (
     <div className="grid gap-6">
       <p className="max-w-2xl text-sm text-muted">
-        Records an attorney sent, or that Elvis should read before the visit, go under Records for review. Upload the PDF or Word file there. A status is not the file. Signed agreements stay on the Documents tab.
+        Doctor records from another office go under Doctor records. Upload the PDF or Word file there and it stays on this patient’s chart. Signed agreements stay on the Documents tab.
       </p>
       {message ? <p className="text-sm text-muted">{message}</p> : null}
       {patient.documents.map((document) => {
