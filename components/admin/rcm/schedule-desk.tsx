@@ -14,6 +14,14 @@ import { useRcm } from "@/components/admin/rcm/store";
 const statuses: AppointmentStatus[] = ["scheduled", "arrived", "in_progress", "completed", "cancelled", "no_show"];
 const visitTypes: VisitType[] = ["new", "follow_up", "procedure", "imaging_review", "post_op"];
 const rooms = ["Room 1", "Room 2", "Procedure"];
+const visitTimes = Array.from({ length: 12 * 4 + 1 }, (_, index) => {
+  const total = 7 * 60 + index * 15;
+  const hour = Math.floor(total / 60);
+  const minute = String(total % 60).padStart(2, "0");
+  const value = `${String(hour).padStart(2, "0")}:${minute}`;
+  const hour12 = hour % 12 || 12;
+  return { value, label: `${hour12}:${minute} ${hour < 12 ? "AM" : "PM"}` };
+});
 
 export function ScheduleDesk() {
   const params = useSearchParams();
@@ -145,7 +153,13 @@ export function ScheduleDesk() {
             <input className={fieldClass} type="date" value={bookingDate} onChange={(event) => setDate(event.target.value)} required />
           </Field>
           <Field label="Time">
-            <input className={fieldClass} type="time" value={time} onChange={(event) => setTime(event.target.value)} required />
+            <select className={fieldClass} value={time} onChange={(event) => setTime(event.target.value)} required>
+              {visitTimes.map((slot) => (
+                <option key={slot.value} value={slot.value}>
+                  {slot.label}
+                </option>
+              ))}
+            </select>
           </Field>
           <Field label="Duration (minutes)">
             <input className={fieldClass} value={duration} onChange={(event) => setDuration(event.target.value)} />

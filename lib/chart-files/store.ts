@@ -15,6 +15,8 @@ const allowedTypes = new Set([
   "image/heic",
   "image/heif",
   "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "video/mp4",
   "video/quicktime",
   "video/webm",
@@ -48,6 +50,7 @@ function labelOf(name: string, contentType: string) {
   if (contentType.startsWith("image/")) return "Photo";
   if (contentType.startsWith("video/")) return "Video";
   if (contentType === "application/pdf") return "PDF";
+  if (contentType === "application/msword" || contentType.includes("wordprocessingml")) return "Word document";
   return name || "File";
 }
 
@@ -86,7 +89,7 @@ export async function prepareChartUpload(input: { patientId: string; slotId: str
   const supabase = client();
   if (!supabase) return { ok: false as const, message: "The practice database is not connected." };
   if (!safeId(input.patientId) || !safeId(input.slotId)) return { ok: false as const, message: "That file could not be stored." };
-  if (!allowedTypes.has(input.contentType)) return { ok: false as const, message: "Store a photo, a PDF, or a video." };
+  if (!allowedTypes.has(input.contentType)) return { ok: false as const, message: "Store a photo, a PDF, a Word file, or a video." };
   if (!Number.isFinite(input.byteSize) || input.byteSize < 1 || input.byteSize > maxBytes) {
     return { ok: false as const, message: "Each file has to be 50 MB or smaller." };
   }

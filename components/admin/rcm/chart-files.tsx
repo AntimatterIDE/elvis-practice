@@ -13,20 +13,22 @@ const hints: Record<string, string> = {
   "new-patient-intake": "Answers from the intake link stay with this item.",
   referral: "The referral, or the plan's authorization, when one is required.",
   "outside-imaging": "A photo, a video, or a PDF of films or a report from another office.",
-  "outside-records": "Records another office sent for this patient.",
+  "outside-records": "PDFs or Word files an attorney or another office sent for Elvis to review before the visit.",
   "no-fault-comp": "The carrier's no-fault or workers' compensation papers. This page does not file with the carrier.",
   "medicare-form": "A completed Medicare form, such as an ABN. This page does not generate the CMS form.",
   "hospital-records": "Discharge papers, an operative note, or other hospital records.",
   "portal-files": "Files the patient uploaded from the portal.",
 };
 
-const accept = "image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,application/pdf,video/mp4,video/quicktime,video/webm,.heic,.pdf,.mp4,.mov";
+const accept = "image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,video/mp4,video/quicktime,video/webm,.heic,.pdf,.doc,.docx,.mp4,.mov";
 
 function typeOf(file: File) {
   if (file.type) return file.type;
   const ext = file.name.split(".").pop()?.toLowerCase();
   if (ext === "heic" || ext === "heif") return "image/heic";
   if (ext === "pdf") return "application/pdf";
+  if (ext === "doc") return "application/msword";
+  if (ext === "docx") return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
   if (ext === "mp4") return "video/mp4";
   if (ext === "mov") return "video/quicktime";
   if (ext === "webm") return "video/webm";
@@ -138,7 +140,7 @@ export function ChartFiles({
   return (
     <div className="grid gap-6">
       <p className="max-w-2xl text-sm text-muted">
-        Store the photo, video, or PDF on the item it belongs to. A status is not the file. Signed agreements stay on the Documents tab.
+        Records an attorney sent, or that Elvis should read before the visit, go under Records for review. Upload the PDF or Word file there. A status is not the file. Signed agreements stay on the Documents tab.
       </p>
       {message ? <p className="text-sm text-muted">{message}</p> : null}
       {patient.documents.map((document) => {
@@ -198,7 +200,7 @@ export function ChartFiles({
             <div className="mt-4 flex flex-wrap items-end gap-3">
               <Button variant="secondary" asChild>
                 <label className={busySlot === document.id ? "pointer-events-none opacity-50" : undefined}>
-                  {busySlot === document.id ? "Uploading…" : "Upload photo, video, or PDF"}
+                  {busySlot === document.id ? "Uploading…" : "Upload a file"}
                   <input
                     className="sr-only"
                     type="file"
