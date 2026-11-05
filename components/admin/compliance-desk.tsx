@@ -136,7 +136,7 @@ function AgreementDraft({
       setNotice("Draft updated. Counsel still has to review it before anyone signs.");
       return;
     }
-    setNotice("message" in result ? result.message : "The draft could not be written.");
+    setNotice("message" in result && result.message ? result.message : "The draft could not be written.");
   }
 
   return (
@@ -240,7 +240,7 @@ export function ComplianceDesk() {
       setSaved((current) => ({ ...current, messages: [...current.messages, { role: "assistant", content: result.reply }] }));
       return;
     }
-    setAssistantNote("message" in result ? result.message : "The assistant did not answer.");
+    setAssistantNote("message" in result && result.message ? result.message : "The assistant did not answer.");
   }
 
   return (
