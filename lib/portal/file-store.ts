@@ -1,6 +1,5 @@
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
-import type { Appointment, Patient } from "@/lib/rcm/types";
 import {
   accountByEmail,
   accountFor as findAccount,
@@ -15,6 +14,7 @@ import {
   pushCharts,
   readSession,
   removePatients,
+  updateOwnIntake,
   revokeSession,
   saveForm,
   seePortalMessages,
@@ -123,6 +123,9 @@ export const fileStore: PortalStore = {
   submit(token, answers) {
     return update((db) => submitIntake(db, token, answers));
   },
+  submitOwn(patientId, answers) {
+    return update((db) => updateOwnIntake(db, patientId, answers));
+  },
   async issueLogin(input) {
     const password = generatePassword();
     const passwordHash = await hashPassword(password);
@@ -170,10 +173,10 @@ export const fileStore: PortalStore = {
   async roster() {
     return { ok: true, value: rosterFrom(await readDb()) };
   },
-  pushCharts(input: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds?: string[] }) {
+  pushCharts(input) {
     return update((db) => ({
       ok: true,
-      db: pushCharts(db, input.patients, input.appointments, new Date(), input.removedAppointmentIds ?? []),
+      db: pushCharts(db, input.patients, input.appointments, new Date(), input.removedAppointmentIds ?? [], input.invoices),
       value: { saved: input.patients.length },
     }));
   },

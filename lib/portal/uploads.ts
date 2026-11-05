@@ -1,3 +1,5 @@
+export const labResultSlot = "lab-result";
+
 export const portalUploadSlots = [
   { id: "photo-id", label: "Photo ID" },
   { id: "insurance-card", label: "Insurance card" },

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { beginChartUpload, chartFiles, deleteChartFile } from "@/app/admin/chart-files/actions";
 import type { ChartFile } from "@/lib/chart-files/types";
+import { labResultSlot } from "@/lib/portal/uploads";
 import type { ChartDocument, DocumentStatus, Patient } from "@/lib/rcm/types";
 import { Button } from "@/components/ui/button";
 import { fieldClass } from "@/components/admin/rcm/ui";
@@ -137,16 +138,25 @@ export function ChartFiles({
     setMessage("");
   }
 
+  const ordered = [
+    ...patient.documents.filter((document) => document.id === "outside-records"),
+    ...patient.documents.filter((document) => document.id !== "outside-records"),
+  ];
+
   return (
     <div className="grid gap-6">
       <p className="max-w-2xl text-sm text-muted">
-        Doctor records from another office go under Doctor records. Upload the PDF or Word file there and it stays on this patient’s chart. Signed agreements stay on the Documents tab.
+        Doctor records from another office are at the top. Upload the PDF or Word file there and it stays on this patient’s chart. Signed agreements stay on the Documents tab.
       </p>
       {message ? <p className="text-sm text-muted">{message}</p> : null}
-      {patient.documents.map((document) => {
+      {ordered.map((document) => {
         const stored = files.filter((file) => file.slotId === document.id);
+        const featured = document.id === "outside-records";
         return (
-          <section key={document.id} className="rounded-2xl border border-line bg-card p-4">
+          <section
+            key={document.id}
+            className={featured ? "rounded-2xl border-2 border-oxide/40 bg-mint/40 p-5" : "rounded-2xl border border-line bg-card p-4"}
+          >
             <h2 className="font-display text-2xl">{document.name}</h2>
             {hints[document.id] ? <p className="mt-1 text-sm text-muted">{hints[document.id]}</p> : null}
             {document.id === "new-patient-intake" && patient.intakeAnswers?.length ? (
@@ -198,9 +208,9 @@ export function ChartFiles({
               ))}
             </ul>
             <div className="mt-4 flex flex-wrap items-end gap-3">
-              <Button variant="secondary" asChild>
+              <Button variant={featured ? "primary" : "secondary"} asChild>
                 <label className={busySlot === document.id ? "pointer-events-none opacity-50" : undefined}>
-                  {busySlot === document.id ? "Uploading…" : "Upload a file"}
+                  {busySlot === document.id ? "Uploading…" : featured ? "Upload doctor records" : "Upload a file"}
                   <input
                     className="sr-only"
                     type="file"
@@ -254,13 +264,58 @@ export function ChartFiles({
           </section>
         );
       })}
-      {files.some((file) => !patient.documents.some((document) => document.id === file.slotId) && !file.slotId.startsWith("claim-")) ? (
+      <section className="rounded-2xl border border-line bg-card p-4">
+        <h2 className="font-display text-2xl">Lab results</h2>
+        <p className="mt-1 text-sm text-muted">Files here show in the patient portal. The portal does not pull results from a lab.</p>
+        <ul className="mt-4 grid gap-3 text-sm">
+          {files.filter((file) => file.slotId === labResultSlot).length === 0 ? <li className="text-muted">No lab results stored.</li> : null}
+          {files
+            .filter((file) => file.slotId === labResultSlot)
+            .map((file) => (
+              <li key={file.path} className="flex flex-wrap items-center gap-3">
+                <span>
+                  {file.label}
+                  {file.size ? ` · ${sizeLabel(file.size)}` : ""}
+                </span>
+                {file.url ? (
+                  <Button variant="secondary" asChild>
+                    <a href={file.url} target="_blank" rel="noreferrer">
+                      Open
+                    </a>
+                  </Button>
+                ) : null}
+              </li>
+            ))}
+        </ul>
+        <div className="mt-4">
+          <Button variant="secondary" asChild>
+            <label className={busySlot === labResultSlot ? "pointer-events-none opacity-50" : undefined}>
+              {busySlot === labResultSlot ? "Uploading…" : "Upload a result"}
+              <input
+                className="sr-only"
+                type="file"
+                accept={accept}
+                multiple
+                disabled={busySlot === labResultSlot}
+                aria-label="Add a lab result"
+                onChange={(event) => {
+                  const list = event.target.files;
+                  event.target.value = "";
+                  if (!list?.length) return;
+                  void upload({ id: labResultSlot, name: "Lab results", status: "received", note: "" }, list);
+                }}
+              />
+            </label>
+          </Button>
+        </div>
+      </section>
+      {files.some((file) => file.slotId !== labResultSlot && !patient.documents.some((document) => document.id === file.slotId) && !file.slotId.startsWith("claim-")) ? (
         <section className="rounded-2xl border border-line bg-card p-4">
           <h2 className="font-display text-2xl">Files from the patient portal</h2>
           <p className="mt-1 text-sm text-muted">Uploaded by the patient. Photo ID and insurance cards also land on those items above.</p>
           <ul className="mt-4 grid gap-3 text-sm">
             {files
-              .filter((file) => !patient.documents.some((document) => document.id === file.slotId) && !file.slotId.startsWith("claim-"))
+              .filter((file) => file.slotId !== labResultSlot && !patient.documents.some((document) => document.id === file.slotId) && !file.slotId.startsWith("claim-"))
               .map((file) => (
                 <li key={file.path} className="flex flex-wrap items-center gap-3">
                   <span>

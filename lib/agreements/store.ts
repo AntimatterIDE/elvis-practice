@@ -181,6 +181,57 @@ export async function listPackets(patientId = "", email = "", name = "") {
   return { ok: true as const, packets };
 }
 
+export type PortalPacket = {
+  id: string;
+  title: string;
+  status: PacketStatus;
+  sentAt: string;
+  signedAt: string;
+  signPath: string;
+};
+
+export async function packetsForPortal(patientId: string, email: string): Promise<PortalPacket[]> {
+  const supabase = client();
+  if (!supabase || !patientId) return [];
+  const owned = await supabase
+    .from("agreement_packets")
+    .select(packetColumns)
+    .eq("patient_id", patientId)
+    .order("sent_at", { ascending: false })
+    .limit(40);
+  if (owned.error) return [];
+  const rows = [...((owned.data ?? []) as PacketRow[])];
+  const mailbox = email.trim().toLowerCase();
+  if (mailbox) {
+    const unassigned = await supabase
+      .from("agreement_packets")
+      .select(packetColumns)
+      .is("patient_id", null)
+      .order("sent_at", { ascending: false })
+      .limit(40);
+    if (!unassigned.error) {
+      for (const row of (unassigned.data ?? []) as PacketRow[]) {
+        if (rows.some((item) => item.id === row.id)) continue;
+        if (row.recipient_email.trim().toLowerCase() !== mailbox) continue;
+        rows.push(row);
+      }
+    }
+  }
+  return rows
+    .map((row) => {
+      const status = packetStatus(row);
+      return {
+        id: row.id,
+        title: row.title,
+        status,
+        sentAt: row.sent_at,
+        signedAt: row.signed_at ?? "",
+        signPath: status === "sent" && row.token ? `/sign/${row.token}` : "",
+      };
+    })
+    .sort((a, b) => b.sentAt.localeCompare(a.sentAt));
+}
+
 export async function attachPackets(patientId: string, ids: string[]) {
   const supabase = client();
   const unique = [...new Set(ids.filter(Boolean))].slice(0, 40);

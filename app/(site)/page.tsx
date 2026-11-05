@@ -5,7 +5,6 @@ import { HomeHero } from "@/components/site/home-hero";
 import { HomeJourney } from "@/components/site/home-journey";
 import { IconArrow } from "@/components/site/icons";
 import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
-import { Promises } from "@/components/site/promises";
 import { Reveal } from "@/components/site/reveal";
 import { publicPageMetadata } from "@/lib/share-metadata";
 import { practice, practiceName } from "@/lib/site";
@@ -27,7 +26,6 @@ export default function HomePage() {
   return (
     <>
       <HomeHero />
-      <Promises />
 
       <section className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20" aria-labelledby="assurance-heading">
         <div className="max-w-2xl">

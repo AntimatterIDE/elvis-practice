@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
-import { submitIntakeAction } from "@/app/portal/actions";
+import { submitIntakeAction, submitOwnIntakeAction } from "@/app/portal/actions";
 import { Button } from "@/components/ui/button";
 import { controlClass as sharedControlClass } from "@/components/ui/control";
 import { sexLabel } from "@/lib/portal/defaults";
@@ -34,8 +34,18 @@ function answerLabel(field: IntakeField, value: string) {
   return value;
 }
 
-export function IntakeForm({ token, form }: { token: string; form: PublicIntake }) {
-  const [state, action, pending] = useActionState(submitIntakeAction, initial);
+export function IntakeForm({
+  token = "",
+  form,
+  own = false,
+  defaults = {},
+}: {
+  token?: string;
+  form: PublicIntake;
+  own?: boolean;
+  defaults?: Record<string, string>;
+}) {
+  const [state, action, pending] = useActionState(own ? submitOwnIntakeAction : submitIntakeAction, initial);
   const [step, setStep] = useState(0);
   const [furthest, setFurthest] = useState(0);
   const [showInvalid, setShowInvalid] = useState(false);
@@ -150,7 +160,9 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
         <p className="kicker text-oxide-deep">Received</p>
         <h2 className="mt-2 font-display text-4xl tracking-tight">The practice has your form.</h2>
         <p className="mt-3 max-w-prose text-base leading-relaxed text-muted">
-          A chart will be opened from what you sent. You do not need to fill this out again.
+          {own
+            ? "Your chart now has what you sent."
+            : "A chart will be opened from what you sent. You do not need to fill this out again."}
         </p>
         <ol className="mt-6 grid gap-3 text-sm leading-relaxed">
           <li className="rounded-2xl bg-mist px-4 py-3">Bring a photo ID and your insurance card to the visit.</li>
@@ -163,7 +175,7 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
 
   return (
     <form ref={formRef} action={action} onSubmit={onSubmit} className="mt-8 grid min-w-0 gap-5">
-      <input type="hidden" name="token" value={token} />
+      {own ? null : <input type="hidden" name="token" value={token} />}
       <div className="rounded-3xl border border-line bg-card p-4 card-shadow sm:p-5">
         <div className="flex items-center justify-between gap-3 text-sm">
           <p className="font-medium text-ink">{reviewing ? "Review" : sections[current.key].title}</p>
@@ -235,7 +247,12 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
           <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted">{sections[group.key].lede}</p>
           <div className="mt-6 grid w-full min-w-0 grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-6">
             {group.fields.map((field) => (
-              <Question key={field.id} field={field} className={group.fields.length === 1 ? "min-w-0 sm:col-span-6" : span(field)} />
+              <Question
+                key={field.id}
+                field={field}
+                value={defaults[field.id] ?? ""}
+                className={group.fields.length === 1 ? "min-w-0 sm:col-span-6" : span(field)}
+              />
             ))}
           </div>
         </section>
@@ -274,14 +291,14 @@ export function IntakeForm({ token, form }: { token: string; form: PublicIntake 
   );
 }
 
-function Question({ field, className }: { field: IntakeField; className?: string }) {
+function Question({ field, className, value = "" }: { field: IntakeField; className?: string; value?: string }) {
   const name = `a.${field.id}`;
   const inputId = `field-${field.id}`;
   if (field.type === "acknowledge") {
     return (
       <div className={className}>
         <label htmlFor={inputId} className="flex items-start gap-3 rounded-2xl border border-emergency/20 bg-card px-4 py-4">
-          <input id={inputId} type="checkbox" name={name} value="yes" required={field.required} className="mt-1 size-5 accent-oxide" />
+          <input id={inputId} type="checkbox" name={name} value="yes" required={field.required} defaultChecked={value === "yes"} className="mt-1 size-5 accent-oxide" />
           <span>
             <span className="block text-sm font-semibold leading-snug">{field.label}</span>
             {field.help ? <span className="mt-1 block text-sm leading-relaxed text-muted">{field.help}</span> : null}
@@ -304,7 +321,7 @@ function Question({ field, className }: { field: IntakeField; className?: string
                 htmlFor={id}
                 className="flex cursor-pointer items-center justify-center rounded-xl border border-line bg-paper px-3 py-3.5 text-center text-sm font-semibold has-[:checked]:border-oxide has-[:checked]:bg-mint has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-oxide/20"
               >
-                <input id={id} type="radio" name={name} value={option} required={field.required} className="sr-only" />
+                <input id={id} type="radio" name={name} value={option} required={field.required} defaultChecked={value === option} className="sr-only" />
                 {label}
               </label>
             );
@@ -319,7 +336,7 @@ function Question({ field, className }: { field: IntakeField; className?: string
         {field.label}
         {field.required ? <span className="kicker ml-2 text-oxide-deep">Required</span> : null}
       </label>
-      <Control field={field} name={name} inputId={inputId} />
+      <Control field={field} name={name} inputId={inputId} value={value} />
       {field.help ? <p className="text-sm leading-relaxed text-muted">{field.help}</p> : null}
     </div>
   );
@@ -337,14 +354,14 @@ function Legend({ field }: { field: IntakeField }) {
   );
 }
 
-function Control({ field, name, inputId }: { field: IntakeField; name: string; inputId: string }) {
+function Control({ field, name, inputId, value = "" }: { field: IntakeField; name: string; inputId: string; value?: string }) {
   const complete = autoComplete[field.mapsTo ?? field.id];
   if (field.type === "long_text") {
-    return <textarea id={inputId} name={name} required={field.required} rows={5} className={controlClass} />;
+    return <textarea id={inputId} name={name} required={field.required} rows={5} defaultValue={value} className={controlClass} />;
   }
   if (field.type === "select") {
     return (
-      <select id={inputId} name={name} required={field.required} defaultValue="" className={controlClass}>
+      <select id={inputId} name={name} required={field.required} defaultValue={value} className={controlClass}>
         <option value="" disabled>
           Choose one
         </option>
@@ -365,6 +382,7 @@ function Control({ field, name, inputId }: { field: IntakeField; name: string; i
       required={field.required}
       autoComplete={complete}
       inputMode={field.type === "phone" ? "tel" : field.mapsTo === "postalCode" ? "numeric" : undefined}
+      defaultValue={value}
       className={controlClass}
     />
   );
