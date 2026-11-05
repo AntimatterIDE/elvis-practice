@@ -1,4 +1,9 @@
-import { PageHeader, panelClass } from "@/components/admin/rcm/ui";
+"use client";
+
+import { useEffect, useState } from "react";
+import { askComplianceAssistant, reviseBaaDraft } from "@/app/admin/compliance/actions";
+import { PageHeader, fieldClass, panelClass } from "@/components/admin/rcm/ui";
+import { Button } from "@/components/ui/button";
 import {
   checklist,
   complianceGaps,
@@ -12,8 +17,37 @@ import {
   phiTables,
   thisWeekOrder,
   vendorBaas,
+  type VendorBaa,
 } from "@/lib/compliance/hipaa-baa";
 import { cn } from "@/lib/utils";
+
+const storageKey = "alignment-compliance-v1";
+
+type Turn = { role: "user" | "assistant"; content: string };
+
+type Saved = {
+  checked: string[];
+  drafts: Record<string, string>;
+  messages: Turn[];
+};
+
+const emptySaved: Saved = { checked: [], drafts: {}, messages: [] };
+
+function readSaved(): Saved {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(storageKey) ?? "") as Partial<Saved>;
+    const drafts = parsed.drafts && typeof parsed.drafts === "object" ? parsed.drafts : {};
+    return {
+      checked: Array.isArray(parsed.checked) ? parsed.checked.filter((id) => typeof id === "string") : [],
+      drafts: Object.fromEntries(Object.entries(drafts).filter((entry): entry is [string, string] => typeof entry[1] === "string")),
+      messages: Array.isArray(parsed.messages)
+        ? parsed.messages.filter((turn): turn is Turn => (turn?.role === "user" || turn?.role === "assistant") && typeof turn.content === "string").slice(-20)
+        : [],
+    };
+  } catch {
+    return emptySaved;
+  }
+}
 
 function Section({
   id,
@@ -40,9 +74,174 @@ function PriorityMark({ n }: { n: number }) {
   );
 }
 
+function CheckList({
+  title,
+  items,
+  checked,
+  onToggle,
+}: {
+  title: string;
+  items: { id: string; label: string }[];
+  checked: string[];
+  onToggle: (id: string) => void;
+}) {
+  return (
+    <div>
+      <h3 className="text-sm font-medium text-neutral-900">{title}</h3>
+      <ul className="mt-3 grid gap-2">
+        {items.map((item) => {
+          const on = checked.includes(item.id);
+          return (
+            <li key={item.id}>
+              <label className={cn("flex cursor-pointer gap-3 text-sm text-neutral-800", on && "text-neutral-500 line-through")}>
+                <input
+                  type="checkbox"
+                  className="mt-0.5 size-4 shrink-0 accent-oxide"
+                  checked={on}
+                  onChange={() => onToggle(item.id)}
+                />
+                <span>{item.label}</span>
+              </label>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+function AgreementDraft({
+  vendor,
+  body,
+  onChange,
+}: {
+  vendor: VendorBaa;
+  body: string;
+  onChange: (body: string) => void;
+}) {
+  const [open, setOpen] = useState(Boolean(body));
+  const [instruction, setInstruction] = useState("");
+  const [pending, setPending] = useState(false);
+  const [notice, setNotice] = useState("");
+
+  async function write() {
+    setPending(true);
+    setNotice("");
+    const result = await reviseBaaDraft({ vendorId: vendor.id, body, instruction });
+    setPending(false);
+    if ("body" in result && result.body) {
+      onChange(result.body);
+      setInstruction("");
+      setOpen(true);
+      setNotice("Draft updated. Counsel still has to review it before anyone signs.");
+      return;
+    }
+    setNotice("message" in result ? result.message : "The draft could not be written.");
+  }
+
+  return (
+    <div className="mt-4 border-t border-line pt-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <Button type="button" variant="secondary" onClick={() => setOpen((current) => !current)}>
+          {open ? "Hide agreement" : body ? "Open agreement" : "Draft agreement"}
+        </Button>
+        {body ? <span className="text-xs text-oxide">Draft in this browser</span> : null}
+      </div>
+      {open ? (
+        <div className="mt-4 grid gap-3">
+          <p className="text-xs leading-relaxed text-muted">
+            A draft for counsel. It is not signed, and it is not legal advice.
+          </p>
+          <label className="grid gap-2 text-sm font-medium">
+            Agreement
+            <textarea
+              className={`${fieldClass} min-h-72 font-normal leading-relaxed`}
+              value={body}
+              onChange={(event) => onChange(event.target.value)}
+              placeholder="The draft appears here. You can edit it directly, or ask the assistant to rewrite it."
+            />
+          </label>
+          <label className="grid gap-2 text-sm font-medium">
+            Change to make
+            <input
+              className={fieldClass}
+              value={instruction}
+              onChange={(event) => setInstruction(event.target.value)}
+              placeholder="Example: make the breach notice 10 days and name New York law"
+              disabled={pending}
+            />
+          </label>
+          <div className="flex flex-wrap gap-2">
+            <Button type="button" disabled={pending} onClick={() => void write()}>
+              {pending ? "Writing…" : body ? "Revise with AI" : "Write a first draft"}
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={!body}
+              onClick={() => {
+                void navigator.clipboard.writeText(body).then(
+                  () => setNotice("Copied."),
+                  () => setNotice("Select the agreement and copy it from there."),
+                );
+              }}
+            >
+              Copy
+            </Button>
+          </div>
+          {notice ? <p className="text-sm text-muted">{notice}</p> : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function ComplianceDesk() {
   const legal = checklist.filter((item) => item.group === "legal");
   const technical = checklist.filter((item) => item.group === "technical");
+  const [saved, setSaved] = useState<Saved>(emptySaved);
+  const [hydrated, setHydrated] = useState(false);
+  const [question, setQuestion] = useState("");
+  const [asking, setAsking] = useState(false);
+  const [assistantNote, setAssistantNote] = useState("");
+
+  useEffect(() => {
+    setSaved(readSaved());
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    localStorage.setItem(storageKey, JSON.stringify(saved));
+  }, [hydrated, saved]);
+
+  function toggle(id: string) {
+    setSaved((current) => ({
+      ...current,
+      checked: current.checked.includes(id) ? current.checked.filter((item) => item !== id) : [...current.checked, id],
+    }));
+  }
+
+  function setDraft(id: string, body: string) {
+    setSaved((current) => ({ ...current, drafts: { ...current.drafts, [id]: body } }));
+  }
+
+  async function ask(text: string) {
+    const content = text.trim();
+    if (!content || asking) return;
+    const messages = [...saved.messages, { role: "user" as const, content }];
+    setSaved((current) => ({ ...current, messages }));
+    setQuestion("");
+    setAssistantNote("");
+    setAsking(true);
+    const result = await askComplianceAssistant({ messages, checked: saved.checked });
+    setAsking(false);
+    if ("reply" in result && result.reply) {
+      setSaved((current) => ({ ...current, messages: [...current.messages, { role: "assistant", content: result.reply }] }));
+      return;
+    }
+    setAssistantNote("message" in result ? result.message : "The assistant did not answer.");
+  }
 
   return (
     <main>
@@ -55,17 +254,21 @@ export function ComplianceDesk() {
             <span>Covered entity · {complianceMeta.coveredEntity}</span>
             <span>Platform · {complianceMeta.platform}</span>
             <span>Brief · {complianceMeta.prepared}</span>
+            <span>
+              Checklist · {saved.checked.length} of {checklist.length}
+            </span>
           </div>
         }
       />
 
       <nav aria-label="Compliance sections" className="mt-6 flex flex-wrap gap-2 text-sm">
         {[
-          ["#summary", "Summary"],
+          ["#checklist", "Checklist"],
+          ["#assistant", "Assistant"],
           ["#baas", "Required BAAs"],
+          ["#summary", "Summary"],
           ["#phi", "PHI map"],
           ["#gaps", "Gaps"],
-          ["#checklist", "Checklist"],
         ].map(([href, label]) => (
           <a
             key={href}
@@ -78,7 +281,70 @@ export function ComplianceDesk() {
       </nav>
 
       <div className="mt-10 grid max-w-4xl gap-12">
-        <Section id="summary" title="01 · Executive summary">
+        <Section id="checklist" title="01 · Checklist">
+          <p className="mb-5 text-sm text-muted">
+            {saved.checked.length} of {checklist.length} done. Checks stay in this browser.
+          </p>
+          <div className="grid gap-8 sm:grid-cols-2">
+            <CheckList title="Legal / contracts" items={legal} checked={saved.checked} onToggle={toggle} />
+            <CheckList title="Technical / ops" items={technical} checked={saved.checked} onToggle={toggle} />
+          </div>
+        </Section>
+
+        <Section id="assistant" title="02 · Assistant">
+          <p className="mb-4 text-sm text-muted">
+            Ask what to do next, or what a clause should cover. The assistant can see which checklist items are done. It does not sign anything.
+          </p>
+          <div className={panelClass}>
+            <div className="grid gap-3">
+              {saved.messages.length ? (
+                <ol className="grid max-h-80 gap-3 overflow-y-auto">
+                  {saved.messages.map((turn, index) => (
+                    <li key={`${turn.role}-${index}`} className={cn("text-sm leading-relaxed", turn.role === "user" ? "text-neutral-900" : "text-neutral-700")}>
+                      <span className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-neutral-500">
+                        {turn.role === "user" ? "You" : "Assistant"}
+                      </span>
+                      <span className="whitespace-pre-wrap">{turn.content}</span>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <p className="text-sm text-muted">No questions yet.</p>
+              )}
+              <div className="flex flex-wrap gap-2">
+                {["What should we sign first?", "Which checklist items are still open?"].map((prompt) => (
+                  <Button key={prompt} type="button" variant="secondary" disabled={asking} onClick={() => void ask(prompt)}>
+                    {prompt}
+                  </Button>
+                ))}
+              </div>
+              <form
+                className="grid gap-2"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  void ask(question);
+                }}
+              >
+                <label className="grid gap-2 text-sm font-medium">
+                  Question
+                  <input
+                    className={fieldClass}
+                    value={question}
+                    onChange={(event) => setQuestion(event.target.value)}
+                    placeholder="Ask about a vendor, a clause, or the next step"
+                    disabled={asking}
+                  />
+                </label>
+                <Button type="submit" disabled={asking || !question.trim()} className="justify-self-start">
+                  {asking ? "Asking…" : "Ask"}
+                </Button>
+              </form>
+              {assistantNote ? <p className="text-sm text-muted">{assistantNote}</p> : null}
+            </div>
+          </div>
+        </Section>
+
+        <Section id="summary" title="03 · Executive summary">
           <div className="grid gap-4">
             <p className="text-sm leading-relaxed text-neutral-800">{executiveSummary}</p>
             <p className="text-sm leading-relaxed text-neutral-800">{thisWeekOrder}</p>
@@ -90,9 +356,9 @@ export function ComplianceDesk() {
           </div>
         </Section>
 
-        <Section id="baas" title="02 · Required BAAs">
+        <Section id="baas" title="04 · Required BAAs">
           <p className="mb-5 text-sm text-muted">
-            Seven agreements before real patients. Sign in priority order.
+            Seven agreements before real patients. Open one to write a draft, edit it, or have the assistant revise it. Drafts stay in this browser.
           </p>
           <ol className="grid gap-4">
             {vendorBaas.map((vendor) => (
@@ -127,6 +393,7 @@ export function ComplianceDesk() {
                         Vendor docs
                       </a>
                     ) : null}
+                    <AgreementDraft vendor={vendor} body={saved.drafts[vendor.id] ?? ""} onChange={(body) => setDraft(vendor.id, body)} />
                   </div>
                 </div>
               </li>
@@ -146,7 +413,7 @@ export function ComplianceDesk() {
           </div>
         </Section>
 
-        <Section id="phi" title="03 · PHI data map">
+        <Section id="phi" title="05 · PHI data map">
           <p className="mb-5 text-sm text-muted">
             Where protected health information flows on the live architecture.
           </p>
@@ -196,7 +463,7 @@ export function ComplianceDesk() {
           </div>
         </Section>
 
-        <Section id="gaps" title="04 · Gaps beyond BAAs">
+        <Section id="gaps" title="06 · Gaps beyond BAAs">
           <p className="mb-5 text-sm text-muted">
             Non-BAA gaps that still fail a risk assessment.
           </p>
@@ -211,38 +478,8 @@ export function ComplianceDesk() {
           </ul>
         </Section>
 
-        <Section id="checklist" title="05 · This-week checklist">
-          <div className="grid gap-8 sm:grid-cols-2">
-            <div>
-              <h3 className="text-sm font-medium text-neutral-900">Legal / contracts</h3>
-              <ul className="mt-3 grid gap-2">
-                {legal.map((item) => (
-                  <li key={item.id} className="flex gap-3 text-sm text-neutral-800">
-                    <span
-                      className="mt-0.5 size-4 shrink-0 rounded border border-neutral-300 bg-white"
-                      aria-hidden
-                    />
-                    <span>{item.label}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-sm font-medium text-neutral-900">Technical / ops</h3>
-              <ul className="mt-3 grid gap-2">
-                {technical.map((item) => (
-                  <li key={item.id} className="flex gap-3 text-sm text-neutral-800">
-                    <span
-                      className="mt-0.5 size-4 shrink-0 rounded border border-neutral-300 bg-white"
-                      aria-hidden
-                    />
-                    <span>{item.label}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <p className="mt-8 text-xs leading-relaxed text-muted">{costNote}</p>
+        <Section id="cost" title="07 · Cost note">
+          <p className="text-xs leading-relaxed text-muted">{costNote}</p>
           <p className="mt-3 text-xs leading-relaxed text-muted">
             Prepared by practice zero for {complianceMeta.coveredEntity} · Re-check vendor status if
             go-live slips more than 30 days.
