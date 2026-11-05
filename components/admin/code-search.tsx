@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import { fieldClass } from "@/components/admin/rcm/ui";
 import type { CodeMatch } from "@/lib/coding/codes";
+import { medicareCharge } from "@/lib/coding/fees";
+import { money } from "@/lib/rcm/format";
 
 export function CodeSearch({
   kind,
@@ -93,6 +95,9 @@ export function CodeSearch({
                 <span className="font-medium">{match.code}</span>
                 {match.description ? <span className="text-muted"> · {match.description}</span> : null}
                 {match.note ? <span className="text-muted"> · {match.note}</span> : null}
+                {match.nonFacility || match.facility ? (
+                  <span className="text-muted"> · {money(medicareCharge({ nonFacility: match.nonFacility ?? 0, facility: match.facility ?? 0 }, "11"))}</span>
+                ) : null}
               </button>
             </li>
           ))}

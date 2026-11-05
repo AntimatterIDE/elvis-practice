@@ -103,6 +103,14 @@ export function ClaimDetail({ id }: { id: string }) {
         ))}
       </ul>
       <ClaimPapers patientId={patient.id} claim={claim} onChange={(patch) => updateClaim(claim.id, patch)} />
+      {claim.status === "ready" && !claim.stediClaimId ? (
+        <p className="mt-4 max-w-2xl rounded-2xl border border-line bg-mist p-4 text-sm">
+          This claim is ready for bill and has not been sent. Submit claim is what files it with Stedi. The Stedi claims page stays empty until Stedi accepts it.
+          {claim.lines.some((line) => line.includeOnBill && !(line.charge > 0))
+            ? " A billed line is still $0, and Stedi will not take that. The fee schedule fills a Medicare price when the code has one."
+            : ""}
+        </p>
+      ) : null}
       <div className="mt-6 flex flex-wrap gap-2">
         {claim.status === "draft" || claim.status === "held" || claim.status === "ready" ? (
           <Button asChild variant="secondary">

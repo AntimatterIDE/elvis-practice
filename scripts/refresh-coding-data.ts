@@ -61,9 +61,21 @@ writeTable(
 
 const pfs = source(values.pfs!);
 const hcpcs = source(values.hcpcs!);
-const procedures = procedureRows(
-  parseFeeSchedule(pfs.bytes.toString("latin1")),
-  parseHcpcs(hcpcs.bytes.toString("latin1"), values["procedures-from"]!),
+const schedule = parseFeeSchedule(pfs.bytes.toString("latin1"));
+const procedures = procedureRows(schedule, parseHcpcs(hcpcs.bytes.toString("latin1"), values["procedures-from"]!));
+const feeRows = [...schedule]
+  .filter(([, entry]) => entry.nonFacility > 0 || entry.facility > 0)
+  .sort(([left], [right]) => left.localeCompare(right))
+  .map(([code, entry]) => [code, entry.nonFacility, entry.facility]);
+writeTable(
+  "fees.json",
+  {
+    release: values["procedures-release"]!,
+    effectiveFrom: values["procedures-from"]!,
+    sources: [pfs.entry],
+    columns: ["code", "nonFacility", "facility"],
+  },
+  feeRows,
 );
 writeTable(
   "procedures.json",

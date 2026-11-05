@@ -8,6 +8,7 @@ import {
   searchDiagnoses,
   searchProcedures,
 } from "@/lib/coding/codes";
+import { medicareCharge } from "@/lib/coding/fees";
 import { icd10Code, parseCsv, parseFeeSchedule, parseHcpcs, parseIcd10Order, procedureRows } from "@/lib/coding/sources";
 
 function orderLine(order: number, code: string, billable: 0 | 1, description: string) {
@@ -18,26 +19,48 @@ function csvLine(cells: string[]) {
   return cells.map((cell) => (/[",]/.test(cell) ? `"${cell.replaceAll('"', '""')}"` : cell)).join(",");
 }
 
-function feeRow(code: string, modifier: string, description: string, status: string, globalDays: string) {
-  const cells = Array<string>(22).fill("");
+function feeRow(
+  code: string,
+  modifier: string,
+  description: string,
+  status: string,
+  globalDays: string,
+  price?: { nonFacility?: string; facility?: string; factor?: string; nonFacilityNa?: string; facilityNa?: string },
+) {
+  const cells = Array<string>(32).fill("");
   cells[0] = code;
   cells[1] = modifier;
   cells[2] = description;
   cells[3] = status;
+  cells[7] = price?.nonFacilityNa ?? "";
+  cells[9] = price?.facilityNa ?? "";
+  cells[11] = price?.nonFacility ?? "";
+  cells[12] = price?.facility ?? "";
   cells[14] = globalDays;
+  cells[25] = price?.factor ?? "";
   return csvLine(cells);
 }
 
 function feeSchedule(rows: string[]) {
-  const above = Array<string>(22).fill("");
+  const above = Array<string>(32).fill("");
   above[3] = "STATUS";
+  above[7] = "NA";
+  above[9] = "NA";
+  above[11] = "NON-FACILITY";
+  above[12] = "FACILITY";
   above[14] = "GLOB";
-  const header = Array<string>(22).fill("");
+  above[25] = "CONV";
+  const header = Array<string>(32).fill("");
   header[0] = "HCPCS";
   header[1] = "MOD";
   header[2] = "DESCRIPTION";
   header[3] = "CODE";
+  header[7] = "INDICATOR";
+  header[9] = "INDICATOR";
+  header[11] = "TOTAL";
+  header[12] = "TOTAL";
   header[14] = "DAYS";
+  header[25] = "FACTOR";
   return [csvLine(["NATIONAL PHYSICIAN FEE SCHEDULE RELATIVE VALUE FILE"]), csvLine(above), csvLine(header), ...rows].join("\r\n");
 }
 
@@ -97,9 +120,20 @@ describe("CMS code files", () => {
       ]),
     );
     expect([...entries]).toEqual([
-      ["63047", { description: "Fee schedule text", status: "A", globalDays: "090" }],
-      ["J1010", { description: "Methylprednisolone, 1 mg", status: "E", globalDays: "XXX" }],
+      ["63047", { description: "Fee schedule text", status: "A", globalDays: "090", nonFacility: 0, facility: 0 }],
+      ["J1010", { description: "Methylprednisolone, 1 mg", status: "E", globalDays: "XXX", nonFacility: 0, facility: 0 }],
     ]);
+    const priced = parseFeeSchedule(
+      feeSchedule([
+        feeRow("99213", "", "Office visit", "A", "XXX", { nonFacility: "2.85", facility: "1.72", factor: "33.4009" }),
+        feeRow("63047", "", "Lumbar laminectomy", "A", "090", { nonFacility: "31.90", facility: "31.90", factor: "33.4009", nonFacilityNa: "NA" }),
+      ]),
+    );
+    expect(priced.get("99213")).toMatchObject({ nonFacility: 95.19, facility: 57.45 });
+    expect(priced.get("63047")).toMatchObject({ nonFacility: 0, facility: 1065.49 });
+    expect(medicareCharge({ nonFacility: 95.19, facility: 57.45 }, "11")).toBe(95.19);
+    expect(medicareCharge({ nonFacility: 0, facility: 1065.49 }, "11")).toBe(1065.49);
+    expect(medicareCharge({ nonFacility: 95.19, facility: 57.45 }, "21")).toBe(57.45);
     expect(() => parseFeeSchedule("HCPCS,MOD,DESCRIPTION\r\n63047,,x")).toThrow("expected");
   });
 
@@ -281,10 +315,13 @@ describe("loaded code files", () => {
   });
 
   it("knows the spine codes and leaves out ended ones", () => {
-    const real = buildCodeLibrary(icd10, procedures);
+    const fees = table("fees.json");
+    const real = buildCodeLibrary(icd10, procedures, undefined, fees);
     expect(checkDiagnosis(real, "M48.062").ok).toBe(true);
     expect(checkDiagnosis(real, "M54.5")).toMatchObject({ ok: false });
-    expect(real.procedures.byCode.get("63047")).toMatchObject({ status: "A", globalDays: "090" });
+    expect(real.procedures.byCode.get("63047")).toMatchObject({ status: "A", globalDays: "090", nonFacility: 0, facility: 1065.49 });
+    expect(real.procedures.byCode.get("99213")).toMatchObject({ nonFacility: 95.19, facility: 57.45 });
+    expect(real.procedures.byCode.get("97039")).toMatchObject({ nonFacility: 0, facility: 0 });
     expect(real.procedures.byCode.get("22853")).toMatchObject({ globalDays: "ZZZ" });
     expect(real.procedures.byCode.has("J1010")).toBe(true);
     expect(real.procedures.byCode.has("J1030")).toBe(false);

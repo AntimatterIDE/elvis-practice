@@ -6,6 +6,8 @@ import { CodeSearch } from "@/components/admin/code-search";
 import { Button } from "@/components/ui/button";
 import type { CodeMatch } from "@/lib/coding/codes";
 import { patientName } from "@/lib/rcm/format";
+import { useProcedureFees } from "@/components/admin/rcm/procedure-fees";
+import { medicareCharge } from "@/lib/coding/fees";
 import { claimLinesFromEncounter } from "@/lib/encounters/approve";
 import type { Encounter } from "@/lib/encounters/types";
 import { claimLineProblems, diagnosisLimit, filingCodes, isFilingCode, pointerLimit } from "@/lib/rcm/claim-rules";
@@ -145,6 +147,29 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
     }
   }, [existing, practice.posCode]);
 
+  const coded = lines.map((line) => line.cpt).filter(Boolean).join(",");
+  const procedureFees = useProcedureFees(coded ? coded.split(",") : []);
+
+  useEffect(() => {
+    setLines((current) => {
+      let changed = false;
+      const next = current.map((line) => {
+        const amounts = procedureFees[line.cpt.trim().toUpperCase()];
+        if (!amounts) return line;
+        const amount = medicareCharge(amounts, placeOfService);
+        if (!(amount > 0)) return line;
+        const currentCharge = Number(line.charge);
+        const blank = !(currentCharge > 0);
+        const schedulePrice = currentCharge === amounts.nonFacility || currentCharge === amounts.facility;
+        if (!blank && !schedulePrice) return line;
+        if (currentCharge === amount) return line;
+        changed = true;
+        return { ...line, charge: amount.toFixed(2) };
+      });
+      return changed ? next : current;
+    });
+  }, [procedureFees, placeOfService, coded]);
+
   const patient = patients.find((item) => item.id === patientId);
   const shownPayer = payerName || patient?.payerName || "";
   const options = useMemo(
@@ -282,8 +307,8 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
     }
     const parsed = parsedLines();
     const nextLines = parsed.filter((line) => line.cpt || status === "held");
-    if (status !== "held" && nextLines.some((line) => !line.cpt || !Number.isFinite(line.units) || !Number.isFinite(line.charge))) {
-      setError("Each line needs a CPT, units, and a charge you enter. This desk does not invent a fee.");
+    if (status !== "held" && nextLines.some((line) => !line.cpt || !Number.isFinite(line.units) || !(line.charge > 0))) {
+      setError("Each line needs a CPT, units, and a charge above $0. The fee schedule fills the charge when Medicare prices that code. Enter one when it does not.");
       return;
     }
     if (status === "ready" && !nextLines.some((line) => line.includeOnBill)) {
@@ -399,7 +424,7 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
         title={existing ? "Edit claim" : manual ? "New claim" : "Charge entry"}
         lede={
           manual
-            ? "Choose the patient, enter the date, codes, and charge, then add the visit note and any papers. This is for a visit that was not written in the scribe. Saving keeps it as a draft until you mark it ready for bill."
+            ? "Choose the patient, then enter the date and codes. The charge fills from the Medicare fee schedule. Add the visit note and any papers. This is for a visit that was not written in the scribe. Saving keeps it as a draft until you mark it ready for bill. Ready for bill does not send the claim to Stedi."
             : "Scheduled procedures stay off the bill until you move them. Ready for Bill only sends the case to review."
         }
       />
@@ -451,7 +476,7 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
           </div>
           {initialEncounter?.status === "approved" ? (
             <p className="text-sm text-muted">
-              {initialEncounter.patientLabel || "This visit"} was approved with these diagnosis and procedure codes. Enter the charge for each line.
+              {initialEncounter.patientLabel || "This visit"} was approved with these diagnosis and procedure codes. The charge fills from the Medicare fee schedule.
             </p>
           ) : null}
           {visit?.opNoteStatus === "missing" ? <p className="text-sm text-muted">Op note is missing. That is visible here and does not block Ready for Bill.</p> : null}
@@ -582,13 +607,18 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
                 disabled={pending}
                 className="grid gap-2"
                 value={line.cpt}
-                onValueChange={(cpt) => updateLine(index, { cpt: cpt.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10) })}
-                onPick={(match) =>
+                onValueChange={(cpt) => {
+                  const next = cpt.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10);
+                  updateLine(index, next === line.cpt ? { cpt: next } : { cpt: next, charge: "" });
+                }}
+                onPick={(match) => {
+                  const amount = medicareCharge({ nonFacility: match.nonFacility ?? 0, facility: match.facility ?? 0 }, placeOfService);
                   updateLine(index, {
                     cpt: match.code,
                     description: line.description.trim() ? line.description : match.description || match.note || "",
-                  })
-                }
+                    charge: amount > 0 ? amount.toFixed(2) : "",
+                  });
+                }}
               />
             </div>
             {line.modifiers.map((modifier, modifierIndex) => (
@@ -615,7 +645,12 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
               <input className={fieldClass} value={line.units} onChange={(event) => updateLine(index, { units: event.target.value })} />
             </Field>
             <Field label="Charge">
-              <input className={fieldClass} value={line.charge} onChange={(event) => updateLine(index, { charge: event.target.value })} />
+              <input
+                className={fieldClass}
+                value={line.charge}
+                placeholder={line.cpt && !(Number(line.charge) > 0) ? "No Medicare price for this code" : "Fee schedule"}
+                onChange={(event) => updateLine(index, { charge: event.target.value })}
+              />
             </Field>
             <fieldset className="sm:col-span-2 flex flex-wrap gap-x-4 gap-y-2">
               <legend className="mb-2 text-sm font-medium">Diagnoses for this line</legend>

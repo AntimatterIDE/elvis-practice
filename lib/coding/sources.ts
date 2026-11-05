@@ -5,7 +5,13 @@ export type DiagnosisRow = [code: string, billable: 0 | 1, description: string];
 
 export type ProcedureRow = [code: string, description: string, status: string, globalDays: string];
 
-export type FeeScheduleEntry = { description: string; status: string; globalDays: string };
+export type FeeScheduleEntry = {
+  description: string;
+  status: string;
+  globalDays: string;
+  nonFacility: number;
+  facility: number;
+};
 
 export function icd10Code(value: string) {
   const code = value.replace(/[\s.]/g, "").toUpperCase();
@@ -59,21 +65,52 @@ export function parseCsv(text: string) {
   return rows;
 }
 
+function medicareAmount(total: string | undefined, factor: string | undefined, notApplicable: string | undefined) {
+  if ((notApplicable ?? "").trim().toUpperCase() === "NA") return 0;
+  const rvu = Number(total);
+  const conversion = Number(factor);
+  if (!Number.isFinite(rvu) || !Number.isFinite(conversion) || rvu <= 0 || conversion <= 0) return 0;
+  return Math.round(rvu * conversion * 100) / 100;
+}
+
 // The PPRRVU file splits column names over several header rows. Status is
-// column 3 and global days column 14; check both so a layout change fails loudly.
+// column 3, global days column 14, and the national amounts are the
+// non-facility and facility total RVUs times the conversion factor.
 export function parseFeeSchedule(text: string) {
   const rows = parseCsv(text);
   const header = rows.findIndex((row) => row[0] === "HCPCS" && row[1] === "MOD");
   const above = rows[header - 1];
-  if (header < 1 || rows[header][2] !== "DESCRIPTION" || above?.[3] !== "STATUS" || above?.[14] !== "GLOB") {
-    throw new Error("The fee schedule file does not have the expected HCPCS, MOD, DESCRIPTION, STATUS, and GLOB DAYS columns.");
+  const names = rows[header];
+  const layout =
+    header >= 1 &&
+    names?.[2] === "DESCRIPTION" &&
+    above?.[3] === "STATUS" &&
+    above?.[14] === "GLOB" &&
+    above?.[7] === "NA" &&
+    names?.[7] === "INDICATOR" &&
+    above?.[9] === "NA" &&
+    names?.[9] === "INDICATOR" &&
+    above?.[11] === "NON-FACILITY" &&
+    names?.[11] === "TOTAL" &&
+    above?.[12] === "FACILITY" &&
+    names?.[12] === "TOTAL" &&
+    above?.[25] === "CONV" &&
+    names?.[25] === "FACTOR";
+  if (!layout) {
+    throw new Error("The fee schedule file does not have the expected HCPCS, MOD, DESCRIPTION, STATUS, GLOB DAYS, RVU, and conversion factor columns.");
   }
   const entries = new Map<string, FeeScheduleEntry>();
   for (const row of rows.slice(header + 1)) {
     const code = row[0]?.trim() ?? "";
     if (!code || row[1]?.trim()) continue;
     if (!/^[0-9A-Z]{5}$/.test(code)) throw new Error(`Unexpected code in the fee schedule file: ${code}`);
-    entries.set(code, { description: row[2].trim(), status: row[3].trim(), globalDays: row[14].trim() });
+    entries.set(code, {
+      description: row[2].trim(),
+      status: row[3].trim(),
+      globalDays: row[14].trim(),
+      nonFacility: medicareAmount(row[11], row[25], row[7]),
+      facility: medicareAmount(row[12], row[25], row[9]),
+    });
   }
   return entries;
 }

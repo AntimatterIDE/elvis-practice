@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { claimTotal, formatDay, money, patientName } from "@/lib/rcm/format";
@@ -8,6 +8,7 @@ import type { Appointment, Claim, ClaimStatus } from "@/lib/rcm/types";
 import type { Encounter } from "@/lib/encounters/types";
 import { claimsHref } from "@/lib/encounters/approve";
 import { DemoBilling } from "@/components/admin/rcm/demo-billing";
+import { pricedCharge, useProcedureFees } from "@/components/admin/rcm/procedure-fees";
 import { LoadingDesk, PageHeader, StatusPill, fieldClass, panelClass } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -22,6 +23,24 @@ export function ClaimsDesk({ approvedVisits = [] }: { approvedVisits?: Encounter
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<ClaimStatus | "all">("all");
   const [openReview, setOpenReview] = useState<string | null>(null);
+  const unpriced = claims
+    .filter((claim) => claim.status === "draft" || claim.status === "held" || claim.status === "ready")
+    .flatMap((claim) => claim.lines.filter((line) => !(line.charge > 0) && line.cpt).map((line) => line.cpt));
+  const procedureFees = useProcedureFees(unpriced);
+  useEffect(() => {
+    for (const claim of claims) {
+      if (claim.status !== "draft" && claim.status !== "held" && claim.status !== "ready") continue;
+      let changed = false;
+      const lines = claim.lines.map((line) => {
+        if (line.charge > 0) return line;
+        const amount = pricedCharge(procedureFees, line.cpt, claim.placeOfService || "11");
+        if (!(amount > 0)) return line;
+        changed = true;
+        return { ...line, charge: amount };
+      });
+      if (changed) updateClaim(claim.id, { lines });
+    }
+  }, [claims, procedureFees, updateClaim]);
   const names = useMemo(() => new Map(patients.map((patient) => [patient.id, patientName(patient)])), [patients]);
   const byId = useMemo(() => new Map(patients.map((patient) => [patient.id, patient])), [patients]);
 
@@ -62,7 +81,7 @@ export function ClaimsDesk({ approvedVisits = [] }: { approvedVisits?: Encounter
       <section className="mt-8">
         <h2 className="font-display text-2xl">New claim</h2>
         <p className="mt-2 max-w-2xl text-sm text-muted">
-          Choose the patient, then enter the date, codes, and charge. Add the visit note and upload the papers if they were not taken in the scribe.
+          Choose the patient, then enter the date and codes. The charge fills from the Medicare fee schedule. Add the visit note and upload the papers if they were not taken in the scribe.
         </p>
         <Button asChild className="mt-4">
           <Link href="/admin/operations/claims/new">Start a claim</Link>
@@ -145,7 +164,7 @@ export function ClaimsDesk({ approvedVisits = [] }: { approvedVisits?: Encounter
 
       <section className="mt-10">
         <h2 className="font-display text-2xl">Ready for review</h2>
-        <p className="mt-2 max-w-2xl text-sm text-muted">Expand a case to see the codes behind the amount. Sending it back keeps it off the clearinghouse.</p>
+        <p className="mt-2 max-w-2xl text-sm text-muted">These claims are still in this desk. Open a claim and choose Submit claim to send it to Stedi. Sending one back keeps it off the clearinghouse.</p>
         <ul className="mt-4 grid gap-3">
           {review.length === 0 ? <li className="text-sm text-muted">Nothing is waiting for review.</li> : null}
           {review.map((claim) => (

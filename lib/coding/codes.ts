@@ -5,7 +5,15 @@ type CodeTable<Row> = { release: string; effectiveFrom: string; rows: Row[] };
 
 type DiagnosisEntry = { code: string; compact: string; billable: boolean; description: string; search: string };
 
-type ProcedureEntry = { code: string; description: string; status: string; globalDays: string; search: string };
+type ProcedureEntry = {
+  code: string;
+  description: string;
+  status: string;
+  globalDays: string;
+  search: string;
+  nonFacility: number;
+  facility: number;
+};
 
 export type NcciLibrary = {
   effectiveFrom: string;
@@ -78,7 +86,15 @@ const ncciBypassModifiers = new Set([
   "RC",
 ]);
 
-export type CodeMatch = { code: string; description: string; note: string };
+export type CodeMatch = {
+  code: string;
+  description: string;
+  note: string;
+  nonFacility?: number;
+  facility?: number;
+};
+
+export type FeeRow = [code: string, nonFacility: number, facility: number];
 
 export type CodeCheck = { ok: true; code: string; description: string } | { ok: false; message: string };
 
@@ -92,9 +108,18 @@ function codeTable<Row>(value: unknown, name: string): CodeTable<Row> {
   return record as CodeTable<Row>;
 }
 
-export function buildCodeLibrary(icd10: unknown, procedures: unknown, ncci?: unknown): CodeLibrary {
+export function buildCodeLibrary(icd10: unknown, procedures: unknown, ncci?: unknown, fees?: unknown): CodeLibrary {
   const icdTable = codeTable<DiagnosisRow>(icd10, "ICD-10-CM");
   const procedureTable = codeTable<ProcedureRow>(procedures, "procedure");
+  const feeByCode = new Map<string, { nonFacility: number; facility: number }>();
+  if (fees) {
+    for (const [code, nonFacility, facility] of codeTable<FeeRow>(fees, "fee").rows) {
+      if (typeof nonFacility !== "number" || typeof facility !== "number" || nonFacility < 0 || facility < 0) {
+        throw new Error(`The fee file has a price that is not a number for ${code}.`);
+      }
+      feeByCode.set(code, { nonFacility, facility });
+    }
+  }
   const diagnosisEntries = icdTable.rows.map(([code, billable, description]) => ({
     code,
     compact: code.replace(".", ""),
@@ -108,6 +133,8 @@ export function buildCodeLibrary(icd10: unknown, procedures: unknown, ncci?: unk
     status,
     globalDays,
     search: description.toLowerCase(),
+    nonFacility: feeByCode.get(code)?.nonFacility ?? 0,
+    facility: feeByCode.get(code)?.facility ?? 0,
   }));
   return {
     diagnoses: {
@@ -190,7 +217,13 @@ const medicareNotes: Record<string, string> = {
 
 function procedureMatch(entry: ProcedureEntry): CodeMatch {
   const note = [globalNotes[entry.globalDays], medicareNotes[entry.status]].filter(Boolean).join(" · ");
-  return { code: entry.code, description: entry.description, note };
+  return {
+    code: entry.code,
+    description: entry.description,
+    note,
+    ...(entry.nonFacility > 0 ? { nonFacility: entry.nonFacility } : {}),
+    ...(entry.facility > 0 ? { facility: entry.facility } : {}),
+  };
 }
 
 export function searchDiagnoses(library: CodeLibrary, query: string): CodeMatch[] {
