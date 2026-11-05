@@ -73,5 +73,8 @@ describe("chart file slots", () => {
       ...defaultDocuments().map((item) => item.id),
       "privacy-acknowledgment",
     ]);
+    const ids = defaultDocuments().map((item) => item.id);
+    expect(ids.indexOf("consultation-report")).toBe(ids.indexOf("outside-records") + 1);
+    expect(ids.indexOf("follow-up-reports")).toBe(ids.indexOf("consultation-report") + 1);
   });
 });

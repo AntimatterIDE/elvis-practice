@@ -11,6 +11,7 @@ import type { Encounter } from "@/lib/encounters/types";
 import { claimLineProblems, diagnosisLimit, filingCodes, isFilingCode, pointerLimit } from "@/lib/rcm/claim-rules";
 import { AccountNoteDialog } from "@/components/admin/rcm/account-note";
 import { attachmentEvent, claimFileAccept, storeClaimFiles } from "@/components/admin/rcm/claim-files";
+import { FilePicker } from "@/components/admin/rcm/file-picker";
 import { Field, LoadingDesk, PageHeader, fieldClass, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -493,21 +494,16 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
               placeholder="What was seen, what was done, and anything the biller needs from the outside note."
             />
           </Field>
-          <Field label="Files">
-            <input
-              className={fieldClass}
-              type="file"
+          <div className="grid gap-2">
+            <span className="text-sm font-medium">Files</span>
+            <FilePicker
+              label="Upload a file"
+              busy={pending}
+              variant="secondary"
               accept={claimFileAccept}
-              multiple
-              disabled={pending}
-              aria-label="Add note or papers to this claim"
-              onChange={(event) => {
-                const list = event.target.files;
-                if (list?.length) setPicked((current) => [...current, ...list]);
-                event.target.value = "";
-              }}
+              onFiles={(files) => setPicked((current) => [...current, ...files])}
             />
-          </Field>
+          </div>
           {picked.length ? (
             <ul className="grid gap-2 text-sm">
               {picked.map((file, index) => (
@@ -574,10 +570,27 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
               Line {index + 1}
               {line.cpt ? ` · ${line.cpt}` : ""}
             </legend>
-            <Field label="CPT / HCPCS" className="sm:col-span-2">
-              <input className={fieldClass} value={line.cpt} readOnly aria-label={`Line ${index + 1} procedure code`} />
-              <p className="mt-1 text-sm text-muted">Pick the code with search below, or remove this line and add another.</p>
-            </Field>
+            <div className="sm:col-span-2 grid gap-2">
+              <label htmlFor={`line-cpt-${index}`} className="text-sm font-medium">
+                CPT / HCPCS
+              </label>
+              <CodeSearch
+                id={`line-cpt-${index}`}
+                kind="procedure"
+                label={`Line ${index + 1} procedure code`}
+                placeholder="Type a CPT or HCPCS code, such as 99204 or 63047"
+                disabled={pending}
+                className="grid gap-2"
+                value={line.cpt}
+                onValueChange={(cpt) => updateLine(index, { cpt: cpt.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10) })}
+                onPick={(match) =>
+                  updateLine(index, {
+                    cpt: match.code,
+                    description: line.description.trim() ? line.description : match.description || match.note || "",
+                  })
+                }
+              />
+            </div>
             {line.modifiers.map((modifier, modifierIndex) => (
               <Field key={modifierIndex} label={`Modifier ${modifierIndex + 1}`}>
                 <input

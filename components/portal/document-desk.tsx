@@ -3,25 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { beginPortalUploadAction, notePortalUploadAction } from "@/app/portal/actions";
+import { chartFileType, putSignedChartFile } from "@/lib/chart-files/put";
 import type { ChartFile } from "@/lib/chart-files/types";
 import { documentName } from "@/lib/rcm/chart";
 import { portalUploadSlots } from "@/lib/portal/uploads";
 
 const accept =
   "image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,application/pdf,video/mp4,video/quicktime,video/webm,.heic,.pdf,.mp4,.mov";
-
-function typeOf(file: File) {
-  if (file.type) return file.type;
-  const ext = file.name.split(".").pop()?.toLowerCase();
-  if (ext === "heic" || ext === "heif") return "image/heic";
-  if (ext === "pdf") return "application/pdf";
-  if (ext === "mp4") return "video/mp4";
-  if (ext === "mov") return "video/quicktime";
-  if (ext === "webm") return "video/webm";
-  if (ext === "jpg" || ext === "jpeg") return "image/jpeg";
-  if (ext === "png") return "image/png";
-  return "";
-}
 
 function sizeLabel(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -44,32 +32,19 @@ export function DocumentDesk({ files, storageNote }: { files: ChartFile[]; stora
       setError("Choose a file to upload.");
       return;
     }
-    const contentType = typeOf(file);
+    const contentType = chartFileType(file);
     setPending(true);
     setError("");
-    const prepared = await beginPortalUploadAction({ slotId, contentType, byteSize: file.size });
+    const prepared = await beginPortalUploadAction({ slotId, contentType, byteSize: file.size, fileName: file.name });
     if (!prepared.ok) {
       setPending(false);
       setError(prepared.message);
       return;
     }
-    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!anon) {
+    const stored = await putSignedChartFile(prepared.signedUrl, file, contentType);
+    if (!stored.ok) {
       setPending(false);
-      setError("The practice database is not connected, so the file was not stored.");
-      return;
-    }
-    const body = new FormData();
-    body.append("cacheControl", "3600");
-    body.append("", file);
-    const response = await fetch(prepared.signedUrl, {
-      method: "PUT",
-      headers: { apikey: anon, Authorization: `Bearer ${anon}` },
-      body,
-    });
-    if (!response.ok) {
-      setPending(false);
-      setError(`${file.name} could not be stored.`);
+      setError(stored.message);
       return;
     }
     const noted = await notePortalUploadAction(slotId);

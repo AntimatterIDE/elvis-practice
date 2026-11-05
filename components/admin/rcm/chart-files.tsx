@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { beginChartUpload, chartFiles, deleteChartFile } from "@/app/admin/chart-files/actions";
+import { chartFileType, putSignedChartFile } from "@/lib/chart-files/put";
 import type { ChartFile } from "@/lib/chart-files/types";
 import { labResultSlot } from "@/lib/portal/uploads";
 import type { ChartDocument, DocumentStatus, Patient } from "@/lib/rcm/types";
+import { FilePicker } from "@/components/admin/rcm/file-picker";
 import { Button } from "@/components/ui/button";
 import { fieldClass } from "@/components/admin/rcm/ui";
 
@@ -15,6 +17,8 @@ const hints: Record<string, string> = {
   referral: "The referral, or the plan's authorization, when one is required.",
   "outside-imaging": "A photo, a video, or a PDF of films or a report from another office.",
   "outside-records": "Medical records from another doctor or office. PDF or Word. Save them here so they stay on this patient’s chart.",
+  "consultation-report": "This practice’s consultation report. PDF or Word. It stays on this patient’s chart.",
+  "follow-up-reports": "Follow-up reports from this practice. Add each new report here. Earlier reports stay on the chart.",
   "no-fault-comp": "The carrier's no-fault or workers' compensation papers. This page does not file with the carrier.",
   "medicare-form": "A completed Medicare form, such as an ABN. This page does not generate the CMS form.",
   "hospital-records": "Discharge papers, an operative note, or other hospital records.",
@@ -22,21 +26,6 @@ const hints: Record<string, string> = {
 };
 
 const accept = "image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,video/mp4,video/quicktime,video/webm,.heic,.pdf,.doc,.docx,.mp4,.mov";
-
-function typeOf(file: File) {
-  if (file.type) return file.type;
-  const ext = file.name.split(".").pop()?.toLowerCase();
-  if (ext === "heic" || ext === "heif") return "image/heic";
-  if (ext === "pdf") return "application/pdf";
-  if (ext === "doc") return "application/msword";
-  if (ext === "docx") return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-  if (ext === "mp4") return "video/mp4";
-  if (ext === "mov") return "video/quicktime";
-  if (ext === "webm") return "video/webm";
-  if (ext === "jpg" || ext === "jpeg") return "image/jpeg";
-  if (ext === "png") return "image/png";
-  return "";
-}
 
 function sizeLabel(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -72,38 +61,26 @@ export function ChartFiles({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patient.id]);
 
-  async function upload(document: ChartDocument, list: FileList) {
+  async function upload(document: ChartDocument, files: File[]) {
     setBusySlot(document.id);
     setMessage("");
-    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    for (const file of [...list]) {
-      const contentType = typeOf(file);
+    for (const file of files) {
+      const contentType = chartFileType(file);
       const prepared = await beginChartUpload({
         patientId: patient.id,
         slotId: document.id,
         contentType,
         byteSize: file.size,
+        fileName: file.name,
       });
       if (!prepared.ok) {
         setMessage(prepared.message);
         setBusySlot("");
         return;
       }
-      if (!anon) {
-        setMessage("The practice database is not connected.");
-        setBusySlot("");
-        return;
-      }
-      const body = new FormData();
-      body.append("cacheControl", "3600");
-      body.append("", file);
-      const response = await fetch(prepared.signedUrl, {
-        method: "PUT",
-        headers: { apikey: anon, Authorization: `Bearer ${anon}` },
-        body,
-      });
-      if (!response.ok) {
-        setMessage("That file could not be stored.");
+      const stored = await putSignedChartFile(prepared.signedUrl, file, contentType);
+      if (!stored.ok) {
+        setMessage(stored.message);
         setBusySlot("");
         return;
       }
@@ -115,6 +92,7 @@ export function ChartFiles({
         ),
       });
     }
+    setMessage(files.length === 1 ? `${files[0].name} is saved on this chart.` : `${files.length} files are saved on this chart.`);
     setBusySlot("");
     reload();
   }
@@ -138,20 +116,29 @@ export function ChartFiles({
     setMessage("");
   }
 
+  const leadSlots = ["outside-records", "consultation-report", "follow-up-reports"];
   const ordered = [
-    ...patient.documents.filter((document) => document.id === "outside-records"),
-    ...patient.documents.filter((document) => document.id !== "outside-records"),
+    ...leadSlots.flatMap((id) => patient.documents.filter((document) => document.id === id)),
+    ...patient.documents.filter((document) => !leadSlots.includes(document.id)),
   ];
 
   return (
     <div className="grid gap-6">
       <p className="max-w-2xl text-sm text-muted">
-        Doctor records from another office are at the top. Upload the PDF or Word file there and it stays on this patient’s chart. Signed agreements stay on the Documents tab.
+        Doctor records from another office are first. This practice’s consultation report and later follow-up reports are next. Signed agreements stay on the Documents tab.
       </p>
       {message ? <p className="text-sm text-muted">{message}</p> : null}
       {ordered.map((document) => {
         const stored = files.filter((file) => file.slotId === document.id);
-        const featured = document.id === "outside-records";
+        const featured = leadSlots.includes(document.id);
+        const uploadLabel =
+          document.id === "outside-records"
+            ? "Upload doctor records"
+            : document.id === "consultation-report"
+              ? "Upload consultation report"
+              : document.id === "follow-up-reports"
+                ? "Upload a follow-up report"
+                : "Upload a file";
         return (
           <section
             key={document.id}
@@ -208,24 +195,13 @@ export function ChartFiles({
               ))}
             </ul>
             <div className="mt-4 flex flex-wrap items-end gap-3">
-              <Button variant={featured ? "primary" : "secondary"} asChild>
-                <label className={busySlot === document.id ? "pointer-events-none opacity-50" : undefined}>
-                  {busySlot === document.id ? "Uploading…" : featured ? "Upload doctor records" : "Upload a file"}
-                  <input
-                    className="sr-only"
-                    type="file"
-                    accept={accept}
-                    multiple
-                    disabled={busySlot === document.id}
-                    aria-label={`Add a file to ${document.name}`}
-                    onChange={(event) => {
-                      const list = event.target.files;
-                      event.target.value = "";
-                      if (list?.length) void upload(document, list);
-                    }}
-                  />
-                </label>
-              </Button>
+              <FilePicker
+                label={uploadLabel}
+                busy={busySlot === document.id}
+                variant={featured ? "primary" : "secondary"}
+                accept={accept}
+                onFiles={(files) => void upload(document, files)}
+              />
               <label className="grid gap-2 text-sm">
                 <span className="font-medium">Note</span>
                 <input
@@ -288,25 +264,13 @@ export function ChartFiles({
             ))}
         </ul>
         <div className="mt-4">
-          <Button variant="secondary" asChild>
-            <label className={busySlot === labResultSlot ? "pointer-events-none opacity-50" : undefined}>
-              {busySlot === labResultSlot ? "Uploading…" : "Upload a result"}
-              <input
-                className="sr-only"
-                type="file"
-                accept={accept}
-                multiple
-                disabled={busySlot === labResultSlot}
-                aria-label="Add a lab result"
-                onChange={(event) => {
-                  const list = event.target.files;
-                  event.target.value = "";
-                  if (!list?.length) return;
-                  void upload({ id: labResultSlot, name: "Lab results", status: "received", note: "" }, list);
-                }}
-              />
-            </label>
-          </Button>
+          <FilePicker
+            label="Upload a result"
+            busy={busySlot === labResultSlot}
+            variant="secondary"
+            accept={accept}
+            onFiles={(files) => void upload({ id: labResultSlot, name: "Lab results", status: "received", note: "" }, files)}
+          />
         </div>
       </section>
       {files.some((file) => file.slotId !== labResultSlot && !patient.documents.some((document) => document.id === file.slotId) && !file.slotId.startsWith("claim-")) ? (

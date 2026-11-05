@@ -1,4 +1,5 @@
 import "server-only";
+import { objectKey, storedFileName } from "@/lib/chart-files/names";
 import type { ChartFile } from "@/lib/chart-files/types";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
@@ -36,7 +37,7 @@ function safeId(value: string) {
 
 function ownedPath(patientId: string, path: string) {
   const parts = path.split("/");
-  return parts.length === 3 && parts[0] === patientId && safeId(parts[1]) && /^[0-9a-f-]{36}$/.test(parts[2]);
+  return parts.length === 3 && parts[0] === patientId && safeId(parts[1]) && storedFileName(parts[2]) !== null;
 }
 
 async function ready(supabase: NonNullable<ReturnType<typeof client>>) {
@@ -47,11 +48,13 @@ async function ready(supabase: NonNullable<ReturnType<typeof client>>) {
 }
 
 function labelOf(name: string, contentType: string) {
+  const stored = storedFileName(name);
+  if (stored) return stored;
   if (contentType.startsWith("image/")) return "Photo";
   if (contentType.startsWith("video/")) return "Video";
   if (contentType === "application/pdf") return "PDF";
   if (contentType === "application/msword" || contentType.includes("wordprocessingml")) return "Word document";
-  return name || "File";
+  return "File";
 }
 
 export async function listChartFiles(patientId: string): Promise<{ ok: true; files: ChartFile[] } | { ok: false; message: string }> {
@@ -67,7 +70,7 @@ export async function listChartFiles(patientId: string): Promise<{ ok: true; fil
     const children = await supabase.storage.from(bucket).list(`${patientId}/${slotId}`, { limit: 40 });
     if (children.error) continue;
     for (const file of children.data ?? []) {
-      if (!file.id || !/^[0-9a-f-]{36}$/.test(file.name)) continue;
+      if (!file.id || storedFileName(file.name) === null) continue;
       const path = `${patientId}/${slotId}/${file.name}`;
       const signed = await supabase.storage.from(bucket).createSignedUrl(path, 600);
       const contentType = file.metadata?.mimetype ?? "";
@@ -85,7 +88,13 @@ export async function listChartFiles(patientId: string): Promise<{ ok: true; fil
   return { ok: true, files };
 }
 
-export async function prepareChartUpload(input: { patientId: string; slotId: string; contentType: string; byteSize: number }) {
+export async function prepareChartUpload(input: {
+  patientId: string;
+  slotId: string;
+  contentType: string;
+  byteSize: number;
+  fileName?: string;
+}) {
   const supabase = client();
   if (!supabase) return { ok: false as const, message: "The practice database is not connected." };
   if (!safeId(input.patientId) || !safeId(input.slotId)) return { ok: false as const, message: "That file could not be stored." };
@@ -94,9 +103,13 @@ export async function prepareChartUpload(input: { patientId: string; slotId: str
     return { ok: false as const, message: "Each file has to be 50 MB or smaller." };
   }
   if (!(await ready(supabase))) return { ok: false as const, message: "Chart files are not available yet." };
-  const path = `${input.patientId}/${input.slotId}/${crypto.randomUUID()}`;
+  const path = `${input.patientId}/${input.slotId}/${objectKey(typeof input.fileName === "string" ? input.fileName : "")}`;
   const signed = await supabase.storage.from(bucket).createSignedUploadUrl(path);
-  if (signed.error || !signed.data) return { ok: false as const, message: "That file could not be stored." };
+  if (signed.error || !signed.data) {
+    const detail = signed.error?.message ?? "";
+    if (/bucket/i.test(detail)) return { ok: false as const, message: "Chart files are not available yet." };
+    return { ok: false as const, message: "That file could not be stored." };
+  }
   return { ok: true as const, path, signedUrl: signed.data.signedUrl };
 }
 

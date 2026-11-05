@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { beginChartUpload, chartFiles, deleteChartFile } from "@/app/admin/chart-files/actions";
+import { chartFileType, putSignedChartFile } from "@/lib/chart-files/put";
 import { claimFileSlot } from "@/lib/rcm/claim-files";
 import type { ChartFile } from "@/lib/chart-files/types";
 import type { Claim, ClaimAttachment, ClaimEvent } from "@/lib/rcm/types";
@@ -9,19 +10,6 @@ import { fieldClass } from "@/components/admin/rcm/ui";
 
 const accept =
   "image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,application/pdf,video/mp4,video/quicktime,video/webm,.heic,.pdf,.mp4,.mov";
-
-function typeOf(file: File) {
-  if (file.type) return file.type;
-  const ext = file.name.split(".").pop()?.toLowerCase();
-  if (ext === "heic" || ext === "heif") return "image/heic";
-  if (ext === "pdf") return "application/pdf";
-  if (ext === "mp4") return "video/mp4";
-  if (ext === "mov") return "video/quicktime";
-  if (ext === "webm") return "video/webm";
-  if (ext === "jpg" || ext === "jpeg") return "image/jpeg";
-  if (ext === "png") return "image/png";
-  return "";
-}
 
 function sizeLabel(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -31,29 +19,19 @@ function sizeLabel(bytes: number) {
 
 export async function storeClaimFiles(patientId: string, claimId: string, files: File[]) {
   const slotId = claimFileSlot(claimId);
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const stored: ClaimAttachment[] = [];
-  if (!anon) {
-    return { ok: false as const, message: "The practice database is not connected, so the files were not stored.", files: stored };
-  }
   for (const file of files) {
-    const contentType = typeOf(file);
+    const contentType = chartFileType(file);
     const prepared = await beginChartUpload({
       patientId,
       slotId,
       contentType,
       byteSize: file.size,
+      fileName: file.name,
     });
     if (!prepared.ok) return { ok: false as const, message: prepared.message, files: stored };
-    const body = new FormData();
-    body.append("cacheControl", "3600");
-    body.append("", file);
-    const response = await fetch(prepared.signedUrl, {
-      method: "PUT",
-      headers: { apikey: anon, Authorization: `Bearer ${anon}` },
-      body,
-    });
-    if (!response.ok) return { ok: false as const, message: `${file.name} could not be stored.`, files: stored };
+    const saved = await putSignedChartFile(prepared.signedUrl, file, contentType);
+    if (!saved.ok) return { ok: false as const, message: saved.message, files: stored };
     stored.push({ path: prepared.path, name: file.name, contentType, size: file.size });
   }
   return { ok: true as const, message: "", files: stored };
@@ -98,11 +76,11 @@ export function ClaimPapers({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patientId, claim.id, claim.attachments.length]);
 
-  async function upload(list: FileList | null) {
-    if (!list?.length) return;
+  async function upload(files: File[]) {
+    if (!files.length) return;
     setPending(true);
     setMessage("");
-    const stored = await storeClaimFiles(patientId, claim.id, [...list]);
+    const stored = await storeClaimFiles(patientId, claim.id, files);
     if (stored.files.length) {
       onChange({
         attachments: [...claim.attachments, ...stored.files],
@@ -188,9 +166,9 @@ export function ClaimPapers({
           disabled={pending}
           aria-label="Add files to this claim"
           onChange={(event) => {
-            const list = event.target.files;
+            const files = Array.from(event.target.files ?? []);
             event.target.value = "";
-            void upload(list);
+            void upload(files);
           }}
         />
       </label>

@@ -10,32 +10,42 @@ export function CodeSearch({
   placeholder,
   disabled,
   onPick,
+  value,
+  onValueChange,
+  id,
+  className,
 }: {
   kind: "diagnosis" | "procedure";
   label: string;
   placeholder: string;
   disabled: boolean;
   onPick: (match: CodeMatch) => void;
+  value?: string;
+  onValueChange?: (value: string) => void;
+  id?: string;
+  className?: string;
 }) {
   const [query, setQuery] = useState("");
   const [matches, setMatches] = useState<CodeMatch[]>([]);
   const [status, setStatus] = useState("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latest = useRef(0);
+  const shown = value ?? query;
 
-  function search(value: string) {
-    setQuery(value);
+  function search(next: string) {
+    if (value === undefined) setQuery(next);
+    onValueChange?.(next);
     if (timer.current) clearTimeout(timer.current);
     latest.current += 1;
     const ticket = latest.current;
-    if (value.trim().length < 2) {
+    if (next.trim().length < 2) {
       setMatches([]);
       setStatus("");
       return;
     }
     timer.current = setTimeout(async () => {
       try {
-        const response = await fetch(`/api/coding/search?${new URLSearchParams({ kind, q: value.trim() })}`);
+        const response = await fetch(`/api/coding/search?${new URLSearchParams({ kind, q: next.trim() })}`);
         const payload = (await response.json()) as { matches?: CodeMatch[]; release?: string; message?: string };
         if (ticket !== latest.current) return;
         const found = payload.matches ?? [];
@@ -58,17 +68,20 @@ export function CodeSearch({
   }
 
   return (
-    <div className="mt-3 grid gap-2">
+    <div className={className ?? "mt-3 grid gap-2"}>
       <input
+        id={id}
         className={fieldClass}
-        value={query}
+        value={shown}
         onChange={(event) => search(event.target.value)}
         aria-label={label}
         placeholder={placeholder}
         disabled={disabled}
+        autoComplete="off"
+        spellCheck={false}
       />
       {matches.length ? (
-        <ul className="grid divide-y divide-neutral-200 rounded-[var(--rb-r-md,8px)] border border-neutral-200">
+        <ul className="relative z-20 grid divide-y divide-neutral-200 rounded-[var(--rb-r-md,8px)] border border-neutral-200 bg-white">
           {matches.map((match) => (
             <li key={match.code}>
               <button

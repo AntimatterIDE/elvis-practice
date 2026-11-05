@@ -189,7 +189,7 @@ export async function sendStaffPortalMessageAction(
   return { messages: result.value };
 }
 
-export async function beginPortalUploadAction(input: { slotId: string; contentType: string; byteSize: number }) {
+export async function beginPortalUploadAction(input: { slotId: string; contentType: string; byteSize: number; fileName?: string }) {
   const patientId = await signedInPatient();
   if (!patientId) return { ok: false as const, message: "Sign in required." };
   if (!portalUploadSlot(input.slotId)) return { ok: false as const, message: "Choose a document type." };
@@ -201,6 +201,7 @@ export async function beginPortalUploadAction(input: { slotId: string; contentTy
     slotId: input.slotId,
     contentType: input.contentType,
     byteSize: input.byteSize,
+    fileName: input.fileName,
   });
   if (!prepared.ok) return prepared;
   return { ok: true as const, path: prepared.path, signedUrl: prepared.signedUrl };

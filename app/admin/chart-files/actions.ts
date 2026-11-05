@@ -12,7 +12,13 @@ export async function chartFiles(patientId: string) {
   return listChartFiles(patientId);
 }
 
-export async function beginChartUpload(input: { patientId: string; slotId: string; contentType: string; byteSize: number }) {
+export async function beginChartUpload(input: {
+  patientId: string;
+  slotId: string;
+  contentType: string;
+  byteSize: number;
+  fileName?: string;
+}) {
   if (!(await gate())) return { ok: false as const, message: "Sign in as staff before storing a file." };
   return prepareChartUpload(input);
 }

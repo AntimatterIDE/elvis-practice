@@ -28,6 +28,8 @@ const documentSlots: [string, string][] = [
   ["referral", "Referral or authorization"],
   ["outside-imaging", "Imaging from another office"],
   ["outside-records", "Doctor records"],
+  ["consultation-report", "Consultation report"],
+  ["follow-up-reports", "Follow-up reports"],
   ["no-fault-comp", "No-fault or workers' compensation papers"],
   ["medicare-form", "Medicare form"],
   ["hospital-records", "Hospital or surgery records"],
