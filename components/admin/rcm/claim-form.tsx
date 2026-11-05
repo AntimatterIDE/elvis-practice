@@ -115,6 +115,8 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
     return diagnosesFromEncounter(initialEncounter);
   });
   const [holdReason, setHoldReason] = useState(existing?.holdReason ?? "");
+  const [assignmentOfBenefits, setAssignmentOfBenefits] = useState(existing?.assignmentOfBenefits !== false);
+  const [priorAuthNumber, setPriorAuthNumber] = useState(existing?.priorAuthNumber ?? "");
   const [selectedProcedures, setSelectedProcedures] = useState<string[]>([]);
   const [noteOpen, setNoteOpen] = useState(true);
   const [error, setError] = useState("");
@@ -130,6 +132,8 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
     setPlaceOfService(existing.placeOfService || practice.posCode || "11");
     setClinicalNote(existing.clinicalNote);
     setHoldReason(existing.holdReason ?? "");
+    setAssignmentOfBenefits(existing.assignmentOfBenefits !== false);
+    setPriorAuthNumber(existing.priorAuthNumber ?? "");
     if (existing.lines.length) {
       setLines(
         existing.lines.map((line) => ({
@@ -373,6 +377,8 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
       holdReason: status === "held" ? holdReason.trim() : "",
       source: "manual" as const,
       clinicalNote: clinicalNote.trim(),
+      assignmentOfBenefits,
+      priorAuthNumber: priorAuthNumber.trim(),
     };
     setPending(true);
     setError("");
@@ -474,6 +480,25 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
               <input className={fieldClass} value={placeOfService} onChange={(event) => setPlaceOfService(event.target.value)} />
             </Field>
           </div>
+          <Field label="Prior authorization number">
+            <input
+              className={fieldClass}
+              value={priorAuthNumber}
+              onChange={(event) => setPriorAuthNumber(event.target.value)}
+              placeholder="Leave blank if none"
+            />
+          </Field>
+          <label className="flex items-start gap-2 text-sm">
+            <input
+              type="checkbox"
+              className="mt-1"
+              checked={assignmentOfBenefits}
+              onChange={(event) => setAssignmentOfBenefits(event.target.checked)}
+            />
+            <span>
+              Assignment of benefits — payer pays the practice. Uncheck when the patient already paid and the payer should reimburse the patient.
+            </span>
+          </label>
           {initialEncounter?.status === "approved" ? (
             <p className="text-sm text-muted">
               {initialEncounter.patientLabel || "This visit"} was approved with these diagnosis and procedure codes. The charge fills from the Medicare fee schedule.

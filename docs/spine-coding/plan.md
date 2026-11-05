@@ -157,28 +157,27 @@ These are outside the coder but affect every spine claim. All are in
   licenses). Payers often reject an organization name paired with a type 1
   NPI. Needed: a type 2 clinic NPI on the Practice page (Anas looking up
   2026-10-23), plus an NPPES address update to New York.
-- **Patient state — open (found 2026-10-22).** Free text in demographics and
-  portal intake; new-patient form defaults to `GA` with no address fields.
-  The claim sends `state.slice(0, 2)`, so "New York" becomes `NE`. See
-  section 13.
-- **Assignment of benefits — open (found 2026-10-22).** Hard-coded
-  `planParticipationCode: "A"` and `benefitsAssignmentCertificationIndicator:
-  "Y"`. Wrong for many self-pay / courtesy out-of-network filings. See open
-  question 8.
-- **Eligibility summary — open (found 2026-10-22).** Does not separate
-  in-network vs out-of-network benefits. See section 13.
+- **Patient state — fixed 2026-11-05.** Chart demographics use a two-letter
+  state list. Submit refuses a non-code state. The 837P sends the validated
+  code (no `slice(0, 2)` on free text).
+- **Assignment of benefits — fixed 2026-11-05.** Claim form checkbox maps to
+  `planParticipationCode` / `benefitsAssignmentCertificationIndicator`.
+- **Eligibility summary — fixed 2026-11-05.** Prefers out-of-network benefit
+  amounts when Stedi returns both; summary says which network was used.
 - **Injury claims — open; deferred.** No related-cause code or accident date
   on the 837P. Christina: workers' comp / no-fault are not expected soon
   (phase 4). Chart still stores `InjuryCase`.
-- **Prior authorization — open.** No authorization number field; often
-  required for spine surgery and injections.
+- **Prior authorization — fixed 2026-11-05 (number on claim).** Claim form
+  field sends `claimSupplementalInformation.priorAuthorizationNumber` when
+  set. Full prior-auth tracking workflow remains phase 4.
 - **Place of service — open.** Defaults to `11` (office). Surgeries need
   `22`/`19`, `21`, or `24`.
 - **Corrected claims — open.** `claimFrequencyCode` is always `1`. Replaces
   and voids need `7` / `8` with the payer's claim number.
-- **Claim records — open.** Claims live only in browser `localStorage`
-  (`components/admin/rcm/store.tsx`). Not synced to Supabase. Server only
-  keeps `clearinghouse_transactions` (payer, charge, CPT list).
+- **Claim records — fixed 2026-11-05 (shared desk).** Claims sync to
+  Supabase `claims` (full claim jsonb) so Ready for Bill is visible to every
+  staff login. `clearinghouse_transactions` still stores the thin Stedi
+  submit snapshot.
 
 ## 3. Constraints
 
@@ -839,19 +838,15 @@ Effort is a rough estimate for one engineer.
 5. **OpenAI — answered 2026-10-22.** A BAA is in place, and the note call
    sends `store: false` (phase 0). Still to do: confirm zero data retention
    and that the BAA covers both endpoints in use (section 3).
-6. **Claims storage — open.** A server claims table, or only a fuller
-   submission snapshot?
+6. **Claims storage — done 2026-11-05.** Server `claims` table shares the desk
+   across staff. Fuller clearinghouse snapshot still optional later.
 7. **Charges — answered in part 2026-10-22.** An out-of-network practice
    charges its own fees. Christina says payer fee schedules (Medicare, state
    no-fault, workers' comp) are for in-network doctors and are not needed for
    Dr. Francois. A practice fee list per code would still remove a manual step.
-8. **Assignment of benefits — open (new 2026-10-22).** Every claim says Dr.
-   Francois accepts assignment and the patient assigned benefits to him
-   (`planParticipationCode: "A"`, `benefitsAssignmentCertificationIndicator:
-   "Y"` in `lib/stedi/payload.ts`). That fits a patient who has not paid yet.
-   When a patient who paid privately has the office file for them, the claim
-   should say benefits are not assigned, so the payer reimburses the patient,
-   and should report what the patient paid. Ask Christina which case is normal.
+   (Paul 2026-11-05: Medicare fee fill on the claim form for CPT charges.)
+8. **Assignment of benefits — done 2026-11-05.** Claim form checkbox; default
+   assigns benefits to the practice. Uncheck when the patient already paid.
 
 ## 12. Cleanup from the 2026-10-22 test run
 
@@ -866,26 +861,15 @@ Effort is a rough estimate for one engineer.
 
 Checked against the code the same day. Status per item below.
 
-- **State of residence as a dropdown — not built.** This is also a claim bug.
-  The state is free text in chart demographics and in the portal intake form,
-  and the new-patient form has no address fields but saves every patient with
-  state `GA`. The claim sends the first two letters, so "New York" goes out as
-  `NE` and an unedited new patient goes out as Georgia. Use a two-letter state
-  list, and refuse a claim whose state is not a valid code.
-- **Diagnosis codes from a list — claim form done 2026-10-22 (evening).** The
-  claim form uses the same CMS search as the visit desk for diagnoses and
-  procedures, with claim-level diagnoses and per-line checkboxes. Ready for
-  bill calls `/api/coding/check` (same library checks as submission). The
-  chart's problem list ICD box is still free text.
-- **Physician notes in the chart — not built (workaround exists).** For now:
-  patient chart → Files → "Add an item", name it "Physician notes", then
-  upload. That takes a PDF, photo, or video, so a Word report must be saved as
-  PDF first. To build: a standing "Physician notes" item in
-  `defaultDocuments()` (`lib/rcm/chart.ts`).
-- **Eligibility for out-of-network benefits — not built.** The check exists
-  (Eligibility page), but `summarizeEligibility` (`lib/stedi/parse.ts`) takes
-  the first copay, coinsurance, and deductible in the response and never reads
-  the in-network or out-of-network flag. For this practice it can show
-  in-network amounts and cannot say whether the plan pays out of network at
-  all. The request already names "The Alignment Clinic"; once a type 2 clinic
-  NPI is on the Practice page, eligibility and claims will both use it.
+- **State of residence as a dropdown — done 2026-11-05 (chart).** Demographics
+  use the two-letter list; submit refuses invalid codes. Portal intake field
+  typing can still be tightened later.
+- **Diagnosis codes from a list — claim form done 2026-10-22 (evening); chart
+  problem ICD done 2026-11-05.** Problem list uses CMS diagnosis search.
+- **Physician notes in the chart — done 2026-11-05.** Standing "Physician
+  notes" slot in `defaultDocuments()` (`lib/rcm/chart.ts`). Word still needs
+  PDF/photo/video upload.
+- **Eligibility for out-of-network benefits — done 2026-11-05.** Summary
+  prefers OON amounts when present and says when only in-network was returned.
+  Type 2 clinic NPI on the Practice page is still needed for enrollment
+  identity.

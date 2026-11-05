@@ -1,9 +1,10 @@
 "use client";
 
 import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
-import { applyPrimaryCoverage, emptyVitals, normalizeAppointment, normalizeLine, normalizePatient, normalizeState, withChart } from "@/lib/rcm/chart";
+import { applyPrimaryCoverage, emptyVitals, normalizeAppointment, normalizeClaim, normalizeLine, normalizePatient, normalizeState, withChart } from "@/lib/rcm/chart";
 import { invoicesFromClaims } from "@/lib/portal/invoices";
 import type { PortalInvoice } from "@/lib/portal/types";
+import { mergeClaimsByUpdatedAt } from "@/lib/rcm/claims-merge";
 import { STORAGE_KEY, createSeedState } from "@/lib/rcm/seed";
 import type {
   Appointment,
@@ -47,11 +48,13 @@ const portalListeners = new Set<
 >();
 const removedAppointmentIds = new Set<string>();
 const removalListeners = new Set<(ids: string[]) => void>();
+const claimsListeners = new Set<(claims: Claim[]) => void>();
 let clientState: RcmState | null = null;
 let published: DeskSnapshot | null = null;
 let rosterReady = false;
 let syncError = "";
 let portalReady = false;
+let claimsReady = false;
 let portalIds = new Set<string>();
 let pushChain: Promise<void> = Promise.resolve();
 
@@ -114,6 +117,12 @@ function notifyPortalPush() {
   for (const listener of portalListeners) listener(snap);
 }
 
+function notifyClaimsPush() {
+  if (!clientState || !claimsReady) return;
+  const claims = clientState.claims ?? [];
+  for (const listener of claimsListeners) listener(claims);
+}
+
 function withoutRoster(next: RcmState) {
   if (!("rosterReady" in next)) return next;
   const rest = { ...next };
@@ -127,15 +136,18 @@ function commit(next: RcmState, mode: "local" | "merge" = "local") {
   clientState = rest;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(rest));
   emit();
-  if (mode !== "local" || !portalReady || !previous) return;
-  const removed = previous.patients
-    .filter((patient) => portalIds.has(patient.id) && !rest.patients.some((item) => item.id === patient.id))
-    .map((patient) => patient.id);
-  for (const id of removed) portalIds.delete(id);
-  if (removed.length) {
-    for (const listener of removalListeners) listener(removed);
+  if (mode !== "local" || !previous) return;
+  if (portalReady) {
+    const removed = previous.patients
+      .filter((patient) => portalIds.has(patient.id) && !rest.patients.some((item) => item.id === patient.id))
+      .map((patient) => patient.id);
+    for (const id of removed) portalIds.delete(id);
+    if (removed.length) {
+      for (const listener of removalListeners) listener(removed);
+    }
+    notifyPortalPush();
   }
-  notifyPortalPush();
+  notifyClaimsPush();
 }
 
 export function subscribePortalRemoval(listener: (ids: string[]) => void) {
@@ -173,6 +185,30 @@ export function markRosterReady() {
 export function notePortalPatient(id: string) {
   portalIds.add(id);
   portalReady = true;
+}
+
+export function subscribeClaimsPush(listener: (claims: Claim[]) => void) {
+  claimsListeners.add(listener);
+  return () => {
+    claimsListeners.delete(listener);
+  };
+}
+
+export function markClaimsReady() {
+  ensureClient();
+  if (claimsReady) return;
+  claimsReady = true;
+  emit();
+}
+
+/** Merge server claims into the desk. Returns local claims that still need an upsert. */
+export function mergeRemoteClaims(remote: Claim[]) {
+  ensureClient();
+  const current = clientState!;
+  const { claims, needsUpsert } = mergeClaimsByUpdatedAt(current.claims ?? [], remote);
+  claimsReady = true;
+  commit({ ...current, claims }, "merge");
+  return needsUpsert;
 }
 
 export function mergePortalRoster(patients: Patient[], appointments: Appointment[]) {
@@ -318,6 +354,8 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
           events: [],
           clinicalNote: input.clinicalNote ?? "",
           attachments: [],
+          assignmentOfBenefits: input.assignmentOfBenefits !== false,
+          priorAuthNumber: input.priorAuthNumber?.trim() ?? "",
           createdAt: now,
           updatedAt: now,
         };

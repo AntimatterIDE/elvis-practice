@@ -35,22 +35,55 @@ export function summarizeEligibility(body: unknown): BenefitSummary {
   let deductibleRemaining: number | null = null;
   let mentionsAuthorization = false;
   let active: boolean | null = null;
+  let sawOutOfNetwork = false;
+  let sawInNetwork = false;
+
+  function networkRank(item: Record<string, unknown>) {
+    const raw = String(item.inPlanNetworkIndicator ?? item.inNetworkIndicator ?? item.networkIndicator ?? "").toUpperCase();
+    if (raw === "N" || /out.?of.?network/i.test(String(item.name ?? ""))) return "out";
+    if (raw === "Y" || /in.?network/i.test(String(item.name ?? ""))) return "in";
+    return "unknown";
+  }
+
+  function takeAmount(current: number | null, next: number | null, network: "out" | "in" | "unknown", preferredTaken: boolean) {
+    if (next == null) return { value: current, preferredTaken };
+    if (network === "out") return { value: next, preferredTaken: true };
+    if (preferredTaken) return { value: current, preferredTaken };
+    if (current == null) return { value: next, preferredTaken: false };
+    return { value: current, preferredTaken };
+  }
+
+  let preferredCopay = false;
+  let preferredCoins = false;
+  let preferredDeductible = false;
   for (const benefit of benefits) {
     const item = asRecord(benefit);
     if (!item) continue;
     const code = String(item.code ?? "");
     const name = String(item.name ?? "");
+    const network = networkRank(item);
+    if (network === "out") sawOutOfNetwork = true;
+    if (network === "in") sawInNetwork = true;
     if (code === "1" || /active coverage/i.test(name)) active = true;
     if (code === "6" || /inactive/i.test(name)) active = false;
     if (item.authOrCertIndicator === "Y") mentionsAuthorization = true;
-    const value = amount(item.benefitAmount) ?? amount(item.benefitPercent);
-    if (code === "B" && copay == null) copay = amount(item.benefitAmount);
-    if (code === "A" && coinsurance == null) {
-      const percent = amount(item.benefitPercent);
-      coinsurance = percent == null ? null : percent <= 1 ? percent * 100 : percent;
+    if (code === "B") {
+      const taken = takeAmount(copay, amount(item.benefitAmount), network, preferredCopay);
+      copay = taken.value;
+      preferredCopay = taken.preferredTaken;
     }
-    if (code === "C" && deductibleRemaining == null) deductibleRemaining = amount(item.benefitAmount);
-    if (value == null && code === "D") deductibleRemaining = deductibleRemaining ?? amount(item.benefitAmount);
+    if (code === "A") {
+      const percent = amount(item.benefitPercent);
+      const coins = percent == null ? null : percent <= 1 ? percent * 100 : percent;
+      const taken = takeAmount(coinsurance, coins, network, preferredCoins);
+      coinsurance = taken.value;
+      preferredCoins = taken.preferredTaken;
+    }
+    if (code === "C" || code === "D") {
+      const taken = takeAmount(deductibleRemaining, amount(item.benefitAmount), network, preferredDeductible);
+      deductibleRemaining = taken.value;
+      preferredDeductible = taken.preferredTaken;
+    }
   }
   const planStatus = Array.isArray(record.planStatus) ? record.planStatus : [];
   for (const plan of planStatus) {
@@ -68,7 +101,12 @@ export function summarizeEligibility(body: unknown): BenefitSummary {
     deductibleRemaining == null ? "deductible unknown" : null,
   ].filter(Boolean);
   const state = active == null ? "Coverage status unknown" : active ? "Coverage active" : "Coverage inactive";
-  const summary = [state, missing.join(", "), mentionsAuthorization ? "The response mentions authorization. That is not an approval." : ""]
+  const networkNote = sawOutOfNetwork
+    ? "Amounts shown prefer out-of-network benefits."
+    : sawInNetwork
+      ? "Only in-network amounts were returned. Out-of-network benefits were not listed."
+      : "";
+  const summary = [state, missing.join(", "), networkNote, mentionsAuthorization ? "The response mentions authorization. That is not an approval." : ""]
     .filter(Boolean)
     .join(". ");
   return { active, copay, coinsurance, deductibleRemaining, summary, mentionsAuthorization };

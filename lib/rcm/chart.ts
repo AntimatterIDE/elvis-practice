@@ -30,6 +30,7 @@ const documentSlots: [string, string][] = [
   ["outside-records", "Doctor records"],
   ["consultation-report", "Consultation report"],
   ["follow-up-reports", "Follow-up reports"],
+  ["physician-notes", "Physician notes"],
   ["no-fault-comp", "No-fault or workers' compensation papers"],
   ["medicare-form", "Medicare form"],
   ["hospital-records", "Hospital or surgery records"],
@@ -221,6 +222,8 @@ export function normalizeClaim(claim: Claim): Claim {
     idempotencyKey: stored.idempotencyKey || claim.id,
     clinicalNote: typeof stored.clinicalNote === "string" ? stored.clinicalNote : "",
     attachments: Array.isArray(stored.attachments) ? stored.attachments : [],
+    assignmentOfBenefits: stored.assignmentOfBenefits !== false,
+    priorAuthNumber: typeof stored.priorAuthNumber === "string" ? stored.priorAuthNumber.trim() : "",
   };
 }
 

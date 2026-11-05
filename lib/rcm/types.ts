@@ -229,6 +229,9 @@ export type Claim = {
   remitOutcome?: RemitOutcome;
   clinicalNote: string;
   attachments: ClaimAttachment[];
+  /** When true, payer pays the practice. When false, payer pays the patient. */
+  assignmentOfBenefits?: boolean;
+  priorAuthNumber?: string;
 };
 
 export type ServiceLineInput = {
@@ -261,6 +264,8 @@ export type ClaimInput = {
   demoScenario?: DemoScenario;
   idempotencyKey?: string;
   clinicalNote?: string;
+  assignmentOfBenefits?: boolean;
+  priorAuthNumber?: string;
 };
 
 export type Vitals = {

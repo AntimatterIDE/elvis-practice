@@ -325,6 +325,30 @@ export type Database = {
           snapshot?: Json;
         }
       >;
+      claims: Table<
+        {
+          id: string;
+          patient_id: string;
+          status: string;
+          claim: Json;
+          created_at: string;
+          updated_at: string;
+        },
+        {
+          id: string;
+          patient_id?: string;
+          status?: string;
+          claim: Json;
+          created_at?: string;
+          updated_at?: string;
+        },
+        {
+          patient_id?: string;
+          status?: string;
+          claim?: Json;
+          updated_at?: string;
+        }
+      >;
       articles: Table<
         {
           id: string;

@@ -89,6 +89,28 @@ describe("production claims", () => {
     expect(blank.some((problem) => problem.includes("demo member"))).toBe(true);
   });
 
+  it("refuses a free-text state that is not a two-letter code", () => {
+    const problems = productionClaimProblems({
+      ...ready,
+      patient: { ...ready.patient, state: "New York" },
+    });
+    expect(problems.some((problem) => problem.includes("two-letter state"))).toBe(true);
+    expect(buildProfessionalClaim(ready).body.subscriber.address.state).toBe("NY");
+  });
+
+  it("maps assignment of benefits and prior auth onto the 837P", () => {
+    const assigned = buildProfessionalClaim({ ...ready, assignmentOfBenefits: true, priorAuthNumber: "AUTH-99" });
+    expect(assigned.body.claimInformation.planParticipationCode).toBe("A");
+    expect(assigned.body.claimInformation.benefitsAssignmentCertificationIndicator).toBe("Y");
+    expect(assigned.body.claimInformation.claimSupplementalInformation).toEqual({
+      priorAuthorizationNumber: "AUTH-99",
+    });
+    const patientPaid = buildProfessionalClaim({ ...ready, assignmentOfBenefits: false });
+    expect(patientPaid.body.claimInformation.planParticipationCode).toBe("C");
+    expect(patientPaid.body.claimInformation.benefitsAssignmentCertificationIndicator).toBe("N");
+    expect(patientPaid.body.claimInformation).not.toHaveProperty("claimSupplementalInformation");
+  });
+
   it("sends the payer type the biller chose and refuses a claim without one", () => {
     expect(claimContentProblems(ready)).toEqual([]);
     expect(buildProfessionalClaim({ ...ready, filingCode: "MB" }).body.claimInformation.claimFilingCode).toBe("MB");
@@ -149,5 +171,21 @@ describe("eligibility summary", () => {
     expect(summary.active).toBe(true);
     expect(summary.copay).toBeNull();
     expect(summary.summary).toContain("copay unknown");
+  });
+
+  it("prefers out-of-network benefit amounts for this practice", () => {
+    const summary = summarizeEligibility({
+      planStatus: [{ status: "Active Coverage" }],
+      benefitsInformation: [
+        { code: "1", name: "Active Coverage" },
+        { code: "B", benefitAmount: "20", inPlanNetworkIndicator: "Y" },
+        { code: "B", benefitAmount: "45", inPlanNetworkIndicator: "N" },
+        { code: "A", benefitPercent: "0.2", inPlanNetworkIndicator: "Y" },
+        { code: "A", benefitPercent: "0.4", inPlanNetworkIndicator: "N" },
+      ],
+    });
+    expect(summary.copay).toBe(45);
+    expect(summary.coinsurance).toBe(40);
+    expect(summary.summary).toContain("out-of-network");
   });
 });

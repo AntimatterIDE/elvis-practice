@@ -4,8 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { CodeSearch } from "@/components/admin/code-search";
 import { ageFromDob, chartGaps, emptyInjuryCase, primaryCoverage, visitTypeLabel } from "@/lib/rcm/chart";
 import { claimTotal, formatClinicDay, formatDay, formatTime, formatWhen, money, patientName } from "@/lib/rcm/format";
+import { US_STATES } from "@/lib/rcm/us-states";
 import type {
   Allergy,
   Appointment,
@@ -391,7 +393,14 @@ function Demographics({
         <input className={fieldClass} value={form.city} onChange={(event) => update("city", event.target.value)} />
       </Field>
       <Field label="State">
-        <input className={fieldClass} value={form.state} onChange={(event) => update("state", event.target.value)} />
+        <select className={fieldClass} value={form.state} onChange={(event) => update("state", event.target.value)}>
+          <option value="">Choose state</option>
+          {US_STATES.map((row) => (
+            <option key={row.code} value={row.code}>
+              {row.code} — {row.name}
+            </option>
+          ))}
+        </select>
       </Field>
       <Field label="Postal code">
         <input className={fieldClass} value={form.postalCode} onChange={(event) => update("postalCode", event.target.value)} />
@@ -818,18 +827,22 @@ function Clinical({ patient, onSave }: { patient: Patient; onSave: (id: string, 
                   }}
                 />
               </Field>
-              <Field label="ICD">
-                <input
-                  className={fieldClass}
-                  defaultValue={item.icd}
-                  aria-label={`ICD for ${item.name || "problem"}`}
-                  onBlur={(event) => {
-                    const icd = event.target.value;
-                    if (icd === item.icd) return;
-                    save({ problems: patient.problems.map((row) => (row.id === item.id ? { ...row, icd } : row)) });
+              <div className="grid gap-1">
+                <p className="text-sm text-muted">{item.icd ? `ICD ${item.icd}` : "No ICD yet"}</p>
+                <CodeSearch
+                  kind="diagnosis"
+                  label={`ICD for ${item.name || "problem"}`}
+                  placeholder="Search ICD-10"
+                  disabled={false}
+                  onPick={(match) => {
+                    save({
+                      problems: patient.problems.map((row) =>
+                        row.id === item.id ? { ...row, icd: match.code, name: row.name || match.description } : row,
+                      ),
+                    });
                   }}
                 />
-              </Field>
+              </div>
               <Field label="Status">
                 <select
                   className={fieldClass}

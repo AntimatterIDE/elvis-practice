@@ -23,7 +23,7 @@ const emptyForm: PatientInput = {
   email: "",
   address: "",
   city: "",
-  state: "GA",
+  state: "",
   postalCode: "",
 };
 

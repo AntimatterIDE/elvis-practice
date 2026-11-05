@@ -13,6 +13,8 @@ export function claimSubmissionInput(claim: Claim, patient: Patient, practice: P
     filingCode: claim.filingCode,
     dateOfService: claim.dateOfService,
     placeOfService: claim.placeOfService,
+    assignmentOfBenefits: claim.assignmentOfBenefits !== false,
+    priorAuthNumber: claim.priorAuthNumber?.trim() || undefined,
     patient: {
       firstName: patient.firstName,
       lastName: patient.lastName,

@@ -1,4 +1,5 @@
 import { claimLineProblems, diagnosisKey, isFilingCode } from "@/lib/rcm/claim-rules";
+import { isUsStateCode } from "@/lib/rcm/us-states";
 import type { PracticeProfile, Sex } from "@/lib/rcm/types";
 
 export type SubmissionLine = {
@@ -22,6 +23,8 @@ export type ClaimSubmissionInput = {
   filingCode?: string;
   dateOfService: string;
   placeOfService: string;
+  assignmentOfBenefits?: boolean;
+  priorAuthNumber?: string;
   patient: {
     firstName: string;
     lastName: string;
@@ -63,8 +66,11 @@ export function productionClaimProblems(input: ClaimSubmissionInput) {
   if (npi.length !== 10 || npi === TEST_NPI) problems.push("Enter the practice NPI on the Practice page before submitting.");
   if (taxId.length !== 9 || taxId === TEST_TAX_ID) problems.push("Enter the practice tax id on the Practice page before submitting.");
   if (!splitAddress(input.practice.address)) problems.push("Enter the practice address as street, city, ST ZIP.");
-  if (!input.patient.address.trim() || !input.patient.city.trim() || input.patient.state.trim().length < 2 || input.patient.postalCode.replace(/\D/g, "").length < 5) {
+  if (!input.patient.address.trim() || !input.patient.city.trim() || input.patient.postalCode.replace(/\D/g, "").length < 5) {
     problems.push("The patient needs a street, city, state, and ZIP before a claim is submitted.");
+  }
+  if (!isUsStateCode(input.patient.state)) {
+    problems.push("Choose a two-letter state on the patient chart before submitting.");
   }
   if (!input.patient.memberId.trim() || input.patient.memberId.startsWith("STEDI")) {
     problems.push("Enter the patient’s real member id. A demo member id was not sent.");
@@ -159,7 +165,7 @@ export function buildProfessionalClaim(input: ClaimSubmissionInput) {
         address: {
           address1: input.patient.address,
           city: input.patient.city,
-          state: input.patient.state.slice(0, 2).toUpperCase(),
+          state: input.patient.state.trim().toUpperCase(),
           postalCode: postal(input.patient.postalCode),
         },
       },
@@ -184,9 +190,16 @@ export function buildProfessionalClaim(input: ClaimSubmissionInput) {
         placeOfServiceCode: input.placeOfService || "11",
         claimFrequencyCode: "1",
         signatureIndicator: "Y",
-        planParticipationCode: "A",
-        benefitsAssignmentCertificationIndicator: "Y",
+        planParticipationCode: input.assignmentOfBenefits === false ? "C" : "A",
+        benefitsAssignmentCertificationIndicator: input.assignmentOfBenefits === false ? "N" : "Y",
         releaseInformationCode: "Y",
+        ...(input.priorAuthNumber?.trim()
+          ? {
+              claimSupplementalInformation: {
+                priorAuthorizationNumber: input.priorAuthNumber.trim().slice(0, 50),
+              },
+            }
+          : {}),
         healthCareCodeInformation: diagnoses.map((code, index) => ({
           diagnosisTypeCode: index === 0 ? "ABK" : "ABF",
           diagnosisCode: code,
