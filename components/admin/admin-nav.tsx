@@ -27,6 +27,7 @@ const practiceLinks = [
   ["/admin/operations/tasks", "Tasks"],
   ["/admin/operations/people", "People"],
   ["/admin/operations/practice", "Practice"],
+  ["/admin/operations/compliance", "Compliance"],
 ] as const;
 
 const billingLinks = [
