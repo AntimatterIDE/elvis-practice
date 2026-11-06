@@ -9,6 +9,7 @@ import { ageFromDob, chartGaps, withChart } from "@/lib/rcm/chart";
 import { formatDay, formatTime, patientName } from "@/lib/rcm/format";
 import type { Patient, PatientInput, Sex } from "@/lib/rcm/types";
 import { MemberCard } from "@/components/admin/bits/surface";
+import { OutsideRecordsImport } from "@/components/admin/rcm/outside-records-import";
 import { Field, LoadingDesk, PageHeader, fieldClass, panelClass, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -110,44 +111,47 @@ export function PatientsDesk() {
         </p>
       ) : null}
       <div className="mt-8 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <section>
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search name, date of birth, phone, or MRN"
-            className={fieldClass}
-            aria-label="Search patients"
-          />
-          <ul className="mt-4 grid gap-4 sm:grid-cols-2">
-            {rows.length === 0 ? (
-              <li className="px-4 py-5 text-sm text-neutral-500">{query.trim() ? "No charts match that search." : "No charts yet. Send an intake link, or add a walk-in."}</li>
-            ) : null}
-            {rows.map((patient) => {
-              const upcoming = appointments
-                .filter(
-                  (appointment) =>
-                    appointment.patientId === patient.id &&
-                    appointment.status !== "cancelled" &&
-                    appointment.start.slice(0, 10) >= today,
-                )
-                .sort((a, b) => a.start.localeCompare(b.start))[0];
-              const gaps = chartGaps(patient);
-              const age = ageFromDob(patient.dateOfBirth, today);
-              const initials = `${patient.firstName.slice(0, 1)}${patient.lastName.slice(0, 1)}`.toUpperCase();
-              return (
-                <MemberCard
-                  key={patient.id}
-                  href={`/admin/operations/patients/${patient.id}`}
-                  initials={initials}
-                  name={patientName(patient)}
-                  meta={`MRN ${patient.mrn || "new"} · ${patient.phone || "No phone"}`}
-                  note={`${formatDay(patient.dateOfBirth)}${age !== null ? ` · ${age} yrs` : ""} · ${upcoming ? `Next ${formatDay(upcoming.start)} ${formatTime(upcoming.start)}` : "No visit booked"}`}
-                  live={gaps.length === 0}
-                />
-              );
-            })}
-          </ul>
-        </section>
+        <div className="grid gap-6">
+          <section>
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search name, date of birth, phone, or MRN"
+              className={fieldClass}
+              aria-label="Search patients"
+            />
+            <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+              {rows.length === 0 ? (
+                <li className="px-4 py-5 text-sm text-neutral-500">{query.trim() ? "No charts match that search." : "No charts yet. Send an intake link, or add a walk-in."}</li>
+              ) : null}
+              {rows.map((patient) => {
+                const upcoming = appointments
+                  .filter(
+                    (appointment) =>
+                      appointment.patientId === patient.id &&
+                      appointment.status !== "cancelled" &&
+                      appointment.start.slice(0, 10) >= today,
+                  )
+                  .sort((a, b) => a.start.localeCompare(b.start))[0];
+                const gaps = chartGaps(patient);
+                const age = ageFromDob(patient.dateOfBirth, today);
+                const initials = `${patient.firstName.slice(0, 1)}${patient.lastName.slice(0, 1)}`.toUpperCase();
+                return (
+                  <MemberCard
+                    key={patient.id}
+                    href={`/admin/operations/patients/${patient.id}`}
+                    initials={initials}
+                    name={patientName(patient)}
+                    meta={`MRN ${patient.mrn || "new"} · ${patient.phone || "No phone"}`}
+                    note={`${formatDay(patient.dateOfBirth)}${age !== null ? ` · ${age} yrs` : ""} · ${upcoming ? `Next ${formatDay(upcoming.start)} ${formatTime(upcoming.start)}` : "No visit booked"}`}
+                    live={gaps.length === 0}
+                  />
+                );
+              })}
+            </ul>
+          </section>
+          <OutsideRecordsImport />
+        </div>
         <form onSubmit={onSubmit} className={`${panelClass} grid h-fit gap-4`}>
           <div>
             <h2 className="font-display text-2xl tracking-tight">Walk-in chart</h2>

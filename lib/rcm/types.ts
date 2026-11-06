@@ -146,6 +146,8 @@ export type Patient = PatientRegistration & {
   cases: InjuryCase[];
   intakeAnswers?: { label: string; value: string }[];
   accountNotes: AccountNote[];
+  /** SHA-256 fingerprints of outside-records files already imported (dedupe). */
+  ocrImportHashes?: string[];
 };
 
 export type AccountNote = {

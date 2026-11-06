@@ -164,6 +164,9 @@ export function normalizePatient(patient: Patient): Patient {
     cases: (Array.isArray(next.cases) ? next.cases : []).map(normalizeCase).filter((item): item is InjuryCase => item !== null),
     intakeAnswers: next.intakeAnswers ?? [],
     accountNotes: next.accountNotes ?? [],
+    ocrImportHashes: Array.isArray(next.ocrImportHashes)
+      ? next.ocrImportHashes.filter((item): item is string => typeof item === "string" && /^[a-f0-9]{64}$/i.test(item))
+      : [],
   };
 }
 
@@ -281,6 +284,21 @@ export function chartGaps(patient: Patient) {
   }
   return gaps;
 }
+
+/**
+ * OCR onboard gap policy (staff-confirmed drafts only):
+ * - May clear: Photo ID / Insurance card / Doctor records / Imaging / No-fault slots
+ *   when those files were uploaded and confirmed (see applyOnboardDocumentHints).
+ * - Never auto-clears: New patient intake (still needs portal/intake answers).
+ * - Never invents: Stedi tradingPartnerId; claim submit still requires payer search.
+ */
+export const ocrOnboardClearsDocumentSlots = [
+  "outside-records",
+  "photo-id",
+  "insurance-card",
+  "no-fault-comp",
+  "outside-imaging",
+] as const;
 
 export function ageFromDob(dob: string, today = DEMO_CLINIC_DAY) {
   const birth = new Date(`${dob}T12:00:00`);
