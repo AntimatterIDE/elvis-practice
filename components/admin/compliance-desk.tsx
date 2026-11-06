@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { askComplianceAssistant, reviseBaaDraft } from "@/app/admin/compliance/actions";
+import { loadComplianceDeskAction, upsertComplianceDeskAction } from "@/app/admin/desk/actions";
 import { PageHeader, fieldClass, panelClass } from "@/components/admin/rcm/ui";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,9 +30,10 @@ type Saved = {
   checked: string[];
   drafts: Record<string, string>;
   messages: Turn[];
+  updatedAt?: string;
 };
 
-const emptySaved: Saved = { checked: [], drafts: {}, messages: [] };
+const emptySaved: Saved = { checked: [], drafts: {}, messages: [], updatedAt: "" };
 
 function readSaved(): Saved {
   try {
@@ -145,7 +147,7 @@ function AgreementDraft({
         <Button type="button" variant="secondary" onClick={() => setOpen((current) => !current)}>
           {open ? "Hide agreement" : body ? "Open agreement" : "Draft agreement"}
         </Button>
-        {body ? <span className="text-xs text-oxide">Draft in this browser</span> : null}
+        {body ? <span className="text-xs text-oxide">Draft saved for the practice</span> : null}
       </div>
       {open ? (
         <div className="mt-4 grid gap-3">
@@ -206,38 +208,74 @@ export function ComplianceDesk() {
   const [assistantNote, setAssistantNote] = useState("");
 
   useEffect(() => {
-    setSaved(readSaved());
-    setHydrated(true);
+    let cancel = false;
+    async function hydrate() {
+      const local = readSaved();
+      const remote = await loadComplianceDeskAction();
+      if (cancel) return;
+      if (remote.ok && remote.payload) {
+        const remoteStamp = remote.payload.updatedAt || "";
+        const localStamp = local.updatedAt || "";
+        setSaved(remoteStamp >= localStamp ? { ...remote.payload, updatedAt: remoteStamp } : local);
+      } else {
+        setSaved(local);
+      }
+      setHydrated(true);
+    }
+    void hydrate();
+    return () => {
+      cancel = true;
+    };
   }, []);
 
   useEffect(() => {
     if (!hydrated) return;
-    localStorage.setItem(storageKey, JSON.stringify(saved));
+    const stamp = saved.updatedAt || new Date().toISOString();
+    const next = { ...saved, updatedAt: stamp };
+    localStorage.setItem(storageKey, JSON.stringify(next));
+    const timer = setTimeout(() => {
+      void upsertComplianceDeskAction({
+        checked: next.checked,
+        drafts: next.drafts,
+        messages: next.messages,
+        updatedAt: stamp,
+      });
+    }, 400);
+    return () => clearTimeout(timer);
   }, [hydrated, saved]);
 
   function toggle(id: string) {
     setSaved((current) => ({
       ...current,
+      updatedAt: new Date().toISOString(),
       checked: current.checked.includes(id) ? current.checked.filter((item) => item !== id) : [...current.checked, id],
     }));
   }
 
   function setDraft(id: string, body: string) {
-    setSaved((current) => ({ ...current, drafts: { ...current.drafts, [id]: body } }));
+    setSaved((current) => ({
+      ...current,
+      updatedAt: new Date().toISOString(),
+      drafts: { ...current.drafts, [id]: body },
+    }));
   }
 
   async function ask(text: string) {
     const content = text.trim();
     if (!content || asking) return;
     const messages = [...saved.messages, { role: "user" as const, content }];
-    setSaved((current) => ({ ...current, messages }));
+    setSaved((current) => ({ ...current, messages, updatedAt: new Date().toISOString() }));
     setQuestion("");
     setAssistantNote("");
     setAsking(true);
     const result = await askComplianceAssistant({ messages, checked: saved.checked });
     setAsking(false);
     if ("reply" in result && result.reply) {
-      setSaved((current) => ({ ...current, messages: [...current.messages, { role: "assistant", content: result.reply }] }));
+      setSaved((current) => ({
+        ...current,
+        updatedAt: new Date().toISOString(),
+        messages: [...current.messages, { role: "assistant", content: result.reply }],
+      }));
       return;
     }
     setAssistantNote("message" in result && result.message ? result.message : "The assistant did not answer.");

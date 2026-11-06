@@ -5,6 +5,7 @@ import { applyPrimaryCoverage, emptyVitals, normalizeAppointment, normalizeClaim
 import { invoicesFromClaims } from "@/lib/portal/invoices";
 import type { PortalInvoice } from "@/lib/portal/types";
 import { mergeClaimsByUpdatedAt } from "@/lib/rcm/claims-merge";
+import { deskFromState, mergePracticeDesk, normalizePractice } from "@/lib/rcm/desk-merge";
 import { STORAGE_KEY, createSeedState } from "@/lib/rcm/seed";
 import type {
   Appointment,
@@ -14,6 +15,7 @@ import type {
   EligibilityResult,
   Patient,
   PatientInput,
+  PracticeDeskSnapshot,
   PracticeProfile,
   PracticeTask,
   RcmState,
@@ -49,12 +51,14 @@ const portalListeners = new Set<
 const removedAppointmentIds = new Set<string>();
 const removalListeners = new Set<(ids: string[]) => void>();
 const claimsListeners = new Set<(claims: Claim[]) => void>();
+const deskListeners = new Set<(desk: PracticeDeskSnapshot) => void>();
 let clientState: RcmState | null = null;
 let published: DeskSnapshot | null = null;
 let rosterReady = false;
 let syncError = "";
 let portalReady = false;
 let claimsReady = false;
+let deskReady = false;
 let portalIds = new Set<string>();
 let pushChain: Promise<void> = Promise.resolve();
 
@@ -123,6 +127,12 @@ function notifyClaimsPush() {
   for (const listener of claimsListeners) listener(claims);
 }
 
+function notifyDeskPush() {
+  if (!clientState || !deskReady) return;
+  const desk = deskFromState(clientState.practice, clientState.tasks ?? [], clientState.eligibility ?? []);
+  for (const listener of deskListeners) listener(desk);
+}
+
 function withoutRoster(next: RcmState) {
   if (!("rosterReady" in next)) return next;
   const rest = { ...next };
@@ -148,6 +158,7 @@ function commit(next: RcmState, mode: "local" | "merge" = "local") {
     notifyPortalPush();
   }
   notifyClaimsPush();
+  notifyDeskPush();
 }
 
 export function subscribePortalRemoval(listener: (ids: string[]) => void) {
@@ -209,6 +220,39 @@ export function mergeRemoteClaims(remote: Claim[]) {
   claimsReady = true;
   commit({ ...current, claims }, "merge");
   return needsUpsert;
+}
+
+export function subscribeDeskPush(listener: (desk: PracticeDeskSnapshot) => void) {
+  deskListeners.add(listener);
+  return () => {
+    deskListeners.delete(listener);
+  };
+}
+
+export function markDeskReady() {
+  ensureClient();
+  if (deskReady) return;
+  deskReady = true;
+  emit();
+}
+
+/** Merge server practice desk into local state. Returns true when a cloud upsert is still needed. */
+export function mergeRemoteDesk(remote: PracticeDeskSnapshot | null) {
+  ensureClient();
+  const current = clientState!;
+  const local = deskFromState(current.practice, current.tasks ?? [], current.eligibility ?? []);
+  const { desk, needsUpsert } = mergePracticeDesk(local, remote);
+  deskReady = true;
+  commit(
+    {
+      ...current,
+      practice: normalizePractice(desk.practice),
+      tasks: desk.tasks,
+      eligibility: desk.eligibility,
+    },
+    "merge",
+  );
+  return needsUpsert ? desk : null;
 }
 
 export function mergePortalRoster(patients: Patient[], appointments: Appointment[]) {
@@ -318,16 +362,18 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
         });
       },
       addTask: (input) => {
-        const task: PracticeTask = { ...input, id: nid("t"), status: "open" };
+        const now = new Date().toISOString();
+        const task: PracticeTask = { ...input, id: nid("t"), status: "open", updatedAt: now };
         const current = getSnapshot();
         commit({ ...current, tasks: [task, ...current.tasks] });
         return task;
       },
       setTaskStatus: (id, status) => {
         const current = getSnapshot();
+        const now = new Date().toISOString();
         commit({
           ...current,
-          tasks: current.tasks.map((task) => (task.id === id ? { ...task, status } : task)),
+          tasks: current.tasks.map((task) => (task.id === id ? { ...task, status, updatedAt: now } : task)),
         });
       },
       addClaim: (input) => {
@@ -424,7 +470,14 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
       },
       updatePractice: (patch) => {
         const current = getSnapshot();
-        commit({ ...current, practice: { ...current.practice, ...patch } });
+        commit({
+          ...current,
+          practice: normalizePractice({
+            ...current.practice,
+            ...patch,
+            updatedAt: new Date().toISOString(),
+          }),
+        });
       },
     };
   }, [state]);

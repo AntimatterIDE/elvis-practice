@@ -838,8 +838,10 @@ Effort is a rough estimate for one engineer.
 5. **OpenAI — answered 2026-10-22.** A BAA is in place, and the note call
    sends `store: false` (phase 0). Still to do: confirm zero data retention
    and that the BAA covers both endpoints in use (section 3).
-6. **Claims storage — done 2026-11-05.** Server `claims` table shares the desk
-   across staff. Fuller clearinghouse snapshot still optional later.
+6. **Claims + practice desk storage — done 2026-11-05 / 2026-11-06.** Server
+   `claims` and `practice_desk` (profile, tasks, eligibility) + `compliance_desk`
+   share across staff. localStorage is only a cache. Portal charts/appointments
+   already sync via PortalBridge. Fuller clearinghouse snapshot still optional.
 7. **Charges — answered in part 2026-10-22.** An out-of-network practice
    charges its own fees. Christina says payer fee schedules (Medicare, state
    no-fault, workers' comp) are for in-network doctors and are not needed for

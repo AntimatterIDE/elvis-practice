@@ -1,16 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { PracticeProfile } from "@/lib/rcm/types";
 import { Field, LoadingDesk, PageHeader, fieldClass } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
 export function PracticeDesk() {
-  const { ready, practice, updatePractice } = useRcm();
+  const { ready, practice, syncError, updatePractice } = useRcm();
   const [form, setForm] = useState<PracticeProfile | null>(null);
   const [saved, setSaved] = useState(false);
+  const [pending, setPending] = useState(false);
   const value = form ?? practice;
+
+  useEffect(() => {
+    setForm(null);
+  }, [practice.updatedAt, practice.npi, practice.taxId, practice.address]);
 
   if (!ready) return <LoadingDesk />;
 
@@ -24,14 +29,16 @@ export function PracticeDesk() {
       <PageHeader
         kicker="Practice"
         title="Practice profile"
-        lede="Billing defaults for claims written here. Add the NPI, tax id, and address before a claim is filed."
+        lede="Billing defaults for claims written here. Add the NPI, tax id, and address before a claim is filed. Saves are shared with every staff login."
       />
       <form
         className="mt-8 grid max-w-2xl gap-4 sm:grid-cols-2"
         onSubmit={(event) => {
           event.preventDefault();
+          setPending(true);
           updatePractice(value);
           setSaved(true);
+          setPending(false);
         }}
       >
         <Field label="Legal name" className="sm:col-span-2">
@@ -58,9 +65,12 @@ export function PracticeDesk() {
         <Field label="Address" className="sm:col-span-2">
           <input className={fieldClass} value={value.address} placeholder="Street, city, ST ZIP" onChange={(event) => update("address", event.target.value)} />
         </Field>
-        <div className="flex items-center gap-3 sm:col-span-2">
-          <Button type="submit">Save profile</Button>
-          {saved ? <span className="text-sm text-oxide">Saved in this browser.</span> : null}
+        <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
+          <Button type="submit" disabled={pending}>
+            Save profile
+          </Button>
+          {saved && !syncError ? <span className="text-sm text-oxide">Saved for the practice.</span> : null}
+          {syncError ? <span className="text-sm text-red-700">{syncError}</span> : null}
         </div>
       </form>
     </main>

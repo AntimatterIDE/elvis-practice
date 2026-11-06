@@ -3,6 +3,7 @@ import { signOut } from "@/app/admin/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { AdminMobileBar } from "@/components/admin/admin-mobile-bar";
 import { ClaimsBridge } from "@/components/admin/rcm/claims-bridge";
+import { DeskBridge } from "@/components/admin/rcm/desk-bridge";
 import { PortalBridge } from "@/components/admin/rcm/portal-bridge";
 import { RcmProvider } from "@/components/admin/rcm/store";
 import { BrandMark } from "@/components/site/brand";
@@ -48,6 +49,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
         <RcmProvider>
           <PortalBridge />
           <ClaimsBridge />
+          <DeskBridge />
           <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</div>
         </RcmProvider>
       </div>

@@ -332,6 +332,7 @@ export type PracticeTask = {
   detail: string;
   due: string;
   status: "open" | "done";
+  updatedAt?: string;
 };
 
 export type PracticeProfile = {
@@ -343,6 +344,15 @@ export type PracticeProfile = {
   phone: string;
   address: string;
   posCode: string;
+  updatedAt?: string;
+};
+
+/** Shared cloud snapshot for practice profile, tasks, and eligibility history. */
+export type PracticeDeskSnapshot = {
+  practice: PracticeProfile;
+  tasks: PracticeTask[];
+  eligibility: EligibilityResult[];
+  updatedAt: string;
 };
 
 export type RcmState = {

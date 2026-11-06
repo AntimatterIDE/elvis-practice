@@ -228,8 +228,30 @@ export function normalizeClaim(claim: Claim): Claim {
 }
 
 export function normalizeState(state: RcmState): RcmState {
+  const practice = state.practice ?? {
+    legalName: "",
+    physicianName: "",
+    npi: "",
+    taxId: "",
+    taxonomy: "",
+    phone: "",
+    address: "",
+    posCode: "11",
+  };
   return {
     ...state,
+    practice: {
+      ...practice,
+      legalName: practice.legalName ?? "",
+      physicianName: practice.physicianName ?? "",
+      npi: practice.npi ?? "",
+      taxId: practice.taxId ?? "",
+      taxonomy: practice.taxonomy ?? "",
+      phone: practice.phone ?? "",
+      address: practice.address ?? "",
+      posCode: practice.posCode || "11",
+      updatedAt: practice.updatedAt ?? "",
+    },
     patients: state.patients.map((patient) => normalizePatient(patient)),
     claims: (state.claims ?? []).map((claim) => normalizeClaim(claim)),
     appointments: state.appointments.map((appointment) => normalizeAppointment(appointment)),

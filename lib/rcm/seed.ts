@@ -13,6 +13,7 @@ export function createSeedState(): RcmState {
       phone: "",
       address: "",
       posCode: "11",
+      updatedAt: "",
     },
     patients: [],
     appointments: [],

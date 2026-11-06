@@ -236,9 +236,9 @@ export const phiBuckets = [
 
 export const complianceGaps: ComplianceGap[] = [
   {
-    gap: "RCM desk in browser localStorage",
-    risk: "PHI on staff devices",
-    mitigation: "Device encryption + screen lock now; migrate to Supabase",
+    gap: "RCM desk still caches a local copy",
+    risk: "Stale cache on a staff device if cloud sync fails",
+    mitigation: "Device encryption + screen lock; claims, charts, practice profile, and compliance notes sync to Supabase",
   },
   {
     gap: "Shared admin credentials (historically)",

@@ -349,6 +349,44 @@ export type Database = {
           updated_at?: string;
         }
       >;
+      practice_desk: Table<
+        {
+          id: string;
+          practice: Json;
+          tasks: Json;
+          eligibility: Json;
+          updated_at: string;
+        },
+        {
+          id: string;
+          practice?: Json;
+          tasks?: Json;
+          eligibility?: Json;
+          updated_at?: string;
+        },
+        {
+          practice?: Json;
+          tasks?: Json;
+          eligibility?: Json;
+          updated_at?: string;
+        }
+      >;
+      compliance_desk: Table<
+        {
+          id: string;
+          payload: Json;
+          updated_at: string;
+        },
+        {
+          id: string;
+          payload?: Json;
+          updated_at?: string;
+        },
+        {
+          payload?: Json;
+          updated_at?: string;
+        }
+      >;
       articles: Table<
         {
           id: string;
