@@ -302,10 +302,10 @@ export function normalizeOnboardDraft(raw: unknown): OnboardDraft {
           const row = item as Record<string, unknown>;
           const substance = asString(row.substance);
           if (!substance) return null;
-          const severity =
+          const severity: Allergy["severity"] =
             row.severity === "mild" || row.severity === "moderate" || row.severity === "severe"
               ? row.severity
-              : ("unknown" as const);
+              : "unknown";
           return { substance, reaction: asString(row.reaction), severity };
         })
         .filter((item): item is NonNullable<typeof item> => item !== null)
