@@ -61,6 +61,25 @@ describe("ocr dedupe", () => {
       fingerprints: [hashB],
     });
     expect(byName?.reason).toBe("name_dob");
+
+    const flipped = findOcrImportMatch(
+      [
+        basePatient({
+          id: "p_agonaldo",
+          firstName: "Fransisco",
+          lastName: "Agonaldo",
+          dateOfBirth: "1969-09-26",
+          ocrImportHashes: [],
+        }),
+      ],
+      {
+        firstName: "Francisco",
+        lastName: "Agonaldo",
+        dateOfBirth: "1969-09-26",
+        fingerprints: [],
+      },
+    );
+    expect(flipped?.patient.id).toBe("p_agonaldo");
   });
 
   it("stores fingerprints on create and merges without duplicating problems", () => {

@@ -40,11 +40,33 @@ export function findOcrImportMatch(
       };
     }
   }
-  const key = normalizePersonKey(input.firstName, input.lastName, input.dateOfBirth);
-  if (!key) return null;
-  const person = patients.find(
-    (patient) => normalizePersonKey(patient.firstName, patient.lastName, patient.dateOfBirth) === key,
+  const dob = input.dateOfBirth.trim().slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dob)) return null;
+  const key = normalizePersonKey(input.firstName, input.lastName, dob);
+  const swapped = normalizePersonKey(input.lastName, input.firstName, dob);
+  const tokens = new Set(
+    `${input.firstName} ${input.lastName}`
+      .toLowerCase()
+      .split(/[^a-z]+/)
+      .filter((part) => part.length > 1),
   );
+  const person =
+    patients.find((patient) => normalizePersonKey(patient.firstName, patient.lastName, patient.dateOfBirth) === key) ||
+    patients.find((patient) => normalizePersonKey(patient.firstName, patient.lastName, patient.dateOfBirth) === swapped) ||
+    patients.find((patient) => {
+      if (patient.dateOfBirth.slice(0, 10) !== dob) return false;
+      const existing = new Set(
+        `${patient.firstName} ${patient.lastName}`
+          .toLowerCase()
+          .split(/[^a-z]+/)
+          .filter((part) => part.length > 1),
+      );
+      // Same DOB and at least two shared name tokens (handles Francisco/Fransisco + flipped order).
+      const overlap = [...tokens].filter((token) =>
+        [...existing].some((have) => have === token || have.startsWith(token.slice(0, 4)) || token.startsWith(have.slice(0, 4))),
+      );
+      return overlap.length >= 2;
+    });
   if (!person) return null;
   return { patient: person, reason: "name_dob", matchedHashes: [] };
 }
