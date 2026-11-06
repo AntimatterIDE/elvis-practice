@@ -60,6 +60,31 @@ export function OutsideRecordsImport() {
     setDraft((current) => (current ? { ...current, [key]: value } : current));
   }
 
+  async function stageLargeFile(file: File) {
+    const prepared = await fetch("/api/ocr/onboard/prepare", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        fileName: file.name,
+        contentType: file.type || "application/pdf",
+        byteSize: file.size,
+      }),
+    });
+    const preparedJson = (await prepared.json().catch(() => null)) as
+      | { path?: string; signedUrl?: string; message?: string }
+      | null;
+    if (!prepared.ok || !preparedJson?.path || !preparedJson.signedUrl) {
+      throw new Error(preparedJson?.message || "Could not stage that file for OCR.");
+    }
+    const uploaded = await fetch(preparedJson.signedUrl, {
+      method: "PUT",
+      headers: { "content-type": file.type || "application/pdf" },
+      body: file,
+    });
+    if (!uploaded.ok) throw new Error(`Upload failed for ${file.name} (${uploaded.status}).`);
+    return preparedJson.path;
+  }
+
   async function onExtract(event: React.FormEvent) {
     event.preventDefault();
     if (!files?.length) {
@@ -71,14 +96,34 @@ export function OutsideRecordsImport() {
     setDraft(null);
     setOcrMeta(null);
     setFingerprints([]);
-    const body = new FormData();
-    Array.from(files).forEach((file) => body.append("files", file));
     try {
-      const localHashes = await Promise.all(Array.from(files).map((file) => sha256Hex(file)));
-      const res = await fetch("/api/ocr/onboard/extract", { method: "POST", body });
-      const json = (await res.json()) as ExtractResponse;
-      if (!res.ok || !json.draft) {
-        setError(json.message || "OCR import failed.");
+      const selected = Array.from(files);
+      const localHashes = await Promise.all(selected.map((file) => sha256Hex(file)));
+      // Vercel request bodies cap near 4.5MB — stage larger files via signed upload first.
+      const DIRECT_LIMIT = 3.5 * 1024 * 1024;
+      const large = selected.filter((file) => file.size > DIRECT_LIMIT);
+      const small = selected.filter((file) => file.size <= DIRECT_LIMIT);
+
+      let res: Response;
+      if (large.length) {
+        const paths = await Promise.all(large.map((file) => stageLargeFile(file)));
+        if (small.length) {
+          for (const file of small) paths.push(await stageLargeFile(file));
+        }
+        res = await fetch("/api/ocr/onboard/extract", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ paths }),
+        });
+      } else {
+        const body = new FormData();
+        small.forEach((file) => body.append("files", file));
+        res = await fetch("/api/ocr/onboard/extract", { method: "POST", body });
+      }
+
+      const json = (await res.json().catch(() => null)) as ExtractResponse | null;
+      if (!res.ok || !json?.draft) {
+        setError(json?.message || `OCR import failed (${res.status}).`);
         setBusy("idle");
         return;
       }
@@ -86,8 +131,9 @@ export function OutsideRecordsImport() {
       setDraft({ ...emptyOnboardDraft(), ...json.draft });
       setFingerprints(hashes);
       setOcrMeta(json.ocr ?? null);
-    } catch {
-      setError("Could not reach the OCR import API.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "";
+      setError(message || "Could not reach the OCR import API. Large PDFs are staged through storage first — try again.");
     }
     setBusy("idle");
   }
@@ -125,8 +171,9 @@ export function OutsideRecordsImport() {
       <div>
         <h2 className="font-display text-2xl tracking-tight">Outside records</h2>
         <p className="mt-1 text-sm leading-relaxed text-muted">
-          Extract is safe to re-run on the same PDFs (nothing is saved until you confirm). Confirm never creates a second
-          chart for the same file fingerprint — it updates the existing patient instead.
+          Extract is safe to re-run on the same PDFs (nothing is saved until you confirm). Large packets upload through
+          storage first so they are not blocked by the request size limit. Confirm updates an existing chart matched by
+          file fingerprint or name + date of birth.
         </p>
       </div>
       <form onSubmit={onExtract} className="grid gap-3">

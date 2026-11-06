@@ -1,4 +1,5 @@
 import { callClinixOcr, isOcrConfigured, type ClinixOcrResult } from "@/lib/ocr/clinix-ocr-client";
+import { downloadOcrInboxFile, isOcrInboxPath, removeOcrInboxFile } from "@/lib/ocr/inbox";
 import { buildMinerCorpus, mineOnboardDraft, type OnboardDraft } from "@/lib/ocr/onboard-draft";
 import { getStaffSession } from "@/lib/supabase/session";
 
@@ -7,7 +8,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 const MAX_FILES = 6;
-const MAX_BYTES = 20 * 1024 * 1024;
+const MAX_BYTES = 50 * 1024 * 1024;
 
 function mergeOcr(results: ClinixOcrResult[]): ClinixOcrResult {
   const pages = results.flatMap((item) => item.pages ?? []);
@@ -35,6 +36,53 @@ function mergeOcr(results: ClinixOcrResult[]): ClinixOcrResult {
   };
 }
 
+type StagedFile = { buffer: Buffer; name: string; path?: string };
+
+async function collectFiles(request: Request): Promise<{ files: StagedFile[] } | { error: string; status: number }> {
+  const contentType = request.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    let body: { paths?: unknown };
+    try {
+      body = (await request.json()) as { paths?: unknown };
+    } catch {
+      return { error: "Send JSON with staged upload paths, or multipart files.", status: 400 };
+    }
+    const paths = Array.isArray(body.paths)
+      ? body.paths.filter((item): item is string => typeof item === "string" && isOcrInboxPath(item)).slice(0, MAX_FILES)
+      : [];
+    if (!paths.length) return { error: "Stage files with /api/ocr/onboard/prepare first.", status: 400 };
+    const files: StagedFile[] = [];
+    for (const path of paths) {
+      const downloaded = await downloadOcrInboxFile(path);
+      if (!downloaded.ok) return { error: downloaded.message, status: 400 };
+      if (downloaded.buffer.length > MAX_BYTES) {
+        return { error: `${downloaded.name} is larger than 50MB.`, status: 413 };
+      }
+      files.push({ buffer: downloaded.buffer, name: downloaded.name, path });
+    }
+    return { files };
+  }
+
+  let form: FormData;
+  try {
+    form = await request.formData();
+  } catch {
+    return { error: "Send multipart form data or staged upload paths.", status: 400 };
+  }
+  const uploaded = form
+    .getAll("files")
+    .concat(form.getAll("file"))
+    .filter((item): item is File => typeof File !== "undefined" && item instanceof File);
+  if (!uploaded.length) return { error: "Attach at least one PDF or image.", status: 400 };
+  if (uploaded.length > MAX_FILES) return { error: `Upload at most ${MAX_FILES} files per import.`, status: 400 };
+  const files: StagedFile[] = [];
+  for (const file of uploaded) {
+    if (file.size > MAX_BYTES) return { error: `${file.name} is larger than 50MB.`, status: 413 };
+    files.push({ buffer: Buffer.from(await file.arrayBuffer()), name: file.name || "import.pdf" });
+  }
+  return { files };
+}
+
 export async function POST(request: Request) {
   if (!(await getStaffSession())) {
     return Response.json({ message: "Sign in as staff to import outside records." }, { status: 401 });
@@ -49,78 +97,67 @@ export async function POST(request: Request) {
     );
   }
 
-  let form: FormData;
-  try {
-    form = await request.formData();
-  } catch {
-    return Response.json({ message: "Send multipart form data with PDF or card images." }, { status: 400 });
-  }
-
-  const files = form
-    .getAll("files")
-    .concat(form.getAll("file"))
-    .filter((item): item is File => typeof File !== "undefined" && item instanceof File);
-  if (files.length === 0) {
-    return Response.json({ message: "Attach at least one PDF or image." }, { status: 400 });
-  }
-  if (files.length > MAX_FILES) {
-    return Response.json({ message: `Upload at most ${MAX_FILES} files per import.` }, { status: 400 });
+  const collected = await collectFiles(request);
+  if ("error" in collected) {
+    return Response.json({ message: collected.error }, { status: collected.status });
   }
 
   const ocrResults: ClinixOcrResult[] = [];
-  for (const file of files) {
-    if (file.size > MAX_BYTES) {
-      return Response.json({ message: `${file.name} is larger than 20MB.` }, { status: 413 });
+  const stagedPaths: string[] = [];
+  try {
+    for (const file of collected.files) {
+      if (file.path) stagedPaths.push(file.path);
+      const result = await callClinixOcr(file.buffer, file.name, {
+        structured: true,
+        mode: "onboard",
+      });
+      if (!result) {
+        return Response.json({ message: `OCR service failed for ${file.name}.` }, { status: 502 });
+      }
+      ocrResults.push(result);
     }
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const result = await callClinixOcr(buffer, file.name || "import.pdf", {
-      structured: true,
-      mode: "onboard",
+
+    const merged = mergeOcr(ocrResults);
+    const fingerprints = [
+      ...new Set(
+        ocrResults
+          .map((item) => (typeof item.content_sha256 === "string" ? item.content_sha256.trim().toLowerCase() : ""))
+          .filter((item) => /^[a-f0-9]{64}$/.test(item)),
+      ),
+    ];
+    if (!merged.success || !merged.text.trim()) {
+      return Response.json(
+        {
+          message: merged.error || "OCR could not extract text from those files.",
+          ocr: merged,
+          fingerprints,
+        },
+        { status: 422 },
+      );
+    }
+
+    const corpus = buildMinerCorpus({
+      text: merged.text,
+      pages: merged.pages,
+      tables: merged.tables,
+      formFields: merged.form_fields,
     });
-    if (!result) {
-      return Response.json({ message: `OCR service failed for ${file.name}.` }, { status: 502 });
-    }
-    ocrResults.push(result);
-  }
+    const draft: OnboardDraft = await mineOnboardDraft(corpus);
 
-  const merged = mergeOcr(ocrResults);
-  const fingerprints = [
-    ...new Set(
-      ocrResults
-        .map((item) => (typeof item.content_sha256 === "string" ? item.content_sha256.trim().toLowerCase() : ""))
-        .filter((item) => /^[a-f0-9]{64}$/.test(item)),
-    ),
-  ];
-  if (!merged.success || !merged.text.trim()) {
-    return Response.json(
-      {
-        message: merged.error || "OCR could not extract text from those files.",
-        ocr: merged,
-        fingerprints,
+    return Response.json({
+      draft,
+      fingerprints,
+      ocr: {
+        success: merged.success,
+        method_used: merged.method_used,
+        page_count: merged.page_count,
+        partial: merged.partial,
+        processing_ms: merged.processing_ms,
+        page_labels: merged.page_labels ?? [],
+        form_field_count: merged.form_fields?.length ?? 0,
       },
-      { status: 422 },
-    );
+    });
+  } finally {
+    await Promise.all(stagedPaths.map((path) => removeOcrInboxFile(path)));
   }
-
-  const corpus = buildMinerCorpus({
-    text: merged.text,
-    pages: merged.pages,
-    tables: merged.tables,
-    formFields: merged.form_fields,
-  });
-  const draft: OnboardDraft = await mineOnboardDraft(corpus);
-
-  return Response.json({
-    draft,
-    fingerprints,
-    ocr: {
-      success: merged.success,
-      method_used: merged.method_used,
-      page_count: merged.page_count,
-      partial: merged.partial,
-      processing_ms: merged.processing_ms,
-      page_labels: merged.page_labels ?? [],
-      form_field_count: merged.form_fields?.length ?? 0,
-    },
-  });
 }
