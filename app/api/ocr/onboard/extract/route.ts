@@ -39,11 +39,11 @@ export async function POST(request: Request) {
   if (!(await getStaffSession())) {
     return Response.json({ message: "Sign in as staff to import outside records." }, { status: 401 });
   }
-  if (!isOcrConfigured()) {
+  if (!(await isOcrConfigured())) {
     return Response.json(
       {
         message:
-          "OCR is not configured. Set OCR_SERVICE_URL and OCR_SERVICE_KEY to the clinix-ocr Cloud Run service.",
+          "OCR is not configured. Set OCR_SERVICE_URL and OCR_SERVICE_KEY, or seed service_config id=ocr.",
       },
       { status: 503 },
     );

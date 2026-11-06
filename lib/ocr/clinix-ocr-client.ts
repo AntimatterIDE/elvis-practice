@@ -1,7 +1,12 @@
 /**
  * Client for the clinix-ocr Cloud Run sidecar (GCP Document AI).
  * Server-only — never expose OCR_SERVICE_KEY to the browser.
+ *
+ * Credentials: process.env first, else Supabase `service_config` row id=ocr
+ * (so production works without Vercel env access).
  */
+
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 export type ClinixOcrPage = {
   page: number;
@@ -38,8 +43,47 @@ export type ClinixOcrResult = {
   form_fields?: ClinixOcrFormField[];
 };
 
-export function isOcrConfigured() {
-  return Boolean((process.env.OCR_SERVICE_URL || "").trim() && (process.env.OCR_SERVICE_KEY || "").trim());
+type OcrCreds = { url: string; key: string };
+
+let cachedCreds: OcrCreds | null = null;
+let cachedAt = 0;
+const CACHE_MS = 60_000;
+
+async function loadCredsFromSupabase(): Promise<OcrCreds | null> {
+  try {
+    const supabase = createSupabaseAdminClient();
+    // Table added in 20261106021500_service_config; not yet in generated Database types.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = await (supabase as any).from("service_config").select("value").eq("id", "ocr").maybeSingle();
+    if (error || !data) return null;
+    const value = (data as { value?: unknown }).value;
+    if (!value || typeof value !== "object") return null;
+    const row = value as Record<string, unknown>;
+    const url = typeof row.url === "string" ? row.url.trim().replace(/\/$/, "") : "";
+    const key = typeof row.key === "string" ? row.key.trim() : "";
+    if (!url || !key) return null;
+    return { url, key };
+  } catch (e) {
+    console.warn("[clinixOcrClient] service_config read failed", e);
+    return null;
+  }
+}
+
+export async function resolveOcrCreds(): Promise<OcrCreds | null> {
+  const envUrl = (process.env.OCR_SERVICE_URL || "").trim().replace(/\/$/, "");
+  const envKey = (process.env.OCR_SERVICE_KEY || "").trim();
+  if (envUrl && envKey) return { url: envUrl, key: envKey };
+
+  const now = Date.now();
+  if (cachedCreds && now - cachedAt < CACHE_MS) return cachedCreds;
+  const fromDb = await loadCredsFromSupabase();
+  cachedCreds = fromDb;
+  cachedAt = now;
+  return fromDb;
+}
+
+export async function isOcrConfigured() {
+  return Boolean(await resolveOcrCreds());
 }
 
 export async function callClinixOcr(
@@ -47,13 +91,12 @@ export async function callClinixOcr(
   filename: string,
   options: { structured?: boolean; mode?: "default" | "onboard" } = {},
 ): Promise<ClinixOcrResult | null> {
-  const base = (process.env.OCR_SERVICE_URL || "").trim().replace(/\/$/, "");
-  const key = (process.env.OCR_SERVICE_KEY || "").trim();
-  if (!base) return null;
-  if (!key) {
-    console.warn("[clinixOcrClient] OCR_SERVICE_URL set but OCR_SERVICE_KEY missing");
+  const creds = await resolveOcrCreds();
+  if (!creds) {
+    console.warn("[clinixOcrClient] OCR credentials missing (env and service_config)");
     return null;
   }
+  const { url: base, key } = creds;
 
   const form = new FormData();
   const bytes = Uint8Array.from(fileBuffer);
