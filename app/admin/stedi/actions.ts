@@ -308,7 +308,7 @@ export async function searchPayers(query: string) {
   if (blocked) return { ok: false, message: blocked, payers: [] as ReturnType<typeof payerFrom>[] };
   const term = query.trim();
   if (term.length < 2) return { ok: false, message: "Enter at least two letters of a payer name.", payers: [] };
-  const response = await stediFetch(`${PAYERS}/payers/search?query=${encodeURIComponent(term)}&pageSize=8`);
+  const response = await stediFetch(`${PAYERS}/payers/search?query=${encodeURIComponent(term)}&pageSize=10`);
   if (!response.ok) return { ok: false, message: publicStediMessage(response.body, response.status), payers: [] };
   const record = asRecord(response.body);
   const items = Array.isArray(record?.items) ? record.items : [];
