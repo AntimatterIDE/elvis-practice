@@ -49,7 +49,16 @@ export function PayerSearch({
     timer.current = setTimeout(async () => {
       const result = await searchPayers(next.trim());
       if (ticket !== latest.current) return;
-      const found = result.payers.filter((payer): payer is PayerMatch => Boolean(payer?.name && payer.primaryPayerId));
+      const found: PayerMatch[] = [];
+      for (const payer of result.payers) {
+        if (!payer?.name || !payer.primaryPayerId) continue;
+        found.push({
+          name: payer.name,
+          primaryPayerId: payer.primaryPayerId,
+          stediId: payer.stediId,
+          claims: payer.claims,
+        });
+      }
       setMatches(found);
       setStatus(result.message);
     }, 200);
