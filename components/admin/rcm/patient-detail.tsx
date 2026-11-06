@@ -26,6 +26,7 @@ import { ChartFiles } from "@/components/admin/rcm/chart-files";
 import { SendAgreement } from "@/components/admin/rcm/send-agreement";
 import { PortalAccess } from "@/components/admin/rcm/portal-access";
 import { PortalMail } from "@/components/admin/rcm/portal-mail";
+import { PayerSearch } from "@/components/admin/rcm/payer-search";
 import { ChartMast, ChartTabs } from "@/components/admin/bits/surface";
 import { Field, LoadingDesk, StatusPill, fieldClass, panelClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
 import { recordVisitHref } from "@/lib/rcm/record-visit";
@@ -587,6 +588,82 @@ function CaseForm({
   );
 }
 
+function CoverageForm({
+  coverage,
+  onSave,
+}: {
+  coverage: Coverage;
+  onSave: (coverageId: string, patch: Partial<Coverage>) => void;
+}) {
+  const [payerName, setPayerName] = useState(coverage.payerName);
+  const [tradingPartnerId, setTradingPartnerId] = useState(coverage.tradingPartnerId ?? "");
+
+  return (
+    <form
+      className={`${panelClass} grid gap-4 sm:grid-cols-2`}
+      onSubmit={(event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        onSave(coverage.id, {
+          payerName,
+          tradingPartnerId: tradingPartnerId.trim() || undefined,
+          planName: String(data.get("planName") ?? ""),
+          memberId: String(data.get("memberId") ?? ""),
+          groupNumber: String(data.get("groupNumber") ?? ""),
+          subscriberName: String(data.get("subscriberName") ?? ""),
+          relationship: String(data.get("relationship") ?? "self") as Coverage["relationship"],
+          effectiveDate: String(data.get("effectiveDate") ?? ""),
+          copay: Number(data.get("copay")) || 0,
+          rank: String(data.get("rank") ?? coverage.rank) as Coverage["rank"],
+        });
+      }}
+    >
+      <h2 className="font-display text-2xl capitalize sm:col-span-2">{coverage.rank} insurance</h2>
+      <Field label="Payer" className="sm:col-span-2">
+        <PayerSearch
+          label="Payer"
+          value={payerName}
+          tradingPartnerId={tradingPartnerId}
+          onChange={(next) => {
+            setPayerName(next.name);
+            setTradingPartnerId(next.tradingPartnerId);
+          }}
+        />
+      </Field>
+      <Field label="Plan">
+        <input className={fieldClass} name="planName" defaultValue={coverage.planName} />
+      </Field>
+      <Field label="Member id">
+        <input className={fieldClass} name="memberId" defaultValue={coverage.memberId} />
+      </Field>
+      <Field label="Group">
+        <input className={fieldClass} name="groupNumber" defaultValue={coverage.groupNumber} />
+      </Field>
+      <Field label="Subscriber">
+        <input className={fieldClass} name="subscriberName" defaultValue={coverage.subscriberName} />
+      </Field>
+      <Field label="Relationship">
+        <select className={fieldClass} name="relationship" defaultValue={coverage.relationship}>
+          <option value="self">Self</option>
+          <option value="spouse">Spouse</option>
+          <option value="child">Child</option>
+          <option value="other">Other</option>
+        </select>
+      </Field>
+      <Field label="Effective">
+        <input className={fieldClass} type="date" name="effectiveDate" defaultValue={coverage.effectiveDate} />
+      </Field>
+      <Field label="Office copay">
+        <input className={fieldClass} name="copay" defaultValue={coverage.copay} />
+      </Field>
+      <input type="hidden" name="rank" value={coverage.rank} />
+      <div className="sm:col-span-2">
+        <Button type="submit">Save insurance</Button>
+      </div>
+    </form>
+  );
+}
+
 function CoverageDesk({
   patient,
   eligibility,
@@ -597,8 +674,11 @@ function CoverageDesk({
   onSave: (id: string, patch: Partial<Patient>) => void;
 }) {
   function saveCoverage(coverageId: string, patch: Partial<Coverage>) {
+    const coverages = patient.coverages.map((coverage) => (coverage.id === coverageId ? { ...coverage, ...patch } : coverage));
+    const primary = coverages.find((coverage) => coverage.rank === "primary");
     onSave(patient.id, {
-      coverages: patient.coverages.map((coverage) => (coverage.id === coverageId ? { ...coverage, ...patch } : coverage)),
+      coverages,
+      ...(primary ? { payerName: primary.payerName, memberId: primary.memberId || patient.memberId } : {}),
     });
   }
 
@@ -606,60 +686,7 @@ function CoverageDesk({
     <div className="grid gap-4">
       {patient.coverages.length === 0 ? <p className="text-sm text-muted">No insurance on file.</p> : null}
       {patient.coverages.map((coverage) => (
-        <form
-          key={coverage.id}
-          className={`${panelClass} grid gap-4 sm:grid-cols-2`}
-          onSubmit={(event) => {
-            event.preventDefault();
-            const data = new FormData(event.currentTarget);
-            saveCoverage(coverage.id, {
-              payerName: String(data.get("payerName") ?? ""),
-              planName: String(data.get("planName") ?? ""),
-              memberId: String(data.get("memberId") ?? ""),
-              groupNumber: String(data.get("groupNumber") ?? ""),
-              subscriberName: String(data.get("subscriberName") ?? ""),
-              relationship: String(data.get("relationship") ?? "self") as Coverage["relationship"],
-              effectiveDate: String(data.get("effectiveDate") ?? ""),
-              copay: Number(data.get("copay")) || 0,
-              rank: String(data.get("rank") ?? coverage.rank) as Coverage["rank"],
-            });
-          }}
-        >
-          <h2 className="font-display text-2xl capitalize sm:col-span-2">{coverage.rank} insurance</h2>
-          <Field label="Payer">
-            <input className={fieldClass} name="payerName" defaultValue={coverage.payerName} />
-          </Field>
-          <Field label="Plan">
-            <input className={fieldClass} name="planName" defaultValue={coverage.planName} />
-          </Field>
-          <Field label="Member id">
-            <input className={fieldClass} name="memberId" defaultValue={coverage.memberId} />
-          </Field>
-          <Field label="Group">
-            <input className={fieldClass} name="groupNumber" defaultValue={coverage.groupNumber} />
-          </Field>
-          <Field label="Subscriber">
-            <input className={fieldClass} name="subscriberName" defaultValue={coverage.subscriberName} />
-          </Field>
-          <Field label="Relationship">
-            <select className={fieldClass} name="relationship" defaultValue={coverage.relationship}>
-              <option value="self">Self</option>
-              <option value="spouse">Spouse</option>
-              <option value="child">Child</option>
-              <option value="other">Other</option>
-            </select>
-          </Field>
-          <Field label="Effective">
-            <input className={fieldClass} type="date" name="effectiveDate" defaultValue={coverage.effectiveDate} />
-          </Field>
-          <Field label="Office copay">
-            <input className={fieldClass} name="copay" defaultValue={coverage.copay} />
-          </Field>
-          <input type="hidden" name="rank" value={coverage.rank} />
-          <div className="sm:col-span-2">
-            <Button type="submit">Save insurance</Button>
-          </div>
-        </form>
+        <CoverageForm key={coverage.id} coverage={coverage} onSave={saveCoverage} />
       ))}
       {patient.coverages.length < 2 ? (
         <Button

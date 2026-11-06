@@ -75,7 +75,10 @@ export function productionClaimProblems(input: ClaimSubmissionInput) {
   if (!input.patient.memberId.trim() || input.patient.memberId.startsWith("STEDI")) {
     problems.push("Enter the patient’s real member id. A demo member id was not sent.");
   }
-  if (!input.tradingPartnerId.trim() || input.tradingPartnerId === "STEDI") {
+  const payerId = input.tradingPartnerId.trim();
+  if (!payerId) {
+    problems.push("Search and pick the payer from the Stedi list on the claim or the patient’s Insurance tab. A typed payer name alone cannot be filed.");
+  } else if (payerId === "STEDI") {
     problems.push("Choose the real payer. The test payer STEDI was not used.");
   }
   if (!input.lines.some((line) => line.includeOnBill && line.cpt && line.charge > 0)) {

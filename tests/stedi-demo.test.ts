@@ -87,6 +87,12 @@ describe("production claims", () => {
     });
     expect(blank[0]).toContain("NPI");
     expect(blank.some((problem) => problem.includes("demo member"))).toBe(true);
+    expect(blank.some((problem) => problem.includes("test payer STEDI"))).toBe(true);
+  });
+
+  it("refuses a claim when the Stedi payer id was never picked", () => {
+    const problems = productionClaimProblems({ ...ready, tradingPartnerId: "" });
+    expect(problems.some((problem) => problem.includes("Stedi list"))).toBe(true);
   });
 
   it("refuses a free-text state that is not a two-letter code", () => {

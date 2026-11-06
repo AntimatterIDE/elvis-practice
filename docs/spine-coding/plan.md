@@ -875,3 +875,6 @@ Checked against the code the same day. Status per item below.
   prefers OON amounts when present and says when only in-network was returned.
   Type 2 clinic NPI on the Practice page is still needed for enrollment
   identity.
+- **Stedi payer id on chart/claim — done 2026-11-06.** Insurance and the claim
+  form search Stedi’s payer list and store `tradingPartnerId`. Ready for bill
+  and submit refuse a typed name without a picked payer id.

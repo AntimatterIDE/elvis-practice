@@ -14,6 +14,7 @@ import { claimLineProblems, diagnosisLimit, filingCodes, isFilingCode, pointerLi
 import { AccountNoteDialog } from "@/components/admin/rcm/account-note";
 import { attachmentEvent, claimFileAccept, storeClaimFiles } from "@/components/admin/rcm/claim-files";
 import { FilePicker } from "@/components/admin/rcm/file-picker";
+import { PayerSearch } from "@/components/admin/rcm/payer-search";
 import { Field, LoadingDesk, PageHeader, fieldClass, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -77,7 +78,7 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
   const router = useRouter();
   const params = useSearchParams();
   const today = useClinicToday();
-  const { ready, patients, appointments, claims, practice, addClaim, updateClaim } = useRcm();
+  const { ready, patients, appointments, claims, practice, addClaim, updateClaim, patchPatient } = useRcm();
   const requestedPatient = params.get("patient") ?? "";
   const visitId = params.get("visit") || initialEncounter?.appointmentId || "";
   const claimId = params.get("claim") ?? "";
@@ -86,6 +87,7 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
   const visit = appointments.find((appointment) => appointment.id === visitId);
   const [patientId, setPatientId] = useState(existing?.patientId || requestedPatient);
   const [payerName, setPayerName] = useState(existing?.payerName ?? "");
+  const [tradingPartnerId, setTradingPartnerId] = useState(existing?.tradingPartnerId ?? "");
   const [filingCode, setFilingCode] = useState<string>(existing?.filingCode ?? "");
   const [dateOverride, setDateOverride] = useState<string | null>(existing?.dateOfService ?? null);
   const dateOfService = dateOverride || visit?.start.slice(0, 10) || initialEncounter?.createdAt.slice(0, 10) || today;
@@ -127,6 +129,7 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
     hydrated.current = true;
     setPatientId(existing.patientId);
     setPayerName(existing.payerName);
+    setTradingPartnerId(existing.tradingPartnerId ?? "");
     setFilingCode(existing.filingCode ?? "");
     setDateOverride(existing.dateOfService);
     setPlaceOfService(existing.placeOfService || practice.posCode || "11");
@@ -175,11 +178,19 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
   }, [procedureFees, placeOfService, coded]);
 
   const patient = patients.find((item) => item.id === patientId);
+  const primaryCoverage = patient?.coverages.find((coverage) => coverage.rank === "primary");
   const shownPayer = payerName || patient?.payerName || "";
+  const shownPayerId = tradingPartnerId || primaryCoverage?.tradingPartnerId || "";
   const options = useMemo(
     () => patients.map((item) => ({ id: item.id, label: `${patientName(item)} · ${item.payerName}` })),
     [patients],
   );
+
+  useEffect(() => {
+    if (existing || !patient) return;
+    if (!payerName && patient.payerName) setPayerName(patient.payerName);
+    if (!tradingPartnerId && primaryCoverage?.tradingPartnerId) setTradingPartnerId(primaryCoverage.tradingPartnerId);
+  }, [existing, patient, payerName, tradingPartnerId, primaryCoverage?.tradingPartnerId]);
 
   if (!ready) return <LoadingDesk />;
 
@@ -323,6 +334,10 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
       setError("Choose the payer type. It tells the payer which kind of plan this claim is billed to.");
       return;
     }
+    if (status === "ready" && !(tradingPartnerId || primaryCoverage?.tradingPartnerId || "").trim()) {
+      setError("Search and pick the payer from the Stedi list. A typed payer name alone cannot be marked ready for bill.");
+      return;
+    }
     const lineProblems = status === "ready" ? claimLineProblems(parsed) : [];
     if (lineProblems.length) {
       setError(lineProblems.join(" "));
@@ -363,11 +378,12 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
         return;
       }
     }
+    const nextPayerId = (tradingPartnerId || primaryCoverage?.tradingPartnerId || "").trim();
     const payload = {
       patientId: patient.id,
       payerName: shownPayer,
       filingCode: isFilingCode(filingCode) ? filingCode : undefined,
-      tradingPartnerId: patient.coverages.find((coverage) => coverage.rank === "primary")?.tradingPartnerId,
+      tradingPartnerId: nextPayerId || undefined,
       dateOfService,
       placeOfService,
       appointmentId: visit?.id,
@@ -380,6 +396,30 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
       assignmentOfBenefits,
       priorAuthNumber: priorAuthNumber.trim(),
     };
+    if (nextPayerId && shownPayer) {
+      const coverages = patient.coverages.length
+        ? patient.coverages.map((coverage) =>
+            coverage.rank === "primary"
+              ? { ...coverage, payerName: shownPayer, tradingPartnerId: nextPayerId, memberId: coverage.memberId || patient.memberId }
+              : coverage,
+          )
+        : [
+            {
+              id: `cov_${crypto.randomUUID().slice(0, 8)}`,
+              rank: "primary" as const,
+              payerName: shownPayer,
+              planName: "",
+              memberId: patient.memberId,
+              groupNumber: "",
+              subscriberName: patientName(patient),
+              relationship: "self" as const,
+              effectiveDate: "",
+              copay: 0,
+              tradingPartnerId: nextPayerId,
+            },
+          ];
+      patchPatient(patient.id, { payerName: shownPayer, coverages });
+    }
     setPending(true);
     setError("");
     const editing = existing && existing.status !== "submitted" && existing.status !== "paid" ? existing : null;
@@ -451,7 +491,9 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
                 const id = event.target.value;
                 setPatientId(id);
                 const next = patients.find((item) => item.id === id);
+                const coverage = next?.coverages.find((item) => item.rank === "primary");
                 setPayerName(next?.payerName ?? "");
+                setTradingPartnerId(coverage?.tradingPartnerId ?? "");
               }}
               required
             >
@@ -462,7 +504,16 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
             </select>
           </Field>
           <Field label="Payer">
-            <input className={fieldClass} value={shownPayer} onChange={(event) => setPayerName(event.target.value)} placeholder="Payer on this claim" />
+            <PayerSearch
+              label="Payer"
+              value={shownPayer}
+              tradingPartnerId={shownPayerId}
+              disabled={pending}
+              onChange={(next) => {
+                setPayerName(next.name);
+                setTradingPartnerId(next.tradingPartnerId);
+              }}
+            />
           </Field>
           <Field label="Payer type">
             <select className={fieldClass} value={filingCode} onChange={(event) => setFilingCode(event.target.value)}>
