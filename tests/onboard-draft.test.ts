@@ -270,6 +270,16 @@ describe("onboard draft", () => {
     expect(camel.firstName).toBe("Sample");
     expect(camel.lastName).toBe("Radiculopathy Case");
 
+    const splitLast = refineIdentity(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Sample",
+        lastName: "SampleRadiculopathyCase",
+      }),
+    );
+    expect(splitLast.firstName).toBe("Sample");
+    expect(splitLast.lastName).toBe("Radiculopathy Case");
+
     const honor = refineIdentity(
       normalizeOnboardDraft({
         ...emptyish(),
@@ -292,15 +302,48 @@ describe("onboard draft", () => {
       firstName: "Pat",
       lastName: "Lee",
       problems: [
-        { name: "Cervical radiculopathy", icd: "M54.12", status: "active", onset: "" },
+        { name: "Cervical radiculopathy", icd: "", status: "active", onset: "" },
         { name: "Cervical radiculopathy", icd: "M54.12", status: "active", onset: "2020-01-02" },
         { name: "Whiplash", icd: "847.0", status: "active", onset: "" },
+        { name: "Cervical sprain/strain (847.0)", icd: "", status: "active", onset: "" },
       ],
     });
-    expect(draft.problems).toHaveLength(2);
+    expect(draft.problems).toHaveLength(3);
     expect(draft.problems.find((p) => p.name === "Cervical radiculopathy")?.onset).toBe("2020-01-02");
+    expect(draft.problems.find((p) => p.name === "Cervical radiculopathy")?.icd).toBe("M54.12");
     expect(draft.problems.find((p) => p.name === "Whiplash")?.icd).toBe("S13.4XXA");
-    expect(dedupeProblems(draft.problems)).toHaveLength(2);
+    expect(draft.problems.find((p) => /sprain/i.test(p.name))?.icd).toBe("S13.4XXA");
+    expect(dedupeProblems(draft.problems)).toHaveLength(3);
+  });
+
+  it("clears toll-free phones and placeholder dates from drafts", () => {
+    const draft = refineOnboardDraftFromCorpus(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Darion",
+        lastName: "XXXX",
+        phone: "855-573-2663",
+        dateOfBirth: "YYYY-MM-DD",
+        memberId: "XXXXXX",
+        injuryCase: {
+          caseNumber: "",
+          claimNumber: "",
+          dateOfInjury: "YYYY-02-03",
+          description: "MVA",
+          carrierName: "",
+          attorneyName: "",
+          attorneyFirm: "",
+          attorneyPhone: "",
+          attorneyEmail: "",
+          notes: "",
+        },
+      }),
+      "Patient phone: (949) 555-1212\nDate of injury: 02/03/2020",
+    );
+    expect(draft.phone).toMatch(/949/);
+    expect(draft.dateOfBirth).toBe("");
+    expect(draft.memberId).toBe("");
+    expect(draft.injuryCase?.dateOfInjury).toBe("2020-02-03");
   });
 
   it("scrapes phone email DOI and labeled names from corpus", () => {

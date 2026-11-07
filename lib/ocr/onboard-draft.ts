@@ -308,6 +308,10 @@ function isJunkNamePart(value: string) {
   return false;
 }
 
+function looksCamelCaseBlob(value: string) {
+  return /^[A-Za-z]+$/.test(value) && /[a-z][A-Z]/.test(value);
+}
+
 /** Split CamelCase blobs, drop honorifics/junk labels. */
 export function refineIdentity(draft: OnboardDraft): OnboardDraft {
   let first = draft.firstName.trim();
@@ -318,6 +322,18 @@ export function refineIdentity(draft: OnboardDraft): OnboardDraft {
     if (parts.length >= 2) {
       first = parts[0] ?? "";
       last = parts.slice(1).join(" ");
+    }
+  }
+
+  // Miner often puts Sample / SampleRadiculopathyCase — peel repeated first from CamelCase last.
+  if (first && last && looksCamelCaseBlob(last)) {
+    const parts = splitCamelCaseToken(last);
+    if (parts.length >= 2) {
+      if (parts[0]?.toLowerCase() === first.toLowerCase()) {
+        last = parts.slice(1).join(" ");
+      } else {
+        last = parts.join(" ");
+      }
     }
   }
 
@@ -337,17 +353,37 @@ type ProblemRow = OnboardDraft["problems"][number];
 type MedRow = OnboardDraft["medications"][number];
 type AllergyRow = OnboardDraft["allergies"][number];
 
+function problemNameKey(name: string) {
+  // Collapse "Cervical sprain/strain (847.0)" with "Cervical sprain/strain" for dedupe.
+  return normKey(name.replace(/\s*\(\d{3}(?:\.\d{1,2})?\)\s*$/, "").replace(/\s*\([A-TV-Z][0-9][A-Z0-9.]*\)\s*$/i, ""));
+}
+
+/** Lift trailing ICD-9/10 from problem name into icd when empty. */
+export function liftIcdFromProblemName(row: ProblemRow): ProblemRow {
+  if (row.icd.trim()) return row;
+  const m = row.name.match(/\(([A-TV-Z][0-9][A-Z0-9.]{0,6}|\d{3}(?:\.\d{1,2})?)\)\s*$/i);
+  if (!m?.[1]) return row;
+  const normalized = normalizeIcdCode(m[1]);
+  if (!normalized.icd) return row;
+  return {
+    ...row,
+    icd: normalized.icd,
+    name: row.name.replace(/\s*\([^)]+\)\s*$/, "").trim() || row.name,
+  };
+}
+
 export function dedupeProblems(rows: ProblemRow[]): ProblemRow[] {
   const map = new Map<string, ProblemRow>();
-  for (const row of rows) {
-    const key = `${normKey(row.name)}|${normKey(row.icd)}`;
+  for (const raw of rows) {
+    const row = liftIcdFromProblemName(raw);
+    const key = problemNameKey(row.name);
     const prev = map.get(key);
     if (!prev) {
       map.set(key, row);
       continue;
     }
     map.set(key, {
-      ...prev,
+      name: prev.name.length >= row.name.length ? prev.name : row.name,
       icd: prev.icd || row.icd,
       onset: prev.onset || row.onset,
       status: prev.status === "resolved" || row.status === "resolved" ? "resolved" : "active",
@@ -432,13 +468,33 @@ function scrapeDob(corpus: string): string {
   return m ? parseUsDate(m[1] || "") : "";
 }
 
+function isTollFreePhone(value: string) {
+  const digits = value.replace(/\D/g, "");
+  const area = digits.length === 11 && digits.startsWith("1") ? digits.slice(1, 4) : digits.slice(0, 3);
+  return /^(800|888|877|866|855|844|833)$/.test(area);
+}
+
 function scrapePhone(corpus: string): string {
+  // Prefer patient/home/cell over generic letterhead Tel: (often facility/toll-free).
+  const preferred = corpus.match(
+    /(?:patient\s*(?:phone|tel)?|home\s*phone|cell|mobile|pt\s*phone)\s*[:#\-]?\s*(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})/i,
+  );
+  if (preferred?.[1] && !isTollFreePhone(preferred[1])) {
+    return preferred[1].replace(/\s+/g, " ").trim();
+  }
   const labeled = corpus.match(
     /(?:phone|tel|telephone|cell|mobile)\s*[:#\-]?\s*(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})/i,
   );
-  if (labeled?.[1]) return labeled[1].replace(/\s+/g, " ").trim();
+  if (labeled?.[1] && !isTollFreePhone(labeled[1])) {
+    return labeled[1].replace(/\s+/g, " ").trim();
+  }
   const any = corpus.match(/\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
-  return any?.[0]?.replace(/\s+/g, " ").trim() || "";
+  if (any?.[0] && !isTollFreePhone(any[0])) return any[0].replace(/\s+/g, " ").trim();
+  return "";
+}
+
+function isPlaceholderDate(value: string) {
+  return /^Y{2,4}/i.test(value.trim()) || /X{2,}/i.test(value.trim());
 }
 
 function scrapeEmail(corpus: string): string {
@@ -467,18 +523,38 @@ function scrapeDateOfInjury(corpus: string): string {
 /** Fill empty contact/identity/DOI from corpus regexes; never invent payer. */
 export function refineOnboardDraftFromCorpus(draft: OnboardDraft, corpus: string): OnboardDraft {
   let next = refineIdentity({ ...draft });
-  const nameMissing = !next.firstName.trim() || !next.lastName.trim();
-  if (nameMissing) {
+  if (next.dateOfBirth && isPlaceholderDate(next.dateOfBirth)) next.dateOfBirth = "";
+  if (next.memberId && /^X{3,}$/i.test(next.memberId.trim())) next.memberId = "";
+  if (next.phone && isTollFreePhone(next.phone)) next.phone = "";
+
+  const isRedactedToken = (value: string) => /^X{2,}$/i.test(value.trim()) || /^Y{2,}$/i.test(value.trim());
+  if (isRedactedToken(next.lastName)) next.lastName = "";
+  if (isRedactedToken(next.firstName)) next.firstName = "";
+  const nameWeak =
+    !next.firstName.trim() ||
+    !next.lastName.trim() ||
+    looksCamelCaseBlob(next.lastName) ||
+    JUNK_SOLO_NAMES.has(stripHonorific(next.firstName).toLowerCase()) ||
+    JUNK_SOLO_NAMES.has(stripHonorific(next.lastName).toLowerCase());
+  if (nameWeak) {
     const scraped = scrapeLabeledName(corpus);
     if (scraped) {
-      if (!next.firstName.trim()) next.firstName = scraped.firstName;
-      if (!next.lastName.trim()) next.lastName = scraped.lastName;
+      if (!next.firstName.trim() || JUNK_SOLO_NAMES.has(stripHonorific(next.firstName).toLowerCase())) {
+        next.firstName = scraped.firstName;
+      }
+      if (
+        !next.lastName.trim() ||
+        looksCamelCaseBlob(next.lastName) ||
+        JUNK_SOLO_NAMES.has(stripHonorific(next.lastName).toLowerCase())
+      ) {
+        next.lastName = scraped.lastName;
+      }
       next = refineIdentity(next);
     }
   }
   if (!next.dateOfBirth.trim()) {
     const dob = scrapeDob(corpus);
-    if (dob) next.dateOfBirth = dob;
+    if (dob && !isPlaceholderDate(dob)) next.dateOfBirth = dob;
   }
   if (!next.phone.trim()) {
     const phone = scrapePhone(corpus);
@@ -490,10 +566,10 @@ export function refineOnboardDraftFromCorpus(draft: OnboardDraft, corpus: string
   }
   if (!next.memberId.trim()) {
     const memberId = scrapeMemberId(corpus);
-    if (memberId) next.memberId = memberId;
+    if (memberId && !/^X{3,}$/i.test(memberId)) next.memberId = memberId;
   }
   const doi = scrapeDateOfInjury(corpus);
-  if (doi) {
+  if (doi && !isPlaceholderDate(doi)) {
     if (!next.injuryCase) {
       next.injuryCase = {
         caseNumber: "",
@@ -507,9 +583,11 @@ export function refineOnboardDraftFromCorpus(draft: OnboardDraft, corpus: string
         attorneyEmail: "",
         notes: "",
       };
-    } else if (!next.injuryCase.dateOfInjury.trim()) {
+    } else if (!next.injuryCase.dateOfInjury.trim() || isPlaceholderDate(next.injuryCase.dateOfInjury)) {
       next.injuryCase = { ...next.injuryCase, dateOfInjury: doi };
     }
+  } else if (next.injuryCase?.dateOfInjury && isPlaceholderDate(next.injuryCase.dateOfInjury)) {
+    next.injuryCase = { ...next.injuryCase, dateOfInjury: "" };
   }
   next.problems = dedupeProblems(next.problems);
   next.medications = dedupeMedications(next.medications);
