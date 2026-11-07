@@ -134,16 +134,28 @@ export async function callClinixOcr(
       body: form,
       signal: controller.signal,
     });
-    const json = (await res.json().catch(() => null)) as ClinixOcrResult | null;
+    const json = (await res.json().catch(() => null)) as (ClinixOcrResult & { detail?: unknown }) | null;
     if (!json || typeof json !== "object") {
       console.error("[clinixOcrClient] invalid response", res.status);
       return null;
     }
-    if (!json.success) {
-      console.warn("[clinixOcrClient] OCR unsuccessful", res.status, json.error, json.method_used);
+    const detailError = (() => {
+      const detail = json.detail;
+      if (typeof detail === "string" && detail.trim()) return detail.trim();
+      if (Array.isArray(detail) && detail[0] && typeof detail[0] === "object") {
+        const msg = (detail[0] as { msg?: unknown }).msg;
+        if (typeof msg === "string" && msg.trim()) return msg.trim();
+      }
+      return null;
+    })();
+    const error =
+      (typeof json.error === "string" && json.error.trim() ? json.error.trim() : null) ||
+      (!res.ok ? detailError : null);
+    if (!json.success || !res.ok) {
+      console.warn("[clinixOcrClient] OCR unsuccessful", res.status, error, json.method_used);
     }
     return {
-      success: Boolean(json.success),
+      success: Boolean(json.success) && res.ok,
       text: typeof json.text === "string" ? json.text : "",
       method_used: typeof json.method_used === "string" ? json.method_used : "clinix-ocr",
       page_count: Number(json.page_count) || 0,
@@ -152,7 +164,7 @@ export async function callClinixOcr(
       failed_chunks: Array.isArray(json.failed_chunks) ? json.failed_chunks : [],
       processing_ms: Number(json.processing_ms) || 0,
       content_sha256: typeof json.content_sha256 === "string" ? json.content_sha256 : undefined,
-      error: typeof json.error === "string" ? json.error : null,
+      error,
       pages: Array.isArray(json.pages) ? json.pages : undefined,
       tables: Array.isArray(json.tables) ? json.tables : undefined,
       page_labels: Array.isArray(json.page_labels) ? json.page_labels : undefined,

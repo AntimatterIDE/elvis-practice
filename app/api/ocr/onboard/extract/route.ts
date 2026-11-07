@@ -128,13 +128,15 @@ export async function POST(request: Request) {
       ),
     ];
     if (!merged.success || !merged.text.trim()) {
+      const message = merged.error || "OCR could not extract text from those files.";
+      const tooLarge = /too large|file size|413/i.test(message);
       return Response.json(
         {
-          message: merged.error || "OCR could not extract text from those files.",
+          message,
           ocr: merged,
           fingerprints,
         },
-        { status: 422 },
+        { status: tooLarge ? 413 : 422 },
       );
     }
 

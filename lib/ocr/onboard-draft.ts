@@ -285,6 +285,24 @@ function normKey(value: string) {
 const HONORIFICS = new Set(["mr", "mrs", "ms", "miss", "dr", "doctor", "patient", "pt"]);
 /** Alone as the only name token these are discarded; OK as a surname after honorific strip. */
 const JUNK_SOLO_NAMES = new Set(["sample", "unknown", "patient", "n/a", "na", "none", "test"]);
+/** Role / label tokens that must never be treated as a person name. */
+const ROLE_NAME_TOKENS = new Set([
+  "referring",
+  "physician",
+  "provider",
+  "radiologist",
+  "technologist",
+  "attending",
+  "ordering",
+  "unknown",
+]);
+const ROLE_NAME_PHRASES = new Set([
+  "referring physician",
+  "ordering physician",
+  "attending physician",
+  "referring provider",
+  "patient name",
+]);
 
 function splitCamelCaseToken(token: string): string[] {
   const parts = token
@@ -304,6 +322,7 @@ function isJunkNamePart(value: string) {
   if (!bare) return true;
   if (HONORIFICS.has(bare)) return true;
   if (JUNK_SOLO_NAMES.has(bare)) return true;
+  if (ROLE_NAME_TOKENS.has(bare)) return true;
   if (/^[A-Z0-9_-]{25,}$/.test(value) && !/\s/.test(value)) return true;
   return false;
 }
@@ -312,7 +331,11 @@ function looksCamelCaseBlob(value: string) {
   return /^[A-Za-z]+$/.test(value) && /[a-z][A-Z]/.test(value);
 }
 
-/** Split CamelCase blobs, drop honorifics/junk labels. */
+function isRoleOrJunkName(value: string) {
+  return isJunkNamePart(value);
+}
+
+/** Split CamelCase blobs, drop honorifics/junk/role labels. */
 export function refineIdentity(draft: OnboardDraft): OnboardDraft {
   let first = draft.firstName.trim();
   let last = draft.lastName.trim();
@@ -346,8 +369,20 @@ export function refineIdentity(draft: OnboardDraft): OnboardDraft {
   // Miner sometimes puts the honorific in lastName (e.g. Buzz / Mr.).
   if (last && HONORIFICS.has(stripHonorific(last).toLowerCase())) last = "";
 
-  // Reject junk labels only when they are the sole name token.
-  if (!last && JUNK_SOLO_NAMES.has(stripHonorific(first).toLowerCase())) first = "";
+  const joined = normKey(`${first} ${last}`);
+  if (joined && ROLE_NAME_PHRASES.has(joined)) {
+    first = "";
+    last = "";
+  } else if (first && last && isRoleOrJunkName(first) && isRoleOrJunkName(last)) {
+    // Unknown Unknown / Referring Physician (token path)
+    first = "";
+    last = "";
+  } else {
+    // Role tokens in last (Physician) clear; junk surnames like Sample stay unless dual-junk above.
+    if (last && ROLE_NAME_TOKENS.has(stripHonorific(last).toLowerCase())) last = "";
+    // Reject junk/role labels only when they are the sole name token.
+    if (!last && isRoleOrJunkName(first)) first = "";
+  }
 
   return { ...draft, firstName: first, lastName: last };
 }
@@ -537,6 +572,63 @@ function scrapeDateOfInjury(corpus: string): string {
   return m ? parseUsDate(m[1] || "") : "";
 }
 
+const INJURY_CONTEXT_RE =
+  /\b(?:MVA|motor\s+vehicle(?:\s+accident)?|no[-\s]?fault|workers?\s*(?:comp|compensation)|work(?:place)?\s+injur)/i;
+
+/** Seed injuryCase from MVA/NF/WC keywords only — never invent a DOI. */
+export function seedInjuryCaseFromCorpus(corpus: string): OnboardDraft["injuryCase"] {
+  const m = corpus.match(INJURY_CONTEXT_RE);
+  if (!m?.[0]) return null;
+  const raw = m[0].replace(/\s+/g, " ").trim();
+  let description = raw;
+  if (/^mva$/i.test(raw) || /motor\s+vehicle/i.test(raw)) description = "Motor vehicle accident";
+  else if (/no[-\s]?fault/i.test(raw)) description = "No-fault injury";
+  else if (/workers?\s*(?:comp|compensation)|work(?:place)?\s+injur/i.test(raw)) {
+    description = "Work-related injury";
+  }
+  return {
+    caseNumber: "",
+    claimNumber: "",
+    dateOfInjury: "",
+    description,
+    carrierName: "",
+    attorneyName: "",
+    attorneyFirm: "",
+    attorneyPhone: "",
+    attorneyEmail: "",
+    notes: "",
+  };
+}
+
+const IMAGING_DIAGNOSIS_RE =
+  /\b(herniat\w*|disc\s+bulge|bulging\s+disc|stenos\w*|radiculopath\w*|spondylos\w*|sprain\/?strain|sprain|strain)\b/i;
+const IMAGING_TECHNIQUE_RE = /\b(technique|sequences?|without\s+contrast|with\s+contrast|protocol|sagittal|axial)\b/i;
+
+/** Lift diagnosis-like imaging impression lines into problems when missing. */
+export function liftProblemsFromImagingFindings(draft: OnboardDraft): OnboardDraft {
+  const findings = (draft.imagingFindings || "").trim();
+  if (!findings) return draft;
+  const existing = new Set(draft.problems.map((row) => problemNameKey(row.name)));
+  const added: ProblemRow[] = [];
+  const chunks = findings
+    .split(/[\n;•]+|(?<=\.)\s+(?=[A-Z\-])/)
+    .map((part) => part.replace(/^[\-\d.\s]+/, "").trim())
+    .filter((part) => part.length >= 8 && part.length <= 160);
+
+  for (const chunk of chunks) {
+    if (IMAGING_TECHNIQUE_RE.test(chunk) && !IMAGING_DIAGNOSIS_RE.test(chunk)) continue;
+    if (!IMAGING_DIAGNOSIS_RE.test(chunk)) continue;
+    const name = chunk.replace(/\s+/g, " ").replace(/\.$/, "").trim();
+    const key = problemNameKey(name);
+    if (!key || existing.has(key)) continue;
+    existing.add(key);
+    added.push(liftIcdFromProblemName({ name, icd: "", status: "active", onset: "" }));
+    if (draft.problems.length + added.length >= 20) break;
+  }
+  if (!added.length) return draft;
+  return { ...draft, problems: [...draft.problems, ...added] };
+}
+
 /** Fill empty contact/identity/DOI from corpus regexes; never invent payer. */
 export function refineOnboardDraftFromCorpus(draft: OnboardDraft, corpus: string): OnboardDraft {
   let next = refineIdentity({ ...draft });
@@ -551,19 +643,16 @@ export function refineOnboardDraftFromCorpus(draft: OnboardDraft, corpus: string
     !next.firstName.trim() ||
     !next.lastName.trim() ||
     looksCamelCaseBlob(next.lastName) ||
-    JUNK_SOLO_NAMES.has(stripHonorific(next.firstName).toLowerCase()) ||
-    JUNK_SOLO_NAMES.has(stripHonorific(next.lastName).toLowerCase());
+    isRoleOrJunkName(next.firstName) ||
+    isRoleOrJunkName(next.lastName) ||
+    ROLE_NAME_PHRASES.has(normKey(`${next.firstName} ${next.lastName}`));
   if (nameWeak) {
     const scraped = scrapeLabeledName(corpus);
     if (scraped) {
-      if (!next.firstName.trim() || JUNK_SOLO_NAMES.has(stripHonorific(next.firstName).toLowerCase())) {
+      if (!next.firstName.trim() || isRoleOrJunkName(next.firstName)) {
         next.firstName = scraped.firstName;
       }
-      if (
-        !next.lastName.trim() ||
-        looksCamelCaseBlob(next.lastName) ||
-        JUNK_SOLO_NAMES.has(stripHonorific(next.lastName).toLowerCase())
-      ) {
+      if (!next.lastName.trim() || looksCamelCaseBlob(next.lastName) || isRoleOrJunkName(next.lastName)) {
         next.lastName = scraped.lastName;
       }
       next = refineIdentity(next);
@@ -606,6 +695,11 @@ export function refineOnboardDraftFromCorpus(draft: OnboardDraft, corpus: string
   } else if (next.injuryCase?.dateOfInjury && isPlaceholderDate(next.injuryCase.dateOfInjury)) {
     next.injuryCase = { ...next.injuryCase, dateOfInjury: "" };
   }
+  if (!next.injuryCase || !Object.values(next.injuryCase).some((v) => String(v || "").trim())) {
+    const seeded = seedInjuryCaseFromCorpus(corpus);
+    if (seeded) next.injuryCase = seeded;
+  }
+  next = liftProblemsFromImagingFindings(next);
   next.problems = dedupeProblems(next.problems);
   next.medications = dedupeMedications(next.medications);
   next.allergies = dedupeAllergies(next.allergies);
@@ -1108,6 +1202,7 @@ export function mergeSectionDrafts(parts: OnboardDraft[]): OnboardDraft {
 const DEMOGRAPHICS_LABELS = new Set(["photo_id", "insurance_card", "intake_form", "other"]);
 const CLINICAL_LABELS = new Set(["consult", "pt_note", "intake_form"]);
 const INJURY_LABELS = new Set(["imaging", "emg_ncv", "other"]);
+const INJURY_NARRATIVE_LABELS = new Set(["consult", "pt_note", "intake_form"]);
 
 export function buildSectionCorpus(
   input: Parameters<typeof buildMinerCorpus>[0],
@@ -1127,6 +1222,21 @@ export function buildSectionCorpus(
     }
   }
 
+  // Injury mine: prepend early narrative / MVA pages so imaging-only packets still see mechanism/DOI.
+  if (section === "injury" && allPages.length) {
+    const sorted = [...allPages].sort((a, b) => a.page - b.page);
+    const extras: typeof allPages = [];
+    for (const page of sorted) {
+      if (extras.length >= 2) break;
+      if (page.label === "attorney_noise") continue;
+      if (pages.some((p) => p.page === page.page)) continue;
+      const narrative = INJURY_NARRATIVE_LABELS.has(page.label);
+      const keyword = INJURY_CONTEXT_RE.test(page.text || "") || /\bDOI\b|date\s+of\s+injury/i.test(page.text || "");
+      if (narrative || keyword) extras.push(page);
+    }
+    if (extras.length) pages = [...extras, ...pages];
+  }
+
   if (pages.length) {
     return buildMinerCorpus({ ...input, pages, text: "", maxChars });
   }
@@ -1137,7 +1247,7 @@ const sectionFocus: Record<"demographics" | "clinical" | "injury", string> = {
   demographics:
     "Focus on demographics, contact, address, insurance payer/member id, emergency contact, PCP, referring, and pharmacy. Leave clinical lists empty unless clearly on ID/card pages.",
   clinical:
-    "Focus on chief complaint, medical and surgical history, problems, medications, and allergies. Leave injuryCase null unless DOI is in these pages.",
+    "Focus on chief complaint, medical and surgical history, problems, medications, and allergies. If DOI or MVA/no-fault/workers' comp mechanism appears on these pages, set injuryCase (description and dateOfInjury when present); do not invent case or claim numbers.",
   injury:
     "Focus on injury/no-fault/workers' comp case fields, imaging/EMG findings, and documentHints for imaging or no-fault papers.",
 };

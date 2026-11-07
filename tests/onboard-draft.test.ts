@@ -11,9 +11,11 @@ import {
   mergeSectionDrafts,
   normalizeOnboardDraft,
   patientFromOnboardDraft,
+  liftProblemsFromImagingFindings,
   refineIdentity,
   refineOnboardDraftFromCorpus,
   refreshOnboardWarnings,
+  seedInjuryCaseFromCorpus,
 } from "@/lib/ocr/onboard-draft";
 import { normalizeIcdCode } from "@/lib/ocr/icd-normalize";
 import { defaultDocuments } from "@/lib/rcm/chart";
@@ -299,6 +301,46 @@ describe("onboard draft", () => {
     );
     expect(honorLast.firstName).toBe("Buzz");
     expect(honorLast.lastName).toBe("");
+
+    const role = refineIdentity(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Referring",
+        lastName: "Physician",
+      }),
+    );
+    expect(role.firstName).toBe("");
+    expect(role.lastName).toBe("");
+
+    const dualJunk = refineIdentity(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Unknown",
+        lastName: "Unknown",
+      }),
+    );
+    expect(dualJunk.firstName).toBe("");
+    expect(dualJunk.lastName).toBe("");
+
+    const keepReal = refineIdentity(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "John",
+        lastName: "Doe",
+      }),
+    );
+    expect(keepReal.firstName).toBe("John");
+    expect(keepReal.lastName).toBe("Doe");
+
+    const maryUnknown = refineIdentity(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Mary",
+        lastName: "Unknown",
+      }),
+    );
+    expect(maryUnknown.firstName).toBe("Mary");
+    expect(maryUnknown.lastName).toBe("");
   });
 
   it("dedupes problems and maps common ICD-9 codes", () => {
@@ -393,5 +435,63 @@ describe("onboard draft", () => {
     expect(corpus).toContain("Patient: Jane Doe");
     expect(corpus).toContain("Insurance card front");
     expect(corpus).not.toContain("Consult note");
+  });
+
+  it("includes early consult narrative in injury section corpus", () => {
+    const corpus = buildSectionCorpus(
+      {
+        text: "",
+        pages: [
+          { page: 1, text: "History of MVA with neck pain", label: "consult" },
+          { page: 2, text: "MRI cervical impression disc herniation", label: "imaging" },
+          { page: 3, text: "EMG abnormal", label: "emg_ncv" },
+        ],
+      },
+      "injury",
+    );
+    expect(corpus).toContain("History of MVA with neck pain");
+    expect(corpus).toContain("MRI cervical impression");
+    expect(corpus).toContain("EMG abnormal");
+  });
+
+  it("seeds injuryCase from MVA keywords without inventing DOI", () => {
+    const seeded = seedInjuryCaseFromCorpus("Indication: status post MVA with cervical pain.");
+    expect(seeded?.description).toMatch(/motor vehicle/i);
+    expect(seeded?.dateOfInjury).toBe("");
+
+    const draft = refineOnboardDraftFromCorpus(
+      normalizeOnboardDraft({ ...emptyish(), firstName: "Pat", lastName: "Lee" }),
+      "Indication: status post motor vehicle accident.",
+    );
+    expect(draft.injuryCase?.description).toMatch(/motor vehicle/i);
+    expect(draft.injuryCase?.dateOfInjury).toBe("");
+  });
+
+  it("lifts problems from imaging findings when empty", () => {
+    const lifted = liftProblemsFromImagingFindings(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Pat",
+        lastName: "Lee",
+        imagingFindings: "- C5-6 disc herniation.\n- Cervical radiculopathy.\n- Technique: sagittal T2 sequences.",
+        problems: [],
+      }),
+    );
+    expect(lifted.problems.some((p) => /herniat/i.test(p.name))).toBe(true);
+    expect(lifted.problems.some((p) => /radiculopath/i.test(p.name))).toBe(true);
+    expect(lifted.problems.every((p) => !/technique|sequences/i.test(p.name))).toBe(true);
+
+    const refined = refineOnboardDraftFromCorpus(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Pat",
+        lastName: "Lee",
+        imagingFindings: "C5-6 disc herniation; cervical radiculopathy",
+        problems: [{ name: "Cervical radiculopathy", icd: "M54.12", status: "active", onset: "" }],
+      }),
+      "",
+    );
+    expect(refined.problems.filter((p) => /radiculopath/i.test(p.name))).toHaveLength(1);
+    expect(refined.problems.some((p) => /herniat/i.test(p.name))).toBe(true);
   });
 });
