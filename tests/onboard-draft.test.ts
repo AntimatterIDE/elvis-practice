@@ -9,6 +9,7 @@ import {
   mergeSectionDrafts,
   normalizeOnboardDraft,
   patientFromOnboardDraft,
+  refreshOnboardWarnings,
 } from "@/lib/ocr/onboard-draft";
 import { defaultDocuments } from "@/lib/rcm/chart";
 
@@ -187,6 +188,26 @@ describe("onboard draft", () => {
     expect(draft.medicalHistory).toContain("cervical radiculopathy");
     expect(draft.injuryCase?.notes).toContain("cervical radiculopathy");
     expect(draft.sourceSummary).toContain("Consultation");
+  });
+
+  it("drops stale missing-field warnings once values are filled", () => {
+    const draft = refreshOnboardWarnings(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Margaret",
+        lastName: "Palmquist",
+        phone: "(718) 255-6615",
+        memberId: "000-04-9452",
+        payerName: "NF",
+        email: "",
+        warnings: ["missing phone", "Missing member id", "Missing email", "Missing Referring name and phone"],
+      }),
+    );
+    expect(draft.warnings.some((item) => /phone/i.test(item))).toBe(false);
+    expect(draft.warnings.some((item) => /member/i.test(item))).toBe(false);
+    expect(draft.warnings.some((item) => /payer/i.test(item))).toBe(false);
+    expect(draft.warnings.some((item) => /referring/i.test(item))).toBe(false);
+    expect(draft.warnings.some((item) => /email/i.test(item))).toBe(true);
   });
 
   it("merges section drafts and maps intake answers", () => {

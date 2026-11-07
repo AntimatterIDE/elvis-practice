@@ -9,6 +9,7 @@ import {
   chartSlotsForOnboardFiles,
   emptyOnboardDraft,
   markSlotsFromUploads,
+  refreshOnboardWarnings,
 } from "@/lib/ocr/onboard-draft";
 import {
   findOcrImportMatch,
@@ -70,7 +71,7 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
   }, [draft, pendingFiles, ocrMeta]);
 
   function update<K extends keyof OnboardDraft>(key: K, value: OnboardDraft[K]) {
-    setDraft((current) => (current ? { ...current, [key]: value } : current));
+    setDraft((current) => (current ? refreshOnboardWarnings({ ...current, [key]: value }) : current));
   }
 
   async function stageLargeFile(file: File) {
@@ -142,7 +143,7 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
         return;
       }
       const hashes = [...new Set([...(json.fingerprints ?? []), ...localHashes].map((item) => item.toLowerCase()))];
-      setDraft({ ...emptyOnboardDraft(), ...json.draft });
+      setDraft(refreshOnboardWarnings({ ...emptyOnboardDraft(), ...json.draft }));
       setFingerprints(hashes);
       setOcrMeta(json.ocr ?? null);
       setPendingFiles(selected);
@@ -264,11 +265,14 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
             </p>
           ) : null}
           {draft.warnings.length ? (
-            <ul className="list-disc space-y-1 pl-5 text-sm text-emergency">
-              {draft.warnings.map((warning) => (
-                <li key={warning}>{warning}</li>
-              ))}
-            </ul>
+            <div className="rounded-md bg-black/[0.04] px-3 py-2 text-sm leading-relaxed text-muted">
+              <p className="font-medium text-ink">Still useful to fill</p>
+              <ul className="mt-1 list-disc space-y-1 pl-5">
+                {draft.warnings.map((warning) => (
+                  <li key={warning}>{warning}</li>
+                ))}
+              </ul>
+            </div>
           ) : null}
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="First name">

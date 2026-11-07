@@ -303,7 +303,8 @@ export function normalizeOnboardDraft(raw: unknown): OnboardDraft {
   base.emergencyRelation = asString(data.emergencyRelation);
   base.imagingFindings = asString(data.imagingFindings);
   base.sourceSummary = asString(data.sourceSummary);
-  base.warnings = Array.isArray(data.warnings) ? data.warnings.map(asString).filter(Boolean) : [];
+  // Ignore miner-emitted warnings — three-pass merges leave stale "missing X" after fields fill.
+  base.warnings = [];
   base.documentHints = Array.isArray(data.documentHints)
     ? (data.documentHints.filter(
         (item): item is OnboardDraft["documentHints"][number] =>
@@ -394,12 +395,24 @@ export function normalizeOnboardDraft(raw: unknown): OnboardDraft {
   for (const key of ["phone", "email", "memberId", "payerName"] as const) {
     base.fieldConfidence[key] = base[key] ? "medium" : "missing";
   }
-  if (!base.phone) base.warnings.push("Phone missing — still required for intake/claims contact.");
-  if (!base.email) base.warnings.push("Email missing — patient portal invite needs an email.");
-  if (!base.memberId) base.warnings.push("Member id missing — upload insurance card or enter manually before claim submit.");
-  if (!base.payerName) base.warnings.push("Payer name missing — pick Stedi trading partner in claim form; never invent it.");
+  return refreshOnboardWarnings(base);
+}
 
-  return base;
+/** Rebuild soft gaps from the current draft fields (safe after merge or staff edits). */
+export function refreshOnboardWarnings(draft: OnboardDraft): OnboardDraft {
+  const warnings: string[] = [];
+  if (!draft.firstName.trim() || !draft.lastName.trim()) {
+    warnings.push("Confirm first and last name before saving.");
+  }
+  if (!draft.phone.trim()) warnings.push("Phone missing — still required for intake/claims contact.");
+  if (!draft.email.trim()) warnings.push("Email missing — patient portal invite needs an email.");
+  if (!draft.memberId.trim()) {
+    warnings.push("Member id missing — upload insurance card or enter manually before claim submit.");
+  }
+  if (!draft.payerName.trim()) {
+    warnings.push("Payer name missing — pick Stedi trading partner in claim form; never invent it.");
+  }
+  return { ...draft, warnings };
 }
 
 /** Prefer clinical pages; drop attorney noise; cap tokens for mining. */
@@ -723,9 +736,7 @@ export function mergeSectionDrafts(parts: OnboardDraft[]): OnboardDraft {
     for (const hint of part.documentHints) {
       if (!out.documentHints.includes(hint)) out.documentHints.push(hint);
     }
-    out.warnings.push(...part.warnings);
   }
-  out.warnings = [...new Set(out.warnings)];
   if (!out.documentHints.includes("outside-records")) out.documentHints.unshift("outside-records");
   return normalizeOnboardDraft(out);
 }
