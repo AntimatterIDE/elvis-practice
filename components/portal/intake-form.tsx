@@ -4,6 +4,7 @@ import { useActionState, useEffect, useRef, useState } from "react";
 import { submitIntakeAction, submitOwnIntakeAction } from "@/app/portal/actions";
 import { Button } from "@/components/ui/button";
 import { controlClass as sharedControlClass } from "@/components/ui/control";
+import { IntakeRecordsImport, type IntakeOcrPayload } from "@/components/portal/intake-records-import";
 import { sexLabel } from "@/lib/portal/defaults";
 import { intakeBlocks as blocks, intakeFieldSpan as span, intakeSections as sections } from "@/lib/portal/form-layout";
 import type { IntakeField, PublicIntake } from "@/lib/portal/types";
@@ -50,12 +51,21 @@ export function IntakeForm({
   const [furthest, setFurthest] = useState(0);
   const [showInvalid, setShowInvalid] = useState(false);
   const [review, setReview] = useState<{ id: string; label: string; value: string }[]>([]);
+  const [fieldDefaults, setFieldDefaults] = useState(defaults);
+  const [formEpoch, setFormEpoch] = useState(0);
+  const [ocrPayload, setOcrPayload] = useState<IntakeOcrPayload | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const groups = blocks(form.fields);
   const minutes = Math.max(2, Math.round(form.fields.length / 5));
   const reviewing = step >= groups.length;
   const current = groups[step];
+
+  function applyOcr(payload: IntakeOcrPayload) {
+    setOcrPayload(payload);
+    setFieldDefaults((current) => ({ ...current, ...payload.answers }));
+    setFormEpoch((epoch) => epoch + 1);
+  }
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -176,6 +186,16 @@ export function IntakeForm({
   return (
     <form ref={formRef} action={action} onSubmit={onSubmit} className="mt-8 grid min-w-0 gap-5">
       {own ? null : <input type="hidden" name="token" value={token} />}
+      {ocrPayload ? (
+        <>
+          <input type="hidden" name="ocr.draft" value={JSON.stringify(ocrPayload.draft)} />
+          <input type="hidden" name="ocr.fingerprints" value={JSON.stringify(ocrPayload.fingerprints)} />
+          <input type="hidden" name="ocr.paths" value={JSON.stringify(ocrPayload.paths)} />
+          <input type="hidden" name="ocr.corpus" value={ocrPayload.corpus.slice(0, 200_000)} />
+          <input type="hidden" name="ocr.pageLabels" value={JSON.stringify(ocrPayload.pageLabels)} />
+        </>
+      ) : null}
+      <IntakeRecordsImport token={token} fields={form.fields} onApplied={applyOcr} />
       <div className="rounded-3xl border border-line bg-card p-4 card-shadow sm:p-5">
         <div className="flex items-center justify-between gap-3 text-sm">
           <p className="font-medium text-ink">{reviewing ? "Review" : sections[current.key].title}</p>
@@ -248,9 +268,9 @@ export function IntakeForm({
           <div className="mt-6 grid w-full min-w-0 grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-6">
             {group.fields.map((field) => (
               <Question
-                key={field.id}
+                key={`${formEpoch}-${field.id}`}
                 field={field}
-                value={defaults[field.id] ?? ""}
+                value={fieldDefaults[field.id] ?? ""}
                 className={group.fields.length === 1 ? "min-w-0 sm:col-span-6" : span(field)}
               />
             ))}

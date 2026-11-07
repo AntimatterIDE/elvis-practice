@@ -19,6 +19,17 @@ export type OnboardDraft = {
   memberId: string;
   reasonForVisit: string;
   medicalHistory: string;
+  surgicalHistory: string;
+  pcpName: string;
+  pcpPhone: string;
+  referringName: string;
+  referringPhone: string;
+  pharmacyName: string;
+  pharmacyPhone: string;
+  emergencyName: string;
+  emergencyPhone: string;
+  emergencyRelation: string;
+  imagingFindings: string;
   problems: Array<Pick<Problem, "name" | "icd" | "status" | "onset">>;
   medications: Array<Pick<Medication, "name" | "dose" | "frequency" | "status">>;
   allergies: Array<Pick<Allergy, "substance" | "reaction" | "severity">>;
@@ -56,6 +67,17 @@ export const emptyOnboardDraft = (): OnboardDraft => ({
   memberId: "",
   reasonForVisit: "",
   medicalHistory: "",
+  surgicalHistory: "",
+  pcpName: "",
+  pcpPhone: "",
+  referringName: "",
+  referringPhone: "",
+  pharmacyName: "",
+  pharmacyPhone: "",
+  emergencyName: "",
+  emergencyPhone: "",
+  emergencyRelation: "",
+  imagingFindings: "",
   problems: [],
   medications: [],
   allergies: [],
@@ -84,6 +106,17 @@ const onboardSchema = {
     memberId: { type: "string" },
     reasonForVisit: { type: "string" },
     medicalHistory: { type: "string" },
+    surgicalHistory: { type: "string" },
+    pcpName: { type: "string" },
+    pcpPhone: { type: "string" },
+    referringName: { type: "string" },
+    referringPhone: { type: "string" },
+    pharmacyName: { type: "string" },
+    pharmacyPhone: { type: "string" },
+    emergencyName: { type: "string" },
+    emergencyPhone: { type: "string" },
+    emergencyRelation: { type: "string" },
+    imagingFindings: { type: "string" },
     problems: {
       type: "array",
       items: {
@@ -183,6 +216,17 @@ const onboardSchema = {
     "memberId",
     "reasonForVisit",
     "medicalHistory",
+    "surgicalHistory",
+    "pcpName",
+    "pcpPhone",
+    "referringName",
+    "referringPhone",
+    "pharmacyName",
+    "pharmacyPhone",
+    "emergencyName",
+    "emergencyPhone",
+    "emergencyRelation",
+    "imagingFindings",
     "problems",
     "medications",
     "allergies",
@@ -199,6 +243,8 @@ Never invent email, phone, address, member id, or insurance payer. Never invent 
 Prefer billable ICD-10 codes only when they appear in the packet; otherwise put the condition name and leave icd empty.
 Map MVA / no-fault / NF / workers' compensation / DOI into injuryCase when present.
 reasonForVisit should be a short staff-facing summary from HPI or chief complaint.
+Fill surgicalHistory, PCP, referring, pharmacy, and emergency contact only when clearly stated.
+imagingFindings: short MRI/CT/EMG impression summary when imaging pages appear.
 documentHints: include photo-id / insurance-card only if those pages appear; always include outside-records for clinical packets; no-fault-comp when NF/WC papers appear; outside-imaging when MRI/CT reports appear.
 warnings: list gaps staff must fill (missing phone, email, member id, etc.).`;
 
@@ -245,6 +291,17 @@ export function normalizeOnboardDraft(raw: unknown): OnboardDraft {
   base.memberId = asString(data.memberId);
   base.reasonForVisit = asString(data.reasonForVisit);
   base.medicalHistory = asString(data.medicalHistory);
+  base.surgicalHistory = asString(data.surgicalHistory);
+  base.pcpName = asString(data.pcpName);
+  base.pcpPhone = asString(data.pcpPhone);
+  base.referringName = asString(data.referringName);
+  base.referringPhone = asString(data.referringPhone);
+  base.pharmacyName = asString(data.pharmacyName);
+  base.pharmacyPhone = asString(data.pharmacyPhone);
+  base.emergencyName = asString(data.emergencyName);
+  base.emergencyPhone = asString(data.emergencyPhone);
+  base.emergencyRelation = asString(data.emergencyRelation);
+  base.imagingFindings = asString(data.imagingFindings);
   base.sourceSummary = asString(data.sourceSummary);
   base.warnings = Array.isArray(data.warnings) ? data.warnings.map(asString).filter(Boolean) : [];
   base.documentHints = Array.isArray(data.documentHints)
@@ -444,6 +501,30 @@ export async function mineOnboardDraft(corpus: string): Promise<OnboardDraft> {
   }
 }
 
+/** Chart slots that should receive packet bytes on confirm. */
+export function chartSlotsForOnboardFiles(
+  files: Array<{ name: string; type?: string }>,
+  hints: OnboardDraft["documentHints"],
+  pageLabels: { label: string }[] = [],
+): string[] {
+  const slots = new Set<string>();
+  const labels = new Set(pageLabels.map((item) => item.label));
+  const hasPdf = files.some((file) => (file.type || "").includes("pdf") || /\.pdf$/i.test(file.name));
+
+  if (hasPdf || hints.includes("outside-records")) slots.add("outside-records");
+  if (hints.includes("outside-imaging") || labels.has("imaging") || labels.has("emg_ncv")) {
+    slots.add("outside-imaging");
+  }
+  if (hints.includes("no-fault-comp")) slots.add("no-fault-comp");
+  if (hints.includes("photo-id") || labels.has("photo_id")) slots.add("photo-id");
+  if (hints.includes("insurance-card") || labels.has("insurance_card")) slots.add("insurance-card");
+  if (labels.has("consult")) slots.add("consultation-report");
+  if (labels.has("pt_note")) slots.add("follow-up-reports");
+
+  if (!slots.size) slots.add("outside-records");
+  return [...slots];
+}
+
 /** Document slots cleared after staff confirms OCR onboard (gap policy). */
 export function applyOnboardDocumentHints(
   documents: Patient["documents"],
@@ -457,9 +538,62 @@ export function applyOnboardDocumentHints(
     if (slot.status === "missing") {
       slot.status = "received";
       slot.note = note || "Imported from outside records OCR";
+    } else if (note && !slot.note.includes(note.slice(0, 40))) {
+      slot.note = [slot.note, note].filter(Boolean).join(" · ").slice(0, 240);
     }
   }
   return next;
+}
+
+/** Fold OCR corpus into history + injury notes so long clinical text has a chart home. */
+export function enrichOnboardDraftFromCorpus(draft: OnboardDraft, corpus: string): OnboardDraft {
+  const excerpt = corpus.replace(/\s+/g, " ").trim().slice(0, 6_000);
+  if (!excerpt) return draft;
+  const next = { ...draft };
+  if (!next.medicalHistory.includes(excerpt.slice(0, 80))) {
+    next.medicalHistory = [next.medicalHistory, `Outside records excerpt:\n${excerpt}`]
+      .filter(Boolean)
+      .join("\n\n")
+      .trim();
+  }
+
+  if (next.injuryCase) {
+    const injury = { ...next.injuryCase };
+    if (!injury.notes.includes("Outside records excerpt")) {
+      injury.notes = [injury.notes, `Outside records excerpt:\n${excerpt.slice(0, 2_500)}`]
+        .filter(Boolean)
+        .join("\n\n")
+        .trim();
+    }
+    next.injuryCase = injury;
+  }
+
+  if (!next.sourceSummary) {
+    next.sourceSummary = excerpt.slice(0, 240);
+  }
+  return next;
+}
+
+export function markSlotsFromUploads(
+  documents: Patient["documents"],
+  uploaded: { slotId: string; fileName: string }[],
+): Patient["documents"] {
+  if (!uploaded.length) return documents;
+  const bySlot = new Map<string, string[]>();
+  for (const item of uploaded) {
+    const list = bySlot.get(item.slotId) ?? [];
+    list.push(item.fileName);
+    bySlot.set(item.slotId, list);
+  }
+  return documents.map((doc) => {
+    const names = bySlot.get(doc.id);
+    if (!names?.length) return doc;
+    return {
+      ...doc,
+      status: doc.status === "missing" ? "received" : doc.status,
+      note: `Filed: ${[...new Set(names)].join(", ")}`.slice(0, 240),
+    };
+  });
 }
 
 export function patientFromOnboardDraft(draft: OnboardDraft, id: string): Patient {
@@ -481,12 +615,32 @@ export function patientFromOnboardDraft(draft: OnboardDraft, id: string): Patien
   const documents = applyOnboardDocumentHints(defaultDocuments(), draft.documentHints, note);
   const cases =
     draft.injuryCase && Object.values(draft.injuryCase).some(Boolean)
-      ? [{ ...emptyInjuryCase(`case_${id}`), ...draft.injuryCase, attorneyAddress: "" }]
+      ? [
+          {
+            ...emptyInjuryCase(`case_${id}`),
+            ...draft.injuryCase,
+            attorneyAddress: "",
+            notes: draft.injuryCase.notes || draft.injuryCase.description || "",
+          },
+        ]
       : [];
   const nid = () => `id_${crypto.randomUUID().slice(0, 8)}`;
+  const historyParts = [draft.reasonForVisit, draft.medicalHistory];
+  if (draft.imagingFindings) historyParts.push(`Imaging findings:\n${draft.imagingFindings}`);
+  const medicalHistory = historyParts.filter(Boolean).join("\n\n");
   return {
     ...withChart(input, {
-      medicalHistory: [draft.reasonForVisit, draft.medicalHistory].filter(Boolean).join("\n\n"),
+      medicalHistory,
+      surgicalHistory: draft.surgicalHistory,
+      pcpName: draft.pcpName,
+      pcpPhone: draft.pcpPhone,
+      referringName: draft.referringName,
+      referringPhone: draft.referringPhone,
+      pharmacyName: draft.pharmacyName,
+      pharmacyPhone: draft.pharmacyPhone,
+      emergencyName: draft.emergencyName,
+      emergencyPhone: draft.emergencyPhone,
+      emergencyRelation: draft.emergencyRelation,
       problems: draft.problems.map((problem) => ({ id: nid(), ...problem })),
       medications: draft.medications.map((med) => ({ id: nid(), ...med })),
       allergies: draft.allergies.map((allergy) => ({ id: nid(), ...allergy })),
@@ -509,4 +663,145 @@ export function patientFromOnboardDraft(draft: OnboardDraft, id: string): Patien
     createdAt: new Date().toISOString(),
     mrn: "",
   };
+}
+
+function pickFilled(base: string, next: string) {
+  return next.trim() ? next.trim() : base;
+}
+
+/** Merge three section drafts; prefer non-empty; union lists and hints. */
+export function mergeSectionDrafts(parts: OnboardDraft[]): OnboardDraft {
+  const out = emptyOnboardDraft();
+  if (!parts.length) return out;
+  for (const part of parts) {
+    out.firstName = pickFilled(out.firstName, part.firstName);
+    out.lastName = pickFilled(out.lastName, part.lastName);
+    out.dateOfBirth = pickFilled(out.dateOfBirth, part.dateOfBirth);
+    if (out.sex === "unknown" && part.sex !== "unknown") out.sex = part.sex;
+    out.phone = pickFilled(out.phone, part.phone);
+    out.email = pickFilled(out.email, part.email);
+    out.address = pickFilled(out.address, part.address);
+    out.city = pickFilled(out.city, part.city);
+    out.state = pickFilled(out.state, part.state);
+    out.postalCode = pickFilled(out.postalCode, part.postalCode);
+    out.payerName = pickFilled(out.payerName, part.payerName);
+    out.memberId = pickFilled(out.memberId, part.memberId);
+    out.reasonForVisit = pickFilled(out.reasonForVisit, part.reasonForVisit);
+    out.medicalHistory = [out.medicalHistory, part.medicalHistory].filter(Boolean).join("\n\n");
+    out.surgicalHistory = pickFilled(out.surgicalHistory, part.surgicalHistory);
+    out.pcpName = pickFilled(out.pcpName, part.pcpName);
+    out.pcpPhone = pickFilled(out.pcpPhone, part.pcpPhone);
+    out.referringName = pickFilled(out.referringName, part.referringName);
+    out.referringPhone = pickFilled(out.referringPhone, part.referringPhone);
+    out.pharmacyName = pickFilled(out.pharmacyName, part.pharmacyName);
+    out.pharmacyPhone = pickFilled(out.pharmacyPhone, part.pharmacyPhone);
+    out.emergencyName = pickFilled(out.emergencyName, part.emergencyName);
+    out.emergencyPhone = pickFilled(out.emergencyPhone, part.emergencyPhone);
+    out.emergencyRelation = pickFilled(out.emergencyRelation, part.emergencyRelation);
+    out.imagingFindings = pickFilled(out.imagingFindings, part.imagingFindings);
+    out.sourceSummary = pickFilled(out.sourceSummary, part.sourceSummary);
+    out.problems = [...out.problems, ...part.problems].slice(0, 20);
+    out.medications = [...out.medications, ...part.medications].slice(0, 30);
+    out.allergies = [...out.allergies, ...part.allergies].slice(0, 20);
+    if (!out.injuryCase && part.injuryCase) out.injuryCase = part.injuryCase;
+    else if (out.injuryCase && part.injuryCase) {
+      const a = out.injuryCase;
+      const b = part.injuryCase;
+      out.injuryCase = {
+        caseNumber: pickFilled(a.caseNumber, b.caseNumber),
+        claimNumber: pickFilled(a.claimNumber, b.claimNumber),
+        dateOfInjury: pickFilled(a.dateOfInjury, b.dateOfInjury),
+        description: pickFilled(a.description, b.description),
+        carrierName: pickFilled(a.carrierName, b.carrierName),
+        attorneyName: pickFilled(a.attorneyName, b.attorneyName),
+        attorneyFirm: pickFilled(a.attorneyFirm, b.attorneyFirm),
+        attorneyPhone: pickFilled(a.attorneyPhone, b.attorneyPhone),
+        attorneyEmail: pickFilled(a.attorneyEmail, b.attorneyEmail),
+        notes: [a.notes, b.notes].filter(Boolean).join("\n\n"),
+      };
+    }
+    for (const hint of part.documentHints) {
+      if (!out.documentHints.includes(hint)) out.documentHints.push(hint);
+    }
+    out.warnings.push(...part.warnings);
+  }
+  out.warnings = [...new Set(out.warnings)];
+  if (!out.documentHints.includes("outside-records")) out.documentHints.unshift("outside-records");
+  return normalizeOnboardDraft(out);
+}
+
+const DEMOGRAPHICS_LABELS = new Set(["photo_id", "insurance_card", "intake_form", "other"]);
+const CLINICAL_LABELS = new Set(["consult", "pt_note", "intake_form"]);
+const INJURY_LABELS = new Set(["imaging", "emg_ncv", "other"]);
+
+export function buildSectionCorpus(
+  input: Parameters<typeof buildMinerCorpus>[0],
+  section: "demographics" | "clinical" | "injury",
+  maxChars = 24_000,
+) {
+  const labels =
+    section === "demographics" ? DEMOGRAPHICS_LABELS : section === "clinical" ? CLINICAL_LABELS : INJURY_LABELS;
+  const pages = (input.pages ?? []).filter((page) => labels.has(page.label) && page.label !== "attorney_noise");
+  if (pages.length) {
+    return buildMinerCorpus({ ...input, pages, text: "", maxChars });
+  }
+  return buildMinerCorpus({ ...input, maxChars });
+}
+
+const sectionFocus: Record<"demographics" | "clinical" | "injury", string> = {
+  demographics:
+    "Focus on demographics, contact, address, insurance payer/member id, emergency contact, PCP, referring, and pharmacy. Leave clinical lists empty unless clearly on ID/card pages.",
+  clinical:
+    "Focus on chief complaint, medical and surgical history, problems, medications, and allergies. Leave injuryCase null unless DOI is in these pages.",
+  injury:
+    "Focus on injury/no-fault/workers' comp case fields, imaging/EMG findings, and documentHints for imaging or no-fault papers.",
+};
+
+/** Three parallel section mines, then merge + corpus enrich. */
+export async function mineOnboardDraftSectioned(
+  input: Parameters<typeof buildMinerCorpus>[0],
+): Promise<{ draft: OnboardDraft; corpus: string }> {
+  const fullCorpus = buildMinerCorpus(input);
+  const [demographics, clinical, injury] = await Promise.all([
+    mineOnboardDraft(
+      `${sectionFocus.demographics}\n\n${buildSectionCorpus(input, "demographics")}`,
+    ),
+    mineOnboardDraft(`${sectionFocus.clinical}\n\n${buildSectionCorpus(input, "clinical")}`),
+    mineOnboardDraft(`${sectionFocus.injury}\n\n${buildSectionCorpus(input, "injury")}`),
+  ]);
+  const merged = mergeSectionDrafts([demographics, clinical, injury]);
+  return { draft: enrichOnboardDraftFromCorpus(merged, fullCorpus), corpus: fullCorpus };
+}
+
+/** Map draft values onto intake field ids via mapsTo. */
+export function intakeAnswersFromOnboardDraft(
+  fields: Array<{ id: string; mapsTo: string | null }>,
+  draft: OnboardDraft,
+): Record<string, string> {
+  const byMap: Partial<Record<string, string>> = {
+    firstName: draft.firstName,
+    lastName: draft.lastName,
+    dateOfBirth: draft.dateOfBirth,
+    sex: draft.sex === "unknown" ? "" : draft.sex,
+    phone: draft.phone,
+    email: draft.email,
+    address: draft.address,
+    city: draft.city,
+    state: draft.state,
+    postalCode: draft.postalCode,
+    payerName: draft.payerName,
+    memberId: draft.memberId,
+    emergencyName: draft.emergencyName,
+    emergencyPhone: draft.emergencyPhone,
+    emergencyRelation: draft.emergencyRelation,
+    pharmacyName: draft.pharmacyName,
+    pharmacyPhone: draft.pharmacyPhone,
+  };
+  const answers: Record<string, string> = {};
+  for (const field of fields) {
+    if (!field.mapsTo) continue;
+    const value = byMap[field.mapsTo]?.trim();
+    if (value) answers[field.id] = value;
+  }
+  return answers;
 }

@@ -5,13 +5,18 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { pushPortalChartsAction } from "@/app/portal/actions";
 import type { OnboardDraft } from "@/lib/ocr/onboard-draft";
-import { emptyOnboardDraft } from "@/lib/ocr/onboard-draft";
+import {
+  chartSlotsForOnboardFiles,
+  emptyOnboardDraft,
+  markSlotsFromUploads,
+} from "@/lib/ocr/onboard-draft";
 import {
   findOcrImportMatch,
   mergeOnboardIntoPatient,
   patientFromOnboardDraftWithHashes,
   type OcrImportMatch,
 } from "@/lib/ocr/dedupe";
+import { fileOnboardPacketToChart } from "@/lib/ocr/file-onboard";
 import type { Sex } from "@/lib/rcm/types";
 import { patientName } from "@/lib/rcm/format";
 import { Field, fieldClass, panelClass } from "@/components/admin/rcm/ui";
@@ -40,6 +45,7 @@ export function OutsideRecordsImport() {
   const router = useRouter();
   const { patients, rememberPatient } = useRcm();
   const [files, setFiles] = useState<FileList | null>(null);
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [draft, setDraft] = useState<OnboardDraft | null>(null);
   const [fingerprints, setFingerprints] = useState<string[]>([]);
   const [ocrMeta, setOcrMeta] = useState<ExtractResponse["ocr"] | null>(null);
@@ -55,6 +61,11 @@ export function OutsideRecordsImport() {
       fingerprints,
     });
   }, [draft, fingerprints, patients]);
+
+  const filingSlots = useMemo(() => {
+    if (!draft || !pendingFiles.length) return [] as string[];
+    return chartSlotsForOnboardFiles(pendingFiles, draft.documentHints, ocrMeta?.page_labels ?? []);
+  }, [draft, pendingFiles, ocrMeta]);
 
   function update<K extends keyof OnboardDraft>(key: K, value: OnboardDraft[K]) {
     setDraft((current) => (current ? { ...current, [key]: value } : current));
@@ -96,6 +107,7 @@ export function OutsideRecordsImport() {
     setDraft(null);
     setOcrMeta(null);
     setFingerprints([]);
+    setPendingFiles([]);
     try {
       const selected = Array.from(files);
       const localHashes = await Promise.all(selected.map((file) => sha256Hex(file)));
@@ -131,6 +143,7 @@ export function OutsideRecordsImport() {
       setDraft({ ...emptyOnboardDraft(), ...json.draft });
       setFingerprints(hashes);
       setOcrMeta(json.ocr ?? null);
+      setPendingFiles(selected);
     } catch (error) {
       const message = error instanceof Error ? error.message : "";
       setError(message || "Could not reach the OCR import API. Large PDFs are staged through storage first — try again.");
@@ -152,17 +165,41 @@ export function OutsideRecordsImport() {
     }
     setBusy("save");
     setError("");
-    const patient =
+    let patient =
       mode === "update" && match
         ? mergeOnboardIntoPatient(match.patient, draft, fingerprints)
         : patientFromOnboardDraftWithHashes(draft, `p_${crypto.randomUUID().slice(0, 8)}`, fingerprints);
+
     const result = await pushPortalChartsAction({ patients: [patient], appointments: [] });
-    setBusy("idle");
     if (!result.ok) {
+      setBusy("idle");
       setError(result.error || "That chart could not be saved for the practice.");
       return;
     }
+
+    let fileNote = "";
+    if (pendingFiles.length) {
+      const filed = await fileOnboardPacketToChart({
+        patientId: patient.id,
+        files: pendingFiles,
+        hints: draft.documentHints,
+        pageLabels: ocrMeta?.page_labels ?? [],
+      });
+      if (filed.uploaded.length) {
+        patient = { ...patient, documents: markSlotsFromUploads(patient.documents, filed.uploaded) };
+        await pushPortalChartsAction({ patients: [patient], appointments: [] });
+      }
+      if (filed.errors.length) {
+        fileNote = ` Chart saved, but some files did not store: ${filed.errors.slice(0, 3).join("; ")}`;
+      }
+    }
+
+    setBusy("idle");
     rememberPatient(patient);
+    if (fileNote) {
+      setError(fileNote.trim());
+      return;
+    }
     router.push(`/admin/operations/patients/${patient.id}`);
   }
 
@@ -172,8 +209,8 @@ export function OutsideRecordsImport() {
         <h2 className="font-display text-2xl tracking-tight">Outside records</h2>
         <p className="mt-1 text-sm leading-relaxed text-muted">
           Extract is safe to re-run on the same PDFs (nothing is saved until you confirm). Large packets upload through
-          storage first so they are not blocked by the request size limit. Confirm updates an existing chart matched by
-          file fingerprint or name + date of birth.
+          storage first so they are not blocked by the request size limit. Confirm updates a matched chart, files the
+          PDFs into chart document slots, and keeps longer clinical text in medical history / case notes.
         </p>
       </div>
       <form onSubmit={onExtract} className="grid gap-3">
@@ -278,15 +315,41 @@ export function OutsideRecordsImport() {
               onChange={(e) => update("reasonForVisit", e.target.value)}
             />
           </Field>
+          <Field label="Medical history / outside records text">
+            <textarea
+              className={fieldClass}
+              rows={8}
+              value={draft.medicalHistory}
+              onChange={(e) => update("medicalHistory", e.target.value)}
+            />
+          </Field>
           {draft.injuryCase ? (
-            <p className="text-sm text-muted">
-              Injury case draft: DOI {draft.injuryCase.dateOfInjury || "—"} · {draft.injuryCase.description || "no description"} ·
-              attorney {draft.injuryCase.attorneyName || "—"}
-            </p>
+            <>
+              <p className="text-sm text-muted">
+                Injury case draft: DOI {draft.injuryCase.dateOfInjury || "—"} · {draft.injuryCase.description || "no description"} ·
+                attorney {draft.injuryCase.attorneyName || "—"}
+              </p>
+              <Field label="Injury / case notes">
+                <textarea
+                  className={fieldClass}
+                  rows={5}
+                  value={draft.injuryCase.notes}
+                  onChange={(e) =>
+                    update("injuryCase", draft.injuryCase ? { ...draft.injuryCase, notes: e.target.value } : draft.injuryCase)
+                  }
+                />
+              </Field>
+            </>
           ) : null}
           {draft.problems.length ? (
             <p className="text-sm text-muted">
               Problems: {draft.problems.map((problem) => `${problem.name}${problem.icd ? ` (${problem.icd})` : ""}`).join("; ")}
+            </p>
+          ) : null}
+          {filingSlots.length || pendingFiles.length ? (
+            <p className="rounded-md bg-black/[0.04] px-3 py-2 text-sm leading-relaxed">
+              On confirm, {pendingFiles.length} file{pendingFiles.length === 1 ? "" : "s"} will be filed into:{" "}
+              {filingSlots.join(", ") || "outside-records"}.
             </p>
           ) : null}
           <div className="flex flex-wrap gap-2">

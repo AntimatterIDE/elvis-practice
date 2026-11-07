@@ -99,13 +99,48 @@ export function mergeOnboardIntoPatient(
   const documents = applyOnboardDocumentHints(existing.documents, draft.documentHints, note);
 
   const fill = (current: string, next: string) => (current.trim() ? current : next.trim());
+  const incomingHistory = [draft.reasonForVisit, draft.medicalHistory].filter(Boolean).join("\n\n");
+  const medicalHistory = existing.medicalHistory.trim()
+    ? incomingHistory && !existing.medicalHistory.includes(incomingHistory.slice(0, 80))
+      ? `${existing.medicalHistory.trim()}\n\n${incomingHistory}`.slice(0, 12_000)
+      : existing.medicalHistory
+    : incomingHistory;
 
-  const cases =
-    draft.injuryCase && Object.values(draft.injuryCase).some(Boolean)
-      ? existing.cases.length
-        ? existing.cases
-        : [{ ...emptyInjuryCase(`case_${existing.id}`), ...draft.injuryCase, attorneyAddress: "" }]
-      : existing.cases;
+  let cases = existing.cases;
+  if (draft.injuryCase && Object.values(draft.injuryCase).some(Boolean)) {
+    if (!existing.cases.length) {
+      cases = [
+        {
+          ...emptyInjuryCase(`case_${existing.id}`),
+          ...draft.injuryCase,
+          attorneyAddress: "",
+          notes: draft.injuryCase.notes || draft.injuryCase.description || "",
+        },
+      ];
+    } else {
+      const [first, ...rest] = existing.cases;
+      const noteAdd = draft.injuryCase.notes || draft.injuryCase.description || "";
+      cases = [
+        {
+          ...first,
+          caseNumber: fill(first.caseNumber, draft.injuryCase.caseNumber),
+          claimNumber: fill(first.claimNumber, draft.injuryCase.claimNumber),
+          dateOfInjury: fill(first.dateOfInjury, draft.injuryCase.dateOfInjury),
+          description: fill(first.description, draft.injuryCase.description),
+          carrierName: fill(first.carrierName, draft.injuryCase.carrierName),
+          attorneyName: fill(first.attorneyName, draft.injuryCase.attorneyName),
+          attorneyFirm: fill(first.attorneyFirm, draft.injuryCase.attorneyFirm),
+          attorneyPhone: fill(first.attorneyPhone, draft.injuryCase.attorneyPhone),
+          attorneyEmail: fill(first.attorneyEmail, draft.injuryCase.attorneyEmail),
+          notes:
+            first.notes.trim() && noteAdd && !first.notes.includes(noteAdd.slice(0, 60))
+              ? `${first.notes.trim()}\n\n${noteAdd}`.slice(0, 8_000)
+              : fill(first.notes, noteAdd),
+        },
+        ...rest,
+      ];
+    }
+  }
 
   return {
     ...existing,
@@ -121,7 +156,17 @@ export function mergeOnboardIntoPatient(
     postalCode: fill(existing.postalCode, draft.postalCode),
     payerName: existing.payerName && existing.payerName !== "Self-pay" ? existing.payerName : draft.payerName || existing.payerName,
     memberId: fill(existing.memberId, draft.memberId),
-    medicalHistory: fill(existing.medicalHistory, [draft.reasonForVisit, draft.medicalHistory].filter(Boolean).join("\n\n")),
+    medicalHistory,
+    surgicalHistory: fill(existing.surgicalHistory, draft.surgicalHistory),
+    pcpName: fill(existing.pcpName, draft.pcpName),
+    pcpPhone: fill(existing.pcpPhone, draft.pcpPhone),
+    referringName: fill(existing.referringName, draft.referringName),
+    referringPhone: fill(existing.referringPhone, draft.referringPhone),
+    pharmacyName: fill(existing.pharmacyName, draft.pharmacyName),
+    pharmacyPhone: fill(existing.pharmacyPhone, draft.pharmacyPhone),
+    emergencyName: fill(existing.emergencyName, draft.emergencyName),
+    emergencyPhone: fill(existing.emergencyPhone, draft.emergencyPhone),
+    emergencyRelation: fill(existing.emergencyRelation, draft.emergencyRelation),
     problems: mergeUniqueByName(existing.problems, built.problems, (item) => `${item.name}|${item.icd}`.toLowerCase()),
     medications: mergeUniqueByName(existing.medications, built.medications, (item) => item.name.toLowerCase()),
     allergies: mergeUniqueByName(existing.allergies, built.allergies, (item) => (item.substance || "").toLowerCase()),

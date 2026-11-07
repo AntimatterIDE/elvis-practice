@@ -2,10 +2,52 @@ import { describe, expect, it } from "vitest";
 import {
   applyOnboardDocumentHints,
   buildMinerCorpus,
+  chartSlotsForOnboardFiles,
+  enrichOnboardDraftFromCorpus,
+  intakeAnswersFromOnboardDraft,
+  markSlotsFromUploads,
+  mergeSectionDrafts,
   normalizeOnboardDraft,
   patientFromOnboardDraft,
 } from "@/lib/ocr/onboard-draft";
 import { defaultDocuments } from "@/lib/rcm/chart";
+
+function emptyish() {
+  return {
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
+    sex: "unknown",
+    phone: "",
+    email: "",
+    address: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    payerName: "",
+    memberId: "",
+    reasonForVisit: "",
+    medicalHistory: "",
+    surgicalHistory: "",
+    pcpName: "",
+    pcpPhone: "",
+    referringName: "",
+    referringPhone: "",
+    pharmacyName: "",
+    pharmacyPhone: "",
+    emergencyName: "",
+    emergencyPhone: "",
+    emergencyRelation: "",
+    imagingFindings: "",
+    problems: [],
+    medications: [],
+    allergies: [],
+    injuryCase: null,
+    documentHints: ["outside-records"],
+    warnings: [],
+    sourceSummary: "",
+  };
+}
 
 describe("onboard draft", () => {
   it("normalizes mined JSON and keeps outside-records hint", () => {
@@ -100,5 +142,100 @@ describe("onboard draft", () => {
     expect(patient.coverages[0]?.payerName).toBe("Fidelis");
     expect(patient.coverages[0]?.tradingPartnerId).toBeUndefined();
     expect(patient.documents.find((item) => item.id === "outside-records")?.status).toBe("received");
+  });
+
+  it("folds OCR corpus into medical history and injury notes", () => {
+    const draft = enrichOnboardDraftFromCorpus(
+      normalizeOnboardDraft({
+        firstName: "Pat",
+        lastName: "Lee",
+        dateOfBirth: "1990-01-01",
+        sex: "female",
+        phone: "",
+        email: "",
+        address: "",
+        city: "",
+        state: "",
+        postalCode: "",
+        payerName: "",
+        memberId: "",
+        reasonForVisit: "Neck pain",
+        medicalHistory: "Prior PT",
+        problems: [],
+        medications: [],
+        allergies: [],
+        injuryCase: {
+          caseNumber: "",
+          claimNumber: "",
+          dateOfInjury: "2024-01-01",
+          description: "MVA",
+          carrierName: "",
+          attorneyName: "",
+          attorneyFirm: "",
+          attorneyPhone: "",
+          attorneyEmail: "",
+          notes: "",
+        },
+        documentHints: ["outside-records"],
+        warnings: [],
+        sourceSummary: "",
+      }),
+      "Consultation: cervical radiculopathy with MRI C5-C6 disc herniation.",
+    );
+    expect(draft.medicalHistory).toContain("Prior PT");
+    expect(draft.medicalHistory).toContain("Outside records excerpt");
+    expect(draft.medicalHistory).toContain("cervical radiculopathy");
+    expect(draft.injuryCase?.notes).toContain("cervical radiculopathy");
+    expect(draft.sourceSummary).toContain("Consultation");
+  });
+
+  it("merges section drafts and maps intake answers", () => {
+    const a = normalizeOnboardDraft({
+      ...emptyish(),
+      firstName: "Pat",
+      lastName: "Lee",
+      phone: "555-0100",
+      emergencyName: "Sam",
+    });
+    const b = normalizeOnboardDraft({
+      ...emptyish(),
+      medicalHistory: "Prior fusion",
+      surgicalHistory: "ACDF 2019",
+      problems: [{ name: "Radiculopathy", icd: "M54.16", status: "active", onset: "" }],
+    });
+    const c = normalizeOnboardDraft({
+      ...emptyish(),
+      imagingFindings: "C5-6 herniation",
+      documentHints: ["outside-imaging"],
+    });
+    const merged = mergeSectionDrafts([a, b, c]);
+    expect(merged.firstName).toBe("Pat");
+    expect(merged.surgicalHistory).toBe("ACDF 2019");
+    expect(merged.imagingFindings).toContain("herniation");
+    expect(merged.documentHints).toEqual(expect.arrayContaining(["outside-records", "outside-imaging"]));
+    const answers = intakeAnswersFromOnboardDraft(
+      [
+        { id: "firstName", mapsTo: "firstName" },
+        { id: "phone", mapsTo: "phone" },
+        { id: "emergencyName", mapsTo: "emergencyName" },
+      ],
+      merged,
+    );
+    expect(answers).toEqual({ firstName: "Pat", phone: "555-0100", emergencyName: "Sam" });
+  });
+
+  it("maps packet hints to chart slots and marks filed documents", () => {
+    const pdf = new File(["x"], "packet.pdf", { type: "application/pdf" });
+    const slots = chartSlotsForOnboardFiles([pdf], ["outside-records", "outside-imaging"], [
+      { label: "imaging" },
+      { label: "consult" },
+    ]);
+    expect(slots).toEqual(expect.arrayContaining(["outside-records", "outside-imaging", "consultation-report"]));
+    const docs = markSlotsFromUploads(defaultDocuments(), [
+      { slotId: "outside-records", fileName: "packet.pdf" },
+      { slotId: "outside-imaging", fileName: "packet.pdf" },
+    ]);
+    expect(docs.find((item) => item.id === "outside-records")?.note).toContain("packet.pdf");
+    expect(docs.find((item) => item.id === "outside-imaging")?.status).toBe("received");
   });
 });

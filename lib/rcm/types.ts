@@ -148,6 +148,8 @@ export type Patient = PatientRegistration & {
   accountNotes: AccountNote[];
   /** SHA-256 fingerprints of outside-records files already imported (dedupe). */
   ocrImportHashes?: string[];
+  /** Chart-files storage paths for OCR text artifacts (`…/ocr-import/…`). */
+  ocrImportArtifacts?: string[];
 };
 
 export type AccountNote = {

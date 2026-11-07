@@ -9,7 +9,6 @@ import { ageFromDob, chartGaps, withChart } from "@/lib/rcm/chart";
 import { formatDay, formatTime, patientName } from "@/lib/rcm/format";
 import type { Patient, PatientInput, Sex } from "@/lib/rcm/types";
 import { MemberCard } from "@/components/admin/bits/surface";
-import { OutsideRecordsImport } from "@/components/admin/rcm/outside-records-import";
 import { Field, LoadingDesk, PageHeader, fieldClass, panelClass, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -98,10 +97,10 @@ export function PatientsDesk() {
       <PageHeader
         kicker="Practice"
         title="Patients"
-        lede="A chart saved here is stored for every staff login. Send an intake link when the patient can fill out the form first."
+        lede="A chart saved here is stored for every staff login. Send an intake link to import outside records and open the chart from the form."
         action={
           <Button asChild variant="secondary">
-            <Link href="/admin/operations/intake">Intake form</Link>
+            <Link href="/admin/operations/intake">Intake + outside records</Link>
           </Button>
         }
       />
@@ -150,13 +149,12 @@ export function PatientsDesk() {
               })}
             </ul>
           </section>
-          <OutsideRecordsImport />
         </div>
         <form onSubmit={onSubmit} className={`${panelClass} grid h-fit gap-4`}>
           <div>
             <h2 className="font-display text-2xl tracking-tight">Walk-in chart</h2>
             <p className="mt-1 text-sm leading-relaxed text-muted">
-              Use this when the patient is here. The chart is saved for the whole practice, and email, address, and the attorney case can be added after.
+              Use this when the patient is here without a packet. For outside records, send an intake link — import sits at the top of that form.
             </p>
           </div>
           <Field label="First name">

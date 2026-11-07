@@ -39,6 +39,28 @@ export async function intakeSnapshotAction() {
   return { snapshot: result.value };
 }
 
+function readOcrPayload(formData: FormData) {
+  return {
+    draftJson: String(formData.get("ocr.draft") ?? ""),
+    fingerprintsJson: String(formData.get("ocr.fingerprints") ?? "[]"),
+    pathsJson: String(formData.get("ocr.paths") ?? "[]"),
+    corpus: String(formData.get("ocr.corpus") ?? ""),
+    pageLabelsJson: String(formData.get("ocr.pageLabels") ?? "[]"),
+  };
+}
+
+async function applyIntakeOcrIfPresent(patientId: string, formData: FormData) {
+  const payload = readOcrPayload(formData);
+  if (!payload.draftJson.trim() && !payload.pathsJson.trim() && !payload.corpus.trim()) return;
+  const { finalizeIntakeOcr } = await import("@/lib/ocr/apply-intake");
+  const roster = await getPortalStore().roster();
+  if (!roster.ok) return;
+  const current = roster.value.patients.find((patient) => patient.id === patientId);
+  if (!current) return;
+  const next = await finalizeIntakeOcr({ patient: current, ...payload });
+  await getPortalStore().pushCharts({ patients: [next], appointments: [] });
+}
+
 export async function submitIntakeAction(
   _previous: { error?: string; done?: boolean },
   formData: FormData,
@@ -54,6 +76,11 @@ export async function submitIntakeAction(
   }
   const result = await getPortalStore().submit(token, answers);
   if (!result.ok) return { error: result.error };
+  try {
+    await applyIntakeOcrIfPresent(result.value.patientId, formData);
+  } catch {
+    // Intake already saved; OCR filing is best-effort.
+  }
   return { done: true };
 }
 
@@ -73,6 +100,11 @@ export async function submitOwnIntakeAction(
   }
   const result = await getPortalStore().submitOwn(patientId, answers);
   if (!result.ok) return { error: result.error };
+  try {
+    await applyIntakeOcrIfPresent(patientId, formData);
+  } catch {
+    // Intake already saved; OCR filing is best-effort.
+  }
   return { done: true };
 }
 

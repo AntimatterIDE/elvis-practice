@@ -40,7 +40,7 @@ export async function prepareOcrInboxUpload(input: {
   byteSize: number;
   fileName?: string;
 }) {
-  if (!safeSegment(input.staffId)) return { ok: false as const, message: "Sign in as staff to upload." };
+  if (!safeSegment(input.staffId)) return { ok: false as const, message: "Sign in or open a valid intake link to upload." };
   if (!allowedTypes.has(input.contentType)) {
     return { ok: false as const, message: "Upload a PDF or image (JPEG/PNG/WebP)." };
   }

@@ -167,6 +167,9 @@ export function normalizePatient(patient: Patient): Patient {
     ocrImportHashes: Array.isArray(next.ocrImportHashes)
       ? next.ocrImportHashes.filter((item): item is string => typeof item === "string" && /^[a-f0-9]{64}$/i.test(item))
       : [],
+    ocrImportArtifacts: Array.isArray(next.ocrImportArtifacts)
+      ? next.ocrImportArtifacts.filter((item): item is string => typeof item === "string" && item.includes("/ocr-import/")).slice(0, 20)
+      : [],
   };
 }
 

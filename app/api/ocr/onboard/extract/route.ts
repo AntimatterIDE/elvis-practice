@@ -1,7 +1,7 @@
+import { resolveOcrActor } from "@/lib/ocr/auth";
 import { callClinixOcr, isOcrConfigured, type ClinixOcrResult } from "@/lib/ocr/clinix-ocr-client";
 import { downloadOcrInboxFile, isOcrInboxPath, removeOcrInboxFile } from "@/lib/ocr/inbox";
-import { buildMinerCorpus, mineOnboardDraft, type OnboardDraft } from "@/lib/ocr/onboard-draft";
-import { getStaffSession } from "@/lib/supabase/session";
+import { mineOnboardDraftSectioned, type OnboardDraft } from "@/lib/ocr/onboard-draft";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -84,8 +84,9 @@ async function collectFiles(request: Request): Promise<{ files: StagedFile[] } |
 }
 
 export async function POST(request: Request) {
-  if (!(await getStaffSession())) {
-    return Response.json({ message: "Sign in as staff to import outside records." }, { status: 401 });
+  const actor = await resolveOcrActor(request);
+  if (!actor) {
+    return Response.json({ message: "Sign in or open a valid intake link to import outside records." }, { status: 401 });
   }
   if (!(await isOcrConfigured())) {
     return Response.json(
@@ -104,6 +105,7 @@ export async function POST(request: Request) {
 
   const ocrResults: ClinixOcrResult[] = [];
   const stagedPaths: string[] = [];
+  const retainInbox = actor.kind !== "staff";
   try {
     for (const file of collected.files) {
       if (file.path) stagedPaths.push(file.path);
@@ -136,17 +138,19 @@ export async function POST(request: Request) {
       );
     }
 
-    const corpus = buildMinerCorpus({
+    const { draft, corpus }: { draft: OnboardDraft; corpus: string } = await mineOnboardDraftSectioned({
       text: merged.text,
       pages: merged.pages,
       tables: merged.tables,
       formFields: merged.form_fields,
     });
-    const draft: OnboardDraft = await mineOnboardDraft(corpus);
 
     return Response.json({
       draft,
       fingerprints,
+      corpus,
+      corpusChars: corpus.length,
+      retainedPaths: retainInbox ? stagedPaths : [],
       ocr: {
         success: merged.success,
         method_used: merged.method_used,
@@ -158,6 +162,8 @@ export async function POST(request: Request) {
       },
     });
   } finally {
-    await Promise.all(stagedPaths.map((path) => removeOcrInboxFile(path)));
+    if (!retainInbox) {
+      await Promise.all(stagedPaths.map((path) => removeOcrInboxFile(path)));
+    }
   }
 }
