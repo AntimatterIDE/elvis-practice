@@ -301,11 +301,17 @@ export function BulkPatientImport() {
               <div className="[perspective:1200px]">
                 <div
                   className={cn(
-                    "relative min-h-[28rem] transition-transform duration-500 [transform-style:preserve-3d]",
+                    "relative h-[36rem] transition-transform duration-500 [transform-style:preserve-3d]",
                     flipped && "[transform:rotateY(180deg)]",
                   )}
                 >
-                  <div className="absolute inset-0 grid gap-3 rounded-2xl border border-line bg-card p-5 [backface-visibility:hidden] sm:p-6">
+                  <div
+                    aria-hidden={flipped}
+                    className={cn(
+                      "absolute inset-0 grid auto-rows-min content-start gap-3 overflow-y-auto rounded-2xl border border-line bg-card p-5 [backface-visibility:hidden] sm:p-6",
+                      flipped && "pointer-events-none invisible",
+                    )}
+                  >
                     <div className="flex flex-wrap items-start justify-between gap-2">
                       <div>
                         <p className="text-xs uppercase tracking-[0.14em] text-muted">Draft</p>
@@ -419,7 +425,13 @@ export function BulkPatientImport() {
                     )}
                   </div>
 
-                  <div className="absolute inset-0 grid gap-3 overflow-auto rounded-2xl border border-line bg-card p-5 [backface-visibility:hidden] [transform:rotateY(180deg)] sm:p-6">
+                  <div
+                    aria-hidden={!flipped}
+                    className={cn(
+                      "absolute inset-0 grid auto-rows-min content-start gap-3 overflow-y-auto rounded-2xl border border-line bg-card p-5 [backface-visibility:hidden] [transform:rotateY(180deg)] sm:p-6",
+                      !flipped && "pointer-events-none invisible",
+                    )}
+                  >
                     <p className="text-xs uppercase tracking-[0.14em] text-muted">Clinical extract</p>
                     {activeCard.draft ? (
                       <>
