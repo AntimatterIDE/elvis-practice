@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { CHART_FIELDS, sexLabel } from "@/lib/portal/defaults";
 import { intakeBlocks, intakeFieldSpan, intakeSections } from "@/lib/portal/form-layout";
 import type { IntakeAdminSnapshot, IntakeField, IntakeFieldType, IntakeMap } from "@/lib/portal/types";
+import { OutsideRecordsImport } from "@/components/admin/rcm/outside-records-import";
 import { Field, PageHeader, fieldClass } from "@/components/admin/rcm/ui";
 import { formatDay } from "@/lib/rcm/format";
 import { cn } from "@/lib/utils";
@@ -118,13 +119,16 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
       <PageHeader
         kicker="Practice"
         title="Patient intake"
-        lede="Shape the questions, send a private link, and open a chart when the form comes back. A portal login is a separate step you can hand to the patient."
+        lede="Import outside records here for back office, or shape the questions and send a private link when the patient should fill the form."
       />
       <p className="mt-4 text-sm leading-relaxed text-muted">
         {snapshot.storage === "database"
           ? "Submitted forms are stored in the practice database."
           : "Submitted forms are stored on this server. Connect Supabase and run the portal migration to keep them in the practice database."}
       </p>
+      <div className="mt-6">
+        <OutsideRecordsImport variant="hero" />
+      </div>
       <div className="mt-6 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="grid min-w-0 gap-5">
           <section className="rounded-3xl border border-line bg-card p-5 sm:p-7">

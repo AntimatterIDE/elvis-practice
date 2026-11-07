@@ -21,6 +21,7 @@ import type { Sex } from "@/lib/rcm/types";
 import { patientName } from "@/lib/rcm/format";
 import { Field, fieldClass, panelClass } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
+import { cn } from "@/lib/utils";
 
 type ExtractResponse = {
   draft?: OnboardDraft;
@@ -41,9 +42,10 @@ async function sha256Hex(file: File) {
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-export function OutsideRecordsImport() {
+export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" | "hero" }) {
   const router = useRouter();
   const { patients, rememberPatient } = useRcm();
+  const hero = variant === "hero";
   const [files, setFiles] = useState<FileList | null>(null);
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [draft, setDraft] = useState<OnboardDraft | null>(null);
@@ -204,13 +206,24 @@ export function OutsideRecordsImport() {
   }
 
   return (
-    <section className={`${panelClass} grid gap-4`}>
+    <section
+      className={cn(
+        "relative grid gap-4 overflow-hidden",
+        hero
+          ? "rounded-3xl border border-oxide/25 bg-gradient-to-br from-mint/80 via-card to-paper p-5 shadow-[0_22px_50px_-36px_rgb(10_110_102_/_0.55)] sm:p-6"
+          : panelClass,
+      )}
+    >
+      {hero ? <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-oxide" aria-hidden="true" /> : null}
       <div>
-        <h2 className="font-display text-2xl tracking-tight">Outside records</h2>
-        <p className="mt-1 text-sm leading-relaxed text-muted">
-          Extract is safe to re-run on the same PDFs (nothing is saved until you confirm). Large packets upload through
-          storage first so they are not blocked by the request size limit. Confirm updates a matched chart, files the
-          PDFs into chart document slots, and keeps longer clinical text in medical history / case notes.
+        {hero ? <p className="kicker text-oxide-deep">Outside records</p> : null}
+        <h2 className={cn("font-display tracking-tight text-ink", hero ? "mt-2 text-3xl sm:text-4xl" : "text-2xl")}>
+          {hero ? "Import a packet and open a chart" : "Outside records"}
+        </h2>
+        <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
+          {hero
+            ? "Back-office import — no patient link required. Extract, review, and confirm to create or update a chart and file the PDFs."
+            : "Extract is safe to re-run on the same PDFs (nothing is saved until you confirm). Large packets upload through storage first so they are not blocked by the request size limit. Confirm updates a matched chart, files the PDFs into chart document slots, and keeps longer clinical text in medical history / case notes."}
         </p>
       </div>
       <form onSubmit={onExtract} className="grid gap-3">
