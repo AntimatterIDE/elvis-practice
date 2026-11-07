@@ -1,0 +1,18 @@
+# elvis-practice — Agent Knowledge Index
+
+Compiled memory for **The Alignment Clinic** (Next.js + Supabase on Vercel; Stedi 837P).
+
+## Pages
+
+| Page | Summary |
+|------|---------|
+| [wiki/architecture.md](wiki/architecture.md) | Site, admin Visit Desk, chart files, OCR, clinical letter |
+| [wiki/bugs.md](wiki/bugs.md) | Solved errors and OCR/visit gotchas |
+| [wiki/decisions.md](wiki/decisions.md) | Current product rulings |
+
+## Surface
+
+- Public site: Alignment branding (`lib/site.ts`, oxide/clinic-blue).
+- Admin Visit Desk: `components/admin/visit-desk.tsx` — record → note → review codes → approve → claims.
+- Chart Files: Supabase `chart-files` bucket via `lib/chart-files/store.ts`.
+- OCR: optional extract after upload (`ChartExtractReview`, fill-empty + overwrite).

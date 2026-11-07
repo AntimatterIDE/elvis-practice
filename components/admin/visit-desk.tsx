@@ -104,11 +104,17 @@ export function VisitDesk({
   const [phase, setPhase] = useState<"uploading" | "working" | null>(null);
   const [approval, setApproval] = useState<ApprovalDraft | null>(null);
   const [savingApproval, setSavingApproval] = useState(false);
+  const [letterBusy, setLetterBusy] = useState(false);
+  const [letterUrl, setLetterUrl] = useState("");
   const { patients, appointments } = useRcm();
   const recorder = useVisitRecorder({ patientLabel, appointmentId });
   const selected = encounters.find((encounter) => encounter.id === selectedId) ?? null;
   const poll =
     phase === "working" || phase === "uploading" || (selected ? activeEncounter(selected.status) : false);
+
+  useEffect(() => {
+    setLetterUrl("");
+  }, [selectedId]);
 
   useEffect(() => {
     if (!selectedId || !poll) return;
@@ -312,7 +318,7 @@ export function VisitDesk({
     await fetch(`/api/encounters/${encounterId}`, { method: "DELETE" });
   }
 
-  const busy = phase !== null || savingApproval;
+  const busy = phase !== null || savingApproval || letterBusy;
   const draft = approval?.id === selected?.id ? approval : null;
   const canReview = selected?.status === "review" || selected?.status === "approved";
 
@@ -369,6 +375,7 @@ export function VisitDesk({
     const label = (selected.patientLabel || requestedLabel).trim().toLowerCase();
     return patients.find((patient) => patientName(patient).trim().toLowerCase() === label)?.id ?? "";
   })();
+  const matchedPatient = matchedPatientId ? patients.find((patient) => patient.id === matchedPatientId) ?? null : null;
   const claimLink = selected
     ? claimsHref({
         encounterId: selected.id,
@@ -376,6 +383,55 @@ export function VisitDesk({
         appointmentId: selected.appointmentId || appointmentId,
       })
     : "";
+
+  async function createClinicalLetter() {
+    if (!selected || !canReview) return;
+    if (!matchedPatientId) {
+      setMessage("Open this visit from a scheduled patient, or match the visit label to a chart, then create the clinical letter.");
+      return;
+    }
+    setLetterBusy(true);
+    setMessage("");
+    setLetterUrl("");
+    const injury = matchedPatient?.cases?.[0];
+    try {
+      const response = await fetch(`/api/encounters/${selected.id}/clinical-letter`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          patientId: matchedPatientId,
+          chart: matchedPatient
+            ? {
+                patientName: patientName(matchedPatient),
+                dateOfBirth: matchedPatient.dateOfBirth,
+                phone: matchedPatient.phone,
+                payerName: matchedPatient.payerName || matchedPatient.coverages[0]?.payerName || "",
+                memberId: matchedPatient.memberId || matchedPatient.coverages[0]?.memberId || "",
+                medicalHistory: matchedPatient.medicalHistory,
+                surgicalHistory: matchedPatient.surgicalHistory,
+                dateOfInjury: injury?.dateOfInjury || "",
+                injuryDescription: injury?.description || "",
+                diagnoses: matchedPatient.problems
+                  .filter((problem) => problem.status === "active")
+                  .map((problem) => [problem.icd, problem.name].filter(Boolean).join(" — "))
+                  .filter(Boolean)
+                  .slice(0, 12),
+              }
+            : undefined,
+        }),
+      });
+      const payload = (await response.json()) as { message?: string; url?: string; label?: string };
+      if (!response.ok || !payload.url) {
+        setMessage(payload.message || "The clinical letter could not be created.");
+      } else {
+        setLetterUrl(payload.url);
+        window.open(payload.url, "_blank", "noopener,noreferrer");
+      }
+    } catch {
+      setMessage("The clinical letter could not be created. Try again when you have service.");
+    }
+    setLetterBusy(false);
+  }
 
   return (
     <div className="grid gap-8">
@@ -534,6 +590,9 @@ export function VisitDesk({
               >
                 {shownCodes.diagnoses.length > 0 || shownCodes.lines.length > 0 ? "Re-suggest codes" : "Suggest codes"}
               </Button>
+              <Button type="button" variant="secondary" onClick={() => void createClinicalLetter()} disabled={busy}>
+                {letterBusy ? "Writing clinical letter…" : "Clinical letter"}
+              </Button>
               {selected.status !== "approved" || approvalDirty ? (
                 <Button type="button" onClick={() => void saveApproval()} disabled={busy || !approvalReady || !approvalDirty}>
                   Approve note and codes
@@ -548,6 +607,11 @@ export function VisitDesk({
                   Approve the note and at least one diagnosis and one procedure, each procedure linked to its diagnoses. Then this visit can open in claims.
                 </p>
               )}
+              {letterUrl ? (
+                <a className="text-sm font-medium text-oxide-deep underline underline-offset-2" href={letterUrl} target="_blank" rel="noreferrer">
+                  Open clinical letter PDF
+                </a>
+              ) : null}
             </div>
           ) : null}
         </article>
