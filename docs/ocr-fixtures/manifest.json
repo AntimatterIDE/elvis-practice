@@ -1,0 +1,335 @@
+{
+  "purpose": "Synthetic/redacted/public sample records for Alignment OCR onboard testing. Not real patient PHI from the practice.",
+  "admin_test_path": "/admin/operations/intake",
+  "preferred_tests": [
+    "packets/full-spine-pi-packet/full-spine-pi-packet-combined.pdf",
+    "packets/lumbar-mva-imaging-emg/lumbar-mva-imaging-emg-combined.pdf",
+    "packets/cervical-mva-imaging-emg/cervical-mva-imaging-emg-combined.pdf",
+    "packets/mva-chiro-to-spine/mva-chiro-to-spine-combined.pdf",
+    "packets/wc-legal-spine-lite/wc-legal-spine-lite-combined.pdf"
+  ],
+  "catalog": {
+    "singles": [
+      {
+        "file": "singles/outside-imaging-lumbar-mva.pdf",
+        "source_name": "simonmed-lumbar-mri-mva-redacted.pdf",
+        "pages": 9,
+        "text_chars": 2864,
+        "sha256": "ae24528e4acd7c87d53fbce46daac6a7f15517f6b5c136870eeaff680a65c469",
+        "bytes": 1555257
+      },
+      {
+        "file": "singles/outside-imaging-cervical.pdf",
+        "source_name": "secondopinions-cervical-mri.pdf",
+        "pages": 2,
+        "text_chars": 4262,
+        "sha256": "d4cfeeed6dfa7a6977ff102865d6a7f212c823a3c9007d13f970d1fef2bc9578",
+        "bytes": 283898
+      },
+      {
+        "file": "singles/outside-imaging-lumbar-brain-dictation.pdf",
+        "source_name": "memphis-sample-mri-dictations.pdf",
+        "pages": 2,
+        "text_chars": 2589,
+        "sha256": "00cbfbb80ad2a91f83d6bbdac33fdbcab385f7a9d6f48ca22c26da96b6319e6b",
+        "bytes": 6764
+      },
+      {
+        "file": "singles/emg-cervical-radiculopathy.pdf",
+        "source_name": "integrity-emg-cervical-radiculopathy.pdf",
+        "pages": 4,
+        "text_chars": 4555,
+        "sha256": "9b99941fe43ffcda4ac68901e839e6014965919efd1e24d098cbdfb68e882db5",
+        "bytes": 373659
+      },
+      {
+        "file": "singles/emg-cervical-lumbar-abnormal.pdf",
+        "source_name": "precision-emg-abnormal-sample.pdf",
+        "pages": 13,
+        "text_chars": 15649,
+        "sha256": "a19cfb8bd2f8a444bf86c71564b0264c5c9d4eb5ac29c5e443c8a1e7d3161707",
+        "bytes": 247815
+      },
+      {
+        "file": "singles/emg-lumbar-radiculopathy.pdf",
+        "source_name": "neff-emg-lumbar-radiculopathy.pdf",
+        "pages": 4,
+        "text_chars": 5812,
+        "sha256": "337e122d84d0303f53332524818093c540ff4252e8b7e977f78be39a01065426",
+        "bytes": 273538
+      },
+      {
+        "file": "singles/emg-lumbar-radiculopathy-integrity.pdf",
+        "source_name": "integrity-emg-lumbar-radiculopathy.pdf",
+        "pages": 4,
+        "text_chars": 4618,
+        "sha256": "9cb54f8a99ec8dddcbf88c7a155d9d21080f43835da90151d1be35eb10b3e342",
+        "bytes": 400191
+      },
+      {
+        "file": "singles/pi-narrative-medsum.pdf",
+        "source_name": "medsum-pi-narrative-sample.pdf",
+        "pages": 7,
+        "text_chars": 25165,
+        "sha256": "65b5707292a70a04de94636f564b8fb695e6fb4d62d17b45f527dd1b499907f1",
+        "bytes": 144396
+      },
+      {
+        "file": "singles/pi-narrative-medview.pdf",
+        "source_name": "medview-pi-narrative-sample.pdf",
+        "pages": 7,
+        "text_chars": 25152,
+        "sha256": "25e42e22db39f0027f654ee1c2e1f9e9628556d6e5a216faa8415476d210853c",
+        "bytes": 861127
+      },
+      {
+        "file": "singles/mva-chiro-narrative.pdf",
+        "source_name": "reportmaster-mva-chiro-narrative.pdf",
+        "pages": 7,
+        "text_chars": 16659,
+        "sha256": "66c2474c83c9aef77f8844782bb10555a2f397a1dbd7c0801d4e6401f734ea87",
+        "bytes": 35646
+      },
+      {
+        "file": "singles/pi-chronological-summary.pdf",
+        "source_name": "acrodocz-pi-table-summary.pdf",
+        "pages": 113,
+        "text_chars": 37671,
+        "sha256": "6e09fccbc4cc02ff1f6bcfe0e69bf895c445eaa4af69f5dcb3079d3995255a76",
+        "bytes": 23309865
+      },
+      {
+        "file": "singles/wc-ortho-qme-ame.pdf",
+        "source_name": "coa-wc-ortho-qme-sample.pdf",
+        "pages": 8,
+        "text_chars": 25578,
+        "sha256": "5a5c37ddf69d2e320fccad014b29116cb4c4c4593f5f3c522978e5d384313ed3",
+        "bytes": 57648
+      },
+      {
+        "file": "singles/ime-sample.pdf",
+        "source_name": "fortunes-ime-sample.pdf",
+        "pages": 9,
+        "text_chars": 16633,
+        "sha256": "6cd2de8db425e23499c2f7e6cd28478b6d88e1acbc9cd6af109a82c1aa21d752",
+        "bytes": 159736
+      },
+      {
+        "file": "singles/emg-aanem-template.pdf",
+        "source_name": "aanem-emg-report-template.pdf",
+        "pages": 1,
+        "text_chars": 6046,
+        "sha256": "c28086b0ca11ac8336c5e1e9f0e5fc17ec20e4d7b7b7eb21dc85b858c84b452d",
+        "bytes": 251489
+      },
+      {
+        "file": "singles/encounter-insurance-fictional.pdf",
+        "source_name": "dlp-fictional-patient-record.pdf",
+        "pages": 2,
+        "text_chars": 1289,
+        "sha256": "651e792cb052e2d99e2e8dfc4e834d6c1809f82d4d4f2507f1b71765342478bd",
+        "bytes": 3550
+      }
+    ],
+    "packets": [
+      {
+        "id": "cervical-mva-imaging-emg",
+        "title": "Cervical MVA-style: cervical MRI + cervical EMG",
+        "combined": "packets/cervical-mva-imaging-emg/cervical-mva-imaging-emg-combined.pdf",
+        "parts": [
+          "singles/outside-imaging-cervical.pdf",
+          "singles/emg-cervical-radiculopathy.pdf"
+        ],
+        "pages": 6,
+        "text_chars": 8817,
+        "sha256": "544332fe97a0dfd60b929d4cf77b5398c81759dea66d9019cf8c0550cd72653d",
+        "bytes": 433994,
+        "expected": {
+          "documentHints": [
+            "outside-records",
+            "outside-imaging"
+          ],
+          "problems_should_mention": [
+            "cervical",
+            "radiculopathy"
+          ],
+          "imagingFindings_should_mention": [
+            "C",
+            "disc",
+            "herniation"
+          ],
+          "likely_gaps": [
+            "attorney",
+            "memberId",
+            "email"
+          ]
+        },
+        "how_to_test": "Upload combined PDF, or multi-select the part PDFs on Admin \u2192 Intake \u2192 Outside records."
+      },
+      {
+        "id": "lumbar-mva-imaging-emg",
+        "title": "Lumbar MVA-style: redacted lumbar MRI (MVA) + lumbar EMG",
+        "combined": "packets/lumbar-mva-imaging-emg/lumbar-mva-imaging-emg-combined.pdf",
+        "parts": [
+          "singles/outside-imaging-lumbar-mva.pdf",
+          "singles/emg-lumbar-radiculopathy.pdf"
+        ],
+        "pages": 13,
+        "text_chars": 8676,
+        "sha256": "5e18142f81eff6ffc75f8b5584be6070d5760d4bc6366bbcb2ceb52a62401b27",
+        "bytes": 1803014,
+        "expected": {
+          "documentHints": [
+            "outside-records",
+            "outside-imaging"
+          ],
+          "reasonForVisit_or_history": [
+            "back",
+            "MVA",
+            "motor vehicle",
+            "radicul"
+          ],
+          "imagingFindings_should_mention": [
+            "L5",
+            "herniation",
+            "disc"
+          ],
+          "likely_gaps": [
+            "attorney",
+            "email"
+          ]
+        },
+        "how_to_test": "Upload combined PDF, or multi-select the part PDFs on Admin \u2192 Intake \u2192 Outside records."
+      },
+      {
+        "id": "full-spine-pi-packet",
+        "title": "Full-ish outside records: PI narrative + cervical MRI + lumbar MRI + EMG",
+        "combined": "packets/full-spine-pi-packet/full-spine-pi-packet-combined.pdf",
+        "parts": [
+          "singles/pi-narrative-medsum.pdf",
+          "singles/outside-imaging-cervical.pdf",
+          "singles/outside-imaging-lumbar-mva.pdf",
+          "singles/emg-cervical-lumbar-abnormal.pdf"
+        ],
+        "pages": 31,
+        "text_chars": 47940,
+        "sha256": "ff54e8222a3511f1813d72167fa3da8bed13348cd0a626e3094eae20d1131573",
+        "bytes": 2094844,
+        "expected": {
+          "documentHints": [
+            "outside-records",
+            "outside-imaging",
+            "no-fault-comp"
+          ],
+          "injuryCase": true,
+          "problems_should_mention": [
+            "cervical",
+            "lumbar",
+            "sprain",
+            "radicul"
+          ],
+          "medications_or_allergies_possible": true,
+          "likely_gaps": [
+            "email",
+            "pharmacy"
+          ]
+        },
+        "how_to_test": "Upload combined PDF, or multi-select the part PDFs on Admin \u2192 Intake \u2192 Outside records."
+      },
+      {
+        "id": "mva-chiro-to-spine",
+        "title": "Chiro/MVA narrative \u2192 spine referral style packet",
+        "combined": "packets/mva-chiro-to-spine/mva-chiro-to-spine-combined.pdf",
+        "parts": [
+          "singles/mva-chiro-narrative.pdf",
+          "singles/outside-imaging-cervical.pdf",
+          "singles/emg-cervical-radiculopathy.pdf"
+        ],
+        "pages": 13,
+        "text_chars": 25476,
+        "sha256": "4fd3592ca74a378a9e462c90f5ccd4fee99672db62628704587c76e5c3b9b55b",
+        "bytes": 467741,
+        "expected": {
+          "documentHints": [
+            "outside-records",
+            "outside-imaging"
+          ],
+          "injuryCase": true,
+          "reasonForVisit_or_history": [
+            "neck",
+            "accident",
+            "sprain"
+          ]
+        },
+        "how_to_test": "Upload combined PDF, or multi-select the part PDFs on Admin \u2192 Intake \u2192 Outside records."
+      },
+      {
+        "id": "wc-legal-spine",
+        "title": "Workers\u2019 comp / legal medicals: QME + IME + PI chronological summary",
+        "combined": "packets/wc-legal-spine/wc-legal-spine-combined.pdf",
+        "parts": [
+          "singles/wc-ortho-qme-ame.pdf",
+          "singles/ime-sample.pdf",
+          "singles/pi-chronological-summary.pdf"
+        ],
+        "pages": 130,
+        "text_chars": 79882,
+        "sha256": "6a47c8cbe29e0e45f9d00a84cc1bb8596d2649afa823cad4bdd6f5f421266a22",
+        "bytes": 23576315,
+        "expected": {
+          "documentHints": [
+            "outside-records",
+            "no-fault-comp"
+          ],
+          "injuryCase": true,
+          "likely_fields": [
+            "dateOfInjury",
+            "description",
+            "problems"
+          ]
+        },
+        "how_to_test": "Upload combined PDF, or multi-select the part PDFs on Admin \u2192 Intake \u2192 Outside records."
+      },
+      {
+        "id": "wc-legal-spine-lite",
+        "title": "WC/legal lite: QME + IME + MVA chiro narrative (OCR-friendly size)",
+        "combined": "packets/wc-legal-spine-lite/wc-legal-spine-lite-combined.pdf",
+        "parts": [
+          "singles/wc-ortho-qme-ame.pdf",
+          "singles/ime-sample.pdf",
+          "singles/mva-chiro-narrative.pdf"
+        ],
+        "pages": 24,
+        "text_chars": 58870,
+        "sha256": "b17cb050c8656857d7c860f105b747f416f95cc7c90733c1a2d39f3489a6b47e",
+        "bytes": 232281,
+        "expected": {
+          "documentHints": [
+            "outside-records",
+            "no-fault-comp"
+          ],
+          "injuryCase": true
+        },
+        "how_to_test": "Prefer this over wc-legal-spine for quick OCR; the full chronological summary is huge."
+      }
+    ],
+    "controls": [
+      {
+        "file": "singles/control-brain-mri-redacted.pdf",
+        "source_name": "nyt-mri-brain-redacted.pdf",
+        "pages": 1,
+        "text_chars": 0,
+        "sha256": "acd023fe838e4d23dc6d836f2403ac9b1eae0a981ab894c4d73631fde0013c62",
+        "bytes": 95432
+      },
+      {
+        "file": "singles/control-brain-mri-doe.pdf",
+        "source_name": "usarad-mri-brain-doe.pdf",
+        "pages": 1,
+        "text_chars": 1778,
+        "sha256": "16ee2ee178863bc727cb838e171e4a73faebe0d960ed1c19ae52eefbdc45a834",
+        "bytes": 109812
+      }
+    ]
+  }
+}

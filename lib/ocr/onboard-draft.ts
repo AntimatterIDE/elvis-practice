@@ -1,5 +1,6 @@
 import type { Allergy, InjuryCase, Medication, Patient, Problem, Sex } from "@/lib/rcm/types";
 import { defaultDocuments, emptyInjuryCase, withChart } from "@/lib/rcm/chart";
+import { normalizeIcdCode } from "@/lib/ocr/icd-normalize";
 
 /** Fields staff must confirm before chart write. Never invent tradingPartnerId. */
 export type OnboardFieldConfidence = "high" | "medium" | "low" | "missing";
@@ -241,6 +242,7 @@ const instructions = `You mine outside medical records for a spine practice char
 Return JSON only. Leave a field empty when the document does not clearly state it.
 Never invent email, phone, address, member id, or insurance payer. Never invent Stedi trading partner ids.
 Prefer billable ICD-10 codes only when they appear in the packet; otherwise put the condition name and leave icd empty.
+If only ICD-9 appears, leave icd empty and put the legacy code in a short name suffix (e.g. "Cervical strain (847.0)") — never invent ICD-10 from ICD-9.
 Map MVA / no-fault / NF / workers' compensation / DOI into injuryCase when present.
 reasonForVisit: one short line from HPI or chief complaint (not a page dump).
 medicalHistory: compact prose summary of past medical history only (a few sentences, under ~800 characters). Never paste raw OCR tables, machine settings, or full page text.
@@ -274,6 +276,245 @@ function asString(value: unknown) {
 
 function asSex(value: unknown): Sex {
   return value === "female" || value === "male" || value === "other" || value === "unknown" ? value : "unknown";
+}
+
+function normKey(value: string) {
+  return value.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+const HONORIFICS = new Set(["mr", "mrs", "ms", "miss", "dr", "doctor", "patient", "pt"]);
+/** Alone as the only name token these are discarded; OK as a surname after honorific strip. */
+const JUNK_SOLO_NAMES = new Set(["sample", "unknown", "patient", "n/a", "na", "none", "test"]);
+
+function splitCamelCaseToken(token: string): string[] {
+  const parts = token
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+    .split(/\s+/)
+    .filter(Boolean);
+  return parts.length >= 2 ? parts : [token];
+}
+
+function stripHonorific(token: string) {
+  return token.replace(/\./g, "").trim();
+}
+
+function isJunkNamePart(value: string) {
+  const bare = stripHonorific(value).toLowerCase();
+  if (!bare) return true;
+  if (HONORIFICS.has(bare)) return true;
+  if (JUNK_SOLO_NAMES.has(bare)) return true;
+  if (/^[A-Z0-9_-]{25,}$/.test(value) && !/\s/.test(value)) return true;
+  return false;
+}
+
+/** Split CamelCase blobs, drop honorifics/junk labels. */
+export function refineIdentity(draft: OnboardDraft): OnboardDraft {
+  let first = draft.firstName.trim();
+  let last = draft.lastName.trim();
+
+  if (first && !last && !/\s/.test(first)) {
+    const parts = splitCamelCaseToken(first);
+    if (parts.length >= 2) {
+      first = parts[0] ?? "";
+      last = parts.slice(1).join(" ");
+    }
+  }
+
+  const firstParts = first.split(/\s+/).filter(Boolean);
+  while (firstParts.length && HONORIFICS.has(stripHonorific(firstParts[0] ?? "").toLowerCase())) {
+    firstParts.shift();
+  }
+  first = firstParts.join(" ");
+
+  // Reject junk labels only when they are the sole name token.
+  if (!last && JUNK_SOLO_NAMES.has(stripHonorific(first).toLowerCase())) first = "";
+
+  return { ...draft, firstName: first, lastName: last };
+}
+
+type ProblemRow = OnboardDraft["problems"][number];
+type MedRow = OnboardDraft["medications"][number];
+type AllergyRow = OnboardDraft["allergies"][number];
+
+export function dedupeProblems(rows: ProblemRow[]): ProblemRow[] {
+  const map = new Map<string, ProblemRow>();
+  for (const row of rows) {
+    const key = `${normKey(row.name)}|${normKey(row.icd)}`;
+    const prev = map.get(key);
+    if (!prev) {
+      map.set(key, row);
+      continue;
+    }
+    map.set(key, {
+      ...prev,
+      icd: prev.icd || row.icd,
+      onset: prev.onset || row.onset,
+      status: prev.status === "resolved" || row.status === "resolved" ? "resolved" : "active",
+    });
+  }
+  return [...map.values()].slice(0, 20);
+}
+
+export function dedupeMedications(rows: MedRow[]): MedRow[] {
+  const map = new Map<string, MedRow>();
+  for (const row of rows) {
+    const key = `${normKey(row.name)}|${normKey(row.dose)}`;
+    const prev = map.get(key);
+    if (!prev) {
+      map.set(key, row);
+      continue;
+    }
+    map.set(key, {
+      ...prev,
+      frequency: prev.frequency || row.frequency,
+      status: prev.status === "stopped" || row.status === "stopped" ? "stopped" : "active",
+    });
+  }
+  return [...map.values()].slice(0, 30);
+}
+
+export function dedupeAllergies(rows: AllergyRow[]): AllergyRow[] {
+  const map = new Map<string, AllergyRow>();
+  for (const row of rows) {
+    const key = normKey(row.substance);
+    const prev = map.get(key);
+    if (!prev) {
+      map.set(key, row);
+      continue;
+    }
+    map.set(key, {
+      ...prev,
+      reaction: prev.reaction || row.reaction,
+      severity: prev.severity !== "unknown" ? prev.severity : row.severity,
+    });
+  }
+  return [...map.values()].slice(0, 20);
+}
+
+function parseUsDate(raw: string): string {
+  const iso = raw.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso;
+  const m = iso.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+  if (!m) return "";
+  const month = Number(m[1]);
+  const day = Number(m[2]);
+  let year = Number(m[3]);
+  if (year < 100) year += year >= 70 ? 1900 : 2000;
+  if (month < 1 || month > 12 || day < 1 || day > 31) return "";
+  return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+function scrapeLabeledName(corpus: string): { firstName: string; lastName: string } | null {
+  const comma = corpus.match(
+    /(?:patient(?:\s+name)?|name)\s*[:\-]\s*([A-Za-z][A-Za-z'.\-]+),\s*([A-Za-z][A-Za-z'.\-]+)/i,
+  );
+  if (comma) {
+    const last = (comma[1] || "").trim();
+    const first = (comma[2] || "").trim();
+    if (first && last && !HONORIFICS.has(first.toLowerCase())) return { firstName: first, lastName: last };
+  }
+  const spaced = corpus.match(
+    /(?:patient(?:\s+name)?|name)\s*[:\-]\s*([A-Za-z][A-Za-z'.\-]+)\s+([A-Za-z][A-Za-z'.\-]+)/i,
+  );
+  if (spaced) {
+    const first = (spaced[1] || "").trim();
+    const last = (spaced[2] || "").trim();
+    if (first && last && !HONORIFICS.has(first.toLowerCase())) return { firstName: first, lastName: last };
+  }
+  return null;
+}
+
+function scrapeDob(corpus: string): string {
+  const m = corpus.match(
+    /(?:\bDOB\b|date\s+of\s+birth|birth\s*date)\s*[:\-]?\s*(\d{4}-\d{2}-\d{2}|\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4})/i,
+  );
+  return m ? parseUsDate(m[1] || "") : "";
+}
+
+function scrapePhone(corpus: string): string {
+  const labeled = corpus.match(
+    /(?:phone|tel|telephone|cell|mobile)\s*[:#\-]?\s*(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})/i,
+  );
+  if (labeled?.[1]) return labeled[1].replace(/\s+/g, " ").trim();
+  const any = corpus.match(/\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
+  return any?.[0]?.replace(/\s+/g, " ").trim() || "";
+}
+
+function scrapeEmail(corpus: string): string {
+  const m = corpus.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+  return m?.[0]?.trim() || "";
+}
+
+function scrapeMemberId(corpus: string): string {
+  const m = corpus.match(
+    /(?:member\s*(?:id|#|number)?|subscriber\s*(?:id|#|number)?|id\s*#)\s*[:\-#]?\s*([A-Z0-9][A-Z0-9\-]{4,20})/i,
+  );
+  if (!m?.[1]) return "";
+  const value = m[1].trim();
+  // Avoid bare SSN-shaped values unless explicitly member-labeled (still allow labeled).
+  if (/^\d{3}-\d{2}-\d{4}$/.test(value) && !/member|subscriber/i.test(m[0])) return "";
+  return value;
+}
+
+function scrapeDateOfInjury(corpus: string): string {
+  const m = corpus.match(
+    /(?:\bDOI\b|date\s+of\s+injury|date\s+of\s+accident|injury\s+date)\s*[:\-]?\s*(\d{4}-\d{2}-\d{2}|\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4})/i,
+  );
+  return m ? parseUsDate(m[1] || "") : "";
+}
+
+/** Fill empty contact/identity/DOI from corpus regexes; never invent payer. */
+export function refineOnboardDraftFromCorpus(draft: OnboardDraft, corpus: string): OnboardDraft {
+  let next = refineIdentity({ ...draft });
+  const nameMissing = !next.firstName.trim() || !next.lastName.trim();
+  if (nameMissing) {
+    const scraped = scrapeLabeledName(corpus);
+    if (scraped) {
+      if (!next.firstName.trim()) next.firstName = scraped.firstName;
+      if (!next.lastName.trim()) next.lastName = scraped.lastName;
+      next = refineIdentity(next);
+    }
+  }
+  if (!next.dateOfBirth.trim()) {
+    const dob = scrapeDob(corpus);
+    if (dob) next.dateOfBirth = dob;
+  }
+  if (!next.phone.trim()) {
+    const phone = scrapePhone(corpus);
+    if (phone) next.phone = phone;
+  }
+  if (!next.email.trim()) {
+    const email = scrapeEmail(corpus);
+    if (email) next.email = email;
+  }
+  if (!next.memberId.trim()) {
+    const memberId = scrapeMemberId(corpus);
+    if (memberId) next.memberId = memberId;
+  }
+  const doi = scrapeDateOfInjury(corpus);
+  if (doi) {
+    if (!next.injuryCase) {
+      next.injuryCase = {
+        caseNumber: "",
+        claimNumber: "",
+        dateOfInjury: doi,
+        description: "",
+        carrierName: "",
+        attorneyName: "",
+        attorneyFirm: "",
+        attorneyPhone: "",
+        attorneyEmail: "",
+        notes: "",
+      };
+    } else if (!next.injuryCase.dateOfInjury.trim()) {
+      next.injuryCase = { ...next.injuryCase, dateOfInjury: doi };
+    }
+  }
+  next.problems = dedupeProblems(next.problems);
+  next.medications = dedupeMedications(next.medications);
+  next.allergies = dedupeAllergies(next.allergies);
+  return refreshOnboardWarnings(next);
 }
 
 export function normalizeOnboardDraft(raw: unknown): OnboardDraft {
@@ -320,57 +561,63 @@ export function normalizeOnboardDraft(raw: unknown): OnboardDraft {
     : ["outside-records"];
   if (!base.documentHints.includes("outside-records")) base.documentHints.unshift("outside-records");
 
+  let clearedLegacyIcd = false;
   base.problems = Array.isArray(data.problems)
-    ? data.problems
-        .map((item) => {
-          if (!item || typeof item !== "object") return null;
-          const row = item as Record<string, unknown>;
-          const name = asString(row.name);
-          if (!name) return null;
-          return {
-            name,
-            icd: asString(row.icd),
-            status: row.status === "resolved" ? ("resolved" as const) : ("active" as const),
-            onset: asString(row.onset),
-          };
-        })
-        .filter((item): item is NonNullable<typeof item> => item !== null)
-        .slice(0, 20)
+    ? dedupeProblems(
+        data.problems
+          .map((item) => {
+            if (!item || typeof item !== "object") return null;
+            const row = item as Record<string, unknown>;
+            const name = asString(row.name);
+            if (!name) return null;
+            const normalized = normalizeIcdCode(asString(row.icd));
+            if (normalized.clearedLegacy) clearedLegacyIcd = true;
+            return {
+              name,
+              icd: normalized.icd,
+              status: row.status === "resolved" ? ("resolved" as const) : ("active" as const),
+              onset: asString(row.onset),
+            };
+          })
+          .filter((item): item is NonNullable<typeof item> => item !== null),
+      )
     : [];
 
   base.medications = Array.isArray(data.medications)
-    ? data.medications
-        .map((item) => {
-          if (!item || typeof item !== "object") return null;
-          const row = item as Record<string, unknown>;
-          const name = asString(row.name);
-          if (!name) return null;
-          return {
-            name,
-            dose: asString(row.dose),
-            frequency: asString(row.frequency),
-            status: row.status === "stopped" ? ("stopped" as const) : ("active" as const),
-          };
-        })
-        .filter((item): item is NonNullable<typeof item> => item !== null)
-        .slice(0, 30)
+    ? dedupeMedications(
+        data.medications
+          .map((item) => {
+            if (!item || typeof item !== "object") return null;
+            const row = item as Record<string, unknown>;
+            const name = asString(row.name);
+            if (!name) return null;
+            return {
+              name,
+              dose: asString(row.dose),
+              frequency: asString(row.frequency),
+              status: row.status === "stopped" ? ("stopped" as const) : ("active" as const),
+            };
+          })
+          .filter((item): item is NonNullable<typeof item> => item !== null),
+      )
     : [];
 
   base.allergies = Array.isArray(data.allergies)
-    ? data.allergies
-        .map((item) => {
-          if (!item || typeof item !== "object") return null;
-          const row = item as Record<string, unknown>;
-          const substance = asString(row.substance);
-          if (!substance) return null;
-          const severity: Allergy["severity"] =
-            row.severity === "mild" || row.severity === "moderate" || row.severity === "severe"
-              ? row.severity
-              : "unknown";
-          return { substance, reaction: asString(row.reaction), severity };
-        })
-        .filter((item): item is NonNullable<typeof item> => item !== null)
-        .slice(0, 20)
+    ? dedupeAllergies(
+        data.allergies
+          .map((item) => {
+            if (!item || typeof item !== "object") return null;
+            const row = item as Record<string, unknown>;
+            const substance = asString(row.substance);
+            if (!substance) return null;
+            const severity: Allergy["severity"] =
+              row.severity === "mild" || row.severity === "moderate" || row.severity === "severe"
+                ? row.severity
+                : "unknown";
+            return { substance, reaction: asString(row.reaction), severity };
+          })
+          .filter((item): item is NonNullable<typeof item> => item !== null),
+      )
     : [];
 
   if (data.injuryCase && typeof data.injuryCase === "object") {
@@ -390,6 +637,10 @@ export function normalizeOnboardDraft(raw: unknown): OnboardDraft {
     if (Object.values(draft).some(Boolean)) base.injuryCase = draft;
   }
 
+  const identified = refineIdentity(base);
+  base.firstName = identified.firstName;
+  base.lastName = identified.lastName;
+
   const required: Array<keyof OnboardDraft> = ["firstName", "lastName", "dateOfBirth"];
   for (const key of required) {
     const value = base[key];
@@ -398,12 +649,20 @@ export function normalizeOnboardDraft(raw: unknown): OnboardDraft {
   for (const key of ["phone", "email", "memberId", "payerName"] as const) {
     base.fieldConfidence[key] = base[key] ? "medium" : "missing";
   }
-  return refreshOnboardWarnings(base);
+  const withWarnings = refreshOnboardWarnings(base);
+  if (clearedLegacyIcd) {
+    withWarnings.warnings = [
+      ...withWarnings.warnings,
+      "Legacy ICD-9 cleared — confirm codes.",
+    ];
+  }
+  return withWarnings;
 }
 
 /** Rebuild soft gaps from the current draft fields (safe after merge or staff edits). */
 export function refreshOnboardWarnings(draft: OnboardDraft): OnboardDraft {
-  const warnings: string[] = [];
+  const kept = (draft.warnings || []).filter((item) => /Legacy ICD-9 cleared/i.test(item));
+  const warnings: string[] = [...kept];
   if (!draft.firstName.trim() || !draft.lastName.trim()) {
     warnings.push("Confirm first and last name before saving.");
   }
@@ -462,7 +721,10 @@ export function buildMinerCorpus(input: {
   return joined.length > maxChars ? joined.slice(0, maxChars) : joined;
 }
 
-export async function mineOnboardDraft(corpus: string): Promise<OnboardDraft> {
+export async function mineOnboardDraft(
+  corpus: string,
+  options: { model?: string; maxOutputTokens?: number } = {},
+): Promise<OnboardDraft> {
   const apiKey = process.env.OPENAI_API_KEY?.trim();
   if (!apiKey) {
     const draft = emptyOnboardDraft();
@@ -470,7 +732,8 @@ export async function mineOnboardDraft(corpus: string): Promise<OnboardDraft> {
     draft.sourceSummary = corpus.slice(0, 400);
     return draft;
   }
-  const model = process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+  const model = options.model?.trim() || process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+  const maxOutputTokens = options.maxOutputTokens ?? 3000;
   const response = await fetch("https://api.openai.com/v1/responses", {
     method: "POST",
     headers: {
@@ -480,7 +743,7 @@ export async function mineOnboardDraft(corpus: string): Promise<OnboardDraft> {
     body: JSON.stringify({
       model,
       store: false,
-      max_output_tokens: 3000,
+      max_output_tokens: maxOutputTokens,
       text: {
         format: {
           type: "json_schema",
@@ -758,7 +1021,17 @@ export function buildSectionCorpus(
 ) {
   const labels =
     section === "demographics" ? DEMOGRAPHICS_LABELS : section === "clinical" ? CLINICAL_LABELS : INJURY_LABELS;
-  const pages = (input.pages ?? []).filter((page) => labels.has(page.label) && page.label !== "attorney_noise");
+  const allPages = input.pages ?? [];
+  let pages = allPages.filter((page) => labels.has(page.label) && page.label !== "attorney_noise");
+
+  // Demographics always gets page 1 (MRI/EMG headers often carry Patient/DOB) even when labeled imaging.
+  if (section === "demographics" && allPages.length) {
+    const page1 = [...allPages].sort((a, b) => a.page - b.page)[0];
+    if (page1 && page1.label !== "attorney_noise" && !pages.some((p) => p.page === page1.page)) {
+      pages = [page1, ...pages];
+    }
+  }
+
   if (pages.length) {
     return buildMinerCorpus({ ...input, pages, text: "", maxChars });
   }
@@ -774,20 +1047,30 @@ const sectionFocus: Record<"demographics" | "clinical" | "injury", string> = {
     "Focus on injury/no-fault/workers' comp case fields, imaging/EMG findings, and documentHints for imaging or no-fault papers.",
 };
 
-/** Three parallel section mines, then merge + corpus enrich. */
+/** Three parallel section mines, then merge + corpus refine/enrich. */
 export async function mineOnboardDraftSectioned(
   input: Parameters<typeof buildMinerCorpus>[0],
 ): Promise<{ draft: OnboardDraft; corpus: string }> {
   const fullCorpus = buildMinerCorpus(input);
+  const demoModel = process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+  const clinicalModel = process.env.OPENAI_ONBOARD_MODEL?.trim() || "gpt-4o";
   const [demographics, clinical, injury] = await Promise.all([
-    mineOnboardDraft(
-      `${sectionFocus.demographics}\n\n${buildSectionCorpus(input, "demographics")}`,
-    ),
-    mineOnboardDraft(`${sectionFocus.clinical}\n\n${buildSectionCorpus(input, "clinical")}`),
-    mineOnboardDraft(`${sectionFocus.injury}\n\n${buildSectionCorpus(input, "injury")}`),
+    mineOnboardDraft(`${sectionFocus.demographics}\n\n${buildSectionCorpus(input, "demographics")}`, {
+      model: demoModel,
+      maxOutputTokens: 3000,
+    }),
+    mineOnboardDraft(`${sectionFocus.clinical}\n\n${buildSectionCorpus(input, "clinical")}`, {
+      model: clinicalModel,
+      maxOutputTokens: 4000,
+    }),
+    mineOnboardDraft(`${sectionFocus.injury}\n\n${buildSectionCorpus(input, "injury")}`, {
+      model: clinicalModel,
+      maxOutputTokens: 4000,
+    }),
   ]);
   const merged = mergeSectionDrafts([demographics, clinical, injury]);
-  return { draft: enrichOnboardDraftFromCorpus(merged, fullCorpus), corpus: fullCorpus };
+  const refined = refineOnboardDraftFromCorpus(merged, fullCorpus);
+  return { draft: enrichOnboardDraftFromCorpus(refined, fullCorpus), corpus: fullCorpus };
 }
 
 /** Map draft values onto intake field ids via mapsTo. */

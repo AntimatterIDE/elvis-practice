@@ -2,15 +2,20 @@ import { describe, expect, it } from "vitest";
 import {
   applyOnboardDocumentHints,
   buildMinerCorpus,
+  buildSectionCorpus,
   chartSlotsForOnboardFiles,
+  dedupeProblems,
   enrichOnboardDraftFromCorpus,
   intakeAnswersFromOnboardDraft,
   markSlotsFromUploads,
   mergeSectionDrafts,
   normalizeOnboardDraft,
   patientFromOnboardDraft,
+  refineIdentity,
+  refineOnboardDraftFromCorpus,
   refreshOnboardWarnings,
 } from "@/lib/ocr/onboard-draft";
+import { normalizeIcdCode } from "@/lib/ocr/icd-normalize";
 import { defaultDocuments } from "@/lib/rcm/chart";
 
 function emptyish() {
@@ -252,5 +257,88 @@ describe("onboard draft", () => {
     ]);
     expect(docs.find((item) => item.id === "outside-records")?.note).toContain("packet.pdf");
     expect(docs.find((item) => item.id === "outside-imaging")?.status).toBe("received");
+  });
+
+  it("splits CamelCase identity and strips honorifics", () => {
+    const camel = refineIdentity(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "SampleRadiculopathyCase",
+        lastName: "",
+      }),
+    );
+    expect(camel.firstName).toBe("Sample");
+    expect(camel.lastName).toBe("Radiculopathy Case");
+
+    const honor = refineIdentity(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Mr.",
+        lastName: "Sample",
+      }),
+    );
+    expect(honor.firstName).toBe("");
+    expect(honor.lastName).toBe("Sample");
+  });
+
+  it("dedupes problems and maps common ICD-9 codes", () => {
+    expect(normalizeIcdCode("847.0").icd).toBe("S13.4XXA");
+    expect(normalizeIcdCode("999.9").icd).toBe("");
+    expect(normalizeIcdCode("999.9").clearedLegacy).toBe(true);
+    expect(normalizeIcdCode("M54.12").icd).toBe("M54.12");
+
+    const draft = normalizeOnboardDraft({
+      ...emptyish(),
+      firstName: "Pat",
+      lastName: "Lee",
+      problems: [
+        { name: "Cervical radiculopathy", icd: "M54.12", status: "active", onset: "" },
+        { name: "Cervical radiculopathy", icd: "M54.12", status: "active", onset: "2020-01-02" },
+        { name: "Whiplash", icd: "847.0", status: "active", onset: "" },
+      ],
+    });
+    expect(draft.problems).toHaveLength(2);
+    expect(draft.problems.find((p) => p.name === "Cervical radiculopathy")?.onset).toBe("2020-01-02");
+    expect(draft.problems.find((p) => p.name === "Whiplash")?.icd).toBe("S13.4XXA");
+    expect(dedupeProblems(draft.problems)).toHaveLength(2);
+  });
+
+  it("scrapes phone email DOI and labeled names from corpus", () => {
+    const draft = refineOnboardDraftFromCorpus(
+      normalizeOnboardDraft({ ...emptyish() }),
+      [
+        "Patient: Maryann Tice",
+        "DOB: 03/15/1968",
+        "Phone: (555) 222-3344",
+        "Email: maryann@example.com",
+        "Member ID: AB1234567",
+        "Date of injury: 10/01/2025",
+      ].join("\n"),
+    );
+    expect(draft.firstName).toBe("Maryann");
+    expect(draft.lastName).toBe("Tice");
+    expect(draft.dateOfBirth).toBe("1968-03-15");
+    expect(draft.phone).toMatch(/555/);
+    expect(draft.email).toBe("maryann@example.com");
+    expect(draft.memberId).toBe("AB1234567");
+    expect(draft.injuryCase?.dateOfInjury).toBe("2025-10-01");
+  });
+
+  it("includes page-1 imaging text in demographics section corpus", () => {
+    const corpus = buildSectionCorpus(
+      {
+        text: "",
+        pages: [
+          { page: 1, text: "Patient: Jane Doe\nMRI CERVICAL", label: "imaging" },
+          { page: 2, text: "Insurance card front", label: "insurance_card" },
+          { page: 3, text: "Consult note", label: "consult" },
+        ],
+        formFields: [{ name: "Patient Name", value: "Jane Doe" }],
+      },
+      "demographics",
+    );
+    expect(corpus).toContain("Patient: Jane Doe");
+    expect(corpus).toContain("Insurance card front");
+    expect(corpus).not.toContain("Consult note");
   });
 });

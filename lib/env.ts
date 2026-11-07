@@ -32,6 +32,8 @@ const serverEnvSchema = z.object({
   GOOGLE_ADS_CAMPAIGN_ID: z.string().trim().optional(),
   OPENAI_API_KEY: z.string().trim().min(1).optional(),
   OPENAI_MODEL: z.string().trim().min(1).optional(),
+  /** Stronger model for clinical/injury onboard mines (default gpt-4o at call site). */
+  OPENAI_ONBOARD_MODEL: z.string().trim().min(1).optional(),
   OCR_SERVICE_URL: optionalUrl,
   OCR_SERVICE_KEY: z.string().trim().min(1).optional(),
   OCR_SERVICE_TIMEOUT_MS: z.string().trim().optional(),
@@ -63,6 +65,7 @@ export function readServerEnv(source: NodeJS.ProcessEnv = process.env): ServerEn
     GOOGLE_ADS_CAMPAIGN_ID: source.GOOGLE_ADS_CAMPAIGN_ID || undefined,
     OPENAI_API_KEY: source.OPENAI_API_KEY || undefined,
     OPENAI_MODEL: source.OPENAI_MODEL || undefined,
+    OPENAI_ONBOARD_MODEL: source.OPENAI_ONBOARD_MODEL || undefined,
     OCR_SERVICE_URL: source.OCR_SERVICE_URL || undefined,
     OCR_SERVICE_KEY: source.OCR_SERVICE_KEY || undefined,
     OCR_SERVICE_TIMEOUT_MS: source.OCR_SERVICE_TIMEOUT_MS || undefined,

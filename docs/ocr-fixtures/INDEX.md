@@ -1,4 +1,4 @@
-# Outside-records OCR fixtures (Alignment)
+# Records OCR fixtures (Alignment)
 
 Public / sample / redacted PDFs that resemble packets patients bring from other doctors
 (spine MRI, EMG/NCV, MVA/PI narrative, WC/IME). **Not** practice PHI.
