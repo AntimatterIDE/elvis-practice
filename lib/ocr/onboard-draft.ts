@@ -448,7 +448,16 @@ function scrapeLabeledName(corpus: string): { firstName: string; lastName: strin
   if (comma) {
     const last = (comma[1] || "").trim();
     const first = (comma[2] || "").trim();
-    if (first && last && !HONORIFICS.has(first.toLowerCase())) return { firstName: first, lastName: last };
+    if (
+      first &&
+      last &&
+      !HONORIFICS.has(first.toLowerCase()) &&
+      !/^X{2,}$/i.test(last) &&
+      !/^Y{2,}$/i.test(last) &&
+      !/^X{2,}$/i.test(first)
+    ) {
+      return { firstName: first, lastName: last };
+    }
   }
   const spaced = corpus.match(
     /(?:patient(?:\s+name)?|name)\s*[:\-]\s*([A-Za-z][A-Za-z'.\-]+)\s+([A-Za-z][A-Za-z'.\-]+)/i,
@@ -456,7 +465,9 @@ function scrapeLabeledName(corpus: string): { firstName: string; lastName: strin
   if (spaced) {
     const first = (spaced[1] || "").trim();
     const last = (spaced[2] || "").trim();
-    if (first && last && !HONORIFICS.has(first.toLowerCase())) return { firstName: first, lastName: last };
+    if (first && last && !HONORIFICS.has(first.toLowerCase()) && !/^X{2,}$/i.test(last) && !/^Y{2,}$/i.test(last)) {
+      return { firstName: first, lastName: last };
+    }
   }
   return null;
 }
