@@ -2,9 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { beginPortalUploadAction, notePortalUploadAction } from "@/app/portal/actions";
+import {
+  applyPortalOnboardDraftAction,
+  beginPortalUploadAction,
+  loadOwnPortalPatientAction,
+  notePortalUploadAction,
+} from "@/app/portal/actions";
+import { ChartExtractReview } from "@/components/ocr/chart-extract-review";
 import { chartFileType, putSignedChartFile } from "@/lib/chart-files/put";
 import type { ChartFile } from "@/lib/chart-files/types";
+import type { Patient } from "@/lib/rcm/types";
 import { documentName } from "@/lib/rcm/chart";
 import { portalUploadSlots } from "@/lib/portal/uploads";
 
@@ -22,6 +29,9 @@ export function DocumentDesk({ files, storageNote }: { files: ChartFile[]; stora
   const [slotId, setSlotId] = useState<string>(portalUploadSlots[0].id);
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [extractFiles, setExtractFiles] = useState<File[] | null>(null);
+  const [patient, setPatient] = useState<Patient | null>(null);
+  const [message, setMessage] = useState("");
 
   async function upload(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,6 +45,9 @@ export function DocumentDesk({ files, storageNote }: { files: ChartFile[]; stora
     const contentType = chartFileType(file);
     setPending(true);
     setError("");
+    setMessage("");
+    setExtractFiles(null);
+    setPatient(null);
     const prepared = await beginPortalUploadAction({ slotId, contentType, byteSize: file.size, fileName: file.name });
     if (!prepared.ok) {
       setPending(false);
@@ -55,6 +68,19 @@ export function DocumentDesk({ files, storageNote }: { files: ChartFile[]; stora
     }
     form.reset();
     router.refresh();
+    setMessage(`${file.name} is on your profile.`);
+    const extractable =
+      file.type === "application/pdf" ||
+      /\.pdf$/i.test(file.name) ||
+      (file.type || "").startsWith("image/");
+    if (!extractable) return;
+    const loaded = await loadOwnPortalPatientAction();
+    if (!loaded.ok) {
+      setError(loaded.message);
+      return;
+    }
+    setPatient(loaded.patient);
+    setExtractFiles([file]);
   }
 
   return (
@@ -108,6 +134,7 @@ export function DocumentDesk({ files, storageNote }: { files: ChartFile[]; stora
         </label>
         <input id="portal-file" name="file" type="file" accept={accept} required className="mt-2 block w-full text-sm" />
         {error ? <p className="mt-3 text-sm text-emergency">{error}</p> : null}
+        {message ? <p className="mt-3 text-sm text-muted">{message}</p> : null}
         <button
           type="submit"
           disabled={pending}
@@ -116,6 +143,24 @@ export function DocumentDesk({ files, storageNote }: { files: ChartFile[]; stora
           {pending ? "Uploading…" : "Upload a document to your profile"}
         </button>
       </form>
+      {extractFiles && patient ? (
+        <ChartExtractReview
+          patient={patient}
+          files={extractFiles}
+          onDismiss={() => {
+            setExtractFiles(null);
+            setPatient(null);
+          }}
+          onConfirmDraft={async ({ draft, fingerprints, overwrite }) => {
+            const result = await applyPortalOnboardDraftAction({ draft, fingerprints, overwrite });
+            if (!result.ok) throw new Error(result.message);
+            setExtractFiles(null);
+            setPatient(null);
+            setMessage("Extracted details were saved on your chart.");
+            router.refresh();
+          }}
+        />
+      ) : null}
     </div>
   );
 }

@@ -87,24 +87,69 @@ function mergeUniqueByName<T extends { id: string; name?: string; substance?: st
   return next;
 }
 
+export type OnboardMergeOverwriteKey =
+  | "firstName"
+  | "lastName"
+  | "dateOfBirth"
+  | "sex"
+  | "phone"
+  | "email"
+  | "address"
+  | "city"
+  | "state"
+  | "postalCode"
+  | "payerName"
+  | "memberId"
+  | "medicalHistory"
+  | "surgicalHistory"
+  | "pcpName"
+  | "pcpPhone"
+  | "referringName"
+  | "referringPhone"
+  | "pharmacyName"
+  | "pharmacyPhone"
+  | "emergencyName"
+  | "emergencyPhone"
+  | "emergencyRelation"
+  | "injuryCase"
+  | "problems"
+  | "medications"
+  | "allergies";
+
+export type MergeOnboardOptions = {
+  /** When set, use draft values for these keys even if the chart already has them. */
+  overwrite?: OnboardMergeOverwriteKey[];
+};
+
 /** Merge draft into an existing chart; union OCR fingerprints; never invent tradingPartnerId. */
 export function mergeOnboardIntoPatient(
   existing: Patient,
   draft: OnboardDraft,
   fingerprints: string[],
+  options: MergeOnboardOptions = {},
 ): Patient {
+  const overwrite = new Set(options.overwrite ?? []);
   const built = patientFromOnboardDraft(draft, existing.id);
   const hashes = normalizeHashes([...(existing.ocrImportHashes ?? []), ...fingerprints]);
   const note = draft.sourceSummary || "Records OCR import";
   const documents = applyOnboardDocumentHints(existing.documents, draft.documentHints, note);
 
-  const fill = (current: string, next: string) => (current.trim() ? current : next.trim());
+  const fill = (key: OnboardMergeOverwriteKey, current: string, next: string) => {
+    if (overwrite.has(key) && next.trim()) return next.trim();
+    return current.trim() ? current : next.trim();
+  };
   const incomingHistory = [draft.reasonForVisit, draft.medicalHistory].filter(Boolean).join("\n\n");
-  const medicalHistory = existing.medicalHistory.trim()
-    ? incomingHistory && !existing.medicalHistory.includes(incomingHistory.slice(0, 80))
-      ? `${existing.medicalHistory.trim()}\n\n${incomingHistory}`.slice(0, 12_000)
-      : existing.medicalHistory
-    : incomingHistory;
+  let medicalHistory: string;
+  if (overwrite.has("medicalHistory") && incomingHistory) {
+    medicalHistory = incomingHistory.slice(0, 12_000);
+  } else if (existing.medicalHistory.trim()) {
+    medicalHistory =
+      incomingHistory && !existing.medicalHistory.includes(incomingHistory.slice(0, 80))
+        ? `${existing.medicalHistory.trim()}\n\n${incomingHistory}`.slice(0, 12_000)
+        : existing.medicalHistory;
+  } else {
+    medicalHistory = incomingHistory;
+  }
 
   let cases = existing.cases;
   if (draft.injuryCase && Object.values(draft.injuryCase).some(Boolean)) {
@@ -120,22 +165,26 @@ export function mergeOnboardIntoPatient(
     } else {
       const [first, ...rest] = existing.cases;
       const noteAdd = draft.injuryCase.notes || draft.injuryCase.description || "";
+      const caseFill = (current: string, next: string) =>
+        overwrite.has("injuryCase") && next.trim() ? next.trim() : current.trim() ? current : next.trim();
       cases = [
         {
           ...first,
-          caseNumber: fill(first.caseNumber, draft.injuryCase.caseNumber),
-          claimNumber: fill(first.claimNumber, draft.injuryCase.claimNumber),
-          dateOfInjury: fill(first.dateOfInjury, draft.injuryCase.dateOfInjury),
-          description: fill(first.description, draft.injuryCase.description),
-          carrierName: fill(first.carrierName, draft.injuryCase.carrierName),
-          attorneyName: fill(first.attorneyName, draft.injuryCase.attorneyName),
-          attorneyFirm: fill(first.attorneyFirm, draft.injuryCase.attorneyFirm),
-          attorneyPhone: fill(first.attorneyPhone, draft.injuryCase.attorneyPhone),
-          attorneyEmail: fill(first.attorneyEmail, draft.injuryCase.attorneyEmail),
+          caseNumber: caseFill(first.caseNumber, draft.injuryCase.caseNumber),
+          claimNumber: caseFill(first.claimNumber, draft.injuryCase.claimNumber),
+          dateOfInjury: caseFill(first.dateOfInjury, draft.injuryCase.dateOfInjury),
+          description: caseFill(first.description, draft.injuryCase.description),
+          carrierName: caseFill(first.carrierName, draft.injuryCase.carrierName),
+          attorneyName: caseFill(first.attorneyName, draft.injuryCase.attorneyName),
+          attorneyFirm: caseFill(first.attorneyFirm, draft.injuryCase.attorneyFirm),
+          attorneyPhone: caseFill(first.attorneyPhone, draft.injuryCase.attorneyPhone),
+          attorneyEmail: caseFill(first.attorneyEmail, draft.injuryCase.attorneyEmail),
           notes:
-            first.notes.trim() && noteAdd && !first.notes.includes(noteAdd.slice(0, 60))
-              ? `${first.notes.trim()}\n\n${noteAdd}`.slice(0, 8_000)
-              : fill(first.notes, noteAdd),
+            overwrite.has("injuryCase") && noteAdd
+              ? noteAdd.slice(0, 8_000)
+              : first.notes.trim() && noteAdd && !first.notes.includes(noteAdd.slice(0, 60))
+                ? `${first.notes.trim()}\n\n${noteAdd}`.slice(0, 8_000)
+                : caseFill(first.notes, noteAdd),
         },
         ...rest,
       ];
@@ -144,32 +193,42 @@ export function mergeOnboardIntoPatient(
 
   return {
     ...existing,
-    firstName: fill(existing.firstName, draft.firstName) || existing.firstName,
-    lastName: fill(existing.lastName, draft.lastName) || existing.lastName,
-    dateOfBirth: fill(existing.dateOfBirth, draft.dateOfBirth) || existing.dateOfBirth,
-    sex: existing.sex !== "unknown" ? existing.sex : draft.sex,
-    phone: fill(existing.phone, draft.phone),
-    email: fill(existing.email, draft.email),
-    address: fill(existing.address, draft.address),
-    city: fill(existing.city, draft.city),
-    state: fill(existing.state, draft.state),
-    postalCode: fill(existing.postalCode, draft.postalCode),
-    payerName: existing.payerName && existing.payerName !== "Self-pay" ? existing.payerName : draft.payerName || existing.payerName,
-    memberId: fill(existing.memberId, draft.memberId),
+    firstName: fill("firstName", existing.firstName, draft.firstName) || existing.firstName,
+    lastName: fill("lastName", existing.lastName, draft.lastName) || existing.lastName,
+    dateOfBirth: fill("dateOfBirth", existing.dateOfBirth, draft.dateOfBirth) || existing.dateOfBirth,
+    sex: overwrite.has("sex") && draft.sex !== "unknown" ? draft.sex : existing.sex !== "unknown" ? existing.sex : draft.sex,
+    phone: fill("phone", existing.phone, draft.phone),
+    email: fill("email", existing.email, draft.email),
+    address: fill("address", existing.address, draft.address),
+    city: fill("city", existing.city, draft.city),
+    state: fill("state", existing.state, draft.state),
+    postalCode: fill("postalCode", existing.postalCode, draft.postalCode),
+    payerName: overwrite.has("payerName") && draft.payerName.trim()
+      ? draft.payerName.trim()
+      : existing.payerName && existing.payerName !== "Self-pay"
+        ? existing.payerName
+        : draft.payerName || existing.payerName,
+    memberId: fill("memberId", existing.memberId, draft.memberId),
     medicalHistory,
-    surgicalHistory: fill(existing.surgicalHistory, draft.surgicalHistory),
-    pcpName: fill(existing.pcpName, draft.pcpName),
-    pcpPhone: fill(existing.pcpPhone, draft.pcpPhone),
-    referringName: fill(existing.referringName, draft.referringName),
-    referringPhone: fill(existing.referringPhone, draft.referringPhone),
-    pharmacyName: fill(existing.pharmacyName, draft.pharmacyName),
-    pharmacyPhone: fill(existing.pharmacyPhone, draft.pharmacyPhone),
-    emergencyName: fill(existing.emergencyName, draft.emergencyName),
-    emergencyPhone: fill(existing.emergencyPhone, draft.emergencyPhone),
-    emergencyRelation: fill(existing.emergencyRelation, draft.emergencyRelation),
-    problems: mergeUniqueByName(existing.problems, built.problems, (item) => `${item.name}|${item.icd}`.toLowerCase()),
-    medications: mergeUniqueByName(existing.medications, built.medications, (item) => item.name.toLowerCase()),
-    allergies: mergeUniqueByName(existing.allergies, built.allergies, (item) => (item.substance || "").toLowerCase()),
+    surgicalHistory: fill("surgicalHistory", existing.surgicalHistory, draft.surgicalHistory),
+    pcpName: fill("pcpName", existing.pcpName, draft.pcpName),
+    pcpPhone: fill("pcpPhone", existing.pcpPhone, draft.pcpPhone),
+    referringName: fill("referringName", existing.referringName, draft.referringName),
+    referringPhone: fill("referringPhone", existing.referringPhone, draft.referringPhone),
+    pharmacyName: fill("pharmacyName", existing.pharmacyName, draft.pharmacyName),
+    pharmacyPhone: fill("pharmacyPhone", existing.pharmacyPhone, draft.pharmacyPhone),
+    emergencyName: fill("emergencyName", existing.emergencyName, draft.emergencyName),
+    emergencyPhone: fill("emergencyPhone", existing.emergencyPhone, draft.emergencyPhone),
+    emergencyRelation: fill("emergencyRelation", existing.emergencyRelation, draft.emergencyRelation),
+    problems: overwrite.has("problems")
+      ? built.problems
+      : mergeUniqueByName(existing.problems, built.problems, (item) => `${item.name}|${item.icd}`.toLowerCase()),
+    medications: overwrite.has("medications")
+      ? built.medications
+      : mergeUniqueByName(existing.medications, built.medications, (item) => item.name.toLowerCase()),
+    allergies: overwrite.has("allergies")
+      ? built.allergies
+      : mergeUniqueByName(existing.allergies, built.allergies, (item) => (item.substance || "").toLowerCase()),
     allergiesReviewed: existing.allergiesReviewed || built.allergiesReviewed,
     documents,
     cases,

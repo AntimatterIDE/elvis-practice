@@ -108,4 +108,34 @@ describe("ocr dedupe", () => {
     expect(merged.phone).toBe("555-0100");
     expect(merged.documents.find((item) => item.id === "outside-records")?.status).toBe("received");
   });
+
+  it("overwrites selected filled fields when requested", () => {
+    const draft = normalizeOnboardDraft({
+      ...emptyOnboardDraft(),
+      firstName: "Janet",
+      lastName: "Doe",
+      dateOfBirth: "1980-05-01",
+      phone: "555-9999",
+      email: "janet@example.com",
+      problems: [{ name: "Cervical radiculopathy", icd: "M54.12", status: "active", onset: "" }],
+    });
+    const existing = basePatient({
+      email: "old@example.com",
+      problems: [{ id: "prob1", name: "Lumbar strain", icd: "", status: "active", onset: "" }],
+    });
+    const filled = mergeOnboardIntoPatient(existing, draft, []);
+    expect(filled.phone).toBe("555-0100");
+    expect(filled.email).toBe("old@example.com");
+    expect(filled.firstName).toBe("Jane");
+    expect(filled.problems).toHaveLength(2);
+
+    const overwritten = mergeOnboardIntoPatient(existing, draft, [], {
+      overwrite: ["phone", "email", "firstName", "problems"],
+    });
+    expect(overwritten.phone).toBe("555-9999");
+    expect(overwritten.email).toBe("janet@example.com");
+    expect(overwritten.firstName).toBe("Janet");
+    expect(overwritten.problems).toHaveLength(1);
+    expect(overwritten.problems[0]?.name).toMatch(/Cervical radiculopathy/i);
+  });
 });

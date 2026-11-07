@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { beginChartUpload, chartFiles, deleteChartFile } from "@/app/admin/chart-files/actions";
+import { pushPortalChartsAction } from "@/app/portal/actions";
+import { ChartExtractReview } from "@/components/ocr/chart-extract-review";
+import { useRcm } from "@/components/admin/rcm/store";
 import { chartFileType, putSignedChartFile } from "@/lib/chart-files/put";
 import { claimFileSlot } from "@/lib/rcm/claim-files";
 import type { ChartFile } from "@/lib/chart-files/types";
@@ -56,10 +59,13 @@ export function ClaimPapers({
   claim: Claim;
   onChange: (patch: Partial<Claim>) => void;
 }) {
+  const { patients, patchPatient } = useRcm();
+  const patient = patients.find((item) => item.id === patientId);
   const [live, setLive] = useState<ChartFile[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
+  const [extractFiles, setExtractFiles] = useState<File[] | null>(null);
   const slot = claimFileSlot(claim.id);
 
   function reload() {
@@ -80,6 +86,7 @@ export function ClaimPapers({
     if (!files.length) return;
     setPending(true);
     setMessage("");
+    setExtractFiles(null);
     const stored = await storeClaimFiles(patientId, claim.id, files);
     if (stored.files.length) {
       onChange({
@@ -90,6 +97,15 @@ export function ClaimPapers({
     setMessage(stored.ok ? "Those files are on the claim." : stored.message);
     setPending(false);
     reload();
+    if (stored.ok) {
+      const extractable = files.filter(
+        (file) =>
+          file.type === "application/pdf" ||
+          /\.pdf$/i.test(file.name) ||
+          (file.type || "").startsWith("image/"),
+      );
+      if (extractable.length) setExtractFiles(extractable);
+    }
   }
 
   async function remove(path: string, name: string) {
@@ -174,6 +190,21 @@ export function ClaimPapers({
       </label>
       {message ? <p className="text-sm text-muted">{message}</p> : null}
       {pending ? <p className="text-sm text-muted">Saving the file…</p> : null}
+      {extractFiles && patient ? (
+        <ChartExtractReview
+          patient={patient}
+          files={extractFiles}
+          onDismiss={() => setExtractFiles(null)}
+          onApplied={async (merged) => {
+            const result = await pushPortalChartsAction({ patients: [merged], appointments: [] });
+            if (!result.ok) throw new Error(result.error || "Could not save extracted chart fields.");
+            const { id, ...patch } = merged;
+            patchPatient(id, patch);
+            setExtractFiles(null);
+            setMessage("Extracted fields were saved on the patient chart.");
+          }}
+        />
+      ) : null}
     </section>
   );
 }

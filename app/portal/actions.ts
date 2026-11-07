@@ -247,6 +247,49 @@ export async function notePortalUploadAction(slotId: string) {
   return { ok: true as const };
 }
 
+export async function loadOwnPortalPatientAction() {
+  const patientId = await signedInPatient();
+  if (!patientId) return { ok: false as const, message: "Sign in required." };
+  const roster = await getPortalStore().roster();
+  if (!roster.ok) return { ok: false as const, message: roster.error };
+  const patient = roster.value.patients.find((item) => item.id === patientId);
+  if (!patient) return { ok: false as const, message: "Chart not found." };
+  return { ok: true as const, patient };
+}
+
+export async function applyPortalOnboardDraftAction(input: {
+  draft: unknown;
+  fingerprints?: string[];
+  overwrite?: string[];
+}) {
+  const patientId = await signedInPatient();
+  if (!patientId) return { ok: false as const, message: "Sign in required." };
+  if (!rateLimit(await clientKey(`portal-ocr-apply:${patientId}`), 10, 10 * 60 * 1000)) {
+    return { ok: false as const, message: "Too many OCR updates. Wait a few minutes and try again." };
+  }
+  const roster = await getPortalStore().roster();
+  if (!roster.ok) return { ok: false as const, message: roster.error };
+  const current = roster.value.patients.find((item) => item.id === patientId);
+  if (!current) return { ok: false as const, message: "Chart not found." };
+
+  const { normalizeOnboardDraft } = await import("@/lib/ocr/onboard-draft");
+  const { mergeOnboardIntoPatient } = await import("@/lib/ocr/dedupe");
+  const draft = normalizeOnboardDraft(input.draft);
+  const overwrite = (Array.isArray(input.overwrite) ? input.overwrite : []).filter(
+    (key): key is import("@/lib/ocr/dedupe").OnboardMergeOverwriteKey => typeof key === "string",
+  );
+  const fingerprints = Array.isArray(input.fingerprints)
+    ? input.fingerprints.filter((item): item is string => typeof item === "string")
+    : [];
+  const merged = mergeOnboardIntoPatient(current, draft, fingerprints, { overwrite });
+  if (merged.id !== patientId) {
+    return { ok: false as const, message: "That update does not match your chart." };
+  }
+  const saved = await getPortalStore().pushCharts({ patients: [merged], appointments: [] });
+  if (!saved.ok) return { ok: false as const, message: saved.error };
+  return { ok: true as const, patient: merged };
+}
+
 export async function portalFilesAction() {
   const patientId = await signedInPatient();
   if (!patientId) return { ok: false as const, message: "Sign in required.", files: [] };

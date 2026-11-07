@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { beginChartUpload, chartFiles, deleteChartFile } from "@/app/admin/chart-files/actions";
+import { pushPortalChartsAction } from "@/app/portal/actions";
+import { ChartExtractReview } from "@/components/ocr/chart-extract-review";
 import { chartFileType, putSignedChartFile } from "@/lib/chart-files/put";
 import type { ChartFile } from "@/lib/chart-files/types";
 import { labResultSlot } from "@/lib/portal/uploads";
@@ -44,6 +46,7 @@ export function ChartFiles({
   const [message, setMessage] = useState("");
   const [busySlot, setBusySlot] = useState("");
   const [customName, setCustomName] = useState("");
+  const [extractOffer, setExtractOffer] = useState<{ slotId: string; files: File[] } | null>(null);
 
   function reload() {
     void chartFiles(patient.id).then((result) => {
@@ -64,6 +67,7 @@ export function ChartFiles({
   async function upload(document: ChartDocument, files: File[]) {
     setBusySlot(document.id);
     setMessage("");
+    setExtractOffer(null);
     for (const file of files) {
       const contentType = chartFileType(file);
       const prepared = await beginChartUpload({
@@ -95,6 +99,13 @@ export function ChartFiles({
     setMessage(files.length === 1 ? `${files[0].name} is saved on this chart.` : `${files.length} files are saved on this chart.`);
     setBusySlot("");
     reload();
+    const extractable = files.filter(
+      (file) =>
+        file.type === "application/pdf" ||
+        /\.pdf$/i.test(file.name) ||
+        (file.type || "").startsWith("image/"),
+    );
+    if (extractable.length) setExtractOffer({ slotId: document.id, files: extractable });
   }
 
   function addItem() {
@@ -128,6 +139,21 @@ export function ChartFiles({
         Doctor records from another office are first. This practice’s consultation report and later follow-up reports are next. Signed agreements stay on the Documents tab.
       </p>
       {message ? <p className="text-sm text-muted">{message}</p> : null}
+      {extractOffer ? (
+        <ChartExtractReview
+          patient={patient}
+          files={extractOffer.files}
+          onDismiss={() => setExtractOffer(null)}
+          onApplied={async (merged) => {
+            const result = await pushPortalChartsAction({ patients: [merged], appointments: [] });
+            if (!result.ok) throw new Error(result.error || "Could not save extracted chart fields.");
+            const { id, ...patch } = merged;
+            onSave(id, patch);
+            setExtractOffer(null);
+            setMessage("Extracted fields were saved on this chart.");
+          }}
+        />
+      ) : null}
       {ordered.map((document) => {
         const stored = files.filter((file) => file.slotId === document.id);
         const featured = leadSlots.includes(document.id);
