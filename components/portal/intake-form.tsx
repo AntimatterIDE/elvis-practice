@@ -195,7 +195,12 @@ export function IntakeForm({
           <input type="hidden" name="ocr.pageLabels" value={JSON.stringify(ocrPayload.pageLabels)} />
         </>
       ) : null}
-      <IntakeRecordsImport token={token} fields={form.fields} onApplied={applyOcr} />
+      <IntakeRecordsImport
+        token={token}
+        fields={form.fields}
+        coveredBy={fieldDefaults}
+        onApplied={applyOcr}
+      />
       <div className="rounded-3xl border border-line bg-card p-4 card-shadow sm:p-5">
         <div className="flex items-center justify-between gap-3 text-sm">
           <p className="font-medium text-ink">{reviewing ? "Review" : sections[current.key].title}</p>

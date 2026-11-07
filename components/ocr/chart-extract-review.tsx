@@ -8,6 +8,7 @@ import {
 } from "@/lib/ocr/dedupe";
 import { extractOnboardFromFiles } from "@/lib/ocr/extract-client";
 import {
+  coverageFromPatient,
   emptyOnboardDraft,
   refreshOnboardWarnings,
   type OnboardDraft,
@@ -186,16 +187,7 @@ export function ChartExtractReview({
     setDraft(
       refreshOnboardWarnings(
         { ...emptyOnboardDraft(), ...result.draft },
-        {
-          coveredBy: {
-            firstName: patient.firstName,
-            lastName: patient.lastName,
-            phone: patient.phone,
-            email: patient.email,
-            memberId: patient.memberId,
-            payerName: patient.payerName,
-          },
-        },
+        { coveredBy: coverageFromPatient(patient) },
       ),
     );
     setFingerprints(result.fingerprints);

@@ -3,7 +3,12 @@
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { OnboardDraft } from "@/lib/ocr/onboard-draft";
-import { emptyOnboardDraft, intakeAnswersFromOnboardDraft } from "@/lib/ocr/onboard-draft";
+import {
+  coverageFromAnswers,
+  emptyOnboardDraft,
+  intakeAnswersFromOnboardDraft,
+  refreshOnboardWarnings,
+} from "@/lib/ocr/onboard-draft";
 import type { IntakeField } from "@/lib/portal/types";
 import { cn } from "@/lib/utils";
 
@@ -41,10 +46,13 @@ async function sha256Hex(file: File) {
 export function IntakeRecordsImport({
   token = "",
   fields,
+  coveredBy,
   onApplied,
 }: {
   token?: string;
   fields: IntakeField[];
+  /** Existing form/profile values — missing-field warnings skip gaps already covered. */
+  coveredBy?: Record<string, string>;
   onApplied: (payload: IntakeOcrPayload) => void;
 }) {
   const [files, setFiles] = useState<FileList | null>(null);
@@ -115,7 +123,10 @@ export function IntakeRecordsImport({
         setBusy(false);
         return;
       }
-      const nextDraft = { ...emptyOnboardDraft(), ...json.draft };
+      const nextDraft = refreshOnboardWarnings(
+        { ...emptyOnboardDraft(), ...json.draft },
+        { coveredBy: coverageFromAnswers(coveredBy, fields) },
+      );
       const fingerprints = [...new Set([...(json.fingerprints ?? []), ...localHashes].map((item) => item.toLowerCase()))];
       const answers = intakeAnswersFromOnboardDraft(fields, nextDraft);
       const nextPayload: IntakeOcrPayload = {

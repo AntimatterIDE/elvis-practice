@@ -848,7 +848,7 @@ export function normalizeOnboardDraft(raw: unknown): OnboardDraft {
   return withWarnings;
 }
 
-/** Optional chart values that already cover a gap (used by post-upload extract review). */
+/** Optional chart/form values that already cover a gap (every OCR review UI must pass these). */
 export type OnboardWarningCoverage = {
   firstName?: string;
   lastName?: string;
@@ -857,6 +857,60 @@ export type OnboardWarningCoverage = {
   memberId?: string;
   payerName?: string;
 };
+
+/** Map an existing patient chart into warning coverage. */
+export function coverageFromPatient(
+  patient:
+    | Pick<Patient, "firstName" | "lastName" | "phone" | "email" | "memberId" | "payerName">
+    | null
+    | undefined,
+): OnboardWarningCoverage | null {
+  if (!patient) return null;
+  return {
+    firstName: patient.firstName,
+    lastName: patient.lastName,
+    phone: patient.phone,
+    email: patient.email,
+    memberId: patient.memberId,
+    payerName: patient.payerName,
+  };
+}
+
+/**
+ * Map intake defaults / answers into warning coverage.
+ * Accepts either mapsTo keys (firstName, phone, …) or field-id keys when `fields` is provided.
+ */
+export function coverageFromAnswers(
+  answers: Record<string, string> | null | undefined,
+  fields?: Array<{ id: string; mapsTo: string | null }>,
+): OnboardWarningCoverage | null {
+  if (!answers) return null;
+  const byKey: Record<string, string> = { ...answers };
+  if (fields?.length) {
+    for (const field of fields) {
+      if (!field.mapsTo) continue;
+      const value = answers[field.id]?.trim();
+      if (value) byKey[field.mapsTo] = value;
+    }
+  }
+  const read = (...keys: string[]) => {
+    for (const key of keys) {
+      const value = byKey[key]?.trim();
+      if (value) return value;
+    }
+    return "";
+  };
+  const covered: OnboardWarningCoverage = {
+    firstName: read("firstName"),
+    lastName: read("lastName"),
+    phone: read("phone"),
+    email: read("email"),
+    memberId: read("memberId"),
+    payerName: read("payerName"),
+  };
+  if (!Object.values(covered).some((value) => value?.trim())) return null;
+  return covered;
+}
 
 /** Rebuild soft gaps from the current draft fields (safe after merge or staff edits). */
 export function refreshOnboardWarnings(

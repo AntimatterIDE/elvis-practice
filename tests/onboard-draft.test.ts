@@ -14,6 +14,8 @@ import {
   liftProblemsFromImagingFindings,
   refineIdentity,
   refineOnboardDraftFromCorpus,
+  coverageFromAnswers,
+  coverageFromPatient,
   refreshOnboardWarnings,
   seedInjuryCaseFromCorpus,
 } from "@/lib/ocr/onboard-draft";
@@ -222,20 +224,41 @@ describe("onboard draft", () => {
         payerName: "",
       }),
       {
-        coveredBy: {
+        coveredBy: coverageFromPatient({
           firstName: "Margaret",
           lastName: "Palmquist",
           phone: "(718) 255-6615",
           email: "margaret@example.com",
           memberId: "MEM-1",
           payerName: "No-Fault",
-        },
+        }),
       },
     );
     expect(draft.warnings.some((item) => /phone/i.test(item))).toBe(false);
     expect(draft.warnings.some((item) => /email/i.test(item))).toBe(false);
     expect(draft.warnings.some((item) => /member/i.test(item))).toBe(false);
     expect(draft.warnings.some((item) => /payer/i.test(item))).toBe(false);
+  });
+
+  it("maps intake field-id defaults into warning coverage", () => {
+    const covered = coverageFromAnswers(
+      { f_phone: "(718) 255-6615", f_email: "m@example.com" },
+      [
+        { id: "f_phone", mapsTo: "phone" },
+        { id: "f_email", mapsTo: "email" },
+        { id: "f_payer", mapsTo: "payerName" },
+      ],
+    );
+    expect(covered?.phone).toBe("(718) 255-6615");
+    expect(covered?.email).toBe("m@example.com");
+    expect(covered?.payerName).toBe("");
+    const draft = refreshOnboardWarnings(
+      normalizeOnboardDraft({ ...emptyish(), firstName: "M", lastName: "P", phone: "", email: "" }),
+      { coveredBy: covered },
+    );
+    expect(draft.warnings.some((item) => /phone/i.test(item))).toBe(false);
+    expect(draft.warnings.some((item) => /email/i.test(item))).toBe(false);
+    expect(draft.warnings.some((item) => /payer/i.test(item))).toBe(true);
   });
 
   it("merges section drafts and maps intake answers", () => {

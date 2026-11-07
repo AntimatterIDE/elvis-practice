@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { pushPortalChartsAction } from "@/app/portal/actions";
 import type { OnboardDraft } from "@/lib/ocr/onboard-draft";
 import {
   chartSlotsForOnboardFiles,
+  coverageFromPatient,
   emptyOnboardDraft,
   markSlotsFromUploads,
   refreshOnboardWarnings,
@@ -65,13 +66,24 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
     });
   }, [draft, fingerprints, patients]);
 
+  const coveredBy = useMemo(() => coverageFromPatient(match?.patient), [match?.patient]);
+
   const filingSlots = useMemo(() => {
     if (!draft || !pendingFiles.length) return [] as string[];
     return chartSlotsForOnboardFiles(pendingFiles, draft.documentHints, ocrMeta?.page_labels ?? []);
   }, [draft, pendingFiles, ocrMeta]);
 
+  useEffect(() => {
+    if (!draft) return;
+    setDraft((current) => (current ? refreshOnboardWarnings(current, { coveredBy }) : current));
+    // Recompute soft gaps when an existing chart match covers phone/email/payer.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coveredBy?.phone, coveredBy?.email, coveredBy?.memberId, coveredBy?.payerName, coveredBy?.firstName, coveredBy?.lastName]);
+
   function update<K extends keyof OnboardDraft>(key: K, value: OnboardDraft[K]) {
-    setDraft((current) => (current ? refreshOnboardWarnings({ ...current, [key]: value }) : current));
+    setDraft((current) =>
+      current ? refreshOnboardWarnings({ ...current, [key]: value }, { coveredBy }) : current,
+    );
   }
 
   async function stageLargeFile(file: File) {
@@ -143,7 +155,18 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
         return;
       }
       const hashes = [...new Set([...(json.fingerprints ?? []), ...localHashes].map((item) => item.toLowerCase()))];
-      setDraft(refreshOnboardWarnings({ ...emptyOnboardDraft(), ...json.draft }));
+      const nextDraft = { ...emptyOnboardDraft(), ...json.draft };
+      const matched = findOcrImportMatch(patients, {
+        firstName: nextDraft.firstName,
+        lastName: nextDraft.lastName,
+        dateOfBirth: nextDraft.dateOfBirth,
+        fingerprints: hashes,
+      });
+      setDraft(
+        refreshOnboardWarnings(nextDraft, {
+          coveredBy: coverageFromPatient(matched?.patient),
+        }),
+      );
       setFingerprints(hashes);
       setOcrMeta(json.ocr ?? null);
       setPendingFiles(selected);
