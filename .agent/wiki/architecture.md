@@ -34,3 +34,9 @@
 - `ChartExtractReview`: per-field accept checkboxes, then confirm.
 - Intake `finalizeIntakeOcr`: files packet + OCR text artifact only — no silent
   clinical merge.
+- **Bulk folder import** (Patient intake): `BulkPatientImport` +
+  `lib/ocr/bulk-import.ts`. Staff picks a folder (`webkitdirectory`). Subfolders
+  → one packet; root files → one packet each. Sequential OCR extract → flippable
+  Approve/Deny cards → create charts only for approved drafts (same
+  `patientFromOnboardDraftWithHashes` + `fileOnboardPacketToChart` path as
+  single-packet OutsideRecordsImport). Fingerprint matches block Approve.

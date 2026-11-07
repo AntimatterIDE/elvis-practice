@@ -1,5 +1,12 @@
 # elvis-practice — agent log
 
+## [2026-11-07] ingest | Bulk folder patient upload
+
+Patient intake bulk import: folder pick → group packets → sequential OCR →
+flippable Approve/Deny draft cards → create charts only for approved.
+`lib/ocr/bulk-import.ts`, `BulkPatientImport`, mounted under OutsideRecordsImport.
+OCR review gate preserved (Approve = accept; no silent writes).
+
 ## [2026-11-07] ingest | Claim-pipe live smoke (multi-visit + edges)
 
 Deployed `6d697c2` to production. Live smoke: 3 ClaimPipe Multi visits

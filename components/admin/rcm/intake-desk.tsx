@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { CHART_FIELDS, sexLabel } from "@/lib/portal/defaults";
 import { intakeBlocks, intakeFieldSpan, intakeSections } from "@/lib/portal/form-layout";
 import type { IntakeAdminSnapshot, IntakeField, IntakeFieldType, IntakeMap } from "@/lib/portal/types";
+import { BulkPatientImport } from "@/components/admin/rcm/bulk-patient-import";
 import { OutsideRecordsImport } from "@/components/admin/rcm/outside-records-import";
 import { Field, PageHeader, fieldClass } from "@/components/admin/rcm/ui";
 import { formatDay } from "@/lib/rcm/format";
@@ -126,8 +127,9 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
           ? "Submitted forms are stored in the practice database."
           : "Submitted forms are stored on this server. Connect Supabase and run the portal migration to keep them in the practice database."}
       </p>
-      <div className="mt-6">
+      <div className="mt-6 grid gap-6">
         <OutsideRecordsImport variant="hero" />
+        <BulkPatientImport />
       </div>
       <div className="mt-6 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="grid min-w-0 gap-5">
