@@ -242,10 +242,13 @@ Return JSON only. Leave a field empty when the document does not clearly state i
 Never invent email, phone, address, member id, or insurance payer. Never invent Stedi trading partner ids.
 Prefer billable ICD-10 codes only when they appear in the packet; otherwise put the condition name and leave icd empty.
 Map MVA / no-fault / NF / workers' compensation / DOI into injuryCase when present.
-reasonForVisit should be a short staff-facing summary from HPI or chief complaint.
-Fill surgicalHistory, PCP, referring, pharmacy, and emergency contact only when clearly stated.
-imagingFindings: short MRI/CT/EMG impression summary when imaging pages appear.
-documentHints: include photo-id / insurance-card only if those pages appear; always include outside-records for clinical packets; no-fault-comp when NF/WC papers appear; outside-imaging when MRI/CT reports appear.
+reasonForVisit: one short line from HPI or chief complaint (not a page dump).
+medicalHistory: compact prose summary of past medical history only (a few sentences, under ~800 characters). Never paste raw OCR tables, machine settings, or full page text.
+surgicalHistory: short list of prior surgeries when stated.
+injuryCase.notes: short case narrative (mechanism, complaints, attorney) — not EMG tables or imaging technique.
+imagingFindings: short MRI/CT/EMG impression bullets only (findings, not technique parameters).
+Fill PCP, referring, pharmacy, and emergency contact only when clearly stated.
+documentHints: include photo-id / insurance-card only if those pages appear; always include outside-records for clinical packets; no-fault-comp when NF/WC papers appear; outside-imaging when MRI/CT/EMG reports appear.
 warnings: list gaps staff must fill (missing phone, email, member id, etc.).`;
 
 type ResponsePayload = {
@@ -524,6 +527,7 @@ export function chartSlotsForOnboardFiles(
   const labels = new Set(pageLabels.map((item) => item.label));
   const hasPdf = files.some((file) => (file.type || "").includes("pdf") || /\.pdf$/i.test(file.name));
 
+  // One packet → primary clinical homes only (avoid copying the same PDF into every labeled slot).
   if (hasPdf || hints.includes("outside-records")) slots.add("outside-records");
   if (hints.includes("outside-imaging") || labels.has("imaging") || labels.has("emg_ncv")) {
     slots.add("outside-imaging");
@@ -531,8 +535,6 @@ export function chartSlotsForOnboardFiles(
   if (hints.includes("no-fault-comp")) slots.add("no-fault-comp");
   if (hints.includes("photo-id") || labels.has("photo_id")) slots.add("photo-id");
   if (hints.includes("insurance-card") || labels.has("insurance_card")) slots.add("insurance-card");
-  if (labels.has("consult")) slots.add("consultation-report");
-  if (labels.has("pt_note")) slots.add("follow-up-reports");
 
   if (!slots.size) slots.add("outside-records");
   return [...slots];
@@ -558,31 +560,32 @@ export function applyOnboardDocumentHints(
   return next;
 }
 
-/** Fold OCR corpus into history + injury notes so long clinical text has a chart home. */
+function stripCorpusDump(value: string) {
+  return value
+    .replace(/\n*Outside records excerpt:\n[\s\S]*$/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Keep chart text fields as staff-readable summaries.
+ * Full OCR text belongs in the filed PDF + ocr-import artifact — not pasted into history/notes.
+ */
 export function enrichOnboardDraftFromCorpus(draft: OnboardDraft, corpus: string): OnboardDraft {
-  const excerpt = corpus.replace(/\s+/g, " ").trim().slice(0, 6_000);
-  if (!excerpt) return draft;
   const next = { ...draft };
-  if (!next.medicalHistory.includes(excerpt.slice(0, 80))) {
-    next.medicalHistory = [next.medicalHistory, `Outside records excerpt:\n${excerpt}`]
-      .filter(Boolean)
-      .join("\n\n")
-      .trim();
-  }
-
+  next.medicalHistory = stripCorpusDump(next.medicalHistory).slice(0, 1_500);
+  next.imagingFindings = stripCorpusDump(next.imagingFindings).slice(0, 1_200);
+  next.surgicalHistory = stripCorpusDump(next.surgicalHistory).slice(0, 800);
+  next.reasonForVisit = stripCorpusDump(next.reasonForVisit).slice(0, 240);
   if (next.injuryCase) {
-    const injury = { ...next.injuryCase };
-    if (!injury.notes.includes("Outside records excerpt")) {
-      injury.notes = [injury.notes, `Outside records excerpt:\n${excerpt.slice(0, 2_500)}`]
-        .filter(Boolean)
-        .join("\n\n")
-        .trim();
-    }
-    next.injuryCase = injury;
+    next.injuryCase = {
+      ...next.injuryCase,
+      notes: stripCorpusDump(next.injuryCase.notes).slice(0, 1_500),
+      description: stripCorpusDump(next.injuryCase.description).slice(0, 240),
+    };
   }
-
-  if (!next.sourceSummary) {
-    next.sourceSummary = excerpt.slice(0, 240);
+  if (!next.sourceSummary.trim()) {
+    next.sourceSummary = corpus.replace(/\s+/g, " ").trim().slice(0, 240);
   }
   return next;
 }
@@ -638,9 +641,12 @@ export function patientFromOnboardDraft(draft: OnboardDraft, id: string): Patien
         ]
       : [];
   const nid = () => `id_${crypto.randomUUID().slice(0, 8)}`;
-  const historyParts = [draft.reasonForVisit, draft.medicalHistory];
-  if (draft.imagingFindings) historyParts.push(`Imaging findings:\n${draft.imagingFindings}`);
-  const medicalHistory = historyParts.filter(Boolean).join("\n\n");
+  const historyParts = [
+    draft.reasonForVisit ? `Reason for visit: ${draft.reasonForVisit}` : "",
+    draft.medicalHistory,
+    draft.imagingFindings ? `Imaging / EMG:\n${draft.imagingFindings}` : "",
+  ];
+  const medicalHistory = historyParts.filter(Boolean).join("\n\n").slice(0, 4_000);
   return {
     ...withChart(input, {
       medicalHistory,

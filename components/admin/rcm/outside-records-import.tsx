@@ -324,32 +324,65 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
               <input className={fieldClass} value={draft.postalCode} onChange={(e) => update("postalCode", e.target.value)} />
             </Field>
           </div>
-          <Field label="Reason for visit / HPI">
+          <Field label="Reason for visit">
             <textarea
               className={fieldClass}
-              rows={3}
+              rows={2}
               value={draft.reasonForVisit}
               onChange={(e) => update("reasonForVisit", e.target.value)}
             />
           </Field>
-          <Field label="Medical history / outside records text">
+          <Field label="Medical history (summary)">
             <textarea
               className={fieldClass}
-              rows={8}
+              rows={4}
               value={draft.medicalHistory}
               onChange={(e) => update("medicalHistory", e.target.value)}
             />
           </Field>
+          <Field label="Surgical history">
+            <textarea
+              className={fieldClass}
+              rows={2}
+              value={draft.surgicalHistory}
+              onChange={(e) => update("surgicalHistory", e.target.value)}
+            />
+          </Field>
+          <Field label="Imaging / EMG findings">
+            <textarea
+              className={fieldClass}
+              rows={4}
+              value={draft.imagingFindings}
+              onChange={(e) => update("imagingFindings", e.target.value)}
+            />
+          </Field>
           {draft.injuryCase ? (
             <>
-              <p className="text-sm text-muted">
-                Injury case draft: DOI {draft.injuryCase.dateOfInjury || "—"} · {draft.injuryCase.description || "no description"} ·
-                attorney {draft.injuryCase.attorneyName || "—"}
-              </p>
-              <Field label="Injury / case notes">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Field label="Date of injury">
+                  <input
+                    className={fieldClass}
+                    type="date"
+                    value={draft.injuryCase.dateOfInjury}
+                    onChange={(e) =>
+                      update("injuryCase", draft.injuryCase ? { ...draft.injuryCase, dateOfInjury: e.target.value } : draft.injuryCase)
+                    }
+                  />
+                </Field>
+                <Field label="Injury description">
+                  <input
+                    className={fieldClass}
+                    value={draft.injuryCase.description}
+                    onChange={(e) =>
+                      update("injuryCase", draft.injuryCase ? { ...draft.injuryCase, description: e.target.value } : draft.injuryCase)
+                    }
+                  />
+                </Field>
+              </div>
+              <Field label="Injury / case notes (summary)">
                 <textarea
                   className={fieldClass}
-                  rows={5}
+                  rows={4}
                   value={draft.injuryCase.notes}
                   onChange={(e) =>
                     update("injuryCase", draft.injuryCase ? { ...draft.injuryCase, notes: e.target.value } : draft.injuryCase)
@@ -366,7 +399,8 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
           {filingSlots.length || pendingFiles.length ? (
             <p className="rounded-md bg-black/[0.04] px-3 py-2 text-sm leading-relaxed">
               On confirm, {pendingFiles.length} file{pendingFiles.length === 1 ? "" : "s"} will be filed into:{" "}
-              {filingSlots.join(", ") || "outside-records"}.
+              {filingSlots.join(", ") || "outside-records"}. Full OCR text is stored with the chart files — not pasted into
+              these summary fields.
             </p>
           ) : null}
           <div className="flex flex-wrap gap-2">

@@ -145,26 +145,17 @@ describe("onboard draft", () => {
     expect(patient.documents.find((item) => item.id === "outside-records")?.status).toBe("received");
   });
 
-  it("folds OCR corpus into medical history and injury notes", () => {
+  it("keeps summary fields clean and does not dump raw OCR into history", () => {
     const draft = enrichOnboardDraftFromCorpus(
       normalizeOnboardDraft({
+        ...emptyish(),
         firstName: "Pat",
         lastName: "Lee",
         dateOfBirth: "1990-01-01",
         sex: "female",
-        phone: "",
-        email: "",
-        address: "",
-        city: "",
-        state: "",
-        postalCode: "",
-        payerName: "",
-        memberId: "",
         reasonForVisit: "Neck pain",
-        medicalHistory: "Prior PT",
-        problems: [],
-        medications: [],
-        allergies: [],
+        medicalHistory: "Prior PT\n\nOutside records excerpt:\nWhat: 20 µV/div noise dump",
+        imagingFindings: "C5-6 disc bulge",
         injuryCase: {
           caseNumber: "",
           claimNumber: "",
@@ -175,7 +166,7 @@ describe("onboard draft", () => {
           attorneyFirm: "",
           attorneyPhone: "",
           attorneyEmail: "",
-          notes: "",
+          notes: "Rear passenger\n\nOutside records excerpt:\nPAGE 2 emg_ncv tables",
         },
         documentHints: ["outside-records"],
         warnings: [],
@@ -184,9 +175,11 @@ describe("onboard draft", () => {
       "Consultation: cervical radiculopathy with MRI C5-C6 disc herniation.",
     );
     expect(draft.medicalHistory).toContain("Prior PT");
-    expect(draft.medicalHistory).toContain("Outside records excerpt");
-    expect(draft.medicalHistory).toContain("cervical radiculopathy");
-    expect(draft.injuryCase?.notes).toContain("cervical radiculopathy");
+    expect(draft.medicalHistory).not.toContain("Outside records excerpt");
+    expect(draft.medicalHistory).not.toContain("µV/div");
+    expect(draft.injuryCase?.notes).toContain("Rear passenger");
+    expect(draft.injuryCase?.notes).not.toContain("emg_ncv");
+    expect(draft.imagingFindings).toContain("C5-6");
     expect(draft.sourceSummary).toContain("Consultation");
   });
 
@@ -251,7 +244,8 @@ describe("onboard draft", () => {
       { label: "imaging" },
       { label: "consult" },
     ]);
-    expect(slots).toEqual(expect.arrayContaining(["outside-records", "outside-imaging", "consultation-report"]));
+    expect(slots).toEqual(expect.arrayContaining(["outside-records", "outside-imaging"]));
+    expect(slots).not.toContain("consultation-report");
     const docs = markSlotsFromUploads(defaultDocuments(), [
       { slotId: "outside-records", fileName: "packet.pdf" },
       { slotId: "outside-imaging", fileName: "packet.pdf" },
