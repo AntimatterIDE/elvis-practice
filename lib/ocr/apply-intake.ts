@@ -77,7 +77,7 @@ export function mergeOcrDraftIntoIntakePatient(
     }
   }
 
-  const note = draft.sourceSummary || "Outside records OCR import";
+  const note = draft.sourceSummary || "Records OCR import";
   return {
     ...patient,
     surgicalHistory: fill(patient.surgicalHistory, draft.surgicalHistory),

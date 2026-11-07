@@ -217,9 +217,9 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
     >
       {hero ? <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-oxide" aria-hidden="true" /> : null}
       <div>
-        {hero ? <p className="kicker text-oxide-deep">Outside records</p> : null}
+        {hero ? <p className="kicker text-oxide-deep">Records</p> : null}
         <h2 className={cn("font-display tracking-tight text-ink", hero ? "mt-2 text-3xl sm:text-4xl" : "text-2xl")}>
-          {hero ? "Import a packet and open a chart" : "Outside records"}
+          {hero ? "Import a packet and open a chart" : "Records"}
         </h2>
         <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
           {hero

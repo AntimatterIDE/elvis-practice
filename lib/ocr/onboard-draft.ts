@@ -552,7 +552,7 @@ export function applyOnboardDocumentHints(
     if (!slot) continue;
     if (slot.status === "missing") {
       slot.status = "received";
-      slot.note = note || "Imported from outside records OCR";
+      slot.note = note || "Imported from records OCR";
     } else if (note && !slot.note.includes(note.slice(0, 40))) {
       slot.note = [slot.note, note].filter(Boolean).join(" · ").slice(0, 240);
     }
@@ -627,7 +627,7 @@ export function patientFromOnboardDraft(draft: OnboardDraft, id: string): Patien
     state: draft.state,
     postalCode: draft.postalCode,
   };
-  const note = draft.sourceSummary || "Outside records OCR import";
+  const note = draft.sourceSummary || "Records OCR import";
   const documents = applyOnboardDocumentHints(defaultDocuments(), draft.documentHints, note);
   const cases =
     draft.injuryCase && Object.values(draft.injuryCase).some(Boolean)

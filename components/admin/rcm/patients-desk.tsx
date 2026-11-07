@@ -97,10 +97,10 @@ export function PatientsDesk() {
       <PageHeader
         kicker="Practice"
         title="Patients"
-        lede="A chart saved here is stored for every staff login. Send an intake link to import outside records and open the chart from the form."
+        lede="A chart saved here is stored for every staff login. Send an intake link to import records and open the chart from the form."
         action={
           <Button asChild variant="secondary">
-            <Link href="/admin/operations/intake">Intake + outside records</Link>
+            <Link href="/admin/operations/intake">Intake + records</Link>
           </Button>
         }
       />
@@ -154,7 +154,7 @@ export function PatientsDesk() {
           <div>
             <h2 className="font-display text-2xl tracking-tight">Walk-in chart</h2>
             <p className="mt-1 text-sm leading-relaxed text-muted">
-              Use this when the patient is here without a packet. For outside records, send an intake link — import sits at the top of that form.
+              Use this when the patient is here without a packet. For records import, send an intake link — import sits at the top of that form.
             </p>
           </div>
           <Field label="First name">

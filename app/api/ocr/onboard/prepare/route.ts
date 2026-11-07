@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export async function POST(request: Request) {
   const actor = await resolveOcrActor(request);
   if (!actor) {
-    return Response.json({ message: "Sign in or open a valid intake link to import outside records." }, { status: 401 });
+    return Response.json({ message: "Sign in or open a valid intake link to import records." }, { status: 401 });
   }
   let body: { fileName?: unknown; contentType?: unknown; byteSize?: unknown };
   try {

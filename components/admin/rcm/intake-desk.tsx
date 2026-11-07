@@ -119,7 +119,7 @@ export function IntakeDesk({ initial }: { initial: IntakeAdminSnapshot }) {
       <PageHeader
         kicker="Practice"
         title="Patient intake"
-        lede="Import outside records here for back office, or shape the questions and send a private link when the patient should fill the form."
+        lede="Import records here for back office, or shape the questions and send a private link when the patient should fill the form."
       />
       <p className="mt-4 text-sm leading-relaxed text-muted">
         {snapshot.storage === "database"

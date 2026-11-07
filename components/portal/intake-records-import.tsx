@@ -149,7 +149,7 @@ export function IntakeRecordsImport({
       )}
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-oxide" aria-hidden="true" />
-      <p className="kicker text-oxide-deep">Outside records</p>
+      <p className="kicker text-oxide-deep">Records</p>
       <h2 className="mt-2 font-display text-3xl tracking-tight text-ink sm:text-4xl">Upload records from another doctor</h2>
       <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
         We read the packet and fill what we can on this form. You still review every answer before you send it.

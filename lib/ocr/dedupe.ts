@@ -95,7 +95,7 @@ export function mergeOnboardIntoPatient(
 ): Patient {
   const built = patientFromOnboardDraft(draft, existing.id);
   const hashes = normalizeHashes([...(existing.ocrImportHashes ?? []), ...fingerprints]);
-  const note = draft.sourceSummary || "Outside records OCR import";
+  const note = draft.sourceSummary || "Records OCR import";
   const documents = applyOnboardDocumentHints(existing.documents, draft.documentHints, note);
 
   const fill = (current: string, next: string) => (current.trim() ? current : next.trim());
