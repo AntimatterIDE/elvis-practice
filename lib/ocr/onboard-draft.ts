@@ -343,6 +343,9 @@ export function refineIdentity(draft: OnboardDraft): OnboardDraft {
   }
   first = firstParts.join(" ");
 
+  // Miner sometimes puts the honorific in lastName (e.g. Buzz / Mr.).
+  if (last && HONORIFICS.has(stripHonorific(last).toLowerCase())) last = "";
+
   // Reject junk labels only when they are the sole name token.
   if (!last && JUNK_SOLO_NAMES.has(stripHonorific(first).toLowerCase())) first = "";
 
@@ -358,18 +361,21 @@ function problemNameKey(name: string) {
   return normKey(name.replace(/\s*\(\d{3}(?:\.\d{1,2})?\)\s*$/, "").replace(/\s*\([A-TV-Z][0-9][A-Z0-9.]*\)\s*$/i, ""));
 }
 
-/** Lift trailing ICD-9/10 from problem name into icd when empty. */
+/** Lift trailing ICD-9/10 from problem name into icd when empty; strip redundant suffix. */
 export function liftIcdFromProblemName(row: ProblemRow): ProblemRow {
-  if (row.icd.trim()) return row;
   const m = row.name.match(/\(([A-TV-Z][0-9][A-Z0-9.]{0,6}|\d{3}(?:\.\d{1,2})?)\)\s*$/i);
   if (!m?.[1]) return row;
   const normalized = normalizeIcdCode(m[1]);
+  const cleanedName = row.name.replace(/\s*\([^)]+\)\s*$/, "").trim() || row.name;
+  if (row.icd.trim()) {
+    // Drop duplicate "(M54.12)" when icd already set.
+    if (normalized.icd && normalized.icd.toUpperCase() === row.icd.trim().toUpperCase()) {
+      return { ...row, name: cleanedName };
+    }
+    return row;
+  }
   if (!normalized.icd) return row;
-  return {
-    ...row,
-    icd: normalized.icd,
-    name: row.name.replace(/\s*\([^)]+\)\s*$/, "").trim() || row.name,
-  };
+  return { ...row, icd: normalized.icd, name: cleanedName };
 }
 
 export function dedupeProblems(rows: ProblemRow[]): ProblemRow[] {

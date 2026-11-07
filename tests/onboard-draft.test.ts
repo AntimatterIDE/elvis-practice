@@ -289,6 +289,16 @@ describe("onboard draft", () => {
     );
     expect(honor.firstName).toBe("");
     expect(honor.lastName).toBe("Sample");
+
+    const honorLast = refineIdentity(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Buzz",
+        lastName: "Mr.",
+      }),
+    );
+    expect(honorLast.firstName).toBe("Buzz");
+    expect(honorLast.lastName).toBe("");
   });
 
   it("dedupes problems and maps common ICD-9 codes", () => {
