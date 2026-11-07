@@ -1,0 +1,45 @@
+{
+  "ok": [
+    {
+      "patientId": "p_4b00650c",
+      "name": "LetterSmoke Alpha",
+      "encounterId": "86610617-76b9-4097-8fb4-281fa81d41c7",
+      "path": "p_4b00650c/consultation-report/7268c2d6-164d-4592-b37b-12b5644d690e__Clinical-Letter-LetterSmoke-Alpha-2026-11-07.pdf",
+      "pdf": "/tmp/clinical-letter-smoke/pdfs/LetterSmoke-Alpha.pdf",
+      "bytes": 19052,
+      "notePreview": "\nSUBJECTIVE:\n45-year-old patient presents with left leg pain following a motor vehicle collision. Reports radicular symptoms radiating down the left lower extremity. Onset after accident; pain severit",
+      "title": "Clinical Letter"
+    },
+    {
+      "patientId": "p_0efe3ed1",
+      "name": "LetterSmoke Beta",
+      "encounterId": "05c2205d-939f-41fc-ae46-af3e7e25a344",
+      "path": "p_0efe3ed1/consultation-report/add18929-adb9-452b-a2bd-46134830a5c4__Clinical-Letter-LetterSmoke-Beta-2026-11-07.pdf",
+      "pdf": "/tmp/clinical-letter-smoke/pdfs/LetterSmoke-Beta.pdf",
+      "bytes": 17852,
+      "notePreview": "\nSUBJECTIVE:\n58-year-old patient reports neck pain with right-sided arm numbness. Symptoms consistent with radicular distribution. No additional history provided regarding onset, duration, trauma, wea",
+      "title": "Clinical Letter"
+    },
+    {
+      "patientId": "p_08717931",
+      "name": "LetterSmoke Gamma",
+      "encounterId": "d5ae3722-315c-4474-aeae-31df902b2b63",
+      "path": "p_08717931/consultation-report/23c16f08-7a07-4308-af97-d703213402eb__Clinical-Letter-LetterSmoke-Gamma-2026-11-07.pdf",
+      "pdf": "/tmp/clinical-letter-smoke/pdfs/LetterSmoke-Gamma.pdf",
+      "bytes": 17575,
+      "notePreview": "\nSUBJECTIVE:\n62-year-old patient here for follow-up regarding known lumbar spinal stenosis. Reports no new or worsening symptoms since last visit. Continues with prescribed therapy/rehabilitation. No ",
+      "title": "Clinical Letter"
+    }
+  ],
+  "errors": [],
+  "encounterIds": [
+    "86610617-76b9-4097-8fb4-281fa81d41c7",
+    "05c2205d-939f-41fc-ae46-af3e7e25a344",
+    "d5ae3722-315c-4474-aeae-31df902b2b63"
+  ],
+  "patientIds": [
+    "p_4b00650c",
+    "p_0efe3ed1",
+    "p_08717931"
+  ]
+}
