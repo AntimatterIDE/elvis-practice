@@ -15,6 +15,7 @@ import {
 import {
   findOcrImportMatch,
   mergeOnboardIntoPatient,
+  onboardDraftAcceptKeys,
   patientFromOnboardDraftWithHashes,
   type OcrImportMatch,
 } from "@/lib/ocr/dedupe";
@@ -191,9 +192,14 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
     }
     setBusy("save");
     setError("");
+    const accepted = onboardDraftAcceptKeys(draft);
     let patient =
       mode === "update" && match
-        ? mergeOnboardIntoPatient(match.patient, draft, fingerprints)
+        ? mergeOnboardIntoPatient(match.patient, draft, fingerprints, {
+            // Staff reviewed and edited the draft form — accept every extracted field they left.
+            accept: accepted,
+            overwrite: accepted,
+          })
         : patientFromOnboardDraftWithHashes(draft, `p_${crypto.randomUUID().slice(0, 8)}`, fingerprints);
 
     const result = await pushPortalChartsAction({ patients: [patient], appointments: [] });
@@ -247,7 +253,7 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
         <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
           {hero
             ? "Back-office import — no patient link required. Extract, review, and confirm to create or update a chart and file the PDFs."
-            : "Extract is safe to re-run on the same PDFs (nothing is saved until you confirm). Large packets upload through storage first so they are not blocked by the request size limit. Confirm updates a matched chart, files the PDFs into chart document slots, and keeps longer clinical text in medical history / case notes."}
+            : "Extract is safe to re-run on the same PDFs (nothing is saved until you review the draft and confirm). Large packets upload through storage first so they are not blocked by the request size limit. Confirm writes only the fields you reviewed on this form, files the PDFs into chart document slots, and keeps longer clinical text in medical history / case notes."}
         </p>
       </div>
       <form onSubmit={onExtract} className="grid gap-3">

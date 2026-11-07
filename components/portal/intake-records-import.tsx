@@ -163,7 +163,8 @@ export function IntakeRecordsImport({
       <p className="kicker text-oxide-deep">Records</p>
       <h2 className="mt-2 font-display text-3xl tracking-tight text-ink sm:text-4xl">Upload records from another doctor</h2>
       <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
-        We read the packet and fill what we can on this form. You still review every answer before you send it.
+        We read the packet into a draft. Nothing is written until you review it, apply it to this form, and
+        submit — and only the answers you keep on the form become part of your chart.
       </p>
 
       <div className="mt-5 grid gap-3">

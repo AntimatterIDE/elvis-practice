@@ -5,10 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { CodeSearch } from "@/components/admin/code-search";
 import { Button } from "@/components/ui/button";
 import type { CodeMatch } from "@/lib/coding/codes";
-import { patientName } from "@/lib/rcm/format";
+import { formatDay, patientName } from "@/lib/rcm/format";
 import { useProcedureFees } from "@/components/admin/rcm/procedure-fees";
 import { medicareCharge } from "@/lib/coding/fees";
-import { claimLinesFromEncounter } from "@/lib/encounters/approve";
+import {
+  claimDraftFromClinicVisit,
+  type ClinicVisitClaimDraft,
+} from "@/lib/encounters/claim-from-visit";
 import type { Encounter } from "@/lib/encounters/types";
 import { claimLineProblems, diagnosisLimit, filingCodes, isFilingCode, pointerLimit } from "@/lib/rcm/claim-rules";
 import { AccountNoteDialog } from "@/components/admin/rcm/account-note";
@@ -30,6 +33,8 @@ type LineDraft = {
   includeOnBill: boolean;
   physician: string;
 };
+
+type VisitFill = "idle" | "loading" | "filled" | "none";
 
 const emptyLine = (physician = ""): LineDraft => ({
   cpt: "",
@@ -53,11 +58,9 @@ function uniqueDiagnoses(codes: ClaimDiagnosis[]) {
   return out;
 }
 
-function linesFromEncounter(encounter: Encounter | null, physician: string): LineDraft[] | null {
-  if (!encounter || encounter.status !== "approved") return null;
-  const procedures = claimLinesFromEncounter(encounter);
-  if (!procedures.length) return null;
-  return procedures.map((line) => ({
+function linesFromDraft(draft: ClinicVisitClaimDraft | null, physician: string): LineDraft[] | null {
+  if (!draft?.lines.length) return null;
+  return draft.lines.map((line) => ({
     ...emptyLine(physician),
     cpt: line.code,
     description: line.description,
@@ -67,11 +70,8 @@ function linesFromEncounter(encounter: Encounter | null, physician: string): Lin
   }));
 }
 
-function diagnosesFromEncounter(encounter: Encounter | null): ClaimDiagnosis[] {
-  if (!encounter || encounter.status !== "approved") return [];
-  return uniqueDiagnoses(
-    encounter.icd10.filter((code) => code.approved).map((code) => ({ code: code.code, description: code.description })),
-  );
+function draftFromEncounter(encounter: Encounter | null) {
+  return encounter ? claimDraftFromClinicVisit(encounter) : null;
 }
 
 export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Encounter | null }) {
@@ -85,16 +85,30 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
   const savedId = useRef(claimId);
   const existing = claims.find((claim) => claim.id === (claimId || savedId.current));
   const visit = appointments.find((appointment) => appointment.id === visitId);
+  const physicianName = visit?.providerName || practice.physicianName;
+  const openingDraft = draftFromEncounter(initialEncounter);
   const [patientId, setPatientId] = useState(existing?.patientId || requestedPatient);
   const [payerName, setPayerName] = useState(existing?.payerName ?? "");
   const [tradingPartnerId, setTradingPartnerId] = useState(existing?.tradingPartnerId ?? "");
   const [filingCode, setFilingCode] = useState<string>(existing?.filingCode ?? "");
-  const [dateOverride, setDateOverride] = useState<string | null>(existing?.dateOfService ?? null);
+  const [dateOverride, setDateOverride] = useState<string | null>(
+    existing?.dateOfService ?? openingDraft?.dateOfService ?? null,
+  );
   const dateOfService = dateOverride || visit?.start.slice(0, 10) || initialEncounter?.createdAt.slice(0, 10) || today;
   const [placeOfService, setPlaceOfService] = useState(existing?.placeOfService || practice.posCode || "11");
-  const [clinicalNote, setClinicalNote] = useState(existing?.clinicalNote ?? "");
+  const [clinicalNote, setClinicalNote] = useState(existing?.clinicalNote ?? openingDraft?.clinicalNote ?? "");
   const [picked, setPicked] = useState<File[]>([]);
   const [pending, setPending] = useState(false);
+  const [sourceEncounterId, setSourceEncounterId] = useState(
+    existing?.encounterId || openingDraft?.encounterId || params.get("encounter") || "",
+  );
+  const [sourceAppointmentId, setSourceAppointmentId] = useState(
+    existing?.appointmentId || openingDraft?.appointmentId || visitId || "",
+  );
+  const [visitFill, setVisitFill] = useState<VisitFill>(openingDraft ? "filled" : "idle");
+  const [visitFillSource, setVisitFillSource] = useState<"approved" | "review" | null>(openingDraft?.source ?? null);
+  const [clinicVisits, setClinicVisits] = useState<ClinicVisitClaimDraft[]>(openingDraft ? [openingDraft] : []);
+  const [clinicVisitIndex, setClinicVisitIndex] = useState(0);
   const [lines, setLines] = useState<LineDraft[]>(() => {
     if (existing?.lines.length) {
       return existing.lines.map((line) => ({
@@ -108,13 +122,13 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
         physician: line.physician,
       }));
     }
-    return linesFromEncounter(initialEncounter, visit?.providerName || practice.physicianName) ?? [emptyLine(visit?.providerName || practice.physicianName)];
+    return linesFromDraft(openingDraft, physicianName) ?? [emptyLine(physicianName)];
   });
   const [claimDiagnoses, setClaimDiagnoses] = useState<ClaimDiagnosis[]>(() => {
     if (existing?.lines.length) {
       return uniqueDiagnoses(existing.lines.flatMap((line) => line.diagnoses.map((code) => ({ code, description: "" }))));
     }
-    return diagnosesFromEncounter(initialEncounter);
+    return openingDraft?.diagnoses ?? [];
   });
   const [holdReason, setHoldReason] = useState(existing?.holdReason ?? "");
   const [assignmentOfBenefits, setAssignmentOfBenefits] = useState(existing?.assignmentOfBenefits !== false);
@@ -123,6 +137,8 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
   const [noteOpen, setNoteOpen] = useState(true);
   const [error, setError] = useState("");
   const hydrated = useRef(false);
+  const autofillPatientRef = useRef(openingDraft ? requestedPatient || existing?.patientId || "" : "");
+  const filledFromVisitRef = useRef(Boolean(openingDraft));
 
   useEffect(() => {
     if (hydrated.current || !existing) return;
@@ -191,6 +207,98 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
     if (!payerName && patient.payerName) setPayerName(patient.payerName);
     if (!tradingPartnerId && primaryCoverage?.tradingPartnerId) setTradingPartnerId(primaryCoverage.tradingPartnerId);
   }, [existing, patient, payerName, tradingPartnerId, primaryCoverage?.tradingPartnerId]);
+
+  function applyClinicDraft(draft: ClinicVisitClaimDraft, index = 0, visits?: ClinicVisitClaimDraft[]) {
+    const nextLines = linesFromDraft(draft, physicianName);
+    if (!nextLines) return false;
+    if (visits) setClinicVisits(visits);
+    setClinicVisitIndex(index);
+    setSourceEncounterId(draft.encounterId);
+    setSourceAppointmentId(draft.appointmentId || "");
+    setDateOverride(draft.dateOfService);
+    setClinicalNote(draft.clinicalNote);
+    setClaimDiagnoses(draft.diagnoses);
+    setLines(nextLines);
+    setVisitFill("filled");
+    setVisitFillSource(draft.source);
+    filledFromVisitRef.current = true;
+    setError("");
+    return true;
+  }
+
+  function clearClinicDraft() {
+    setClinicVisits([]);
+    setClinicVisitIndex(0);
+    setSourceEncounterId("");
+    setSourceAppointmentId("");
+    setDateOverride(null);
+    setClinicalNote("");
+    setClaimDiagnoses([]);
+    setLines([emptyLine(physicianName)]);
+    setVisitFill("none");
+    setVisitFillSource(null);
+    filledFromVisitRef.current = false;
+  }
+
+  function selectClinicVisit(index: number) {
+    const draft = clinicVisits[index];
+    if (!draft || index === clinicVisitIndex) return;
+    applyClinicDraft(draft, index);
+  }
+
+  useEffect(() => {
+    if (!ready || existing || initialEncounter || !patientId || !patient) return;
+    if (autofillPatientRef.current === patientId) return;
+    autofillPatientRef.current = patientId;
+
+    let cancelled = false;
+    setVisitFill("loading");
+    setClinicVisits([]);
+    setClinicVisitIndex(0);
+
+    void (async () => {
+      try {
+        const appointmentIds = appointments
+          .filter((appointment) => appointment.patientId === patientId)
+          .map((appointment) => appointment.id);
+        const response = await fetch("/api/encounters/latest-for-patient", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            patientId,
+            patientName: patientName(patient),
+            appointmentIds,
+          }),
+        });
+        const payload = (await response.json()) as {
+          visits?: { draft?: ClinicVisitClaimDraft | null }[];
+          draft?: ClinicVisitClaimDraft | null;
+          message?: string;
+        };
+        if (cancelled) return;
+        const drafts = (payload.visits ?? [])
+          .map((item) => item.draft)
+          .filter((draft): draft is ClinicVisitClaimDraft => Boolean(draft));
+        const first = drafts[0] ?? payload.draft ?? null;
+        if (!response.ok || !first) {
+          if (filledFromVisitRef.current) clearClinicDraft();
+          else setVisitFill("none");
+          return;
+        }
+        applyClinicDraft(first, 0, drafts.length ? drafts : [first]);
+      } catch {
+        if (cancelled) return;
+        if (filledFromVisitRef.current) clearClinicDraft();
+        else setVisitFill("none");
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+    // Autofill once per selected patient for a blank new claim — not while editing or opening ?encounter=.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- patientId drives the fetch; helpers close over latest physician/appointments.
+  }, [ready, existing, initialEncounter, patientId, patient?.id]);
 
   if (!ready) return <LoadingDesk />;
 
@@ -386,8 +494,8 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
       tradingPartnerId: nextPayerId || undefined,
       dateOfService,
       placeOfService,
-      appointmentId: visit?.id,
-      encounterId: params.get("encounter") || initialEncounter?.id,
+      appointmentId: visit?.id || sourceAppointmentId || undefined,
+      encounterId: sourceEncounterId || params.get("encounter") || initialEncounter?.id || undefined,
       lines: nextLines,
       status,
       holdReason: status === "held" ? holdReason.trim() : "",
@@ -494,6 +602,11 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
                 const coverage = next?.coverages.find((item) => item.rank === "primary");
                 setPayerName(next?.payerName ?? "");
                 setTradingPartnerId(coverage?.tradingPartnerId ?? "");
+                if (!id) {
+                  autofillPatientRef.current = "";
+                  if (filledFromVisitRef.current && !initialEncounter) clearClinicDraft();
+                  else if (!initialEncounter) setVisitFill("idle");
+                }
               }}
               required
             >
@@ -503,6 +616,82 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
               ))}
             </select>
           </Field>
+          {!initialEncounter && visitFill === "loading" ? (
+            <p className="text-sm text-muted">Looking up Alignment Clinic visits for this patient…</p>
+          ) : null}
+          {!initialEncounter && visitFill === "filled" && clinicVisits.length ? (
+            <div className="grid gap-3 rounded-xl border border-line bg-paper/60 p-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="grid gap-1">
+                  <p className="text-sm font-medium">
+                    Alignment Clinic visit {clinicVisitIndex + 1} of {clinicVisits.length}
+                  </p>
+                  <p className="text-sm text-muted">
+                    {formatDay(clinicVisits[clinicVisitIndex]?.dateOfService || dateOfService)}
+                    {" · "}
+                    {visitFillSource === "approved" ? "approved codes" : "review suggestions"}
+                    {" · "}
+                    {(clinicVisits[clinicVisitIndex]?.diagnoses.length ?? 0)} ICD
+                    {" · "}
+                    {(clinicVisits[clinicVisitIndex]?.lines.length ?? 0)} CPT
+                  </p>
+                  <p className="text-sm text-muted">
+                    {clinicVisits[clinicVisitIndex]?.lines.map((line) => line.code).join(", ") || "No procedures"}
+                    {" · "}
+                    {clinicVisits[clinicVisitIndex]?.diagnoses.map((item) => item.code).join(", ") || "No diagnoses"}
+                  </p>
+                </div>
+                {clinicVisits.length > 1 ? (
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      disabled={pending || clinicVisitIndex >= clinicVisits.length - 1}
+                      onClick={() => selectClinicVisit(clinicVisitIndex + 1)}
+                    >
+                      Earlier visit
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      disabled={pending || clinicVisitIndex <= 0}
+                      onClick={() => selectClinicVisit(clinicVisitIndex - 1)}
+                    >
+                      Later visit
+                    </Button>
+                  </div>
+                ) : null}
+              </div>
+              {clinicVisits.length > 1 ? (
+                <Field label="Choose visit">
+                  <select
+                    className={fieldClass}
+                    value={String(clinicVisitIndex)}
+                    disabled={pending}
+                    onChange={(event) => selectClinicVisit(Number(event.target.value))}
+                  >
+                    {clinicVisits.map((draft, index) => (
+                      <option key={draft.encounterId} value={String(index)}>
+                        {formatDay(draft.dateOfService)} · {draft.source} ·{" "}
+                        {draft.lines.map((line) => line.code).join(", ") || "no CPT"} ·{" "}
+                        {draft.diagnoses.map((item) => item.code).join(", ") || "no ICD"}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+              ) : null}
+              <p className="text-sm text-muted">
+                {visitFillSource === "approved"
+                  ? "Note, diagnoses, and procedures come from this Visit Desk encounter. Each CPT keeps the diagnosis pointers from coding. Charges fill from the Medicare fee schedule."
+                  : "Note and suggested codes come from this Visit Desk encounter still under review. Confirm diagnoses and procedures before Ready for bill."}
+              </p>
+            </div>
+          ) : null}
+          {!initialEncounter && visitFill === "none" && patientId && !existing ? (
+            <p className="text-sm text-muted">
+              No Alignment Clinic visit with a note and codes was found for this patient. Enter the claim by hand, or finish the visit on the Visit Desk first.
+            </p>
+          ) : null}
           <Field label="Payer">
             <PayerSearch
               label="Payer"
@@ -550,9 +739,13 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
               Assignment of benefits — payer pays the practice. Uncheck when the patient already paid and the payer should reimburse the patient.
             </span>
           </label>
-          {initialEncounter?.status === "approved" ? (
+          {initialEncounter && openingDraft ? (
             <p className="text-sm text-muted">
-              {initialEncounter.patientLabel || "This visit"} was approved with these diagnosis and procedure codes. The charge fills from the Medicare fee schedule.
+              {initialEncounter.patientLabel || "This visit"}{" "}
+              {openingDraft.source === "approved"
+                ? "was approved with these diagnosis and procedure codes."
+                : "is under review — these are the suggested diagnosis and procedure codes."}{" "}
+              The charge fills from the Medicare fee schedule.
             </p>
           ) : null}
           {visit?.opNoteStatus === "missing" ? <p className="text-sm text-muted">Op note is missing. That is visible here and does not block Ready for Bill.</p> : null}

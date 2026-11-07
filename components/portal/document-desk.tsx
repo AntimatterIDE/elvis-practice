@@ -151,12 +151,12 @@ export function DocumentDesk({ files, storageNote }: { files: ChartFile[]; stora
             setExtractFiles(null);
             setPatient(null);
           }}
-          onConfirmDraft={async ({ draft, fingerprints, overwrite }) => {
-            const result = await applyPortalOnboardDraftAction({ draft, fingerprints, overwrite });
+          onConfirmDraft={async ({ draft, fingerprints, accept, overwrite }) => {
+            const result = await applyPortalOnboardDraftAction({ draft, fingerprints, accept, overwrite });
             if (!result.ok) throw new Error(result.message);
             setExtractFiles(null);
             setPatient(null);
-            setMessage("Extracted details were saved on your chart.");
+            setMessage("Accepted extracted details were saved on your chart.");
             router.refresh();
           }}
         />

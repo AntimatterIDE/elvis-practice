@@ -289,7 +289,9 @@ export function chartGaps(patient: Patient) {
 }
 
 /**
- * OCR onboard gap policy (staff-confirmed drafts only):
+ * OCR onboard gap policy (reviewed + accepted fields only):
+ * - Every OCR field must be reviewed and explicitly accepted before it writes the chart,
+ *   from any entry point (intake, portal files, staff chart files, outside-records import).
  * - May clear: Photo ID / Insurance card / Doctor records / Imaging / No-fault slots
  *   when those files were uploaded and confirmed (see applyOnboardDocumentHints).
  * - Never auto-clears: New patient intake (still needs portal/intake answers).

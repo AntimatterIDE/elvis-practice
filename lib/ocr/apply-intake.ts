@@ -1,118 +1,17 @@
 import { normalizeHashes } from "@/lib/ocr/dedupe";
-import { applyOnboardDocumentHints, normalizeOnboardDraft, type OnboardDraft } from "@/lib/ocr/onboard-draft";
+import { normalizeOnboardDraft, type OnboardDraft } from "@/lib/ocr/onboard-draft";
 import {
   applyFiledSlotsToPatient,
   fileInboxPathsToChart,
   storeOcrTextArtifact,
 } from "@/lib/ocr/file-from-inbox";
-import { emptyInjuryCase } from "@/lib/rcm/chart";
 import type { Patient } from "@/lib/rcm/types";
 
-function fill(current: string, next: string) {
-  return current.trim() ? current : next.trim();
-}
-
-function mergeUniqueByName<T extends { id: string; name?: string; substance?: string }>(
-  existing: T[],
-  incoming: T[],
-  keyOf: (item: T) => string,
-): T[] {
-  const seen = new Set(existing.map(keyOf).filter(Boolean));
-  const next = existing.slice();
-  for (const item of incoming) {
-    const key = keyOf(item);
-    if (!key || seen.has(key)) continue;
-    seen.add(key);
-    next.push(item);
-  }
-  return next;
-}
-
-/** Fold OCR draft clinical fields into a chart created/updated by intake answers. */
-export function mergeOcrDraftIntoIntakePatient(
-  patient: Patient,
-  draftRaw: unknown,
-  fingerprints: string[],
-): Patient {
-  const draft = normalizeOnboardDraft(draftRaw);
-  const hashes = normalizeHashes([...(patient.ocrImportHashes ?? []), ...fingerprints]);
-  const nid = () => `id_${crypto.randomUUID().slice(0, 8)}`;
-  const historyParts = [patient.medicalHistory, draft.reasonForVisit, draft.medicalHistory];
-  if (draft.imagingFindings) historyParts.push(`Imaging findings:\n${draft.imagingFindings}`);
-  const medicalHistory = [...new Set(historyParts.filter(Boolean))].join("\n\n").slice(0, 12_000);
-
-  let cases = patient.cases;
-  if (draft.injuryCase && Object.values(draft.injuryCase).some(Boolean)) {
-    if (!patient.cases.length) {
-      cases = [
-        {
-          ...emptyInjuryCase(`case_${patient.id}`),
-          ...draft.injuryCase,
-          attorneyAddress: "",
-          notes: draft.injuryCase.notes || draft.injuryCase.description || "",
-        },
-      ];
-    } else {
-      const [first, ...rest] = patient.cases;
-      const noteAdd = draft.injuryCase.notes || draft.injuryCase.description || "";
-      cases = [
-        {
-          ...first,
-          caseNumber: fill(first.caseNumber, draft.injuryCase.caseNumber),
-          claimNumber: fill(first.claimNumber, draft.injuryCase.claimNumber),
-          dateOfInjury: fill(first.dateOfInjury, draft.injuryCase.dateOfInjury),
-          description: fill(first.description, draft.injuryCase.description),
-          carrierName: fill(first.carrierName, draft.injuryCase.carrierName),
-          attorneyName: fill(first.attorneyName, draft.injuryCase.attorneyName),
-          attorneyFirm: fill(first.attorneyFirm, draft.injuryCase.attorneyFirm),
-          attorneyPhone: fill(first.attorneyPhone, draft.injuryCase.attorneyPhone),
-          attorneyEmail: fill(first.attorneyEmail, draft.injuryCase.attorneyEmail),
-          notes:
-            first.notes.trim() && noteAdd && !first.notes.includes(noteAdd.slice(0, 60))
-              ? `${first.notes.trim()}\n\n${noteAdd}`.slice(0, 8_000)
-              : fill(first.notes, noteAdd),
-        },
-        ...rest,
-      ];
-    }
-  }
-
-  const note = draft.sourceSummary || "Records OCR import";
-  return {
-    ...patient,
-    surgicalHistory: fill(patient.surgicalHistory, draft.surgicalHistory),
-    pcpName: fill(patient.pcpName, draft.pcpName),
-    pcpPhone: fill(patient.pcpPhone, draft.pcpPhone),
-    referringName: fill(patient.referringName, draft.referringName),
-    referringPhone: fill(patient.referringPhone, draft.referringPhone),
-    pharmacyName: fill(patient.pharmacyName, draft.pharmacyName),
-    pharmacyPhone: fill(patient.pharmacyPhone, draft.pharmacyPhone),
-    emergencyName: fill(patient.emergencyName, draft.emergencyName),
-    emergencyPhone: fill(patient.emergencyPhone, draft.emergencyPhone),
-    emergencyRelation: fill(patient.emergencyRelation, draft.emergencyRelation),
-    medicalHistory,
-    problems: mergeUniqueByName(
-      patient.problems,
-      draft.problems.map((problem) => ({ id: nid(), ...problem })),
-      (item) => `${item.name}|${item.icd}`.toLowerCase(),
-    ),
-    medications: mergeUniqueByName(
-      patient.medications,
-      draft.medications.map((med) => ({ id: nid(), ...med })),
-      (item) => item.name.toLowerCase(),
-    ),
-    allergies: mergeUniqueByName(
-      patient.allergies,
-      draft.allergies.map((allergy) => ({ id: nid(), ...allergy })),
-      (item) => (item.substance || "").toLowerCase(),
-    ),
-    allergiesReviewed: patient.allergiesReviewed || draft.allergies.length > 0,
-    documents: applyOnboardDocumentHints(patient.documents, draft.documentHints, note),
-    cases,
-    ocrImportHashes: hashes,
-  };
-}
-
+/**
+ * After intake submit: file the uploaded packet and keep an OCR text artifact.
+ * Does **not** merge OCR clinical fields into the chart — those must be reviewed
+ * and accepted on the form (or later via ChartExtractReview).
+ */
 export async function finalizeIntakeOcr(input: {
   patient: Patient;
   draftJson: string;
@@ -161,7 +60,11 @@ export async function finalizeIntakeOcr(input: {
     pageLabels = [];
   }
 
-  let patient = mergeOcrDraftIntoIntakePatient(input.patient, draft, fingerprints);
+  // Hard rule: OCR clinical fields never write the chart here. Intake answers (which the
+  // patient reviewed on the form) already created/updated the chart. This step only files
+  // the uploaded packet and stores the OCR text artifact for staff review later.
+  const hashes = normalizeHashes([...(input.patient.ocrImportHashes ?? []), ...fingerprints]);
+  let patient: Patient = { ...input.patient, ocrImportHashes: hashes };
   if (paths.length) {
     const filed = await fileInboxPathsToChart({
       patientId: patient.id,

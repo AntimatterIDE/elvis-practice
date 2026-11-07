@@ -15,4 +15,4 @@ Compiled memory for **The Alignment Clinic** (Next.js + Supabase on Vercel; Sted
 - Public site: Alignment branding (`lib/site.ts`, oxide/clinic-blue).
 - Admin Visit Desk: `components/admin/visit-desk.tsx` — record → note → review codes → approve → claims.
 - Chart Files: Supabase `chart-files` bucket via `lib/chart-files/store.ts`.
-- OCR: optional extract after upload (`ChartExtractReview`, fill-empty + overwrite).
+- OCR: extract after upload → review → explicit accept (`ChartExtractReview`); never auto-writes the chart.

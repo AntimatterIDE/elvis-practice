@@ -101,15 +101,18 @@ describe("ocr dedupe", () => {
     const existing = basePatient({
       problems: [{ id: "prob1", name: "Radiculopathy", icd: "M54.16", status: "active", onset: "" }],
     });
-    const merged = mergeOnboardIntoPatient(existing, draft, [hashB]);
+    const merged = mergeOnboardIntoPatient(existing, draft, [hashB], {
+      accept: ["phone", "problems"],
+    });
     expect(merged.id).toBe("p_existing");
     expect(merged.ocrImportHashes?.sort()).toEqual([hashA, hashB].sort());
     expect(merged.problems.filter((item) => item.name === "Radiculopathy")).toHaveLength(1);
+    // Phone already filled — without overwrite it stays.
     expect(merged.phone).toBe("555-0100");
     expect(merged.documents.find((item) => item.id === "outside-records")?.status).toBe("received");
   });
 
-  it("overwrites selected filled fields when requested", () => {
+  it("writes OCR fields only when accepted, and overwrites only when requested", () => {
     const draft = normalizeOnboardDraft({
       ...emptyOnboardDraft(),
       firstName: "Janet",
@@ -123,13 +126,23 @@ describe("ocr dedupe", () => {
       email: "old@example.com",
       problems: [{ id: "prob1", name: "Lumbar strain", icd: "", status: "active", onset: "" }],
     });
-    const filled = mergeOnboardIntoPatient(existing, draft, []);
+    const ignored = mergeOnboardIntoPatient(existing, draft, [], { accept: [] });
+    expect(ignored.phone).toBe("555-0100");
+    expect(ignored.email).toBe("old@example.com");
+    expect(ignored.firstName).toBe("Jane");
+    expect(ignored.problems).toHaveLength(1);
+    expect(ignored.documents.find((item) => item.id === "outside-records")?.status).not.toBe("received");
+
+    const filled = mergeOnboardIntoPatient(existing, draft, [], {
+      accept: ["email", "problems"],
+    });
     expect(filled.phone).toBe("555-0100");
     expect(filled.email).toBe("old@example.com");
     expect(filled.firstName).toBe("Jane");
     expect(filled.problems).toHaveLength(2);
 
     const overwritten = mergeOnboardIntoPatient(existing, draft, [], {
+      accept: ["phone", "email", "firstName", "problems"],
       overwrite: ["phone", "email", "firstName", "problems"],
     });
     expect(overwritten.phone).toBe("555-9999");

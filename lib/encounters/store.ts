@@ -165,9 +165,10 @@ async function ready(supabase: ReturnType<typeof client>) {
   return !created.error || /already exists/i.test(created.error.message);
 }
 
-export async function listEncounters() {
+export async function listEncounters(limit = 40) {
   const supabase = client();
-  const { data, error } = await supabase.from("encounters").select("*").order("created_at", { ascending: false }).limit(40);
+  const capped = Math.min(Math.max(Math.floor(limit) || 40, 1), 200);
+  const { data, error } = await supabase.from("encounters").select("*").order("created_at", { ascending: false }).limit(capped);
   if (error) throw new Error(error.message);
   return ((data ?? []) as EncounterRow[]).map(fromRow);
 }

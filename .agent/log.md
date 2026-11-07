@@ -1,5 +1,26 @@
 # elvis-practice — agent log
 
+## [2026-11-07] decision | OCR must be reviewed and accepted
+
+Hard rule across every OCR entry point: extracted fields do not write the chart
+until the user accepts them. `mergeOnboardIntoPatient` requires `accept`;
+ChartExtractReview is opt-in per field; intake finalize only files the packet /
+OCR artifact (no silent clinical merge).
+
+## [2026-11-07] ingest | Claim autofill cycles clinic visits
+
+New claim form loads every claimable Alignment Clinic visit for the patient
+(newest first) and lets the biller cycle Earlier/Later or pick from a dropdown.
+Selecting a visit fills note + ICD + CPT with that visit’s diagnosis pointers.
+`listClinicVisitsForPatient` + ClaimForm visit picker; still no outside OCR.
+
+## [2026-11-07] ingest | Claim autofill from latest clinic visit
+
+New claim form fills from the patient's latest Alignment Clinic Visit Desk
+encounter only (note + ICD + CPT). `claim-from-visit.ts` +
+`POST /api/encounters/latest-for-patient`; ClaimForm runs on patient select.
+Does not pull outside OCR / chart problems into the autofill.
+
 ## [2026-11-07] ingest | Clinical letter from Visit Desk
 
 One Clinical Letter for every visit. After note is in review, Visit Desk

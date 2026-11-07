@@ -16,11 +16,12 @@ import {
 import type { Patient } from "@/lib/rcm/types";
 import { cn } from "@/lib/utils";
 
-type ScalarField = {
+type Proposal = {
   key: OnboardMergeOverwriteKey;
   label: string;
   draftValue: string;
   currentValue: string;
+  conflict: boolean;
 };
 
 function draftScalar(draft: OnboardDraft, key: OnboardMergeOverwriteKey): string {
@@ -71,6 +72,23 @@ function draftScalar(draft: OnboardDraft, key: OnboardMergeOverwriteKey): string
       return draft.emergencyPhone;
     case "emergencyRelation":
       return draft.emergencyRelation;
+    case "injuryCase":
+      return draft.injuryCase
+        ? [
+            draft.injuryCase.dateOfInjury,
+            draft.injuryCase.description,
+            draft.injuryCase.notes,
+            draft.injuryCase.carrierName,
+          ]
+            .filter(Boolean)
+            .join(" · ")
+        : "";
+    case "problems":
+      return draft.problems.map((row) => (row.icd ? `${row.name} (${row.icd})` : row.name)).join("; ");
+    case "medications":
+      return draft.medications.map((row) => row.name).join("; ");
+    case "allergies":
+      return draft.allergies.map((row) => row.substance).filter(Boolean).join("; ");
     default:
       return "";
   }
@@ -124,15 +142,33 @@ function patientScalar(patient: Patient, key: OnboardMergeOverwriteKey): string 
       return patient.emergencyPhone;
     case "emergencyRelation":
       return patient.emergencyRelation;
+    case "injuryCase":
+      return patient.cases[0]
+        ? [
+            patient.cases[0].dateOfInjury,
+            patient.cases[0].description,
+            patient.cases[0].notes,
+            patient.cases[0].carrierName,
+          ]
+            .filter(Boolean)
+            .join(" · ")
+        : "";
+    case "problems":
+      return patient.problems.map((row) => (row.icd ? `${row.name} (${row.icd})` : row.name)).join("; ");
+    case "medications":
+      return patient.medications.map((row) => row.name).join("; ");
+    case "allergies":
+      return patient.allergies.map((row) => row.substance || "").filter(Boolean).join("; ");
     default:
       return "";
   }
 }
 
-const SCALAR_FIELDS: Array<{ key: OnboardMergeOverwriteKey; label: string }> = [
+const FIELD_LABELS: Array<{ key: OnboardMergeOverwriteKey; label: string }> = [
   { key: "firstName", label: "First name" },
   { key: "lastName", label: "Last name" },
   { key: "dateOfBirth", label: "Date of birth" },
+  { key: "sex", label: "Sex" },
   { key: "phone", label: "Phone" },
   { key: "email", label: "Email" },
   { key: "payerName", label: "Payer" },
@@ -141,6 +177,21 @@ const SCALAR_FIELDS: Array<{ key: OnboardMergeOverwriteKey; label: string }> = [
   { key: "city", label: "City" },
   { key: "state", label: "State" },
   { key: "postalCode", label: "Postal code" },
+  { key: "medicalHistory", label: "Reason / medical history" },
+  { key: "surgicalHistory", label: "Surgical history" },
+  { key: "pcpName", label: "PCP name" },
+  { key: "pcpPhone", label: "PCP phone" },
+  { key: "referringName", label: "Referring name" },
+  { key: "referringPhone", label: "Referring phone" },
+  { key: "pharmacyName", label: "Pharmacy name" },
+  { key: "pharmacyPhone", label: "Pharmacy phone" },
+  { key: "emergencyName", label: "Emergency contact" },
+  { key: "emergencyPhone", label: "Emergency phone" },
+  { key: "emergencyRelation", label: "Emergency relation" },
+  { key: "injuryCase", label: "Injury case" },
+  { key: "problems", label: "Problems / diagnoses" },
+  { key: "medications", label: "Medications" },
+  { key: "allergies", label: "Allergies" },
 ];
 
 export function ChartExtractReview({
@@ -158,10 +209,11 @@ export function ChartExtractReview({
   autoStart?: boolean;
   /** Staff path: receive the merged patient and persist locally + server. */
   onApplied?: (merged: Patient) => void | Promise<void>;
-  /** Portal path: send draft + overwrite keys; server merges into the signed-in chart. */
+  /** Portal path: send draft + accepted keys; server merges into the signed-in chart. */
   onConfirmDraft?: (payload: {
     draft: OnboardDraft;
     fingerprints: string[];
+    accept: OnboardMergeOverwriteKey[];
     overwrite: OnboardMergeOverwriteKey[];
   }) => void | Promise<void>;
   onDismiss: () => void;
@@ -170,14 +222,14 @@ export function ChartExtractReview({
   const [error, setError] = useState("");
   const [draft, setDraft] = useState<OnboardDraft | null>(null);
   const [fingerprints, setFingerprints] = useState<string[]>([]);
-  const [overwrite, setOverwrite] = useState<Set<OnboardMergeOverwriteKey>>(new Set());
+  const [accepted, setAccepted] = useState<Set<OnboardMergeOverwriteKey>>(new Set());
 
   async function runExtract() {
     setBusy("extract");
     setError("");
     setDraft(null);
     setFingerprints([]);
-    setOverwrite(new Set());
+    setAccepted(new Set());
     const result = await extractOnboardFromFiles(files, { headers: authHeaders });
     if (!result.ok) {
       setError(result.message);
@@ -201,30 +253,22 @@ export function ChartExtractReview({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const conflicts = useMemo(() => {
-    if (!draft) return [] as ScalarField[];
-    return SCALAR_FIELDS.map((field) => {
+  const proposals = useMemo(() => {
+    if (!draft) return [] as Proposal[];
+    return FIELD_LABELS.map((field) => {
       const draftValue = draftScalar(draft, field.key).trim();
       const currentValue = patientScalar(patient, field.key).trim();
-      return { ...field, draftValue, currentValue };
-    }).filter(
-      (field) =>
-        field.draftValue &&
-        field.currentValue &&
-        field.draftValue.toLowerCase() !== field.currentValue.toLowerCase(),
-    );
+      const conflict = Boolean(
+        draftValue &&
+          currentValue &&
+          draftValue.toLowerCase() !== currentValue.toLowerCase(),
+      );
+      return { ...field, draftValue, currentValue, conflict };
+    }).filter((field) => field.draftValue);
   }, [draft, patient]);
 
-  const injuryConflict = Boolean(
-    draft?.injuryCase &&
-      Object.values(draft.injuryCase).some(Boolean) &&
-      patient.cases[0] &&
-      (patient.cases[0].dateOfInjury.trim() || patient.cases[0].description.trim()),
-  );
-  const problemsConflict = Boolean(draft?.problems.length && patient.problems.length);
-
   function toggle(key: OnboardMergeOverwriteKey) {
-    setOverwrite((current) => {
+    setAccepted((current) => {
       const next = new Set(current);
       if (next.has(key)) next.delete(key);
       else next.add(key);
@@ -232,20 +276,36 @@ export function ChartExtractReview({
     });
   }
 
+  function acceptAll() {
+    setAccepted(new Set(proposals.map((item) => item.key)));
+  }
+
+  function acceptNone() {
+    setAccepted(new Set());
+  }
+
   async function confirm() {
     if (!draft) return;
+    if (!accepted.size) {
+      setError("Check at least one extracted field to accept, or cancel.");
+      return;
+    }
     setBusy("save");
     setError("");
+    const accept = [...accepted];
+    const overwrite = proposals.filter((item) => item.conflict && accepted.has(item.key)).map((item) => item.key);
     try {
       if (onConfirmDraft) {
         await onConfirmDraft({
           draft,
           fingerprints,
-          overwrite: [...overwrite],
+          accept,
+          overwrite,
         });
       } else if (onApplied) {
         const merged = mergeOnboardIntoPatient(patient, draft, fingerprints, {
-          overwrite: [...overwrite],
+          accept,
+          overwrite,
         });
         await onApplied(merged);
       } else {
@@ -265,8 +325,8 @@ export function ChartExtractReview({
         <div>
           <h3 className="font-display text-xl">Extract into chart</h3>
           <p className="mt-1 text-sm text-muted">
-            Files stay in the slot you chose. Review what OCR found, then confirm. Empty chart fields fill
-            automatically; check a box only to replace a value that is already filled.
+            Files stay in the slot you chose. Nothing from OCR is written until you check what to accept and
+            confirm. Conflicts replace the chart value when accepted; empty chart fields fill only when accepted.
           </p>
         </div>
         <Button type="button" variant="ghost" onClick={onDismiss} disabled={busy !== "idle"}>
@@ -285,61 +345,6 @@ export function ChartExtractReview({
 
       {draft ? (
         <div className="grid gap-3">
-          <dl className="grid gap-2 text-sm sm:grid-cols-2">
-            <div>
-              <dt className="text-xs uppercase tracking-wider text-muted">Name</dt>
-              <dd>
-                {draft.firstName || draft.lastName
-                  ? `${draft.firstName} ${draft.lastName}`.trim()
-                  : "—"}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-wider text-muted">Date of birth</dt>
-              <dd>{draft.dateOfBirth || "—"}</dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-wider text-muted">Phone / email</dt>
-              <dd>
-                {draft.phone || "—"} · {draft.email || "—"}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-wider text-muted">Payer / member</dt>
-              <dd>
-                {draft.payerName || "—"} · {draft.memberId || "—"}
-              </dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-xs uppercase tracking-wider text-muted">Reason / history</dt>
-              <dd className="whitespace-pre-wrap">
-                {[draft.reasonForVisit, draft.medicalHistory].filter(Boolean).join("\n") || "—"}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-wider text-muted">Problems</dt>
-              <dd>
-                {draft.problems.length
-                  ? draft.problems
-                      .slice(0, 4)
-                      .map((row) => row.name)
-                      .join("; ")
-                  : "—"}
-                {draft.problems.length > 4 ? ` (+${draft.problems.length - 4})` : ""}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-wider text-muted">Injury</dt>
-              <dd>
-                {draft.injuryCase
-                  ? `${draft.injuryCase.dateOfInjury || "no DOI"} — ${
-                      draft.injuryCase.description || draft.injuryCase.notes || "case noted"
-                    }`
-                  : "—"}
-              </dd>
-            </div>
-          </dl>
-
           {draft.warnings.length ? (
             <ul className="list-disc pl-5 text-sm text-muted">
               {draft.warnings.slice(0, 4).map((warning) => (
@@ -348,62 +353,56 @@ export function ChartExtractReview({
             </ul>
           ) : null}
 
-          {conflicts.length || injuryConflict || problemsConflict ? (
+          {proposals.length ? (
             <div className="grid gap-2 rounded-xl border border-line bg-card p-3">
-              <p className="text-sm font-medium">Replace filled chart fields?</p>
-              <p className="text-xs text-muted">Unchecked fields keep what is already on the chart.</p>
-              {conflicts.map((field) => (
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-sm font-medium">Accept extracted fields</p>
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" className="text-sm underline" onClick={acceptAll} disabled={busy !== "idle"}>
+                    Accept all
+                  </button>
+                  <button type="button" className="text-sm underline" onClick={acceptNone} disabled={busy !== "idle"}>
+                    Clear
+                  </button>
+                </div>
+              </div>
+              <p className="text-xs text-muted">Unchecked fields are left unchanged on the chart.</p>
+              {proposals.map((field) => (
                 <label key={field.key} className="flex items-start gap-2 text-sm">
                   <input
                     type="checkbox"
                     className="mt-1"
-                    checked={overwrite.has(field.key)}
+                    checked={accepted.has(field.key)}
                     onChange={() => toggle(field.key)}
+                    disabled={busy !== "idle"}
                   />
                   <span>
                     <span className="font-medium">{field.label}</span>
-                    <span className="block text-muted">
-                      Chart: {field.currentValue.slice(0, 80)} → Extracted: {field.draftValue.slice(0, 80)}
-                    </span>
+                    {field.conflict ? (
+                      <span className="block text-muted">
+                        Chart: {field.currentValue.slice(0, 120)}
+                        {field.currentValue.length > 120 ? "…" : ""} → Extracted: {field.draftValue.slice(0, 120)}
+                        {field.draftValue.length > 120 ? "…" : ""}
+                      </span>
+                    ) : field.currentValue ? (
+                      <span className="block text-muted">Already on chart (same value): {field.draftValue.slice(0, 160)}</span>
+                    ) : (
+                      <span className="block text-muted">
+                        Add: {field.draftValue.slice(0, 160)}
+                        {field.draftValue.length > 160 ? "…" : ""}
+                      </span>
+                    )}
                   </span>
                 </label>
               ))}
-              {injuryConflict ? (
-                <label className="flex items-start gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="mt-1"
-                    checked={overwrite.has("injuryCase")}
-                    onChange={() => toggle("injuryCase")}
-                  />
-                  <span>
-                    <span className="font-medium">Injury case</span>
-                    <span className="block text-muted">Replace the first case fields with extracted values.</span>
-                  </span>
-                </label>
-              ) : null}
-              {problemsConflict ? (
-                <label className="flex items-start gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="mt-1"
-                    checked={overwrite.has("problems")}
-                    onChange={() => toggle("problems")}
-                  />
-                  <span>
-                    <span className="font-medium">Problems list</span>
-                    <span className="block text-muted">
-                      Replace the chart problem list (otherwise new problems are added).
-                    </span>
-                  </span>
-                </label>
-              ) : null}
             </div>
-          ) : null}
+          ) : (
+            <p className="text-sm text-muted">OCR did not find chart fields to review in these files.</p>
+          )}
 
           <div className="flex flex-wrap gap-2">
-            <Button type="button" onClick={() => void confirm()} disabled={busy !== "idle"}>
-              {busy === "save" ? "Saving…" : "Confirm into chart"}
+            <Button type="button" onClick={() => void confirm()} disabled={busy !== "idle" || !proposals.length}>
+              {busy === "save" ? "Saving…" : "Confirm accepted fields"}
             </Button>
             <Button type="button" variant="ghost" onClick={onDismiss} disabled={busy !== "idle"}>
               Cancel

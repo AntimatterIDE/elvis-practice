@@ -260,6 +260,7 @@ export async function loadOwnPortalPatientAction() {
 export async function applyPortalOnboardDraftAction(input: {
   draft: unknown;
   fingerprints?: string[];
+  accept?: string[];
   overwrite?: string[];
 }) {
   const patientId = await signedInPatient();
@@ -274,14 +275,19 @@ export async function applyPortalOnboardDraftAction(input: {
 
   const { normalizeOnboardDraft } = await import("@/lib/ocr/onboard-draft");
   const { mergeOnboardIntoPatient } = await import("@/lib/ocr/dedupe");
+  type AcceptKey = import("@/lib/ocr/dedupe").OnboardMergeOverwriteKey;
   const draft = normalizeOnboardDraft(input.draft);
-  const overwrite = (Array.isArray(input.overwrite) ? input.overwrite : []).filter(
-    (key): key is import("@/lib/ocr/dedupe").OnboardMergeOverwriteKey => typeof key === "string",
-  );
+  const asKeys = (value: unknown): AcceptKey[] =>
+    (Array.isArray(value) ? value : []).filter((key): key is AcceptKey => typeof key === "string");
+  const accept = asKeys(input.accept);
+  if (!accept.length) {
+    return { ok: false as const, message: "Accept at least one extracted field before saving." };
+  }
+  const overwrite = asKeys(input.overwrite).filter((key) => accept.includes(key));
   const fingerprints = Array.isArray(input.fingerprints)
     ? input.fingerprints.filter((item): item is string => typeof item === "string")
     : [];
-  const merged = mergeOnboardIntoPatient(current, draft, fingerprints, { overwrite });
+  const merged = mergeOnboardIntoPatient(current, draft, fingerprints, { accept, overwrite });
   if (merged.id !== patientId) {
     return { ok: false as const, message: "That update does not match your chart." };
   }
