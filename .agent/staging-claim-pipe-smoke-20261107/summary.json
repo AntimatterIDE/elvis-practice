@@ -1,0 +1,39 @@
+{
+  "deploy": {
+    "sha": "6d697c23edab8cec76354ffb01b568ee1e4f958e",
+    "status": "success",
+    "url": "https://vercel.com/pauls-projects-a3e85521/elvis-practice/6x1nY4YebvfGhejDQ4RMEA6w9bW9",
+    "commit": "Fill new claims from clinic visits and require OCR accept."
+  },
+  "pipeline": {
+    "pass": true,
+    "visitsClaimable": 3,
+    "ui": {
+      "autofill": true,
+      "cycleEarlierLater": true,
+      "visitDropdown": true,
+      "diagnosisPointers": true,
+      "medicareChargeFill": true
+    },
+    "edges": {
+      "noVisitsEmpty": true,
+      "missingPatientId400": true,
+      "nameMismatchEmpty": true,
+      "normalizedNameMatch": true,
+      "incompleteUploadedExcluded": true,
+      "reviewAndApprovedSources": true,
+      "ocrAcceptRequired": true
+    },
+    "notes": "Tone-only audio produced notes without ICD; claim path validated after approving library ICD/CPT with per-line diagnosis pointers. UI cycled visit 1→2 with codes/modifiers/pointers replaced."
+  },
+  "cleanup": {
+    "claimPipePatientRemoved": true,
+    "letterSmokePatientsRemoved": ["p_4b00650c", "p_0efe3ed1", "p_08717931"],
+    "incompleteEncounterDeleted": "5e166edb-3c34-4c96-a8bf-bf501addaa99",
+    "claimPipeEncountersLeftLabeled": [
+      "62076938-ced4-42f6-871f-b2e3a32050fb",
+      "afa06188-d165-4a5f-b4f7-b78050da0fd4",
+      "ebe6715b-16fc-4862-9d80-3b2a3c77b9d9"
+    ]
+  }
+}

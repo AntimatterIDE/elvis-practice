@@ -1,5 +1,14 @@
 # elvis-practice — agent log
 
+## [2026-11-07] ingest | Claim-pipe live smoke (multi-visit + edges)
+
+Deployed `6d697c2` to production. Live smoke: 3 ClaimPipe Multi visits
+(process → approve codes with diagnosis pointers) → claim form autofill +
+Earlier/Later cycle + dropdown. Edges: no-visits empty, missing patientId 400,
+name mismatch empty, incomplete uploaded excluded, OCR accept gate. Evidence:
+`.agent/staging-claim-pipe-smoke-20261107/summary.json`. Smoke charts removed;
+labeled ClaimPipe encounters remain on Visit Desk.
+
 ## [2026-11-07] decision | OCR must be reviewed and accepted
 
 Hard rule across every OCR entry point: extracted fields do not write the chart
