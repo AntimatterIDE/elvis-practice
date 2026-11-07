@@ -183,7 +183,21 @@ export function ChartExtractReview({
       setBusy("idle");
       return;
     }
-    setDraft(refreshOnboardWarnings({ ...emptyOnboardDraft(), ...result.draft }));
+    setDraft(
+      refreshOnboardWarnings(
+        { ...emptyOnboardDraft(), ...result.draft },
+        {
+          coveredBy: {
+            firstName: patient.firstName,
+            lastName: patient.lastName,
+            phone: patient.phone,
+            email: patient.email,
+            memberId: patient.memberId,
+            payerName: patient.payerName,
+          },
+        },
+      ),
+    );
     setFingerprints(result.fingerprints);
     setBusy("idle");
   }

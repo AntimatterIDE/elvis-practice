@@ -210,6 +210,34 @@ describe("onboard draft", () => {
     expect(draft.warnings.some((item) => /email/i.test(item))).toBe(true);
   });
 
+  it("skips missing-field warnings already covered by the patient chart", () => {
+    const draft = refreshOnboardWarnings(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Margaret",
+        lastName: "Palmquist",
+        phone: "",
+        email: "",
+        memberId: "",
+        payerName: "",
+      }),
+      {
+        coveredBy: {
+          firstName: "Margaret",
+          lastName: "Palmquist",
+          phone: "(718) 255-6615",
+          email: "margaret@example.com",
+          memberId: "MEM-1",
+          payerName: "No-Fault",
+        },
+      },
+    );
+    expect(draft.warnings.some((item) => /phone/i.test(item))).toBe(false);
+    expect(draft.warnings.some((item) => /email/i.test(item))).toBe(false);
+    expect(draft.warnings.some((item) => /member/i.test(item))).toBe(false);
+    expect(draft.warnings.some((item) => /payer/i.test(item))).toBe(false);
+  });
+
   it("merges section drafts and maps intake answers", () => {
     const a = normalizeOnboardDraft({
       ...emptyish(),

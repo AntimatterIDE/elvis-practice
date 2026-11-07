@@ -848,19 +848,41 @@ export function normalizeOnboardDraft(raw: unknown): OnboardDraft {
   return withWarnings;
 }
 
+/** Optional chart values that already cover a gap (used by post-upload extract review). */
+export type OnboardWarningCoverage = {
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  email?: string;
+  memberId?: string;
+  payerName?: string;
+};
+
 /** Rebuild soft gaps from the current draft fields (safe after merge or staff edits). */
-export function refreshOnboardWarnings(draft: OnboardDraft): OnboardDraft {
+export function refreshOnboardWarnings(
+  draft: OnboardDraft,
+  options?: { coveredBy?: OnboardWarningCoverage | null },
+): OnboardDraft {
+  const covered = options?.coveredBy;
+  const has = (value?: string) => Boolean(value?.trim());
   const kept = (draft.warnings || []).filter((item) => /Legacy ICD-9 cleared/i.test(item));
   const warnings: string[] = [...kept];
-  if (!draft.firstName.trim() || !draft.lastName.trim()) {
+  const nameOk =
+    (draft.firstName.trim() && draft.lastName.trim()) ||
+    (has(covered?.firstName) && has(covered?.lastName));
+  if (!nameOk) {
     warnings.push("Confirm first and last name before saving.");
   }
-  if (!draft.phone.trim()) warnings.push("Phone missing — still required for intake/claims contact.");
-  if (!draft.email.trim()) warnings.push("Email missing — patient portal invite needs an email.");
-  if (!draft.memberId.trim()) {
+  if (!draft.phone.trim() && !has(covered?.phone)) {
+    warnings.push("Phone missing — still required for intake/claims contact.");
+  }
+  if (!draft.email.trim() && !has(covered?.email)) {
+    warnings.push("Email missing — patient portal invite needs an email.");
+  }
+  if (!draft.memberId.trim() && !has(covered?.memberId)) {
     warnings.push("Member id missing — upload insurance card or enter manually before claim submit.");
   }
-  if (!draft.payerName.trim()) {
+  if (!draft.payerName.trim() && !has(covered?.payerName)) {
     warnings.push("Payer name missing — pick Stedi trading partner in claim form; never invent it.");
   }
   return { ...draft, warnings };
