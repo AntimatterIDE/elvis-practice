@@ -38,6 +38,7 @@ type RcmContextValue = DeskSnapshot & {
   updateAppointment: (id: string, patch: Partial<Appointment>) => void;
   removeAppointment: (id: string) => void;
   addEligibility: (result: Omit<EligibilityResult, "id" | "createdAt">) => EligibilityResult;
+  clearPatientEligibility: (patientId: string) => void;
   updatePractice: (patch: Partial<PracticeProfile>) => void;
 };
 
@@ -472,6 +473,13 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
         const current = getSnapshot();
         commit({ ...current, eligibility: [saved, ...current.eligibility] });
         return saved;
+      },
+      clearPatientEligibility: (patientId) => {
+        const current = getSnapshot();
+        commit({
+          ...current,
+          eligibility: current.eligibility.filter((check) => check.patientId !== patientId),
+        });
       },
       updatePractice: (patch) => {
         const current = getSnapshot();

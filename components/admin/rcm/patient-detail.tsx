@@ -53,7 +53,7 @@ function nid(prefix: string) {
 
 export function PatientDetail({ id }: { id: string }) {
   const today = useClinicToday();
-  const { ready, rosterReady, patients, claims, appointments, eligibility, tasks, patchPatient, removePatient, updateAppointment } = useRcm();
+  const { ready, rosterReady, patients, claims, appointments, eligibility, tasks, patchPatient, removePatient, updateAppointment, clearPatientEligibility } = useRcm();
   const [tab, setTab] = useState<Tab>("overview");
   const patient = patients.find((item) => item.id === id);
 
@@ -157,6 +157,7 @@ export function PatientDetail({ id }: { id: string }) {
             patient={patient}
             eligibility={eligibility.filter((item) => item.patientId === id)}
             onSave={patchPatient}
+            onClearEligibility={() => clearPatientEligibility(id)}
           />
         ) : null}
         {tab === "clinical" ? <Clinical patient={patient} onSave={patchPatient} /> : null}
@@ -668,10 +669,12 @@ function CoverageDesk({
   patient,
   eligibility,
   onSave,
+  onClearEligibility,
 }: {
   patient: Patient;
   eligibility: { id: string; summary: string; active: boolean }[];
   onSave: (id: string, patch: Partial<Patient>) => void;
+  onClearEligibility: () => void;
 }) {
   function saveCoverage(coverageId: string, patch: Partial<Coverage>) {
     const coverages = patient.coverages.map((coverage) => (coverage.id === coverageId ? { ...coverage, ...patch } : coverage));
@@ -717,7 +720,12 @@ function CoverageDesk({
       ) : null}
       {eligibility.length ? (
         <section className={panelClass}>
-          <h2 className="font-display text-2xl">Latest eligibility</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-display text-2xl">Latest eligibility</h2>
+            <Button type="button" variant="secondary" onClick={onClearEligibility}>
+              Clear eligibility history
+            </Button>
+          </div>
           <ul className="mt-3 grid gap-2 text-sm">
             {eligibility.map((item) => (
               <li key={item.id}>
