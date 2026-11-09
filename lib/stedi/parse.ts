@@ -17,12 +17,51 @@ function amount(value: unknown) {
   return null;
 }
 
+/** Stedi portal / modern eligibility JSON nests benefits under plans[].benefits. */
+function modernBenefitBags(record: Record<string, unknown>): Record<string, unknown>[] {
+  const plans = Array.isArray(record.plans) ? record.plans : [];
+  const bags: Record<string, unknown>[] = [];
+  for (const plan of plans) {
+    const row = asRecord(plan);
+    const benefits = asRecord(row?.benefits);
+    if (benefits) bags.push(benefits);
+  }
+  return bags;
+}
+
+function coverageActiveFromStatus(status: string): boolean | null {
+  const value = status.trim();
+  if (!value) return null;
+  if (/inactive/i.test(value)) return false;
+  // Stedi portal "Active" maps from ACTIVE_COVERAGE (and plain Active Coverage).
+  if (/active/i.test(value) || value === "1") return true;
+  return null;
+}
+
+function serviceCode(item: Record<string, unknown>): string {
+  const service = asRecord(item.service);
+  return String(service?.value ?? item.serviceTypeCode ?? "");
+}
+
+function networkRank(item: Record<string, unknown>): "out" | "in" | "unknown" {
+  const nested = asRecord(item.network);
+  const raw = String(
+    item.inPlanNetworkIndicator ?? item.inNetworkIndicator ?? item.networkIndicator ?? nested?.indicator ?? "",
+  ).toUpperCase();
+  if (raw === "N" || raw === "OUT_OF_NETWORK" || /out.?of.?network/i.test(String(item.name ?? ""))) return "out";
+  // Treat dual-network rows as the OON-preferring choice when a pure OON row is absent.
+  if (raw === "IN_AND_OUT_OF_NETWORK") return "out";
+  if (raw === "Y" || raw === "IN_NETWORK" || /in.?network/i.test(String(item.name ?? ""))) return "in";
+  return "unknown";
+}
+
 /** Compact diagnostic for staff when active/inactive cannot be determined. */
 export function describeEligibilityPayload(body: unknown): string {
   const record = asRecord(body);
   if (!record) return "empty body";
   const bits: string[] = [];
   const meta = [
+    record.id,
     record.controlNumber,
     record.transactionId,
     record.eligibilitySearchId,
@@ -33,7 +72,15 @@ export function describeEligibilityPayload(body: unknown): string {
     .filter(Boolean);
   if (meta[0]) bits.push(`id ${meta[0]}`);
   const payer = asRecord(record.payer);
-  const payerName = typeof payer?.name === "string" ? payer.name : typeof record.payerName === "string" ? record.payerName : "";
+  const payerOrg = asRecord(payer?.name)?.organization;
+  const payerName =
+    typeof payer?.name === "string"
+      ? payer.name
+      : typeof payerOrg === "string"
+        ? payerOrg
+        : typeof record.payerName === "string"
+          ? record.payerName
+          : "";
   if (payerName) bits.push(`payer ${payerName}`);
   const errors = Array.isArray(record.errors) ? record.errors : [];
   for (const error of errors.slice(0, 3)) {
@@ -47,6 +94,18 @@ export function describeEligibilityPayload(body: unknown): string {
     const status = typeof item?.status === "string" ? item.status : typeof item?.statusCode === "string" ? item.statusCode : "";
     if (status.trim()) bits.push(`plan ${status.trim()}`);
   }
+  const modernStatuses: string[] = [];
+  for (const bag of modernBenefitBags(record)) {
+    const statuses = Array.isArray(bag.statuses) ? bag.statuses : [];
+    for (const row of statuses.slice(0, 6)) {
+      const item = asRecord(row);
+      const status = typeof item?.status === "string" ? item.status.trim() : "";
+      if (status) modernStatuses.push(status);
+    }
+  }
+  if (modernStatuses.length) {
+    bits.push(`statuses ${[...new Set(modernStatuses)].slice(0, 4).join(",")}`);
+  }
   const benefits = Array.isArray(record.benefitsInformation) ? record.benefitsInformation : [];
   if (benefits.length) {
     const codes = benefits
@@ -57,7 +116,7 @@ export function describeEligibilityPayload(body: unknown): string {
       .filter(Boolean)
       .slice(0, 8);
     bits.push(codes.length ? `benefits ${codes.join(",")}` : `${benefits.length} benefits`);
-  } else {
+  } else if (!modernStatuses.length) {
     bits.push("no benefitsInformation");
   }
   const subscriber = asRecord(record.subscriber);
@@ -85,20 +144,15 @@ export function summarizeEligibility(body: unknown): BenefitSummary {
     })
     .find(Boolean);
   const benefits = Array.isArray(record.benefitsInformation) ? record.benefitsInformation : [];
+  const modernBags = modernBenefitBags(record);
   let copay: number | null = null;
   let coinsurance: number | null = null;
   let deductibleRemaining: number | null = null;
   let mentionsAuthorization = false;
   let active: boolean | null = null;
+  let planLevelActive: boolean | null = null;
   let sawOutOfNetwork = false;
   let sawInNetwork = false;
-
-  function networkRank(item: Record<string, unknown>) {
-    const raw = String(item.inPlanNetworkIndicator ?? item.inNetworkIndicator ?? item.networkIndicator ?? "").toUpperCase();
-    if (raw === "N" || /out.?of.?network/i.test(String(item.name ?? ""))) return "out";
-    if (raw === "Y" || /in.?network/i.test(String(item.name ?? ""))) return "in";
-    return "unknown";
-  }
 
   function takeAmount(current: number | null, next: number | null, network: "out" | "in" | "unknown", preferredTaken: boolean) {
     if (next == null) return { value: current, preferredTaken };
@@ -111,6 +165,8 @@ export function summarizeEligibility(body: unknown): BenefitSummary {
   let preferredCopay = false;
   let preferredCoins = false;
   let preferredDeductible = false;
+
+  // Classic X12-mapped Stedi body (benefitsInformation EB codes).
   for (const benefit of benefits) {
     const item = asRecord(benefit);
     if (!item) continue;
@@ -140,14 +196,113 @@ export function summarizeEligibility(body: unknown): BenefitSummary {
       preferredDeductible = taken.preferredTaken;
     }
   }
+
+  // Track whether the chosen copay/coins came from Medical Care (STC 1).
+  let copayIsMedical = false;
+  let coinsIsMedical = false;
+  let deductibleIsPlan = false;
+
+  // Modern Stedi portal shape: plans[].benefits.{statuses,coPayment,coInsurance,deductible}.
+  for (const bag of modernBags) {
+    const statuses = Array.isArray(bag.statuses) ? bag.statuses : [];
+    for (const row of statuses) {
+      const item = asRecord(row);
+      if (!item) continue;
+      const flag = coverageActiveFromStatus(String(item.status ?? ""));
+      if (flag == null) continue;
+      if (serviceCode(item) === "30") planLevelActive = flag;
+      else if (active == null) active = flag;
+      if (flag === false) active = false;
+    }
+    for (const row of Array.isArray(bag.coPayment) ? bag.coPayment : []) {
+      const item = asRecord(row);
+      if (!item) continue;
+      const network = networkRank(item);
+      if (network === "out") sawOutOfNetwork = true;
+      if (network === "in") sawInNetwork = true;
+      const svc = serviceCode(item);
+      if (String(item.priorAuthIndicator ?? "").toUpperCase() === "REQUIRED" && (svc === "1" || svc === "30" || !svc)) {
+        mentionsAuthorization = true;
+      }
+      const value = amount(item.amount);
+      if (value == null) continue;
+      const medical = svc === "1";
+      if (medical && !copayIsMedical) {
+        copay = value;
+        preferredCopay = network === "out";
+        copayIsMedical = true;
+      } else if (medical === copayIsMedical || !copayIsMedical) {
+        if (!medical && copayIsMedical) continue;
+        const taken = takeAmount(copay, value, network, preferredCopay);
+        copay = taken.value;
+        preferredCopay = taken.preferredTaken;
+        if (medical) copayIsMedical = true;
+      }
+    }
+    for (const row of Array.isArray(bag.coInsurance) ? bag.coInsurance : []) {
+      const item = asRecord(row);
+      if (!item) continue;
+      const network = networkRank(item);
+      if (network === "out") sawOutOfNetwork = true;
+      if (network === "in") sawInNetwork = true;
+      const svc = serviceCode(item);
+      if (String(item.priorAuthIndicator ?? "").toUpperCase() === "REQUIRED" && (svc === "1" || svc === "30" || !svc)) {
+        mentionsAuthorization = true;
+      }
+      const percent = amount(item.percent ?? item.benefitPercent);
+      const value = percent == null ? null : percent <= 1 ? percent * 100 : percent;
+      if (value == null) continue;
+      const medical = svc === "1";
+      if (medical && !coinsIsMedical) {
+        coinsurance = value;
+        preferredCoins = network === "out";
+        coinsIsMedical = true;
+      } else if (medical === coinsIsMedical || !coinsIsMedical) {
+        if (!medical && coinsIsMedical) continue;
+        const taken = takeAmount(coinsurance, value, network, preferredCoins);
+        coinsurance = taken.value;
+        preferredCoins = taken.preferredTaken;
+        if (medical) coinsIsMedical = true;
+      }
+    }
+    for (const row of Array.isArray(bag.deductible) ? bag.deductible : []) {
+      const item = asRecord(row);
+      if (!item) continue;
+      const network = networkRank(item);
+      if (network === "out") sawOutOfNetwork = true;
+      if (network === "in") sawInNetwork = true;
+      const period = String(item.timePeriod ?? "").toUpperCase();
+      const level = String(item.coverageLevel ?? "").toUpperCase();
+      // Match Stedi overview: individual remaining deductible on plan coverage (STC 30).
+      if (period && period !== "REMAINING") continue;
+      if (level === "FAMILY") continue;
+      const value = amount(item.amount);
+      if (value == null) continue;
+      const planCoverage = serviceCode(item) === "30" || !serviceCode(item);
+      if (planCoverage && !deductibleIsPlan) {
+        deductibleRemaining = value;
+        preferredDeductible = network === "out";
+        deductibleIsPlan = true;
+      } else if (planCoverage === deductibleIsPlan || !deductibleIsPlan) {
+        if (!planCoverage && deductibleIsPlan) continue;
+        const taken = takeAmount(deductibleRemaining, value, network, preferredDeductible);
+        deductibleRemaining = taken.value;
+        preferredDeductible = taken.preferredTaken;
+        if (planCoverage) deductibleIsPlan = true;
+      }
+    }
+  }
+  if (planLevelActive != null) active = planLevelActive;
+
   const planStatus = Array.isArray(record.planStatus) ? record.planStatus : [];
   for (const plan of planStatus) {
     const item = asRecord(plan);
-    const status = String(item?.status ?? item?.statusCode ?? "");
-    if (/active/i.test(status) || status === "1") active = active ?? true;
-    if (/inactive/i.test(status)) active = false;
+    const flag = coverageActiveFromStatus(String(item?.status ?? item?.statusCode ?? ""));
+    if (flag == null) continue;
+    if (flag === false) active = false;
+    else active = active ?? true;
   }
-  if (errorText && benefits.length === 0) {
+  if (errorText && benefits.length === 0 && modernBags.length === 0) {
     return {
       active: null,
       copay: null,

@@ -248,6 +248,94 @@ describe("eligibility summary", () => {
     expect(summary.coinsurance).toBe(40);
     expect(summary.summary).toContain("out-of-network");
   });
+
+  it("reads Stedi portal plans[].benefits ACTIVE_COVERAGE the same way the website does", () => {
+    const summary = summarizeEligibility({
+      id: "ec_01a1c1af-7e49-7662-a286-dadaad93cbdf",
+      eligibilitySearchId: "01a1c1af-7e49-7662-a286-dadb572283d4",
+      payer: { name: { organization: "Fidelis Care New York" } },
+      subscriber: {
+        memberId: "74619306600",
+        name: { person: { firstName: "Angela", lastName: "Norales Guity" } },
+      },
+      plans: [
+        {
+          benefits: {
+            statuses: [
+              {
+                status: "ACTIVE_COVERAGE",
+                service: { system: "STC", value: "30", definition: "Health Benefit Plan Coverage" },
+                planCoverageDescription: "Fidelis Medicaid Managed Care",
+              },
+              {
+                status: "ACTIVE_COVERAGE",
+                service: { system: "STC", value: "1", definition: "Medical Care" },
+              },
+            ],
+            coPayment: [
+              {
+                amount: "0",
+                network: { indicator: "IN_NETWORK" },
+                priorAuthIndicator: "NOT_REQUIRED",
+                service: { system: "STC", value: "1", definition: "Medical Care" },
+              },
+              {
+                amount: "25",
+                network: { indicator: "IN_NETWORK" },
+                priorAuthIndicator: "REQUIRED",
+                service: { system: "STC", value: "12", definition: "DME Purchase" },
+              },
+            ],
+            coInsurance: [
+              {
+                percent: "0",
+                network: { indicator: "IN_NETWORK" },
+                priorAuthIndicator: "NOT_REQUIRED",
+                service: { system: "STC", value: "1", definition: "Medical Care" },
+              },
+            ],
+            deductible: [
+              {
+                amount: "500",
+                timePeriod: "CALENDAR_YEAR",
+                coverageLevel: "INDIVIDUAL",
+                network: { indicator: "IN_AND_OUT_OF_NETWORK" },
+                service: { system: "STC", value: "30", definition: "Health Benefit Plan Coverage" },
+              },
+              {
+                amount: "0",
+                timePeriod: "REMAINING",
+                coverageLevel: "INDIVIDUAL",
+                network: { indicator: "IN_AND_OUT_OF_NETWORK" },
+                service: { system: "STC", value: "30", definition: "Health Benefit Plan Coverage" },
+              },
+            ],
+          },
+        },
+      ],
+    });
+    expect(summary.active).toBe(true);
+    expect(summary.copay).toBe(0);
+    expect(summary.coinsurance).toBe(0);
+    expect(summary.deductibleRemaining).toBe(0);
+    expect(summary.mentionsAuthorization).toBe(false);
+    expect(summary.summary).toContain("Coverage active");
+    expect(summary.summary).not.toContain("Coverage status unknown");
+  });
+
+  it("marks modern INACTIVE_COVERAGE inactive", () => {
+    const summary = summarizeEligibility({
+      plans: [
+        {
+          benefits: {
+            statuses: [{ status: "INACTIVE_COVERAGE", service: { value: "30" } }],
+          },
+        },
+      ],
+    });
+    expect(summary.active).toBe(false);
+    expect(summary.summary).toContain("Coverage inactive");
+  });
 });
 
 describe("claim status summary", () => {

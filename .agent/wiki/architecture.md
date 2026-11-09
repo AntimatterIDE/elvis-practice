@@ -28,6 +28,16 @@
   Replacements/voids carry the payer claim control number into
   `claimSupplementalInformation.claimControlNumber` (`lib/stedi/payload.ts`).
 
+## Eligibility (Stedi 270/271)
+
+- `checkEligibility` → `summarizeEligibility` in `lib/stedi/parse.ts`.
+- Must match Stedi portal Active/Failed labeling. Live responses use the modern
+  shape `plans[].benefits.statuses` (`ACTIVE_COVERAGE` / `INACTIVE_COVERAGE`) plus
+  `coPayment` / `coInsurance` / `deductible` — not only classic
+  `benefitsInformation` EB codes. Parser supports both. Plan-level STC `30`
+  status wins for Active/Inactive; Medical Care STC `1` preferred for copay/coins;
+  deductible uses individual `REMAINING` on STC `30`.
+
 ## Chart files
 
 - Bucket `chart-files`; path `{patientId}/{slotId}/{objectKey}`.

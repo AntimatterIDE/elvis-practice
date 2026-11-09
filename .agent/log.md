@@ -1,5 +1,14 @@
 # elvis-practice — agent log
 
+## [2026-11-09] bugfix | Eligibility Active now matches Stedi portal
+
+Root cause: live 271 bodies use `plans[].benefits.statuses[].status =
+ACTIVE_COVERAGE` (portal “Active”); desk summarizer only looked at classic
+`benefitsInformation` code `1`/`6`, so Angela Morales-Guity / Fidelis 11315
+showed “Coverage status unknown” while Stedi PROD `ec_01a1c1af…` was Active.
+Fix in `lib/stedi/parse.ts` (+ tests): read modern statuses and benefit amounts
+alongside the EB-code path. Confirmed DOB 1985-01-27 + member `746193066-00`.
+
 ## [2026-11-09] ingest | Claim POS select + corrected/void frequency
 
 Shipped finishable billing gaps: claim form POS select (11/22/19/21/24/23 + other)

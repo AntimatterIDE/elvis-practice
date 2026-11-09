@@ -12,6 +12,8 @@
 **Not proven:** that name alone caused the original invalid-member text; that CI→MC fixed it; diagnosis (ACEEF already had M50.20).  
 **Follow-up 2026-11-09 evening:** Retried elig — DOB mismatch persists on `746193066-00`; insurance discovery found no coverage under chart DOB; CIN `XZ50434X` alone → AAA Unable to Respond. Chart left on member `746193066-00` with CIN in Group. Deployed 276 summarizer; ACEEF status now reads **Submitted charges** (not invalid-member). Still need photo ID to correct DOB before eligibility certifies.
 
+**Follow-up 2026-11-09 (Stedi portal):** With DOB **1985-01-27** + member `746193066-00`, Stedi PROD check `ec_01a1c1af…` is **Active** — Fidelis returns Angela V **Norales Guity**, member `74619306600`, plan Fidelis Medicaid Managed Care / CIN `XZ50434X`. Desk said “Coverage status unknown” because `summarizeEligibility` only read classic `benefitsInformation` EB codes `1`/`6`; the live API body is the modern portal shape `plans[].benefits.statuses[].status = "ACTIVE_COVERAGE"` (no `benefitsInformation`). Fix: parse modern statuses + coPayment/coInsurance/deductible so Active/Inactive match the Stedi website.
+
 ## [2026-11-07] OCR missing-field warnings when chart already filled
 
 **Symptom:** Extract review warned phone/email missing though chart had them.  
