@@ -22,7 +22,8 @@ export function claimSubmissionInput(claim: Claim, patient: Patient, practice: P
       lastName: patient.lastName,
       dateOfBirth: patient.dateOfBirth,
       sex: patient.sex,
-      memberId: patient.memberId,
+      // Fidelis/Stedi claim submission rejects punctuation in subscriber IDs (e.g. 746193066-00 → 74619306600).
+      memberId: patient.memberId.replace(/[^A-Za-z0-9]/g, ""),
       address: patient.address,
       city: patient.city,
       state: patient.state,
