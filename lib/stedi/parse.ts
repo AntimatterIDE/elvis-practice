@@ -169,6 +169,18 @@ export function readRemits(body: unknown) {
   return found;
 }
 
+function textField(value: unknown): string {
+  if (typeof value === "string") return value.trim();
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  const record = asRecord(value);
+  if (!record) return "";
+  for (const key of ["description", "message", "statusCodeValue", "value", "code", "name"]) {
+    const nested = record[key];
+    if (typeof nested === "string" && nested.trim()) return nested.trim();
+  }
+  return "";
+}
+
 /** Pull human-readable 276/277 claim-status detail from a Stedi JSON body. */
 export function summarizeClaimStatus(body: unknown): string {
   const record = asRecord(body);
@@ -177,20 +189,19 @@ export function summarizeClaimStatus(body: unknown): string {
   const chunks: string[] = [];
   const errors = Array.isArray(record.errors) ? record.errors : [];
   for (const error of errors) {
-    const item = asRecord(error);
-    const text = typeof item?.description === "string" ? item.description : typeof item?.message === "string" ? item.message : "";
-    if (text.trim()) chunks.push(text.trim());
+    const text = textField(error);
+    if (text) chunks.push(text);
   }
 
   const claims = Array.isArray(record.claims) ? record.claims : Array.isArray(record.claimStatusInformation) ? record.claimStatusInformation : [];
   for (const claim of claims) {
     const row = asRecord(claim);
     if (!row) continue;
-    const category = String(row.statusCategoryCode ?? row.claimStatusCategoryCode ?? "").trim();
-    const code = String(row.statusCode ?? row.claimStatusCode ?? "").trim();
-    const status = String(row.status ?? row.statusCodeValue ?? row.claimStatus ?? "").trim();
-    const effective = String(row.statusEffectiveDate ?? row.effectiveDate ?? "").trim();
-    const control = String(row.patientControlNumber ?? row.payerClaimControlNumber ?? "").trim();
+    const category = textField(row.statusCategoryCode ?? row.claimStatusCategoryCode);
+    const code = textField(row.statusCode ?? row.claimStatusCode);
+    const status = textField(row.status ?? row.statusCodeValue ?? row.claimStatus);
+    const effective = textField(row.statusEffectiveDate ?? row.effectiveDate);
+    const control = textField(row.patientControlNumber ?? row.payerClaimControlNumber);
     const parts = [
       category && code ? `${category}:${code}` : category || code || "",
       status,
@@ -207,16 +218,16 @@ export function summarizeClaimStatus(body: unknown): string {
     for (const info of infos) {
       const detail = asRecord(info);
       if (!detail) continue;
-      const dCategory = String(detail.statusCategoryCode ?? "").trim();
-      const dCode = String(detail.statusCode ?? "").trim();
-      const dStatus = String(detail.status ?? detail.statusCodeValue ?? "").trim();
+      const dCategory = textField(detail.statusCategoryCode);
+      const dCode = textField(detail.statusCode);
+      const dStatus = textField(detail.status ?? detail.statusCodeValue);
       const line = [dCategory && dCode ? `${dCategory}:${dCode}` : dCategory || dCode || "", dStatus].filter(Boolean).join(" · ");
       if (line) chunks.push(line);
     }
   }
 
   if (!chunks.length) {
-    const message = typeof record.message === "string" ? record.message.trim() : "";
+    const message = textField(record.message);
     if (message) return message.slice(0, 240);
     return "Claim status returned. That is the payer’s status, not a new payment.";
   }

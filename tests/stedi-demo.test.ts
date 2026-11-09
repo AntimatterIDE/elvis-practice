@@ -255,4 +255,18 @@ describe("claim status summary", () => {
     expect(summary).toContain("Subscriber not found");
     expect(summary).toContain("ACEEF85354B4");
   });
+
+  it("does not stringify nested status objects as [object Object]", () => {
+    const summary = summarizeClaimStatus({
+      claims: [
+        {
+          statusCategoryCode: { code: "A7", description: "Acknowledgement/Rejected" },
+          statusCode: { code: "0", description: "Cannot provide further status" },
+          status: { description: "Invalid member identification" },
+        },
+      ],
+    });
+    expect(summary).not.toContain("[object Object]");
+    expect(summary).toMatch(/A7|Acknowledgement|Invalid member/i);
+  });
 });
