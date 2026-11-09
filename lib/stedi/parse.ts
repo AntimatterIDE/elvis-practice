@@ -168,3 +168,57 @@ export function readRemits(body: unknown) {
   walkRemits(body, found);
   return found;
 }
+
+/** Pull human-readable 276/277 claim-status detail from a Stedi JSON body. */
+export function summarizeClaimStatus(body: unknown): string {
+  const record = asRecord(body);
+  if (!record) return "Claim status returned with an empty body.";
+
+  const chunks: string[] = [];
+  const errors = Array.isArray(record.errors) ? record.errors : [];
+  for (const error of errors) {
+    const item = asRecord(error);
+    const text = typeof item?.description === "string" ? item.description : typeof item?.message === "string" ? item.message : "";
+    if (text.trim()) chunks.push(text.trim());
+  }
+
+  const claims = Array.isArray(record.claims) ? record.claims : Array.isArray(record.claimStatusInformation) ? record.claimStatusInformation : [];
+  for (const claim of claims) {
+    const row = asRecord(claim);
+    if (!row) continue;
+    const category = String(row.statusCategoryCode ?? row.claimStatusCategoryCode ?? "").trim();
+    const code = String(row.statusCode ?? row.claimStatusCode ?? "").trim();
+    const status = String(row.status ?? row.statusCodeValue ?? row.claimStatus ?? "").trim();
+    const effective = String(row.statusEffectiveDate ?? row.effectiveDate ?? "").trim();
+    const control = String(row.patientControlNumber ?? row.payerClaimControlNumber ?? "").trim();
+    const parts = [
+      category && code ? `${category}:${code}` : category || code || "",
+      status,
+      control ? `control ${control}` : "",
+      effective ? `as of ${effective}` : "",
+    ].filter(Boolean);
+    if (parts.length) chunks.push(parts.join(" · "));
+
+    const infos = Array.isArray(row.claimStatusInformation)
+      ? row.claimStatusInformation
+      : Array.isArray(row.serviceLineStatusInformation)
+        ? row.serviceLineStatusInformation
+        : [];
+    for (const info of infos) {
+      const detail = asRecord(info);
+      if (!detail) continue;
+      const dCategory = String(detail.statusCategoryCode ?? "").trim();
+      const dCode = String(detail.statusCode ?? "").trim();
+      const dStatus = String(detail.status ?? detail.statusCodeValue ?? "").trim();
+      const line = [dCategory && dCode ? `${dCategory}:${dCode}` : dCategory || dCode || "", dStatus].filter(Boolean).join(" · ");
+      if (line) chunks.push(line);
+    }
+  }
+
+  if (!chunks.length) {
+    const message = typeof record.message === "string" ? record.message.trim() : "";
+    if (message) return message.slice(0, 240);
+    return "Claim status returned. That is the payer’s status, not a new payment.";
+  }
+  return chunks.join("; ").slice(0, 240);
+}

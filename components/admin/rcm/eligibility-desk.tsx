@@ -42,15 +42,17 @@ export function EligibilityDesk() {
       setPending(false);
       return;
     }
+    const inconclusive = result.active == null;
     addEligibility({
       patientId: patient.id,
       payerName: patient.payerName,
+      // Boolean store has no "unknown"; keep false and prefix so staff do not read AAA as inactive coverage.
       active: result.active === true,
       copay: result.copay,
       coinsurance: result.coinsurance,
       deductibleRemaining: result.deductibleRemaining,
       priorAuthRequired: false,
-      summary: result.summary,
+      summary: inconclusive ? `Inconclusive: ${result.summary}` : result.summary,
       source: "stedi",
     });
     setMessage(result.message);

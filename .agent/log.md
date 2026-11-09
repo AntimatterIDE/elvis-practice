@@ -83,3 +83,17 @@ Patients removed from portal + local desk after. Sample PDFs:
 ## [2026-11-08] ingest | CONTENT_SOURCE is display-only
 
 Public clinical loaders always use TypeScript file drafts; admin publish writes Supabase only. Env `CONTENT_SOURCE` does not switch reads. README supabase-loader claim is stale. See `.agent/wiki/decisions.md`.
+
+## [2026-11-09] bugfix | Angela Morales-Guity Fidelis claim resubmit
+
+First Stedi claims rejected (invalid member / wrong name Norales + commercial CI).
+Chart fixed to Morales-Guity, member 746193066, Medicaid MC, payer 11315.
+Diagnosis from CMS-1500 image: M50.20 (not M51.26). New claim AC755715A00E
+(c_b1b80088): 99203 / M50.20 / $350 / DOS 2026-11-05. Stedi accepted (277ca).
+
+## [2026-11-09] bugfix | Qualified Fidelis invalid-member RCA
+
+Eligibility ladder: bare 746193066 → Invalid/Missing Subscriber ID; 746193066-00 →
+DOB mismatch (member found). Name/CI were real chart bugs but not EDI-proven as the
+sole invalid-member cause. 276 parser now summarizes status codes; eligibility
+prefixes inconclusive AAA responses. Chart left on 746193066-00 pending DOB check.

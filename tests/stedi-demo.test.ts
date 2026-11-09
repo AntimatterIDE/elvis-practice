@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildProfessionalClaim, claimContentProblems, productionClaimProblems, type ClaimSubmissionInput } from "@/lib/stedi/payload";
-import { summarizeEligibility } from "@/lib/stedi/parse";
+import { summarizeClaimStatus, summarizeEligibility } from "@/lib/stedi/parse";
 
 const ready: ClaimSubmissionInput = {
   claimId: "claim-1",
@@ -236,5 +236,23 @@ describe("eligibility summary", () => {
     expect(summary.copay).toBe(45);
     expect(summary.coinsurance).toBe(40);
     expect(summary.summary).toContain("out-of-network");
+  });
+});
+
+describe("claim status summary", () => {
+  it("surfaces category and status codes instead of a generic ok message", () => {
+    const summary = summarizeClaimStatus({
+      claims: [
+        {
+          patientControlNumber: "ACEEF85354B4",
+          statusCategoryCode: "A3",
+          statusCode: "33",
+          status: "Subscriber not found",
+        },
+      ],
+    });
+    expect(summary).toContain("A3:33");
+    expect(summary).toContain("Subscriber not found");
+    expect(summary).toContain("ACEEF85354B4");
   });
 });

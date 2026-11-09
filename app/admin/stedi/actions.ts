@@ -4,6 +4,7 @@ import { claimCodeProblems } from "@/lib/coding/codes";
 import { codeLibrary } from "@/lib/coding/library";
 import { getStaffSession } from "@/lib/supabase/session";
 import { CORE, ELIGIBILITY, ENROLLMENTS, HEALTHCARE, PAYERS, isStediConfigured, publicStediMessage, stediFetch } from "@/lib/stedi/client";
+import { summarizeClaimStatus } from "@/lib/stedi/parse";
 import { readRemits, summarizeEligibility } from "@/lib/stedi/parse";
 import {
   buildProfessionalClaim,
@@ -53,6 +54,8 @@ export async function checkEligibility(input: {
   lastName: string;
   dateOfBirth: string;
   npi: string;
+  /** Medicaid CIN / recipient id when it differs from the Fidelis member id. */
+  medicaidRecipientId?: string;
 }) {
   const blocked = await staffGate();
   if (blocked) return { ok: false, message: blocked, active: null, copay: null, coinsurance: null, deductibleRemaining: null, summary: blocked };
@@ -61,6 +64,7 @@ export async function checkEligibility(input: {
     return { ok: false, message, active: null, copay: null, coinsurance: null, deductibleRemaining: null, summary: message };
   }
   const npi = input.npi;
+  const medicaidRecipientId = input.medicaidRecipientId?.trim();
   const response = await stediFetch(`${ELIGIBILITY}/eligibility-check`, {
     method: "POST",
     body: JSON.stringify({
@@ -70,6 +74,9 @@ export async function checkEligibility(input: {
         name: { person: { firstName: input.firstName, lastName: input.lastName } },
         memberId: input.memberId,
         dateOfBirth: input.dateOfBirth,
+        ...(medicaidRecipientId && medicaidRecipientId !== input.memberId
+          ? { additionalInformation: { medicaidRecipientId, identityCardNumber: medicaidRecipientId } }
+          : {}),
       },
       encounter: { services: [{ value: "30", system: "STC" }] },
     }),
@@ -242,7 +249,7 @@ export async function checkClaimStatus(input: ClaimSubmissionInput) {
     }),
   });
   const message = response.ok
-    ? "Claim status returned. That is the payer’s status, not a new payment."
+    ? summarizeClaimStatus(response.body)
     : publicStediMessage(response.body, response.status);
   return { ok: response.ok, message, event: { kind: "276" as const, summary: message } };
 }

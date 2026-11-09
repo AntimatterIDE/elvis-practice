@@ -1,5 +1,17 @@
 # Bugs — elvis-practice
 
+## [2026-11-09] Fidelis Angela claim “invalid member” — qualified RCA
+
+**Symptom:** Slack said Stedi rejected with “invalid member”; first claims looked “denied.”  
+**Proven:**
+- `ACC191940EAF` = clearinghouse reject for blank practice phone (not member).
+- `ACEEF85354B4` / `AC7958B56120` = Stedi 277CA accept; app 276 only stored a generic “Claim status returned” (body discarded in `checkClaimStatus`).
+- Chart was **Norales** + filing **CI**; card is **Morales-Guity** + Medicaid MMC; payer id **11315** is correct for Fidelis NY (11315MC is an alias, not required).
+- Eligibility after name fix: `746193066` → **Invalid/Missing Subscriber/Insured ID**; `746193066-00` → **Patient Birth Date Does Not Match** (Fidelis found a member; chart DOB `1995-01-27` does not).
+- UI stored AAA / error 271s as **Inactive** (`active: result.active === true` collapses `null`).
+**Not proven:** that name alone caused the original invalid-member text; that CI→MC fixed it; diagnosis (ACEEF already had M50.20).  
+**Next:** verify DOB against ID; keep member id `746193066-00`; ship 276 summarizer so status checks surface payer codes.
+
 ## [2026-11-07] OCR missing-field warnings when chart already filled
 
 **Symptom:** Extract review warned phone/email missing though chart had them.  
