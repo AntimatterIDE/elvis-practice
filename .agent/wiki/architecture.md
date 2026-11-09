@@ -53,7 +53,12 @@
   clinical merge.
 - **Bulk folder import** (Patient intake): `BulkPatientImport` +
   `lib/ocr/bulk-import.ts`. Staff picks a folder (`webkitdirectory`). Subfolders
-  → one packet; root files → one packet each. Sequential OCR extract → flippable
-  Approve/Deny cards → create charts only for approved drafts (same
-  `patientFromOnboardDraftWithHashes` + `fileOnboardPacketToChart` path as
-  single-packet OutsideRecordsImport). Fingerprint matches block Approve.
+  → one packet; root files → one packet each. Sequential OCR extract →
+  `resolveBulkCardMatch` (`findOcrImportMatch`: fingerprint or name+DOB) tags
+  each flippable card as **New** or **Update** and shows “On chart now”
+  (name/DOB/payer/member/phone/email). Staff can edit, Approve, or Deny every
+  card; name/DOB matches may opt into “create separate anyway”; fingerprint
+  matches stay updates. Apply runs create
+  (`patientFromOnboardDraftWithHashes`) or merge (`mergeOnboardIntoPatient` +
+  overwrite accepted keys) then `fileOnboardPacketToChart`. Single-packet
+  `OutsideRecordsImport` uses the same detect-first rule and chart snapshot.

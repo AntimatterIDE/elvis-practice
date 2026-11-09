@@ -1,5 +1,8 @@
 import type { OnboardDraft } from "@/lib/ocr/onboard-draft";
 import type { OnboardExtractOcrMeta } from "@/lib/ocr/extract-client";
+import { findOcrImportMatch, type OcrImportMatch } from "@/lib/ocr/dedupe";
+import { patientName } from "@/lib/rcm/format";
+import type { Patient } from "@/lib/rcm/types";
 
 const RECORD_EXT = /\.(pdf|jpe?g|png|webp)$/i;
 const RECORD_TYPES = new Set([
@@ -19,6 +22,21 @@ export type BulkImportPacket = {
 
 export type BulkImportCardStatus = "pending" | "approved" | "denied" | "failed";
 
+/** New chart vs merge into an existing one after OCR match. */
+export type BulkImportIntent = "create" | "update";
+
+/** Stable snapshot of the matched chart for the flippable review card. */
+export type BulkImportMatchSnapshot = {
+  patientId: string;
+  name: string;
+  dateOfBirth: string;
+  payerName: string;
+  memberId: string;
+  phone: string;
+  email: string;
+  reason: OcrImportMatch["reason"];
+};
+
 export type BulkImportCard = {
   id: string;
   packet: BulkImportPacket;
@@ -27,6 +45,14 @@ export type BulkImportCard = {
   ocr: OnboardExtractOcrMeta | null;
   error?: string;
   status: BulkImportCardStatus;
+  /** create = new chart; update = merge into matched patient. */
+  intent: BulkImportIntent;
+  match: BulkImportMatchSnapshot | null;
+  /**
+   * Name/DOB match only: staff can force a separate chart.
+   * Fingerprint matches always stay updates (same files already on that chart).
+   */
+  forceCreate: boolean;
 };
 
 /** PDF or common image — same surface as single-packet outside records. */
@@ -112,4 +138,43 @@ export function groupBulkImportFiles(files: File[]): BulkImportPacket[] {
 export function bulkCardNeedsName(draft: OnboardDraft | null): boolean {
   if (!draft) return true;
   return !draft.firstName.trim() || !draft.lastName.trim();
+}
+
+export function snapshotBulkMatch(match: OcrImportMatch): BulkImportMatchSnapshot {
+  const { patient, reason } = match;
+  return {
+    patientId: patient.id,
+    name: patientName(patient),
+    dateOfBirth: patient.dateOfBirth.slice(0, 10),
+    payerName: patient.payerName || "",
+    memberId: patient.memberId || "",
+    phone: patient.phone || "",
+    email: patient.email || "",
+    reason,
+  };
+}
+
+/**
+ * Detect whether this OCR draft belongs to an existing chart.
+ * Fingerprint or name+DOB → update (unless forceCreate on a name/DOB match).
+ */
+export function resolveBulkCardMatch(
+  patients: Patient[],
+  draft: OnboardDraft | null,
+  fingerprints: string[],
+  forceCreate = false,
+): { intent: BulkImportIntent; match: BulkImportMatchSnapshot | null } {
+  if (!draft) return { intent: "create", match: null };
+  const hit = findOcrImportMatch(patients, {
+    firstName: draft.firstName,
+    lastName: draft.lastName,
+    dateOfBirth: draft.dateOfBirth,
+    fingerprints,
+  });
+  if (!hit) return { intent: "create", match: null };
+  const match = snapshotBulkMatch(hit);
+  if (forceCreate && hit.reason === "name_dob") {
+    return { intent: "create", match };
+  }
+  return { intent: "update", match };
 }

@@ -1,6 +1,39 @@
 import { describe, expect, it } from "vitest";
 import { emptyOnboardDraft } from "@/lib/ocr/onboard-draft";
-import { bulkCardNeedsName, groupBulkImportFiles, isBulkRecordFile } from "@/lib/ocr/bulk-import";
+import {
+  bulkCardNeedsName,
+  groupBulkImportFiles,
+  isBulkRecordFile,
+  resolveBulkCardMatch,
+} from "@/lib/ocr/bulk-import";
+import { withChart } from "@/lib/rcm/chart";
+import type { Patient } from "@/lib/rcm/types";
+
+const hashA = "a".repeat(64);
+
+function existingPatient(extra: Partial<Patient> = {}): Patient {
+  return {
+    ...withChart({
+      firstName: "Angela",
+      lastName: "Morales",
+      dateOfBirth: "1985-01-27",
+      sex: "female",
+      memberId: "74619306600",
+      payerName: "Fidelis Care",
+      phone: "555-0100",
+      email: "a@example.com",
+      address: "",
+      city: "",
+      state: "",
+      postalCode: "",
+    }),
+    id: "p_existing",
+    createdAt: "2026-01-01T00:00:00.000Z",
+    mrn: "100301",
+    ocrImportHashes: [hashA],
+    ...extra,
+  };
+}
 
 function fakeFile(name: string, relativePath: string, type = "application/pdf"): File {
   const file = new File(["x"], name, { type });
@@ -81,5 +114,48 @@ describe("bulkCardNeedsName", () => {
     draft.lastName = "Lovelace";
     expect(bulkCardNeedsName(draft)).toBe(false);
     expect(bulkCardNeedsName(null)).toBe(true);
+  });
+});
+
+describe("resolveBulkCardMatch", () => {
+  it("marks name+DOB hits as update with chart snapshot", () => {
+    const draft = emptyOnboardDraft();
+    draft.firstName = "Angela";
+    draft.lastName = "Morales";
+    draft.dateOfBirth = "1985-01-27";
+    const resolved = resolveBulkCardMatch([existingPatient()], draft, []);
+    expect(resolved.intent).toBe("update");
+    expect(resolved.match?.patientId).toBe("p_existing");
+    expect(resolved.match?.reason).toBe("name_dob");
+    expect(resolved.match?.payerName).toBe("Fidelis Care");
+    expect(resolved.match?.memberId).toBe("74619306600");
+  });
+
+  it("keeps fingerprint hits as update even when forceCreate is set", () => {
+    const draft = emptyOnboardDraft();
+    draft.firstName = "Other";
+    draft.lastName = "Person";
+    draft.dateOfBirth = "1999-01-01";
+    const resolved = resolveBulkCardMatch([existingPatient()], draft, [hashA], true);
+    expect(resolved.intent).toBe("update");
+    expect(resolved.match?.reason).toBe("fingerprint");
+  });
+
+  it("allows forceCreate only for name+DOB matches", () => {
+    const draft = emptyOnboardDraft();
+    draft.firstName = "Angela";
+    draft.lastName = "Morales";
+    draft.dateOfBirth = "1985-01-27";
+    const resolved = resolveBulkCardMatch([existingPatient()], draft, [], true);
+    expect(resolved.intent).toBe("create");
+    expect(resolved.match?.patientId).toBe("p_existing");
+  });
+
+  it("creates when nobody matches", () => {
+    const draft = emptyOnboardDraft();
+    draft.firstName = "Ada";
+    draft.lastName = "Lovelace";
+    draft.dateOfBirth = "1815-12-10";
+    expect(resolveBulkCardMatch([existingPatient()], draft, []).intent).toBe("create");
   });
 });

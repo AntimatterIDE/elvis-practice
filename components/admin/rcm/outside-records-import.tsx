@@ -287,11 +287,39 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
         >
           <p className="text-sm text-muted">{draft.sourceSummary || "Review the mined fields, then save."}</p>
           {match ? (
-            <p className="rounded-md bg-black/[0.04] px-3 py-2 text-sm leading-relaxed">
-              {match.reason === "fingerprint"
-                ? `These files were already imported for ${patientName(match.patient)}. Confirm will update that chart — no duplicate patient.`
-                : `A chart already exists for ${patientName(match.patient)} (same name and date of birth). Confirm will update that chart.`}
-            </p>
+            <div className="grid gap-2 rounded-md bg-black/[0.04] px-3 py-2 text-sm leading-relaxed">
+              <p>
+                {match.reason === "fingerprint"
+                  ? `These files were already imported for ${patientName(match.patient)}. Confirm updates that chart — no duplicate patient.`
+                  : `A chart already exists for ${patientName(match.patient)} (same name and date of birth). Confirm updates that chart.`}
+              </p>
+              <dl className="grid gap-1 text-muted sm:grid-cols-2">
+                <div>
+                  <dt className="text-xs uppercase tracking-[0.12em]">On chart now</dt>
+                  <dd className="text-ink">{patientName(match.patient)}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs uppercase tracking-[0.12em]">Date of birth</dt>
+                  <dd className="text-ink">{match.patient.dateOfBirth.slice(0, 10) || "—"}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs uppercase tracking-[0.12em]">Payer</dt>
+                  <dd className="text-ink">{match.patient.payerName || "—"}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs uppercase tracking-[0.12em]">Member id</dt>
+                  <dd className="text-ink">{match.patient.memberId || "—"}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs uppercase tracking-[0.12em]">Phone</dt>
+                  <dd className="text-ink">{match.patient.phone || "—"}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs uppercase tracking-[0.12em]">Email</dt>
+                  <dd className="text-ink">{match.patient.email || "—"}</dd>
+                </div>
+              </dl>
+            </div>
           ) : null}
           {draft.warnings.length ? (
             <div className="rounded-md bg-black/[0.04] px-3 py-2 text-sm leading-relaxed text-muted">

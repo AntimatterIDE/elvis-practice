@@ -10,6 +10,17 @@
 - Intake OCR may fill the form after “Apply to this form”; submit files the
   packet but does **not** silently merge leftover OCR clinical fields.
 
+## OCR detect existing before create (2026-11-09)
+
+- After any onboard OCR extract (bulk folder or single packet), match against
+  desk patients by fingerprint first, then name + DOB.
+- Matches enter the review queue as **updates** (not new charts). Cards show
+  what is already on the chart; staff may still edit the draft, Approve, or Deny.
+- Name/DOB matches can optionally “create separate anyway.” Fingerprint matches
+  (same files already filed) always update that chart.
+- Chart-scoped OCR (`ChartExtractReview` on an open chart) already merges into
+  that patient — no separate create path.
+
 ## Claim autofill from clinic visit (2026-11-07)
 
 - Autofill a new insurance claim only from **Alignment Clinic** Visit Desk

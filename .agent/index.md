@@ -16,5 +16,5 @@ Compiled memory for **The Alignment Clinic** (Next.js + Supabase on Vercel; Sted
 - Admin Visit Desk: `components/admin/visit-desk.tsx` — record → note → review codes → approve → claims.
 - Chart Files: Supabase `chart-files` bucket via `lib/chart-files/store.ts`.
 - OCR: extract after upload → review → explicit accept (`ChartExtractReview`); never auto-writes the chart.
-- Bulk folder import on Patient intake: flippable Approve/Deny draft cards, then create approved charts only.
+- Bulk folder import on Patient intake: flippable Approve/Deny cards tagged New vs Update (existing match), then apply approved creates/merges.
 - Claims: POS select + surgery warning; corrected/void frequency (7/8) with payer claim control number.

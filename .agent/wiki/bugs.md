@@ -14,6 +14,8 @@
 
 **Follow-up 2026-11-09 (Stedi portal):** With DOB **1985-01-27** + member `746193066-00`, Stedi PROD check `ec_01a1c1af…` is **Active** — Fidelis returns Angela V **Norales Guity**, member `74619306600`, plan Fidelis Medicaid Managed Care / CIN `XZ50434X`. Desk said “Coverage status unknown” because `summarizeEligibility` only read classic `benefitsInformation` EB codes `1`/`6`; the live API body is the modern portal shape `plans[].benefits.statuses[].status = "ACTIVE_COVERAGE"` (no `benefitsInformation`). Fix: parse modern statuses + coPayment/coInsurance/deductible so Active/Inactive match the Stedi website.
 
+**Follow-up 2026-11-09 (correct claim):** Chart DOB set to **1985-01-27**; member stored alphanumeric **`74619306600`** (hyphenated `746193066-00` → Stedi “Invalid Subscriber ID format” on 837P). Rejected priors ACEEF/AC795/ACC191 left as rejected (no electronic void needed). AC755 (wrong DOB 1995, still at payer as Submitted charges) marked rejected locally — freq-8 void failed after a hyphenated attempt set `stediClaimId` (“already sent”). New original **`ACFB61D4FAE0`** (`c_2eac2d28`): 99203 / M50.20 / $350 / DOS 2026-11-05 / filing MC / Fidelis 11315 → **Stedi 277ca accepted**. Durable fix: strip non-alphanumeric from `memberId` in `lib/rcm/submit-input.ts` (`81baf26`).
+
 ## [2026-11-07] OCR missing-field warnings when chart already filled
 
 **Symptom:** Extract review warned phone/email missing though chart had them.  

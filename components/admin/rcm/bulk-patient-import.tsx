@@ -9,10 +9,15 @@ import { useRcm } from "@/components/admin/rcm/store";
 import {
   bulkCardNeedsName,
   groupBulkImportFiles,
+  resolveBulkCardMatch,
   type BulkImportCard,
   type BulkImportPacket,
 } from "@/lib/ocr/bulk-import";
-import { findOcrImportMatch, patientFromOnboardDraftWithHashes } from "@/lib/ocr/dedupe";
+import {
+  mergeOnboardIntoPatient,
+  onboardDraftAcceptKeys,
+  patientFromOnboardDraftWithHashes,
+} from "@/lib/ocr/dedupe";
 import { extractOnboardFromFiles } from "@/lib/ocr/extract-client";
 import { fileOnboardPacketToChart } from "@/lib/ocr/file-onboard";
 import { markSlotsFromUploads, type OnboardDraft } from "@/lib/ocr/onboard-draft";
@@ -22,8 +27,9 @@ import { cn } from "@/lib/utils";
 
 type Phase = "idle" | "extracting" | "review" | "creating" | "done";
 
-type CreateResult = {
+type ApplyResult = {
   created: { id: string; name: string }[];
+  updated: { id: string; name: string }[];
   fileNotes: string[];
   errors: string[];
 };
@@ -46,7 +52,7 @@ export function BulkPatientImport() {
   const [cards, setCards] = useState<BulkImportCard[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
-  const [createResult, setCreateResult] = useState<CreateResult | null>(null);
+  const [applyResult, setApplyResult] = useState<ApplyResult | null>(null);
 
   const pendingCards = useMemo(
     () => cards.filter((card) => card.status === "pending" || card.status === "failed"),
@@ -54,23 +60,19 @@ export function BulkPatientImport() {
   );
   const approvedCards = useMemo(() => cards.filter((card) => card.status === "approved"), [cards]);
   const deniedCount = useMemo(() => cards.filter((card) => card.status === "denied").length, [cards]);
+  const approvedCreates = useMemo(
+    () => approvedCards.filter((card) => card.intent === "create").length,
+    [approvedCards],
+  );
+  const approvedUpdates = useMemo(
+    () => approvedCards.filter((card) => card.intent === "update").length,
+    [approvedCards],
+  );
 
   const activeCard = pendingCards[activeIndex] ?? null;
-  const activeMatch = useMemo(() => {
-    if (!activeCard?.draft) return null;
-    return findOcrImportMatch(patients, {
-      firstName: activeCard.draft.firstName,
-      lastName: activeCard.draft.lastName,
-      dateOfBirth: activeCard.draft.dateOfBirth,
-      fingerprints: activeCard.fingerprints,
-    });
-  }, [activeCard, patients]);
-
-  const fingerprintBlocked = activeMatch?.reason === "fingerprint";
   const canApprove =
     Boolean(activeCard?.draft) &&
     !bulkCardNeedsName(activeCard?.draft ?? null) &&
-    !fingerprintBlocked &&
     phase === "review";
 
   function resetAll() {
@@ -82,13 +84,13 @@ export function BulkPatientImport() {
     setCards([]);
     setActiveIndex(0);
     setFlipped(false);
-    setCreateResult(null);
+    setApplyResult(null);
   }
 
   function onFolderChange(event: ChangeEvent<HTMLInputElement>) {
     const list = event.target.files;
     setError("");
-    setCreateResult(null);
+    setApplyResult(null);
     if (!list?.length) {
       setPackets([]);
       setFolderLabel("");
@@ -130,9 +132,13 @@ export function BulkPatientImport() {
           ocr: null,
           error: result.message,
           status: "failed",
+          intent: "create",
+          match: null,
+          forceCreate: false,
         });
         continue;
       }
+      const resolved = resolveBulkCardMatch(patients, result.draft, result.fingerprints, false);
       nextCards.push({
         id: packet.id,
         packet,
@@ -140,6 +146,9 @@ export function BulkPatientImport() {
         fingerprints: result.fingerprints,
         ocr: result.ocr,
         status: "pending",
+        intent: resolved.intent,
+        match: resolved.match,
+        forceCreate: false,
       });
     }
 
@@ -152,11 +161,29 @@ export function BulkPatientImport() {
     if (!activeCard?.draft) return;
     const cardId = activeCard.id;
     setCards((current) =>
-      current.map((card) =>
-        card.id === cardId && card.draft
-          ? { ...card, draft: updateDraftField(card.draft, key, value) }
-          : card,
-      ),
+      current.map((card) => {
+        if (card.id !== cardId || !card.draft) return card;
+        const draft = updateDraftField(card.draft, key, value);
+        const resolved = resolveBulkCardMatch(patients, draft, card.fingerprints, card.forceCreate);
+        return { ...card, draft, intent: resolved.intent, match: resolved.match };
+      }),
+    );
+  }
+
+  function setActiveForceCreate(forceCreate: boolean) {
+    if (!activeCard) return;
+    const cardId = activeCard.id;
+    setCards((current) =>
+      current.map((card) => {
+        if (card.id !== cardId) return card;
+        // Fingerprint means these exact files are already on that chart — stay on update.
+        if (card.match?.reason === "fingerprint") {
+          const resolved = resolveBulkCardMatch(patients, card.draft, card.fingerprints, false);
+          return { ...card, forceCreate: false, intent: resolved.intent, match: resolved.match };
+        }
+        const resolved = resolveBulkCardMatch(patients, card.draft, card.fingerprints, forceCreate);
+        return { ...card, forceCreate, intent: resolved.intent, match: resolved.match };
+      }),
     );
   }
 
@@ -178,24 +205,45 @@ export function BulkPatientImport() {
     decide(activeCard.id, "approved");
   }
 
-  async function onCreateApproved() {
+  async function onApplyApproved() {
     if (!approvedCards.length) {
-      setError("Approve at least one draft before creating charts.");
+      setError("Approve at least one draft before applying.");
       return;
     }
     setPhase("creating");
     setError("");
-    const created: CreateResult["created"] = [];
+    const created: ApplyResult["created"] = [];
+    const updated: ApplyResult["updated"] = [];
     const fileNotes: string[] = [];
     const errors: string[] = [];
 
     for (const card of approvedCards) {
       if (!card.draft) continue;
-      const patient = patientFromOnboardDraftWithHashes(
-        card.draft,
-        `p_${crypto.randomUUID().slice(0, 8)}`,
-        card.fingerprints,
-      );
+      const label =
+        `${card.draft.firstName} ${card.draft.lastName}`.trim() || card.packet.label;
+      const accepted = onboardDraftAcceptKeys(card.draft);
+      let patient =
+        card.intent === "update" && card.match
+          ? (() => {
+              const existing = patients.find((row) => row.id === card.match!.patientId);
+              if (!existing) return null;
+              return mergeOnboardIntoPatient(existing, card.draft!, card.fingerprints, {
+                accept: accepted,
+                overwrite: accepted,
+              });
+            })()
+          : patientFromOnboardDraftWithHashes(
+              card.draft,
+              `p_${crypto.randomUUID().slice(0, 8)}`,
+              card.fingerprints,
+            );
+
+      if (!patient) {
+        errors.push(`${label}: matched chart is no longer in the desk — re-extract or create as new.`);
+        continue;
+      }
+
+      const isUpdate = card.intent === "update";
       const result = await pushPortalChartsAction({ patients: [patient], appointments: [] });
       if (!result.ok) {
         errors.push(`${patientName(patient)}: ${result.error || "Could not save chart."}`);
@@ -218,17 +266,17 @@ export function BulkPatientImport() {
           await pushPortalChartsAction({ patients: [saved], appointments: [] });
         }
         if (filed.errors.length) {
-          fileNotes.push(
-            `${patientName(patient)}: ${filed.errors.slice(0, 2).join("; ")}`,
-          );
+          fileNotes.push(`${patientName(patient)}: ${filed.errors.slice(0, 2).join("; ")}`);
         }
       }
 
       rememberPatient(saved);
-      created.push({ id: saved.id, name: patientName(saved) });
+      const entry = { id: saved.id, name: patientName(saved) };
+      if (isUpdate) updated.push(entry);
+      else created.push(entry);
     }
 
-    setCreateResult({ created, fileNotes, errors });
+    setApplyResult({ created, updated, fileNotes, errors });
     setPhase("done");
   }
 
@@ -245,8 +293,9 @@ export function BulkPatientImport() {
         </h2>
         <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
           Choose a folder of patient records. Subfolders become one draft each; loose PDFs and images at
-          the root become one draft per file. Review flippable cards — Approve or Deny — then create
-          charts only for the ones you approve.
+          the root become one draft per file. After OCR we detect existing charts (fingerprint or
+          name + date of birth) and put matches in the queue as updates — not duplicate patients.
+          Flip, edit, Approve, or Deny each card, then apply only what you approved.
         </p>
       </div>
 
@@ -314,7 +363,9 @@ export function BulkPatientImport() {
                   >
                     <div className="flex flex-wrap items-start justify-between gap-2">
                       <div>
-                        <p className="text-xs uppercase tracking-[0.14em] text-muted">Draft</p>
+                        <p className="text-xs uppercase tracking-[0.14em] text-muted">
+                          {activeCard.intent === "update" ? "Update existing" : "New chart"}
+                        </p>
                         <h3 className="mt-1 font-display text-2xl tracking-tight text-ink">
                           {activeCard.draft
                             ? `${activeCard.draft.firstName || "—"} ${activeCard.draft.lastName || ""}`.trim()
@@ -325,11 +376,23 @@ export function BulkPatientImport() {
                           {activeCard.packet.files.length === 1 ? "" : "s"} · {activeCard.packet.label}
                         </p>
                       </div>
-                      {activeCard.ocr ? (
-                        <p className="text-xs text-muted">
-                          {activeCard.ocr.method_used} · {activeCard.ocr.page_count} pages
-                        </p>
-                      ) : null}
+                      <div className="grid justify-items-end gap-1">
+                        <span
+                          className={cn(
+                            "rounded-full px-2.5 py-0.5 text-xs font-medium",
+                            activeCard.intent === "update"
+                              ? "bg-oxide/15 text-oxide-deep"
+                              : "bg-black/[0.06] text-ink",
+                          )}
+                        >
+                          {activeCard.intent === "update" ? "Update" : "New"}
+                        </span>
+                        {activeCard.ocr ? (
+                          <p className="text-xs text-muted">
+                            {activeCard.ocr.method_used} · {activeCard.ocr.page_count} pages
+                          </p>
+                        ) : null}
+                      </div>
                     </div>
 
                     {activeCard.error ? (
@@ -338,12 +401,51 @@ export function BulkPatientImport() {
                       </p>
                     ) : null}
 
-                    {activeMatch ? (
-                      <p className="rounded-md bg-black/[0.04] px-3 py-2 text-sm leading-relaxed">
-                        {activeMatch.reason === "fingerprint"
-                          ? `These exact files were already imported for ${patientName(activeMatch.patient)}. Use the single-packet import above to update that chart.`
-                          : `A chart already exists for ${patientName(activeMatch.patient)} (same name and date of birth). Approving still creates a separate chart.`}
-                      </p>
+                    {activeCard.match ? (
+                      <div className="grid gap-2 rounded-md bg-black/[0.04] px-3 py-2 text-sm leading-relaxed">
+                        <p>
+                          {activeCard.match.reason === "fingerprint"
+                            ? `These exact files were already imported for ${activeCard.match.name}. Approve merges reviewed fields and files into that chart.`
+                            : `A chart already exists for ${activeCard.match.name} (same name and date of birth). Approve updates that chart instead of creating a duplicate.`}
+                        </p>
+                        <dl className="grid gap-1 text-muted sm:grid-cols-2">
+                          <div>
+                            <dt className="text-xs uppercase tracking-[0.12em]">On chart now</dt>
+                            <dd className="text-ink">{activeCard.match.name}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-xs uppercase tracking-[0.12em]">Date of birth</dt>
+                            <dd className="text-ink">{activeCard.match.dateOfBirth || "—"}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-xs uppercase tracking-[0.12em]">Payer</dt>
+                            <dd className="text-ink">{activeCard.match.payerName || "—"}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-xs uppercase tracking-[0.12em]">Member id</dt>
+                            <dd className="text-ink">{activeCard.match.memberId || "—"}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-xs uppercase tracking-[0.12em]">Phone</dt>
+                            <dd className="text-ink">{activeCard.match.phone || "—"}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-xs uppercase tracking-[0.12em]">Email</dt>
+                            <dd className="text-ink">{activeCard.match.email || "—"}</dd>
+                          </div>
+                        </dl>
+                        {activeCard.match.reason === "name_dob" ? (
+                          <label className="mt-1 flex items-start gap-2 text-sm text-ink">
+                            <input
+                              type="checkbox"
+                              className="mt-1"
+                              checked={activeCard.forceCreate}
+                              onChange={(event) => setActiveForceCreate(event.target.checked)}
+                            />
+                            <span>Create a separate chart anyway (ignore this match)</span>
+                          </label>
+                        ) : null}
+                      </div>
                     ) : null}
 
                     {activeCard.draft?.warnings.length ? (
@@ -492,7 +594,7 @@ export function BulkPatientImport() {
                   Deny
                 </Button>
                 <Button type="button" disabled={!canApprove} onClick={onApprove}>
-                  Approve
+                  {activeCard.intent === "update" ? "Approve update" : "Approve new"}
                 </Button>
               </div>
             </div>
@@ -502,28 +604,32 @@ export function BulkPatientImport() {
             <div className="grid gap-3 rounded-2xl border border-line bg-card/80 p-5">
               <p className="font-display text-2xl tracking-tight text-ink">
                 {approvedCards.length
-                  ? `${approvedCards.length} draft${approvedCards.length === 1 ? "" : "s"} ready to create`
+                  ? `${approvedCards.length} draft${approvedCards.length === 1 ? "" : "s"} ready · ${approvedCreates} new · ${approvedUpdates} update${approvedUpdates === 1 ? "" : "s"}`
                   : "No drafts approved"}
               </p>
               {approvedCards.length ? (
                 <ul className="list-disc space-y-1 pl-5 text-sm text-muted">
                   {approvedCards.map((card) => (
                     <li key={card.id}>
+                      {card.intent === "update" ? "Update · " : "New · "}
                       {card.draft
                         ? `${card.draft.firstName} ${card.draft.lastName}`.trim()
                         : card.packet.label}
+                      {card.match ? ` → ${card.match.name}` : ""}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-muted">Deny finished the deck with nothing to create. Start over with another folder if needed.</p>
+                <p className="text-sm text-muted">
+                  Deny finished the deck with nothing to apply. Start over with another folder if needed.
+                </p>
               )}
               <div className="flex flex-wrap gap-2">
                 {approvedCards.length ? (
-                  <Button type="button" disabled={isCreating} onClick={() => void onCreateApproved()}>
+                  <Button type="button" disabled={isCreating} onClick={() => void onApplyApproved()}>
                     {isCreating
-                      ? "Creating charts…"
-                      : `Create ${approvedCards.length} chart${approvedCards.length === 1 ? "" : "s"}`}
+                      ? "Applying…"
+                      : `Apply ${approvedCards.length} approved`}
                   </Button>
                 ) : null}
                 <Button type="button" variant="secondary" disabled={isCreating} onClick={resetAll}>
@@ -535,15 +641,23 @@ export function BulkPatientImport() {
         </div>
       ) : null}
 
-      {phase === "done" && createResult ? (
+      {phase === "done" && applyResult ? (
         <div className="grid gap-3 rounded-2xl border border-line bg-card p-5">
           <p className="font-display text-2xl tracking-tight text-ink">
-            Created {createResult.created.length} chart{createResult.created.length === 1 ? "" : "s"}
+            {[
+              applyResult.created.length
+                ? `Created ${applyResult.created.length} chart${applyResult.created.length === 1 ? "" : "s"}`
+                : "",
+              applyResult.updated.length ? `Updated ${applyResult.updated.length}` : "",
+            ]
+              .filter(Boolean)
+              .join(" · ") || "Nothing applied"}
           </p>
-          {createResult.created.length ? (
+          {applyResult.created.length ? (
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted">
-              {createResult.created.map((item) => (
+              {applyResult.created.map((item) => (
                 <li key={item.id}>
+                  New ·{" "}
                   <Link className="underline decoration-neutral-300 underline-offset-4 hover:decoration-neutral-900" href={`/admin/operations/patients/${item.id}`}>
                     {item.name}
                   </Link>
@@ -551,16 +665,28 @@ export function BulkPatientImport() {
               ))}
             </ul>
           ) : null}
-          {createResult.errors.length ? (
+          {applyResult.updated.length ? (
+            <ul className="list-disc space-y-1 pl-5 text-sm text-muted">
+              {applyResult.updated.map((item) => (
+                <li key={item.id}>
+                  Updated ·{" "}
+                  <Link className="underline decoration-neutral-300 underline-offset-4 hover:decoration-neutral-900" href={`/admin/operations/patients/${item.id}`}>
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {applyResult.errors.length ? (
             <div className="text-sm text-emergency">
-              {createResult.errors.map((item) => (
+              {applyResult.errors.map((item) => (
                 <p key={item}>{item}</p>
               ))}
             </div>
           ) : null}
-          {createResult.fileNotes.length ? (
+          {applyResult.fileNotes.length ? (
             <div className="text-sm text-muted">
-              {createResult.fileNotes.map((item) => (
+              {applyResult.fileNotes.map((item) => (
                 <p key={item}>{item}</p>
               ))}
             </div>

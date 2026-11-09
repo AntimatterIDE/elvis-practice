@@ -1,5 +1,21 @@
 # elvis-practice — agent log
 
+## [2026-11-09] decision | Bulk/OCR queue treats existing patients as updates
+
+After extract, `resolveBulkCardMatch` tags each bulk card New vs Update
+(fingerprint or name+DOB). Update cards show on-chart demographics; Approve is
+allowed (no fingerprint block); apply merges via `mergeOnboardIntoPatient` or
+creates only when unmatched. Name/DOB may force-create; fingerprint stays update.
+OutsideRecordsImport shows the same chart snapshot. Tests in `bulk-import.test.ts`.
+
+## [2026-11-09] bugfix | Angela Fidelis claim resubmitted with correct demographics
+
+Prior AC755 used DOB 1995 (will fail at Fidelis); ACEEF/AC795 already Rejected;
+ACC191 CH reject. Electronic void of AC755 blocked (hyphenated member → already-sent
+idempotency). Chart member `74619306600`, DOB 1985-01-27, filing MC. New original
+`ACFB61D4FAE0` / `c_2eac2d28` (99203/M50.20/$350/DOS 2026-11-05) → Stedi accepted.
+Also stripped punctuation from member ids on claim submit (`81baf26`).
+
 ## [2026-11-09] bugfix | Eligibility Active now matches Stedi portal
 
 Root cause: live 271 bodies use `plans[].benefits.statuses[].status =
