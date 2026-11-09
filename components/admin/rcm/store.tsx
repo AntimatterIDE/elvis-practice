@@ -50,6 +50,7 @@ const portalListeners = new Set<
   (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[]; invoices: PortalInvoice[] }) => void
 >();
 const removedAppointmentIds = new Set<string>();
+const removedEligibilityIds = new Set<string>();
 const removalListeners = new Set<(ids: string[]) => void>();
 const claimsListeners = new Set<(claims: Claim[]) => void>();
 const deskListeners = new Set<(desk: PracticeDeskSnapshot) => void>();
@@ -243,17 +244,26 @@ export function mergeRemoteDesk(remote: PracticeDeskSnapshot | null) {
   const current = clientState!;
   const local = deskFromState(current.practice, current.tasks ?? [], current.eligibility ?? []);
   const { desk, needsUpsert } = mergePracticeDesk(local, remote);
+  const eligibility = desk.eligibility.filter((check) => !removedEligibilityIds.has(check.id));
+  const remoteIds = new Set((remote?.eligibility ?? []).map((check) => check.id));
+  for (const id of [...removedEligibilityIds]) {
+    if (!remoteIds.has(id)) removedEligibilityIds.delete(id);
+  }
+  const dropped = eligibility.length !== desk.eligibility.length;
   deskReady = true;
   commit(
     {
       ...current,
       practice: normalizePractice(desk.practice),
       tasks: desk.tasks,
-      eligibility: desk.eligibility,
+      eligibility,
     },
     "merge",
   );
-  return needsUpsert ? desk : null;
+  if (needsUpsert || dropped) {
+    return { ...desk, eligibility };
+  }
+  return null;
 }
 
 export function mergePortalRoster(patients: Patient[], appointments: Appointment[]) {
@@ -476,6 +486,9 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
       },
       clearPatientEligibility: (patientId) => {
         const current = getSnapshot();
+        for (const check of current.eligibility) {
+          if (check.patientId === patientId) removedEligibilityIds.add(check.id);
+        }
         commit({
           ...current,
           eligibility: current.eligibility.filter((check) => check.patientId !== patientId),
