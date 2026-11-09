@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildProfessionalClaim, claimContentProblems, productionClaimProblems, type ClaimSubmissionInput } from "@/lib/stedi/payload";
-import { summarizeClaimStatus, summarizeEligibility } from "@/lib/stedi/parse";
+import { describeEligibilityPayload, summarizeClaimStatus, summarizeEligibility } from "@/lib/stedi/parse";
 
 const ready: ClaimSubmissionInput = {
   claimId: "claim-1",
@@ -212,6 +212,17 @@ describe("production claims", () => {
 });
 
 describe("eligibility summary", () => {
+  it("includes payload diagnostics when coverage is unknown", () => {
+    const summary = summarizeEligibility({
+      controlNumber: "ABC123",
+      benefitsInformation: [{ code: "30", name: "Health Benefit Plan Coverage" }],
+    });
+    expect(summary.active).toBeNull();
+    expect(summary.summary).toContain("Coverage status unknown");
+    expect(summary.summary).toContain("ABC123");
+    expect(describeEligibilityPayload({ controlNumber: "ABC123", benefitsInformation: [] })).toContain("no benefitsInformation");
+  });
+
   it("leaves a missing copay unknown", () => {
     const summary = summarizeEligibility({
       planStatus: [{ status: "Active Coverage" }],
