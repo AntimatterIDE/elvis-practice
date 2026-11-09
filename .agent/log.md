@@ -8,6 +8,9 @@ ACTIVE_COVERAGE` (portal “Active”); desk summarizer only looked at classic
 showed “Coverage status unknown” while Stedi PROD `ec_01a1c1af…` was Active.
 Fix in `lib/stedi/parse.ts` (+ tests): read modern statuses and benefit amounts
 alongside the EB-code path. Confirmed DOB 1985-01-27 + member `746193066-00`.
+Deployed `49df618` / `4b630f6` / `33e2aae`. Cleared Angela eligibility history
+(clear + tombstones so desk merge does not resurrect rows). Live re-check:
+**Coverage active** · Status Active · copay $0 · coins 0% · deductible $0.
 
 ## [2026-11-09] ingest | Claim POS select + corrected/void frequency
 
