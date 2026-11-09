@@ -97,3 +97,9 @@ Eligibility ladder: bare 746193066 → Invalid/Missing Subscriber ID; 746193066-
 DOB mismatch (member found). Name/CI were real chart bugs but not EDI-proven as the
 sole invalid-member cause. 276 parser now summarizes status codes; eligibility
 prefixes inconclusive AAA responses. Chart left on 746193066-00 pending DOB check.
+
+## [2026-11-09] bugfix | Fidelis RCA continued — DOB + 276 Submitted charges
+
+Elig retry: DOB mismatch on 746193066-00; discovery empty; CIN alone AAA.
+Chart: member 746193066-00, group/CIN XZ50434X. 276 on ACEEF now: Submitted charges.
+Shipped nested-status 276 parser fix (0dd024f) + CIN-via-group on 270 (4248c04).

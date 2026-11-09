@@ -10,7 +10,7 @@
 - Eligibility after name fix: `746193066` → **Invalid/Missing Subscriber/Insured ID**; `746193066-00` → **Patient Birth Date Does Not Match** (Fidelis found a member; chart DOB `1995-01-27` does not).
 - UI stored AAA / error 271s as **Inactive** (`active: result.active === true` collapses `null`).
 **Not proven:** that name alone caused the original invalid-member text; that CI→MC fixed it; diagnosis (ACEEF already had M50.20).  
-**Next:** verify DOB against ID; keep member id `746193066-00`; ship 276 summarizer so status checks surface payer codes.
+**Follow-up 2026-11-09 evening:** Retried elig — DOB mismatch persists on `746193066-00`; insurance discovery found no coverage under chart DOB; CIN `XZ50434X` alone → AAA Unable to Respond. Chart left on member `746193066-00` with CIN in Group. Deployed 276 summarizer; ACEEF status now reads **Submitted charges** (not invalid-member). Still need photo ID to correct DOB before eligibility certifies.
 
 ## [2026-11-07] OCR missing-field warnings when chart already filled
 
