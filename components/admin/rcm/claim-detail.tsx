@@ -67,7 +67,7 @@ export function ClaimDetail({ id }: { id: string }) {
       <PageHeader
         kicker={claim.controlNumber}
         title={patientName(patient)}
-        lede={`${claim.payerName} · ${payerType} · ${formatDay(claim.dateOfService)} · Place of service ${claim.placeOfService}`}
+        lede={`${claim.payerName} · ${payerType} · ${formatDay(claim.dateOfService)} · Place of service ${claim.placeOfService}${claim.claimFrequencyCode && claim.claimFrequencyCode !== "1" ? ` · Frequency ${claim.claimFrequencyCode}` : ""}${claim.payerClaimControlNumber ? ` · Payer claim ${claim.payerClaimControlNumber}` : ""}`}
         action={<StatusPill status={claim.status} />}
       />
       <p className="mt-4 text-sm text-muted">

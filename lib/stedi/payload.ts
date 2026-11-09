@@ -1,4 +1,10 @@
-import { claimLineProblems, diagnosisKey, isFilingCode } from "@/lib/rcm/claim-rules";
+import {
+  claimLineProblems,
+  diagnosisKey,
+  isClaimFrequencyCode,
+  isFilingCode,
+  type ClaimFrequencyCode,
+} from "@/lib/rcm/claim-rules";
 import { isUsStateCode } from "@/lib/rcm/us-states";
 import type { PracticeProfile, Sex } from "@/lib/rcm/types";
 
@@ -25,6 +31,8 @@ export type ClaimSubmissionInput = {
   placeOfService: string;
   assignmentOfBenefits?: boolean;
   priorAuthNumber?: string;
+  claimFrequencyCode?: ClaimFrequencyCode;
+  payerClaimControlNumber?: string;
   patient: {
     firstName: string;
     lastName: string;
@@ -90,6 +98,19 @@ export function productionClaimProblems(input: ClaimSubmissionInput) {
 // Only submission runs these, so a status check on an older claim is not blocked.
 export function claimContentProblems(input: ClaimSubmissionInput) {
   const problems = isFilingCode(input.filingCode) ? [] : ["Choose the payer type on the claim before submitting."];
+  const frequency: ClaimFrequencyCode = isClaimFrequencyCode(input.claimFrequencyCode)
+    ? input.claimFrequencyCode
+    : "1";
+  const payerClaim = input.payerClaimControlNumber?.trim() ?? "";
+  if ((frequency === "7" || frequency === "8") && !payerClaim) {
+    problems.push("Enter the payer claim control number from the original remittance before replacing or voiding a claim.");
+  }
+  if (frequency === "1" && payerClaim) {
+    problems.push("Leave the payer claim control number blank on an original claim. It is only for replacements and voids.");
+  }
+  if ((frequency === "7" || frequency === "8") && input.filingCode === "MB") {
+    problems.push("Medicare Part B does not accept replacement (7) or void (8) frequency codes on professional claims. Resubmit as an original (1) without a payer claim control number.");
+  }
   return [...problems, ...claimLineProblems(input.lines)];
 }
 
@@ -147,6 +168,22 @@ export function buildProfessionalClaim(input: ClaimSubmissionInput) {
   const control = input.controlNumber.replace(/[^A-Za-z0-9]/g, "").slice(0, 20);
 
   const practiceAddress = splitAddress(input.practice.address);
+  const frequency: ClaimFrequencyCode = isClaimFrequencyCode(input.claimFrequencyCode)
+    ? input.claimFrequencyCode
+    : "1";
+  const priorAuth = input.priorAuthNumber?.trim().slice(0, 50) || "";
+  const payerClaim =
+    frequency === "7" || frequency === "8"
+      ? input.payerClaimControlNumber?.trim().slice(0, 50) || ""
+      : "";
+  const claimSupplementalInformation =
+    priorAuth || payerClaim
+      ? {
+          ...(priorAuth ? { priorAuthorizationNumber: priorAuth } : {}),
+          ...(payerClaim ? { claimControlNumber: payerClaim } : {}),
+        }
+      : undefined;
+
   return {
     body: {
       usageIndicator: "P" as const,
@@ -191,18 +228,12 @@ export function buildProfessionalClaim(input: ClaimSubmissionInput) {
         patientControlNumber: control,
         claimChargeAmount: money(total),
         placeOfServiceCode: input.placeOfService || "11",
-        claimFrequencyCode: "1",
+        claimFrequencyCode: frequency,
         signatureIndicator: "Y",
         planParticipationCode: input.assignmentOfBenefits === false ? "C" : "A",
         benefitsAssignmentCertificationIndicator: input.assignmentOfBenefits === false ? "N" : "Y",
         releaseInformationCode: "Y",
-        ...(input.priorAuthNumber?.trim()
-          ? {
-              claimSupplementalInformation: {
-                priorAuthorizationNumber: input.priorAuthNumber.trim().slice(0, 50),
-              },
-            }
-          : {}),
+        ...(claimSupplementalInformation ? { claimSupplementalInformation } : {}),
         healthCareCodeInformation: diagnoses.map((code, index) => ({
           diagnosisTypeCode: index === 0 ? "ABK" : "ABF",
           diagnosisCode: code,

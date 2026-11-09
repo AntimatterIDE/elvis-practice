@@ -13,7 +13,17 @@ import {
   type ClinicVisitClaimDraft,
 } from "@/lib/encounters/claim-from-visit";
 import type { Encounter } from "@/lib/encounters/types";
-import { claimLineProblems, diagnosisLimit, filingCodes, isFilingCode, pointerLimit } from "@/lib/rcm/claim-rules";
+import {
+  claimFrequencyCodes,
+  claimLineProblems,
+  diagnosisLimit,
+  filingCodes,
+  isClaimFrequencyCode,
+  isFilingCode,
+  pointerLimit,
+  type ClaimFrequencyCode,
+} from "@/lib/rcm/claim-rules";
+import { officeSurgeryPosWarning, placeOfServiceOptions } from "@/lib/rcm/place-of-service";
 import { AccountNoteDialog } from "@/components/admin/rcm/account-note";
 import { attachmentEvent, claimFileAccept, storeClaimFiles } from "@/components/admin/rcm/claim-files";
 import { FilePicker } from "@/components/admin/rcm/file-picker";
@@ -96,6 +106,14 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
   );
   const dateOfService = dateOverride || visit?.start.slice(0, 10) || initialEncounter?.createdAt.slice(0, 10) || today;
   const [placeOfService, setPlaceOfService] = useState(existing?.placeOfService || practice.posCode || "11");
+  const [claimFrequencyCode, setClaimFrequencyCode] = useState<ClaimFrequencyCode>(
+    existing?.claimFrequencyCode === "7" || existing?.claimFrequencyCode === "8"
+      ? existing.claimFrequencyCode
+      : "1",
+  );
+  const [payerClaimControlNumber, setPayerClaimControlNumber] = useState(
+    existing?.payerClaimControlNumber ?? "",
+  );
   const [clinicalNote, setClinicalNote] = useState(existing?.clinicalNote ?? openingDraft?.clinicalNote ?? "");
   const [picked, setPicked] = useState<File[]>([]);
   const [pending, setPending] = useState(false);
@@ -149,6 +167,12 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
     setFilingCode(existing.filingCode ?? "");
     setDateOverride(existing.dateOfService);
     setPlaceOfService(existing.placeOfService || practice.posCode || "11");
+    setClaimFrequencyCode(
+      existing.claimFrequencyCode === "7" || existing.claimFrequencyCode === "8"
+        ? existing.claimFrequencyCode
+        : "1",
+    );
+    setPayerClaimControlNumber(existing.payerClaimControlNumber ?? "");
     setClinicalNote(existing.clinicalNote);
     setHoldReason(existing.holdReason ?? "");
     setAssignmentOfBenefits(existing.assignmentOfBenefits !== false);
@@ -503,6 +527,8 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
       clinicalNote: clinicalNote.trim(),
       assignmentOfBenefits,
       priorAuthNumber: priorAuthNumber.trim(),
+      claimFrequencyCode: isClaimFrequencyCode(claimFrequencyCode) ? claimFrequencyCode : "1",
+      payerClaimControlNumber: payerClaimControlNumber.trim(),
     };
     if (nextPayerId && shownPayer) {
       const coverages = patient.coverages.length
@@ -569,6 +595,11 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
   }
 
   const manual = !initialEncounter && !visit;
+  const knownPlaceOfService = placeOfServiceOptions.some((option) => option.code === placeOfService);
+  const posWarning = officeSurgeryPosWarning(
+    placeOfService,
+    lines.filter((line) => line.includeOnBill).map((line) => line.cpt),
+  );
 
   return (
     <main>
@@ -717,9 +748,75 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
               <input className={fieldClass} type="date" value={dateOfService} onChange={(event) => setDateOverride(event.target.value)} required />
             </Field>
             <Field label="Place of service">
-              <input className={fieldClass} value={placeOfService} onChange={(event) => setPlaceOfService(event.target.value)} />
+              <select
+                className={fieldClass}
+                value={knownPlaceOfService ? placeOfService : "other"}
+                onChange={(event) => {
+                  const next = event.target.value;
+                  if (next === "other") {
+                    setPlaceOfService(knownPlaceOfService ? "" : placeOfService);
+                    return;
+                  }
+                  setPlaceOfService(next);
+                }}
+              >
+                {placeOfServiceOptions.map((option) => (
+                  <option key={option.code} value={option.code}>
+                    {option.label}
+                  </option>
+                ))}
+                <option value="other">Other CMS code…</option>
+              </select>
             </Field>
           </div>
+          {!knownPlaceOfService ? (
+            <Field label="Other place of service code">
+              <input
+                className={fieldClass}
+                value={placeOfService}
+                onChange={(event) => setPlaceOfService(event.target.value.replace(/\D/g, "").slice(0, 2))}
+                inputMode="numeric"
+                maxLength={2}
+                placeholder="Two-digit CMS code"
+              />
+            </Field>
+          ) : null}
+          {posWarning ? (
+            <p className="rounded-md bg-black/[0.04] px-3 py-2 text-sm leading-relaxed text-ink">{posWarning}</p>
+          ) : null}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Claim frequency">
+              <select
+                className={fieldClass}
+                value={claimFrequencyCode}
+                onChange={(event) => {
+                  const next = event.target.value;
+                  setClaimFrequencyCode(isClaimFrequencyCode(next) ? next : "1");
+                  if (next === "1") setPayerClaimControlNumber("");
+                }}
+              >
+                {claimFrequencyCodes.map((option) => (
+                  <option key={option.code} value={option.code}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="Payer claim control number">
+              <input
+                className={fieldClass}
+                value={payerClaimControlNumber}
+                onChange={(event) => setPayerClaimControlNumber(event.target.value)}
+                disabled={claimFrequencyCode === "1"}
+                placeholder={claimFrequencyCode === "1" ? "Only for replacement or void" : "From the original remittance"}
+              />
+            </Field>
+          </div>
+          {claimFrequencyCode !== "1" && filingCode === "MB" ? (
+            <p className="rounded-md bg-emergency/10 px-3 py-2 text-sm text-emergency">
+              Medicare Part B does not accept replacement or void frequency codes on professional claims. Use original (1) and omit the payer claim control number.
+            </p>
+          ) : null}
           <Field label="Prior authorization number">
             <input
               className={fieldClass}

@@ -1,5 +1,30 @@
 # elvis-practice — agent log
 
+## [2026-11-09] ingest | Claim POS select + corrected/void frequency
+
+Shipped finishable billing gaps: claim form POS select (11/22/19/21/24/23 + other)
+with office/surgery warning; claim frequency 1/7/8 with payer claim control number
+on the 837P; MB refuses 7/8. Left external: privacy/terms, BAAs, type-2 NPI, AMA,
+Treasury/Lockbox, clinical publish, indexing, injury/prior-auth tracking.
+
+## [2026-11-07] bugfix | Bulk card overflow + hidden-face pointer leak
+
+`BulkPatientImport` flip card had two visual bugs: (1) front face scrollHeight
+(566px) exceeded `min-h-[28rem]` (448px) so Payer/Member id spilled over the
+Flip/Deny/Approve row; (2) back face remained hit-testable when flipped so its
+inputs intercepted button clicks. Fix in `components/admin/rcm/bulk-patient-import.tsx`:
+fixed `h-[36rem]` wrapper, `overflow-y-auto` + `auto-rows-min content-start` on
+both faces, `aria-hidden` + `pointer-events-none invisible` on the inactive
+face. Re-smoked on prod `a4e3388`: Flip/Deny/Approve all land cleanly, approve
+advances to "1 draft ready to create".
+
+## [2026-11-07] ingest | Bulk folder import prod browser smoke
+
+Deployed `ed4458c`. Live intake tests: nested grouping, OCR cards, flip,
+missing-name blocks Approve, create 2 charts (BulkSmoke Alpha / Alicia Mendel),
+non-record folder error, flat root grouping, deny-all, fingerprint blocks
+Approve. Evidence: `.agent/staging-bulk-import-smoke-20261107/summary.json`.
+
 ## [2026-11-07] ingest | Bulk folder patient upload
 
 Patient intake bulk import: folder pick → group packets → sequential OCR →
@@ -54,3 +79,7 @@ downloaded. Verified branded header, patient identity, note-derived sections.
 Patients removed from portal + local desk after. Sample PDFs:
 `.agent/staging-letter-smoke-20261107/` and Desktop
 `Clinical-Letter-Smoke-2026-11-07/`.
+
+## [2026-11-08] ingest | CONTENT_SOURCE is display-only
+
+Public clinical loaders always use TypeScript file drafts; admin publish writes Supabase only. Env `CONTENT_SOURCE` does not switch reads. README supabase-loader claim is stale. See `.agent/wiki/decisions.md`.

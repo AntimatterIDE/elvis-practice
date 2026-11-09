@@ -15,6 +15,8 @@ export function claimSubmissionInput(claim: Claim, patient: Patient, practice: P
     placeOfService: claim.placeOfService,
     assignmentOfBenefits: claim.assignmentOfBenefits !== false,
     priorAuthNumber: claim.priorAuthNumber?.trim() || undefined,
+    claimFrequencyCode: claim.claimFrequencyCode === "7" || claim.claimFrequencyCode === "8" ? claim.claimFrequencyCode : "1",
+    payerClaimControlNumber: claim.payerClaimControlNumber?.trim() || undefined,
     patient: {
       firstName: patient.firstName,
       lastName: patient.lastName,

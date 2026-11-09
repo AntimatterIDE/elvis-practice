@@ -230,6 +230,10 @@ export function normalizeClaim(claim: Claim): Claim {
     attachments: Array.isArray(stored.attachments) ? stored.attachments : [],
     assignmentOfBenefits: stored.assignmentOfBenefits !== false,
     priorAuthNumber: typeof stored.priorAuthNumber === "string" ? stored.priorAuthNumber.trim() : "",
+    claimFrequencyCode:
+      stored.claimFrequencyCode === "7" || stored.claimFrequencyCode === "8" ? stored.claimFrequencyCode : "1",
+    payerClaimControlNumber:
+      typeof stored.payerClaimControlNumber === "string" ? stored.payerClaimControlNumber.trim() : "",
   };
 }
 

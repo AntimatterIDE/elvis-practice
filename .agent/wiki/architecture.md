@@ -21,6 +21,13 @@
    - Stored on chart slot `consultation-report` via `storeChartBytes`; returns signed download URL.
    - Requires a matched `patientId` (scheduled visit or visit label matching a chart).
 
+## Claims (Stedi 837P)
+
+- Place of service: claim form select (`lib/rcm/place-of-service.ts`) + surgery/office warning.
+- Frequency: original `1`, replacement `7`, void `8` on `Claim.claimFrequencyCode`.
+  Replacements/voids carry the payer claim control number into
+  `claimSupplementalInformation.claimControlNumber` (`lib/stedi/payload.ts`).
+
 ## Chart files
 
 - Bucket `chart-files`; path `{patientId}/{slotId}/{objectKey}`.

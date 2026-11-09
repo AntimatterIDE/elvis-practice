@@ -20,6 +20,19 @@ export const filingCodes = [
 
 export type FilingCode = (typeof filingCodes)[number]["code"];
 
+// CLM05-03: original, replacement, or void of a prior claim.
+export const claimFrequencyCodes = [
+  { code: "1", label: "1 — Original claim" },
+  { code: "7", label: "7 — Replacement of prior claim" },
+  { code: "8", label: "8 — Void / cancel prior claim" },
+] as const;
+
+export type ClaimFrequencyCode = (typeof claimFrequencyCodes)[number]["code"];
+
+export function isClaimFrequencyCode(value: unknown): value is ClaimFrequencyCode {
+  return claimFrequencyCodes.some((option) => option.code === value);
+}
+
 export const diagnosisLimit = 12;
 
 export const pointerLimit = 4;

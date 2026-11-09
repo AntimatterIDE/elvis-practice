@@ -402,6 +402,11 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
           attachments: [],
           assignmentOfBenefits: input.assignmentOfBenefits !== false,
           priorAuthNumber: input.priorAuthNumber?.trim() ?? "",
+          claimFrequencyCode:
+            input.claimFrequencyCode === "7" || input.claimFrequencyCode === "8"
+              ? input.claimFrequencyCode
+              : "1",
+          payerClaimControlNumber: input.payerClaimControlNumber?.trim() ?? "",
           createdAt: now,
           updatedAt: now,
         };

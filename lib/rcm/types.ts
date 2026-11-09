@@ -1,4 +1,4 @@
-import type { FilingCode } from "@/lib/rcm/claim-rules";
+import type { ClaimFrequencyCode, FilingCode } from "@/lib/rcm/claim-rules";
 
 export type Sex = "female" | "male" | "other" | "unknown";
 
@@ -236,6 +236,10 @@ export type Claim = {
   /** When true, payer pays the practice. When false, payer pays the patient. */
   assignmentOfBenefits?: boolean;
   priorAuthNumber?: string;
+  /** CLM05-03: 1 original, 7 replacement, 8 void. */
+  claimFrequencyCode?: ClaimFrequencyCode;
+  /** Payer Claim Control Number required for frequency 7 or 8 (non-Medicare). */
+  payerClaimControlNumber?: string;
 };
 
 export type ServiceLineInput = {
@@ -270,6 +274,8 @@ export type ClaimInput = {
   clinicalNote?: string;
   assignmentOfBenefits?: boolean;
   priorAuthNumber?: string;
+  claimFrequencyCode?: ClaimFrequencyCode;
+  payerClaimControlNumber?: string;
 };
 
 export type Vitals = {

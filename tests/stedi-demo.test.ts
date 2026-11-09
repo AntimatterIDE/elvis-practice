@@ -117,6 +117,49 @@ describe("production claims", () => {
     expect(patientPaid.body.claimInformation).not.toHaveProperty("claimSupplementalInformation");
   });
 
+  it("sends replacement and void frequency with the payer claim control number", () => {
+    expect(buildProfessionalClaim(ready).body.claimInformation.claimFrequencyCode).toBe("1");
+    const replacement = buildProfessionalClaim({
+      ...ready,
+      claimFrequencyCode: "7",
+      payerClaimControlNumber: "PAYER-7788",
+      priorAuthNumber: "AUTH-99",
+    });
+    expect(replacement.body.claimInformation.claimFrequencyCode).toBe("7");
+    expect(replacement.body.claimInformation.claimSupplementalInformation).toEqual({
+      priorAuthorizationNumber: "AUTH-99",
+      claimControlNumber: "PAYER-7788",
+    });
+    const voided = buildProfessionalClaim({
+      ...ready,
+      claimFrequencyCode: "8",
+      payerClaimControlNumber: "PAYER-7788",
+    });
+    expect(voided.body.claimInformation.claimFrequencyCode).toBe("8");
+    expect(voided.body.claimInformation.claimSupplementalInformation).toEqual({
+      claimControlNumber: "PAYER-7788",
+    });
+  });
+
+  it("refuses replacement or void without a payer claim control number", () => {
+    const missing = claimContentProblems({ ...ready, claimFrequencyCode: "7" });
+    expect(missing.some((problem) => problem.includes("payer claim control number"))).toBe(true);
+    expect(claimContentProblems({ ...ready, claimFrequencyCode: "7", payerClaimControlNumber: "ABC" })).toEqual([]);
+    expect(
+      claimContentProblems({ ...ready, claimFrequencyCode: "1", payerClaimControlNumber: "ABC" }).some((problem) =>
+        problem.includes("blank on an original"),
+      ),
+    ).toBe(true);
+    expect(
+      claimContentProblems({
+        ...ready,
+        filingCode: "MB",
+        claimFrequencyCode: "7",
+        payerClaimControlNumber: "ABC",
+      }).some((problem) => problem.includes("Medicare Part B")),
+    ).toBe(true);
+  });
+
   it("sends the payer type the biller chose and refuses a claim without one", () => {
     expect(claimContentProblems(ready)).toEqual([]);
     expect(buildProfessionalClaim({ ...ready, filingCode: "MB" }).body.claimInformation.claimFilingCode).toBe("MB");
