@@ -28,14 +28,16 @@ export function EligibilityDesk() {
     if (!patient) return;
     setPending(true);
     const coverage = patient.coverages.find((item) => item.rank === "primary");
+    const medicaidRecipientId = coverage?.groupNumber?.trim() || undefined;
     const result = await checkEligibility({
       payerId: coverage?.tradingPartnerId || "",
       payerName: patient.payerName,
-      memberId: patient.memberId,
+      memberId: patient.memberId || coverage?.memberId || "",
       firstName: patient.firstName,
       lastName: patient.lastName,
       dateOfBirth: patient.dateOfBirth,
       npi: practice.npi,
+      medicaidRecipientId,
     });
     if (!result.ok && result.active == null && result.copay == null) {
       setMessage(result.message);
