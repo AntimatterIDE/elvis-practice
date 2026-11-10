@@ -72,18 +72,19 @@ def score(doc_id: str, summary: dict, expected: dict | None = None) -> dict:
         (summary.get("reasonForVisit") or summary.get("medicalHistory") or "")[:120],
     )
 
-    # Exact ground-truth comparisons when provided (presence-only checks still run above).
+    # Exact + soft ground-truth comparisons when provided (presence checks still run above).
     if expected:
+        soft_skip = {
+            "documentHints",
+            "likely_gaps",
+            "likely_fields",
+            "injuryCase",
+            "reasonForVisit_or_history",
+            "problems_should_mention",
+            "imagingFindings_should_mention",
+        }
         for key, want in expected.items():
-            if key.endswith("_should_mention") or key in {
-                "documentHints",
-                "likely_gaps",
-                "likely_fields",
-                "injuryCase",
-                "reasonForVisit_or_history",
-                "problems_should_mention",
-                "imagingFindings_should_mention",
-            }:
+            if key.endswith("_should_mention") or key in soft_skip:
                 continue
             got = summary.get(key, "")
             ok = norm(got) == norm(want)
@@ -93,6 +94,36 @@ def score(doc_id: str, summary: dict, expected: dict | None = None) -> dict:
             hints = summary.get("documentHints") or []
             for hint in expected["documentHints"]:
                 add(f"hint_{hint}", hint in hints, ",".join(hints))
+
+        problems_blob = json.dumps(summary.get("problems") or [])
+        if isinstance(expected.get("problems_should_mention"), list):
+            needles = expected["problems_should_mention"]
+            ok = has_any(problems_blob, needles) or has_any(text_blob, needles)
+            add("soft_problems_should_mention", ok, problems_blob[:160])
+
+        if isinstance(expected.get("imagingFindings_should_mention"), list):
+            needles = expected["imagingFindings_should_mention"]
+            imaging = summary.get("imagingFindings") or ""
+            ok = has_any(imaging, needles)
+            add("soft_imagingFindings_should_mention", ok, imaging[:160])
+
+        if isinstance(expected.get("reasonForVisit_or_history"), list):
+            needles = expected["reasonForVisit_or_history"]
+            history = " ".join(
+                [
+                    summary.get("reasonForVisit") or "",
+                    summary.get("medicalHistory") or "",
+                ]
+            )
+            ok = has_any(history, needles) or has_any(text_blob, needles)
+            add("soft_reasonForVisit_or_history", ok, history[:160])
+
+        if expected.get("injuryCase") is True:
+            injury = summary.get("injuryCase") or {}
+            ok = bool(injury and any(injury.get(k) for k in ("dateOfInjury", "description", "notes"))) or has_any(
+                text_blob, ["accident", "MVA", "motor vehicle", "injury", "sprain"]
+            )
+            add("soft_injuryCase", ok, json.dumps(injury)[:160] if injury else "no injuryCase")
 
     passed = sum(1 for _, ok, _ in checks if ok)
     total = len(checks) or 1

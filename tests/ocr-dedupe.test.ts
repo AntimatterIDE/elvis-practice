@@ -90,6 +90,59 @@ describe("ocr dedupe", () => {
     expect(twin?.patient.id).toBe("p_twin");
   });
 
+  it("matches by DOB-scoped member id and phone soft keys", () => {
+    const patients = [
+      basePatient({
+        id: "p_member",
+        firstName: "Other",
+        lastName: "Name",
+        memberId: "746193066-00",
+        phone: "718-555-0100",
+        ocrImportHashes: [],
+      }),
+    ];
+    const byMember = findOcrImportMatch(patients, {
+      firstName: "Angela",
+      lastName: "Morales",
+      dateOfBirth: "1980-05-01",
+      fingerprints: [],
+      memberId: "74619306600",
+    });
+    expect(byMember?.reason).toBe("member_id");
+    expect(byMember?.patient.id).toBe("p_member");
+
+    const byPhone = findOcrImportMatch(
+      [
+        basePatient({
+          id: "p_phone",
+          firstName: "X",
+          lastName: "Y",
+          memberId: "",
+          phone: "(718) 555-0199",
+          ocrImportHashes: [],
+        }),
+      ],
+      {
+        firstName: "Angela",
+        lastName: "Morales",
+        dateOfBirth: "1980-05-01",
+        fingerprints: [],
+        phone: "7185550199",
+      },
+    );
+    expect(byPhone?.reason).toBe("phone");
+    expect(byPhone?.patient.id).toBe("p_phone");
+  });
+
+  it("rejects weak fuzzy matches that lack an exact token of length >= 5", () => {
+    const hit = findOcrImportMatch(
+      [basePatient({ id: "p_weak", firstName: "Jo", lastName: "Sm", ocrImportHashes: [] })],
+      { firstName: "John", lastName: "Smith", dateOfBirth: "1980-05-01", fingerprints: [] },
+    );
+    // Prefix overlap alone is not enough without a shared exact token length >= 5.
+    expect(hit).toBeNull();
+  });
+
   it("stores fingerprints on create and merges without duplicating problems", () => {
     const draft = normalizeOnboardDraft({
       ...emptyOnboardDraft(),

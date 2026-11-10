@@ -19,6 +19,7 @@ import {
   refreshOnboardWarnings,
   seedInjuryCaseFromCorpus,
   applyEvidenceConfidence,
+  clearUnverifiedEvidence,
   verifyEvidence,
 } from "@/lib/ocr/onboard-draft";
 import { normalizeIcdCode } from "@/lib/ocr/icd-normalize";
@@ -634,6 +635,36 @@ describe("onboard draft", () => {
     expect(draft.fieldConfidence.firstName).toBe("high");
     expect(draft.fieldConfidence.memberId).toBe("high");
     expect(draft.fieldConfidence.payerName).toBe("missing");
+  });
+
+  it("cite-or-clear drops unverified and no-quote insurance fields", () => {
+    const pages = [{ page: 1, text: "Patient Name: Angela Morales-Guity DOB: 01/27/1985" }];
+    const draft = clearUnverifiedEvidence(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Angela",
+        lastName: "Morales-Guity",
+        dateOfBirth: "1985-01-27",
+        phone: "718-555-0199",
+        memberId: "74619306600",
+        payerName: "Fake Payer",
+        evidence: {
+          firstName: { page: 1, quote: "Angela Morales-Guity" },
+          lastName: { page: 1, quote: "Angela Morales-Guity" },
+          dateOfBirth: { page: 1, quote: "DOB: 01/27/1985" },
+          phone: { page: 1, quote: "not the phone" },
+          memberId: { page: 0, quote: "" },
+          payerName: { page: 0, quote: "" },
+        },
+      }),
+      pages,
+    );
+    expect(draft.firstName).toBe("Angela");
+    expect(draft.phone).toBe("");
+    expect(draft.memberId).toBe("");
+    expect(draft.payerName).toBe("");
+    expect(draft.warnings.some((w) => /Cleared unverified phone/i.test(w))).toBe(true);
+    expect(draft.warnings.some((w) => /Cleared memberId with no OCR quote/i.test(w))).toBe(true);
   });
 
   it("converts US DOB and clears invalid field values", () => {

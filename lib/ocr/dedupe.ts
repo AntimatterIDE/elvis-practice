@@ -15,18 +15,47 @@ export function normalizeHashes(hashes: string[] | undefined | null) {
   return [...new Set((hashes ?? []).map((item) => item.trim().toLowerCase()).filter((item) => /^[a-f0-9]{64}$/.test(item)))];
 }
 
+/** Alphanumeric member id for soft matching (strip spaces/hyphens/punctuation). */
+export function normalizeMemberIdKey(value: string | undefined | null): string {
+  return (value || "").replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+}
+
+/** Last 10 US phone digits for soft matching. */
+export function normalizePhoneKey(value: string | undefined | null): string {
+  const digits = (value || "").replace(/\D/g, "");
+  if (digits.length === 11 && digits.startsWith("1")) return digits.slice(1);
+  if (digits.length >= 10) return digits.slice(-10);
+  return "";
+}
+
 export type OcrImportMatch = {
   patient: Patient;
-  /** fingerprint = same files; name_dob = exact/swapped; name_dob_fuzzy = possible match (verify). */
-  reason: "fingerprint" | "name_dob" | "name_dob_fuzzy";
+  /**
+   * fingerprint = same files; name_dob = exact/swapped; member_id / phone = DOB-scoped soft keys;
+   * name_dob_fuzzy = possible match (verify).
+   */
+  reason: "fingerprint" | "name_dob" | "member_id" | "phone" | "name_dob_fuzzy";
   matchedHashes: string[];
 };
 
-/** Prefer fingerprint match; else exact first+last+DOB; else fuzzy same-DOB name tokens. */
-export function findOcrImportMatch(
-  patients: Patient[],
-  input: { firstName: string; lastName: string; dateOfBirth: string; fingerprints: string[] },
-): OcrImportMatch | null {
+export type OcrImportMatchInput = {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  fingerprints: string[];
+  memberId?: string;
+  phone?: string;
+};
+
+function nameTokens(firstName: string, lastName: string): string[] {
+  return `${firstName} ${lastName}`
+    .toLowerCase()
+    .split(/[^a-z]+/)
+    .filter((part) => part.length > 1);
+}
+
+/** Prefer fingerprint; else exact name+DOB; else member/phone+DOB; else tightened fuzzy name+DOB. */
+export function findOcrImportMatch(patients: Patient[], input: OcrImportMatchInput): OcrImportMatch | null {
   const fingerprints = normalizeHashes(input.fingerprints);
   if (fingerprints.length) {
     const hit = patients.find((patient) => {
@@ -50,25 +79,35 @@ export function findOcrImportMatch(
     patients.find((patient) => normalizePersonKey(patient.firstName, patient.lastName, patient.dateOfBirth) === swapped);
   if (exact) return { patient: exact, reason: "name_dob", matchedHashes: [] };
 
-  const tokens = new Set(
-    `${input.firstName} ${input.lastName}`
-      .toLowerCase()
-      .split(/[^a-z]+/)
-      .filter((part) => part.length > 1),
-  );
+  const memberKey = normalizeMemberIdKey(input.memberId);
+  if (memberKey.length >= 8) {
+    const byMember = patients.find((patient) => {
+      if (patient.dateOfBirth.slice(0, 10) !== dob) return false;
+      return normalizeMemberIdKey(patient.memberId) === memberKey;
+    });
+    if (byMember) return { patient: byMember, reason: "member_id", matchedHashes: [] };
+  }
+
+  const phoneKey = normalizePhoneKey(input.phone);
+  if (phoneKey.length === 10) {
+    const byPhone = patients.find((patient) => {
+      if (patient.dateOfBirth.slice(0, 10) !== dob) return false;
+      return normalizePhoneKey(patient.phone) === phoneKey;
+    });
+    if (byPhone) return { patient: byPhone, reason: "phone", matchedHashes: [] };
+  }
+
+  const tokens = new Set(nameTokens(input.firstName, input.lastName));
   const fuzzy = patients.find((patient) => {
     if (patient.dateOfBirth.slice(0, 10) !== dob) return false;
-    const existing = new Set(
-      `${patient.firstName} ${patient.lastName}`
-        .toLowerCase()
-        .split(/[^a-z]+/)
-        .filter((part) => part.length > 1),
-    );
-    // Same DOB and at least two shared name tokens (handles Francisco/Fransisco + flipped order).
+    const existing = new Set(nameTokens(patient.firstName, patient.lastName));
+    // Soft prefix still counts toward overlap, but require ≥1 exact token length ≥5.
     const overlap = [...tokens].filter((token) =>
       [...existing].some((have) => have === token || have.startsWith(token.slice(0, 4)) || token.startsWith(have.slice(0, 4))),
     );
-    return overlap.length >= 2;
+    if (overlap.length < 2) return false;
+    const hasStrongExact = [...tokens].some((token) => token.length >= 5 && existing.has(token));
+    return hasStrongExact;
   });
   if (!fuzzy) return null;
   return { patient: fuzzy, reason: "name_dob_fuzzy", matchedHashes: [] };

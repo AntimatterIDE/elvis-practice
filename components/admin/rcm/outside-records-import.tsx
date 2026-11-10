@@ -56,6 +56,7 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
   const [ocrMeta, setOcrMeta] = useState<ExtractResponse["ocr"] | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState<"idle" | "extract" | "save">("idle");
+  const [unreadAckChecked, setUnreadAckChecked] = useState(false);
 
   const match: OcrImportMatch | null = useMemo(() => {
     if (!draft) return null;
@@ -64,8 +65,16 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
       lastName: draft.lastName,
       dateOfBirth: draft.dateOfBirth,
       fingerprints,
+      memberId: draft.memberId,
+      phone: draft.phone,
     });
   }, [draft, fingerprints, patients]);
+
+  const needsUnreadAck = Boolean(
+    ocrMeta?.partial ||
+      (ocrMeta?.failed_pages?.length ?? 0) > 0 ||
+      (draft?.warnings ?? []).some((warning) => /OCR truncated/i.test(warning)),
+  );
 
   const coveredBy = useMemo(() => coverageFromPatient(match?.patient), [match?.patient]);
 
@@ -162,6 +171,8 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
         lastName: nextDraft.lastName,
         dateOfBirth: nextDraft.dateOfBirth,
         fingerprints: hashes,
+        memberId: nextDraft.memberId,
+        phone: nextDraft.phone,
       });
       setDraft(
         refreshOnboardWarnings(nextDraft, {
@@ -171,6 +182,7 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
       setFingerprints(hashes);
       setOcrMeta(json.ocr ?? null);
       setPendingFiles(selected);
+      setUnreadAckChecked(false);
     } catch (error) {
       const message = error instanceof Error ? error.message : "";
       setError(message || "Could not reach the OCR import API. Large PDFs are staged through storage first — try again.");
@@ -182,6 +194,10 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
     if (!draft) return;
     if (!draft.firstName.trim() || !draft.lastName.trim()) {
       setError("Confirm first and last name before saving.");
+      return;
+    }
+    if (needsUnreadAck && !unreadAckChecked) {
+      setError("Acknowledge unread / truncated pages before confirming.");
       return;
     }
     if (mode === "create" && match?.reason === "fingerprint") {
@@ -460,8 +476,19 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
               these summary fields.
             </p>
           ) : null}
+          {needsUnreadAck ? (
+            <label className="flex items-start gap-2 text-sm text-ink">
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={unreadAckChecked}
+                onChange={(event) => setUnreadAckChecked(event.target.checked)}
+              />
+              <span>I reviewed unread / truncated pages (or will fill missing fields manually).</span>
+            </label>
+          ) : null}
           <div className="flex flex-wrap gap-2">
-            <Button type="submit" disabled={busy !== "idle"}>
+            <Button type="submit" disabled={busy !== "idle" || (needsUnreadAck && !unreadAckChecked)}>
               {busy === "save"
                 ? "Saving…"
                 : match

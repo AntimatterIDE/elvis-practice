@@ -433,6 +433,60 @@ export function applyEvidenceConfidence(
   return next;
 }
 
+const CLEAR_WHEN_MISSING_CITE: OnboardEvidenceKey[] = ["phone", "email", "memberId", "payerName"];
+const KEEP_WHEN_MISSING_CITE: OnboardEvidenceKey[] = ["firstName", "lastName", "dateOfBirth"];
+
+/**
+ * Cite-or-clear: drop unverified identity/insurance values; clear contact/insurance
+ * when there is no quote; keep name/DOB without a quote but warn staff to verify.
+ */
+export function clearUnverifiedEvidence(
+  draft: OnboardDraft,
+  pages: { page: number; text: string }[],
+): OnboardDraft {
+  const next: OnboardDraft = {
+    ...draft,
+    fieldConfidence: { ...draft.fieldConfidence },
+    evidence: { ...draft.evidence },
+    warnings: [...draft.warnings],
+  };
+  for (const key of EVIDENCE_KEYS) {
+    const value = String(next[key] || "").trim();
+    if (!value) {
+      next.fieldConfidence[key] = "missing";
+      continue;
+    }
+    const status = verifyEvidence(next.evidence[key], value, pages);
+    if (status === "verified") {
+      next.fieldConfidence[key] = "high";
+      continue;
+    }
+    if (status === "unverified") {
+      next[key] = "";
+      delete next.evidence[key];
+      next.fieldConfidence[key] = "missing";
+      next.warnings.push(`Cleared unverified ${key} (quote did not match OCR text).`);
+      continue;
+    }
+    // missing cite
+    if (CLEAR_WHEN_MISSING_CITE.includes(key)) {
+      next[key] = "";
+      delete next.evidence[key];
+      next.fieldConfidence[key] = "missing";
+      next.warnings.push(`Cleared ${key} with no OCR quote.`);
+      continue;
+    }
+    if (KEEP_WHEN_MISSING_CITE.includes(key)) {
+      next.fieldConfidence[key] = "medium";
+      const note = `no OCR quote — verify ${key}`;
+      if (!next.warnings.some((w) => w.toLowerCase().includes(note))) {
+        next.warnings.push(`No OCR quote — verify ${key}.`);
+      }
+    }
+  }
+  return next;
+}
+
 function normKey(value: string) {
   return value.trim().toLowerCase().replace(/\s+/g, " ");
 }
@@ -1731,7 +1785,7 @@ export async function mineOnboardDraftSectioned(
       maxOutputTokens: 4000,
     }),
   ]);
-  const merged = mergeSectionDrafts([demographics, clinical, injury]);
+  let merged = mergeSectionDrafts([demographics, clinical, injury]);
   const dropped = [...new Set([...demoCorpus.droppedPages, ...clinicalCorpus.droppedPages, ...injuryCorpus.droppedPages])].sort(
     (a, b) => a - b,
   );
@@ -1742,6 +1796,27 @@ export async function mineOnboardDraftSectioned(
       ...merged.warnings,
       `OCR truncated: pages ${shown}${more} not sent to AI miner.`,
     ];
+    const droppedPageSet = new Set(dropped);
+    const leftoverPages = (input.pages ?? []).filter((page) => droppedPageSet.has(page.page));
+    if (leftoverPages.length) {
+      const secondCorpus = buildMinerCorpus({
+        ...input,
+        pages: leftoverPages,
+        text: "",
+        maxChars: 24_000,
+      });
+      if (secondCorpus.trim().length >= 40) {
+        const secondPass = await mineOnboardDraft(
+          `Second pass over truncated pages. Fill any missing clinical, injury, or demographics fields from these pages only.\n\n${secondCorpus}`,
+          { model: clinicalModel, maxOutputTokens: 4000 },
+        );
+        merged = mergeSectionDrafts([merged, secondPass]);
+        merged.warnings = [
+          ...merged.warnings,
+          `Second-pass mined ${leftoverPages.length} dropped page${leftoverPages.length === 1 ? "" : "s"}.`,
+        ];
+      }
+    }
   }
   if ([demographics, clinical, injury].some(sectionMineFailed)) {
     merged.warnings = [
@@ -1750,8 +1825,9 @@ export async function mineOnboardDraftSectioned(
     ];
   }
   const refined = refineOnboardDraftFromCorpus(merged, fullCorpus);
-  const withConfidence = applyEvidenceConfidence(refined, input.pages ?? []);
-  return { draft: enrichOnboardDraftFromCorpus(withConfidence, fullCorpus), corpus: fullCorpus };
+  const enriched = enrichOnboardDraftFromCorpus(refined, fullCorpus);
+  const withConfidence = applyEvidenceConfidence(enriched, input.pages ?? []);
+  return { draft: clearUnverifiedEvidence(withConfidence, input.pages ?? []), corpus: fullCorpus };
 }
 
 /** Map draft values onto intake field ids via mapsTo. */

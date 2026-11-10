@@ -179,10 +179,18 @@ export function resolveBulkCardMatch(
     lastName: draft.lastName,
     dateOfBirth: draft.dateOfBirth,
     fingerprints,
+    memberId: draft.memberId,
+    phone: draft.phone,
   });
   if (!hit) return { intent: "create", match: null };
   const match = snapshotBulkMatch(hit);
-  if (forceCreate && (hit.reason === "name_dob" || hit.reason === "name_dob_fuzzy")) {
+  if (
+    forceCreate &&
+    (hit.reason === "name_dob" ||
+      hit.reason === "name_dob_fuzzy" ||
+      hit.reason === "member_id" ||
+      hit.reason === "phone")
+  ) {
     return { intent: "create", match };
   }
   return { intent: "update", match };

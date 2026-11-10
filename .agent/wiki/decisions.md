@@ -23,31 +23,37 @@
 
 ## OCR engine accuracy fixes (2026-11-09)
 
-Implemented after the read-only vet. Still open: deploy sidecar image, flip
-`service_config` to HTTPS, and expand fixture ground truth beyond insurance.
+First wave deployed (`00003-4fr` + `a3f4603`) and browser-retested. High-ROI
+push (2026-11-09 evening): clinical soft scoring, hybrid DPI/preprocess +
+Doc AI escalate on partial, cite-or-clear, second-pass truncated pages,
+unread Approve ack, DOB-scoped member/phone match + tighter fuzzy. Still not
+absolute — review-gated by design.
 
 Sidecar (`clinix-ocr/src/clinical_ocr.py`) — done
 - `_structured_from_pymupdf` OCRs image-only pages via Tesseract; sets
   `partial` + `failed_pages` when a page stays empty.
+- `OCR_HYBRID_DPI=300`, `OCR_PREPROCESS=1` (autocontrast + light deskew),
+  `OCR_FORCE_DOCAI_ON_PARTIAL=1` (onboard escalates partial PyMuPDF to Doc AI).
+  Live revision `alignment-ocr-00005-gd9`.
 
 Miner (`onboard-draft.ts`) — done
 - Clinical section corpus includes all non-noise labels (incl. `other`).
 - `buildSectionCorpus` returns `{ corpus, droppedPages }` and truncation
-  warnings surface on the draft.
+  warnings surface on the draft; second-pass remine of dropped pages.
 - Demographics wins identity on merge; conflicts + section warnings preserved.
 - Regex: phone digit boundaries, member id requires id/number/#, patient-only
   name labels, no CamelCase surname split, third-party email filter.
 - `normalizeOnboardDraft` validates DOB/email/phone/member/payer/state/ZIP;
   converts US dates to ISO.
 - Miner returns `evidence` page/quote; `verifyEvidence` /
-  `applyEvidenceConfidence` set real fieldConfidence.
+  `applyEvidenceConfidence` + `clearUnverifiedEvidence` (cite-or-clear).
 
 Matching / review — done
-- Fuzzy matches are `name_dob_fuzzy` (UI: “possible match — verify”).
-- Bulk cards show partial / unread pages; Update cards get per-field accept
-  checkboxes.
-- Fixture ground truth: `encounter-insurance-fictional` exact expected values;
-  `score_draft.py` exact checks; `npm run test:ocr-accuracy`.
+- Match order: fingerprint → name_dob → member_id → phone → name_dob_fuzzy
+  (fuzzy needs ≥2 overlap tokens and one exact token length ≥5).
+- Bulk/single: unread/partial/truncation requires ack before Approve/Confirm.
+- Soft clinical needles scored in `score_draft.py`; imaging/EMG exact scalars;
+  `npm run test:ocr-accuracy` covers insurance + cervical/lumbar packets offline.
 
 ## Claim autofill from clinic visit (2026-11-07)
 

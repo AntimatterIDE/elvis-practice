@@ -1,5 +1,23 @@
 # elvis-practice — agent log
 
+## [2026-11-09] ingest | OCR high-ROI push (fixtures + sidecar + miner + match)
+
+Soft clinical scoring in `score_draft.py` + imaging/EMG exact scalars + packet
+offline tests. Sidecar `alignment-ocr-00005-gd9`: `OCR_HYBRID_DPI=300`,
+preprocess, Doc AI escalate on partial. Miner cite-or-clear + second-pass
+dropped pages; bulk confidence badges; unread Approve ack; DOB-scoped
+member_id/phone match + tighter fuzzy. Extraction still review-gated, not absolute.
+
+## [2026-11-09] ingest | Post-deploy live browser OCR retest (pass)
+
+Prod intake after `a3f4603` + `alignment-ocr-00003-4fr` + HTTPS flip. Individual
+Angela extract: Update existing; phone `718-555-0199`; payer Fidelis; member
+`74619306600`; email conflict warning; PyMuPDF · 1 pages (chart not confirmed).
+Bulk folder (`bulk-smoke`): Angela → Update existing with Select fields to update
+(phone `3476662318`→`718-555-0199`, email —→`angela.update.smoke@example.com`);
+BulkSmoke New Person → New chart (DOB `1992-08-15`, phone `646-555-0144`,
+Self-pay). Denied both bulk cards — no chart writes.
+
 ## [2026-11-09] ingest | Deployed OCR accuracy fixes + HTTPS
 
 Redeployed `alignment-ocr` revision `00003-4fr` (hybrid-page OCR). Flipped

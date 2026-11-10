@@ -88,6 +88,7 @@ export function BulkPatientImport() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [applyResult, setApplyResult] = useState<ApplyResult | null>(null);
+  const [unreadAckChecked, setUnreadAckChecked] = useState(false);
 
   const pendingCards = useMemo(
     () => cards.filter((card) => card.status === "pending" || card.status === "failed"),
@@ -105,10 +106,17 @@ export function BulkPatientImport() {
   );
 
   const activeCard = pendingCards[activeIndex] ?? null;
+  const needsUnreadAck = Boolean(
+    activeCard &&
+      (activeCard.ocr.partial ||
+        (activeCard.ocr.failed_pages?.length ?? 0) > 0 ||
+        (activeCard.draft?.warnings ?? []).some((warning) => /OCR truncated/i.test(warning))),
+  );
   const canApprove =
     Boolean(activeCard?.draft) &&
     !bulkCardNeedsName(activeCard?.draft ?? null) &&
-    phase === "review";
+    phase === "review" &&
+    (!needsUnreadAck || unreadAckChecked);
 
   function resetAll() {
     setPhase("idle");
@@ -120,6 +128,7 @@ export function BulkPatientImport() {
     setActiveIndex(0);
     setFlipped(false);
     setApplyResult(null);
+    setUnreadAckChecked(false);
   }
 
   function onFolderChange(event: ChangeEvent<HTMLInputElement>) {
@@ -253,6 +262,7 @@ export function BulkPatientImport() {
 
   function decide(cardId: string, status: "approved" | "denied") {
     setFlipped(false);
+    setUnreadAckChecked(false);
     const updated = cards.map((card) => (card.id === cardId ? { ...card, status } : card));
     const stillPending = updated.filter((card) => card.status === "pending" || card.status === "failed");
     setCards(updated);
@@ -485,8 +495,14 @@ export function BulkPatientImport() {
                             ? `These exact files were already imported for ${activeCard.match.name}. Approve merges reviewed fields and files into that chart.`
                             : activeCard.match.reason === "name_dob_fuzzy"
                               ? `Possible match: a chart for ${activeCard.match.name} has the same date of birth and a similar name. Verify before approving an update.`
-                              : `A chart already exists for ${activeCard.match.name} (same name and date of birth). Approve updates that chart instead of creating a duplicate.`}
-                          {activeCard.match.reason === "name_dob_fuzzy" ? (
+                              : activeCard.match.reason === "member_id"
+                                ? `Possible match: a chart for ${activeCard.match.name} has the same date of birth and member id. Verify before approving an update.`
+                                : activeCard.match.reason === "phone"
+                                  ? `Possible match: a chart for ${activeCard.match.name} has the same date of birth and phone. Verify before approving an update.`
+                                  : `A chart already exists for ${activeCard.match.name} (same name and date of birth). Approve updates that chart instead of creating a duplicate.`}
+                          {activeCard.match.reason === "name_dob_fuzzy" ||
+                          activeCard.match.reason === "member_id" ||
+                          activeCard.match.reason === "phone" ? (
                             <span className="ml-1 text-amber-800">(possible match — verify)</span>
                           ) : null}
                         </p>
@@ -517,7 +533,9 @@ export function BulkPatientImport() {
                           </div>
                         </dl>
                         {activeCard.match.reason === "name_dob" ||
-                        activeCard.match.reason === "name_dob_fuzzy" ? (
+                        activeCard.match.reason === "name_dob_fuzzy" ||
+                        activeCard.match.reason === "member_id" ||
+                        activeCard.match.reason === "phone" ? (
                           <label className="mt-1 flex items-start gap-2 text-sm text-ink">
                             <input
                               type="checkbox"
@@ -541,6 +559,7 @@ export function BulkPatientImport() {
                             const chartValue = matchFieldValue(activeCard.match!, key);
                             const draftValue = draftFieldValue(activeCard.draft!, key);
                             const isDifferent = Boolean(draftValue) && draftValue !== chartValue;
+                            const confidence = activeCard.draft?.fieldConfidence?.[key];
                             if (!draftValue && !chartValue) return null;
                             return (
                               <label key={key} className="flex flex-wrap items-center gap-2 text-sm text-ink">
@@ -557,6 +576,19 @@ export function BulkPatientImport() {
                                     <span aria-hidden="true">→</span>
                                     <span className="text-oxide-deep">{draftValue}</span>
                                   </>
+                                ) : null}
+                                {confidence && confidence !== "missing" ? (
+                                  <span
+                                    className={
+                                      confidence === "high"
+                                        ? "text-xs uppercase tracking-[0.08em] text-muted"
+                                        : confidence === "medium"
+                                          ? "text-xs uppercase tracking-[0.08em] text-amber-800"
+                                          : "text-xs uppercase tracking-[0.08em] text-oxide-deep"
+                                    }
+                                  >
+                                    {confidence}
+                                  </span>
                                 ) : null}
                               </label>
                             );
@@ -702,6 +734,20 @@ export function BulkPatientImport() {
                   </div>
                 </div>
               </div>
+
+              {needsUnreadAck ? (
+                <label className="flex items-start gap-2 text-sm text-ink">
+                  <input
+                    type="checkbox"
+                    className="mt-1"
+                    checked={unreadAckChecked}
+                    onChange={(event) => setUnreadAckChecked(event.target.checked)}
+                  />
+                  <span>
+                    I reviewed unread / truncated pages (or will fill missing fields manually).
+                  </span>
+                </label>
+              ) : null}
 
               <div className="flex flex-wrap gap-2">
                 <Button type="button" variant="secondary" onClick={() => setFlipped((value) => !value)}>

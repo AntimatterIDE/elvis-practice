@@ -24,7 +24,10 @@
         "pages": 2,
         "text_chars": 4262,
         "sha256": "d4cfeeed6dfa7a6977ff102865d6a7f212c823a3c9007d13f970d1fef2bc9578",
-        "bytes": 283898
+        "bytes": 283898,
+        "expected": {
+          "imagingFindings": "10 x 1.5 mm disc herniation showing an annular tear"
+        }
       },
       {
         "file": "singles/outside-imaging-lumbar-brain-dictation.pdf",
@@ -40,7 +43,13 @@
         "pages": 4,
         "text_chars": 4555,
         "sha256": "9b99941fe43ffcda4ac68901e839e6014965919efd1e24d098cbdfb68e882db5",
-        "bytes": 373659
+        "bytes": 373659,
+        "expected": {
+          "firstName": "Sample",
+          "lastName": "Radiculopathy Case",
+          "dateOfBirth": "1947-07-07",
+          "sex": "male"
+        }
       },
       {
         "file": "singles/emg-cervical-lumbar-abnormal.pdf",

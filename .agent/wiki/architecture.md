@@ -55,13 +55,11 @@
   `OCR_SERVICE_URL` + `OCR_SERVICE_KEY` win when both are set; otherwise the
   `service_config` row `id=ocr` (`url` + `key`, cached 60 s).
 - `service_config` points at `https://alignment-ocr.136.69.85.193.sslip.io`
-  (cert ACTIVE; flipped 2026-11-09). Cloud Run revision `alignment-ocr-00003-4fr`
-  includes hybrid-page OCR fallback.
-- Accuracy fixes (2026-11-09): hybrid-page Tesseract fallback + `partial`/
-  `failed_pages`; miner validation/evidence/demographics-first merge; bulk
-  Update per-field accept. See
-  [decisions.md](decisions.md#ocr-engine-accuracy-fixes-2026-11-09).
-  Redeploy `alignment-ocr` image before hybrid-page OCR is live in prod.
+  (cert ACTIVE; flipped 2026-11-09). Cloud Run revision `alignment-ocr-00005-gd9`
+  includes hybrid DPI 300, preprocess, and Doc AI escalate on partial.
+- Accuracy fixes (2026-11-09): hybrid-page Tesseract + cite-or-clear +
+  truncated-page second pass + unread Approve ack + member/phone soft match.
+  See [decisions.md](decisions.md#ocr-engine-accuracy-fixes-2026-11-09).
 
 ## OCR → chart (review gate)
 
@@ -74,11 +72,12 @@
 - **Bulk folder import** (Patient intake): `BulkPatientImport` +
   `lib/ocr/bulk-import.ts`. Staff picks a folder (`webkitdirectory`). Subfolders
   → one packet; root files → one packet each. Sequential OCR extract →
-  `resolveBulkCardMatch` (`findOcrImportMatch`: fingerprint or name+DOB) tags
-  each flippable card as **New** or **Update** and shows “On chart now”
-  (name/DOB/payer/member/phone/email). Staff can edit, Approve, or Deny every
-  card; name/DOB matches may opt into “create separate anyway”; fingerprint
-  matches stay updates. Apply runs create
-  (`patientFromOnboardDraftWithHashes`) or merge (`mergeOnboardIntoPatient` +
-  overwrite accepted keys) then `fileOnboardPacketToChart`. Single-packet
-  `OutsideRecordsImport` uses the same detect-first rule and chart snapshot.
+  `resolveBulkCardMatch` (`findOcrImportMatch`: fingerprint, name+DOB,
+  member_id, phone, or tightened fuzzy) tags each flippable card as **New** or
+  **Update** and shows “On chart now”. Staff can edit, Approve, or Deny;
+  soft matches may opt into “create separate anyway”; fingerprint stays
+  update. Partial / unread / truncated pages require an ack checkbox before
+  Approve. Apply runs create (`patientFromOnboardDraftWithHashes`) or merge
+  (`mergeOnboardIntoPatient` + overwrite accepted keys) then
+  `fileOnboardPacketToChart`. Single-packet `OutsideRecordsImport` uses the
+  same detect-first rule, chart snapshot, and unread ack.
