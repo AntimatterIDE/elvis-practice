@@ -33,6 +33,7 @@ type ExtractResponse = {
     method_used: string;
     page_count: number;
     partial: boolean;
+    failed_pages?: number[];
     processing_ms: number;
     page_labels: { page: number; label: string }[];
   };

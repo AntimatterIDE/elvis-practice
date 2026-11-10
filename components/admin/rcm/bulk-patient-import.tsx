@@ -108,8 +108,8 @@ export function BulkPatientImport() {
   const activeCard = pendingCards[activeIndex] ?? null;
   const needsUnreadAck = Boolean(
     activeCard &&
-      (activeCard.ocr.partial ||
-        (activeCard.ocr.failed_pages?.length ?? 0) > 0 ||
+      ((activeCard.ocr?.partial ?? false) ||
+        (activeCard.ocr?.failed_pages?.length ?? 0) > 0 ||
         (activeCard.draft?.warnings ?? []).some((warning) => /OCR truncated/i.test(warning))),
   );
   const canApprove =
