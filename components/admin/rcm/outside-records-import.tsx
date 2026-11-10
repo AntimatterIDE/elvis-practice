@@ -46,10 +46,17 @@ async function sha256Hex(file: File) {
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" | "hero" }) {
+export function OutsideRecordsImport({
+  variant = "panel",
+  embedded = false,
+}: {
+  variant?: "panel" | "hero";
+  /** When true, omit the outer card chrome — used inside RecordsImportCard. */
+  embedded?: boolean;
+}) {
   const router = useRouter();
   const { patients, rememberPatient } = useRcm();
-  const hero = variant === "hero";
+  const hero = variant === "hero" && !embedded;
   const [files, setFiles] = useState<FileList | null>(null);
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [draft, setDraft] = useState<OnboardDraft | null>(null);
@@ -252,27 +259,21 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
     router.push(`/admin/operations/patients/${patient.id}`);
   }
 
-  return (
-    <section
-      className={cn(
-        "relative grid gap-4 overflow-hidden",
-        hero
-          ? "rounded-3xl border border-oxide/25 bg-gradient-to-br from-mint/80 via-card to-paper p-5 shadow-[0_22px_50px_-36px_rgb(10_110_102_/_0.55)] sm:p-6"
-          : panelClass,
-      )}
-    >
-      {hero ? <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-oxide" aria-hidden="true" /> : null}
-      <div>
-        {hero ? <p className="kicker text-oxide-deep">Records</p> : null}
-        <h2 className={cn("font-display tracking-tight text-ink", hero ? "mt-2 text-3xl sm:text-4xl" : "text-2xl")}>
-          {hero ? "Import a packet and open a chart" : "Records"}
-        </h2>
-        <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
-          {hero
-            ? "Back-office import — no patient link required. Extract, review, and confirm to create or update a chart and file the PDFs."
-            : "Extract is safe to re-run on the same PDFs (nothing is saved until you review the draft and confirm). Large packets upload through storage first so they are not blocked by the request size limit. Confirm writes only the fields you reviewed on this form, files the PDFs into chart document slots, and keeps longer clinical text in medical history / case notes."}
-        </p>
-      </div>
+  const body = (
+    <>
+      {!embedded ? (
+        <div>
+          {hero ? <p className="kicker text-oxide-deep">Records</p> : null}
+          <h2 className={cn("font-display tracking-tight text-ink", hero ? "mt-2 text-3xl sm:text-4xl" : "text-2xl")}>
+            {hero ? "Import a packet and open a chart" : "Records"}
+          </h2>
+          <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
+            {hero
+              ? "Back-office import — no patient link required. Extract, review, and confirm to create or update a chart and file the PDFs."
+              : "Extract is safe to re-run on the same PDFs (nothing is saved until you review the draft and confirm). Large packets upload through storage first so they are not blocked by the request size limit. Confirm writes only the fields you reviewed on this form, files the PDFs into chart document slots, and keeps longer clinical text in medical history / case notes."}
+          </p>
+        </div>
+      ) : null}
       <form onSubmit={onExtract} className="grid gap-3">
         <Field label="Files">
           <input
@@ -510,6 +511,22 @@ export function OutsideRecordsImport({ variant = "panel" }: { variant?: "panel" 
         </form>
       ) : null}
       {error ? <p className="text-sm text-emergency">{error}</p> : null}
+    </>
+  );
+
+  if (embedded) return <div className="grid gap-4">{body}</div>;
+
+  return (
+    <section
+      className={cn(
+        "relative grid gap-4 overflow-hidden",
+        hero
+          ? "rounded-3xl border border-oxide/25 bg-gradient-to-br from-mint/80 via-card to-paper p-5 shadow-[0_22px_50px_-36px_rgb(10_110_102_/_0.55)] sm:p-6"
+          : panelClass,
+      )}
+    >
+      {hero ? <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-oxide" aria-hidden="true" /> : null}
+      {body}
     </section>
   );
 }

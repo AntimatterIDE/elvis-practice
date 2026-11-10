@@ -77,7 +77,12 @@ function updateDraftField<K extends keyof OnboardDraft>(
   return { ...draft, [key]: value };
 }
 
-export function BulkPatientImport() {
+export function BulkPatientImport({
+  embedded = false,
+}: {
+  /** When true, omit the outer card chrome — used inside RecordsImportCard. */
+  embedded?: boolean;
+} = {}) {
   const { patients, rememberPatient } = useRcm();
   const [phase, setPhase] = useState<Phase>("idle");
   const [error, setError] = useState("");
@@ -360,21 +365,22 @@ export function BulkPatientImport() {
   const reviewDone = pendingCards.length === 0 && (phase === "review" || phase === "creating");
   const isCreating = phase === "creating";
 
-  return (
-    <section className="relative grid gap-4 overflow-hidden rounded-3xl border border-oxide/25 bg-gradient-to-br from-mint/80 via-card to-paper p-5 shadow-[0_22px_50px_-36px_rgb(10_110_102_/_0.55)] sm:p-6">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-oxide" aria-hidden="true" />
-      <div>
-        <p className="kicker text-oxide-deep">Bulk</p>
-        <h2 className="mt-2 font-display text-3xl tracking-tight text-ink sm:text-4xl">
-          Bulk folder import
-        </h2>
-        <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
-          Choose a folder of patient records. Subfolders become one draft each; loose PDFs and images at
-          the root become one draft per file. After OCR we detect existing charts (fingerprint or
-          name + date of birth) and put matches in the queue as updates — not duplicate patients.
-          Flip, edit, Approve, or Deny each card, then apply only what you approved.
-        </p>
-      </div>
+  const body = (
+    <>
+      {!embedded ? (
+        <div>
+          <p className="kicker text-oxide-deep">Bulk</p>
+          <h2 className="mt-2 font-display text-3xl tracking-tight text-ink sm:text-4xl">
+            Bulk folder import
+          </h2>
+          <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
+            Choose a folder of patient records. Subfolders become one draft each; loose PDFs and images at
+            the root become one draft per file. After OCR we detect existing charts (fingerprint or
+            name + date of birth) and put matches in the queue as updates — not duplicate patients.
+            Flip, edit, Approve, or Deny each card, then apply only what you approved.
+          </p>
+        </div>
+      ) : null}
 
       {phase === "idle" || phase === "extracting" ? (
         <div className="grid gap-3">
@@ -866,6 +872,15 @@ export function BulkPatientImport() {
       ) : null}
 
       {error ? <p className="text-sm text-emergency">{error}</p> : null}
+    </>
+  );
+
+  if (embedded) return <div className="grid gap-4">{body}</div>;
+
+  return (
+    <section className="relative grid gap-4 overflow-hidden rounded-3xl border border-oxide/25 bg-gradient-to-br from-mint/80 via-card to-paper p-5 shadow-[0_22px_50px_-36px_rgb(10_110_102_/_0.55)] sm:p-6">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-oxide" aria-hidden="true" />
+      {body}
     </section>
   );
 }

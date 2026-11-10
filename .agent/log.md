@@ -1,5 +1,11 @@
 # elvis-practice — agent log
 
+## [2026-11-10] ingest | Intake records import = one card
+
+Merged single-packet + bulk folder into `RecordsImportCard` with One packet /
+Folder tabs. `OutsideRecordsImport` and `BulkPatientImport` take `embedded`
+to drop duplicate chrome. Mounted from `intake-desk.tsx`.
+
 ## [2026-11-09] ingest | OCR high-ROI push (fixtures + sidecar + miner + match)
 
 Soft clinical scoring in `score_draft.py` + imaging/EMG exact scalars + packet
