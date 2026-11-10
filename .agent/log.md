@@ -1,5 +1,12 @@
 # elvis-practice — agent log
 
+## [2026-11-10] ingest | Intake records import card live on prod
+
+`2b055b0` (RecordsImportCard) + retrigger `7a2c094`. First Vercel attempt on
+`2b055b0` failed instantly (no build); empty-commit redeploy succeeded.
+Production: thealignmentclinic.com — Vercel
+`CKiZybJh3Bk4qtdHRaaZiDWojHLJ`.
+
 ## [2026-11-10] ingest | Intake records import = one card
 
 Merged single-packet + bulk folder into `RecordsImportCard` with One packet /
