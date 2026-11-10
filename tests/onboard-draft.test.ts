@@ -18,6 +18,8 @@ import {
   coverageFromPatient,
   refreshOnboardWarnings,
   seedInjuryCaseFromCorpus,
+  applyEvidenceConfidence,
+  verifyEvidence,
 } from "@/lib/ocr/onboard-draft";
 import { normalizeIcdCode } from "@/lib/ocr/icd-normalize";
 import { defaultDocuments } from "@/lib/rcm/chart";
@@ -129,7 +131,7 @@ describe("onboard draft", () => {
       lastName: "Lee",
       dateOfBirth: "1975-02-02",
       sex: "female",
-      phone: "555-0100",
+      phone: "555-555-0100",
       email: "a@example.com",
       address: "",
       city: "",
@@ -266,7 +268,7 @@ describe("onboard draft", () => {
       ...emptyish(),
       firstName: "Pat",
       lastName: "Lee",
-      phone: "555-0100",
+      phone: "555-555-0100",
       emergencyName: "Sam",
     });
     const b = normalizeOnboardDraft({
@@ -293,7 +295,7 @@ describe("onboard draft", () => {
       ],
       merged,
     );
-    expect(answers).toEqual({ firstName: "Pat", phone: "555-0100", emergencyName: "Sam" });
+    expect(answers).toEqual({ firstName: "Pat", phone: "555-555-0100", emergencyName: "Sam" });
   });
 
   it("maps packet hints to chart slots and marks filed documents", () => {
@@ -312,26 +314,26 @@ describe("onboard draft", () => {
     expect(docs.find((item) => item.id === "outside-imaging")?.status).toBe("received");
   });
 
-  it("splits CamelCase identity and strips honorifics", () => {
-    const camel = refineIdentity(
+  it("strips honorifics and role labels without splitting CamelCase surnames", () => {
+    // McDonald / DeLuca must stay intact — never split on internal capitals.
+    const mcdonald = refineIdentity(
       normalizeOnboardDraft({
         ...emptyish(),
-        firstName: "SampleRadiculopathyCase",
-        lastName: "",
+        firstName: "Pat",
+        lastName: "McDonald",
       }),
     );
-    expect(camel.firstName).toBe("Sample");
-    expect(camel.lastName).toBe("Radiculopathy Case");
+    expect(mcdonald.firstName).toBe("Pat");
+    expect(mcdonald.lastName).toBe("McDonald");
 
-    const splitLast = refineIdentity(
+    const deluca = refineIdentity(
       normalizeOnboardDraft({
         ...emptyish(),
-        firstName: "Sample",
-        lastName: "SampleRadiculopathyCase",
+        firstName: "Pat",
+        lastName: "DeLuca",
       }),
     );
-    expect(splitLast.firstName).toBe("Sample");
-    expect(splitLast.lastName).toBe("Radiculopathy Case");
+    expect(deluca.lastName).toBe("DeLuca");
 
     const honor = refineIdentity(
       normalizeOnboardDraft({
@@ -471,7 +473,7 @@ describe("onboard draft", () => {
   });
 
   it("includes page-1 imaging text in demographics section corpus", () => {
-    const corpus = buildSectionCorpus(
+    const { corpus } = buildSectionCorpus(
       {
         text: "",
         pages: [
@@ -489,7 +491,7 @@ describe("onboard draft", () => {
   });
 
   it("includes early consult narrative in injury section corpus", () => {
-    const corpus = buildSectionCorpus(
+    const { corpus } = buildSectionCorpus(
       {
         text: "",
         pages: [
@@ -503,6 +505,158 @@ describe("onboard draft", () => {
     expect(corpus).toContain("History of MVA with neck pain");
     expect(corpus).toContain("MRI cervical impression");
     expect(corpus).toContain("EMG abnormal");
+  });
+
+  it("clinical section corpus includes other-labeled meds pages", () => {
+    const { corpus } = buildSectionCorpus(
+      {
+        text: "",
+        pages: [
+          { page: 1, text: "Consult note", label: "consult" },
+          {
+            page: 2,
+            text: "MEDICATIONS: gabapentin 300 mg TID. ALLERGIES: penicillin anaphylaxis. Past medical history: hypertension.",
+            label: "other",
+          },
+        ],
+      },
+      "clinical",
+    );
+    expect(corpus).toContain("gabapentin");
+    expect(corpus).toContain("penicillin");
+  });
+
+  it("tracks dropped pages when section corpus exceeds maxChars", () => {
+    const pages = Array.from({ length: 20 }, (_, i) => ({
+      page: i + 1,
+      text: `PAGE ${i + 1} clinical narrative with medications and allergies. `.repeat(80),
+      label: "other" as const,
+    }));
+    const { corpus, droppedPages } = buildSectionCorpus({ text: "", pages }, "clinical", 8_000);
+    expect(corpus.length).toBeLessThanOrEqual(8_000);
+    expect(droppedPages.length).toBeGreaterThan(0);
+  });
+
+  it("demographics wins identity on merge and warns on conflict", () => {
+    const demo = normalizeOnboardDraft({
+      ...emptyish(),
+      firstName: "John",
+      lastName: "Reyes",
+      dateOfBirth: "1970-02-02",
+      phone: "347-555-0001",
+      payerName: "Fidelis Care",
+    });
+    const clinical = normalizeOnboardDraft({
+      ...emptyish(),
+      firstName: "John",
+      lastName: "Reyes",
+      dateOfBirth: "1970-02-20",
+      phone: "718-555-0111",
+    });
+    const injury = normalizeOnboardDraft({
+      ...emptyish(),
+      firstName: "Amit",
+      lastName: "Shah",
+      payerName: "GEICO",
+    });
+    const merged = mergeSectionDrafts([demo, clinical, injury]);
+    expect(merged.firstName).toBe("John");
+    expect(merged.lastName).toBe("Reyes");
+    expect(merged.dateOfBirth).toBe("1970-02-02");
+    expect(merged.phone).toBe("347-555-0001");
+    expect(merged.payerName).toBe("Fidelis Care");
+    expect(merged.warnings.some((w) => /Conflict in firstName/i.test(w))).toBe(true);
+    expect(merged.warnings.some((w) => /Conflict in dateOfBirth/i.test(w))).toBe(true);
+  });
+
+  it("does not invent phone from member id or member id from Member Services", () => {
+    const fromMember = refineOnboardDraftFromCorpus(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Angela",
+        lastName: "Morales-Guity",
+        dateOfBirth: "1985-01-27",
+        memberId: "74619306600",
+        payerName: "F",
+      }),
+      "Patient Name: Angela Morales-Guity DOB: 01/27/1985 Member ID: 74619306600 Payer: F",
+    );
+    expect(fromMember.phone).toBe("");
+    expect(fromMember.payerName).toBe("");
+
+    const services = refineOnboardDraftFromCorpus(
+      normalizeOnboardDraft({ ...emptyish(), firstName: "A", lastName: "B" }),
+      "Fidelis Care\nMember Services: 1-888-343-3547\nSubscriber Name: ANGELA MORALES",
+    );
+    expect(services.memberId).not.toBe("Services");
+    expect(services.memberId).toBe("");
+
+    const physician = refineOnboardDraftFromCorpus(
+      normalizeOnboardDraft({ ...emptyish() }),
+      "Physician Name: Amit Shah\nMRN 44121",
+    );
+    expect(physician.firstName).toBe("");
+    expect(physician.lastName).toBe("");
+  });
+
+  it("verifies evidence quotes and sets field confidence", () => {
+    const pages = [
+      { page: 1, text: "Patient Name: Angela Morales-Guity DOB: 01/27/1985 Member ID: 74619306600" },
+      { page: 2, text: "Unrelated consult text" },
+    ];
+    expect(
+      verifyEvidence({ page: 1, quote: "Angela Morales-Guity" }, "Angela", pages),
+    ).toBe("verified");
+    expect(verifyEvidence({ page: 2, quote: "Angela Morales-Guity" }, "Angela", pages)).toBe(
+      "unverified",
+    );
+    expect(verifyEvidence(undefined, "Angela", pages)).toBe("missing");
+
+    const draft = applyEvidenceConfidence(
+      normalizeOnboardDraft({
+        ...emptyish(),
+        firstName: "Angela",
+        lastName: "Morales-Guity",
+        dateOfBirth: "1985-01-27",
+        memberId: "74619306600",
+        evidence: {
+          firstName: { page: 1, quote: "Angela Morales-Guity" },
+          lastName: { page: 1, quote: "Angela Morales-Guity" },
+          dateOfBirth: { page: 1, quote: "DOB: 01/27/1985" },
+          memberId: { page: 1, quote: "Member ID: 74619306600" },
+          phone: { page: 0, quote: "" },
+          email: { page: 0, quote: "" },
+          payerName: { page: 1, quote: "not on this page" },
+        },
+      }),
+      pages,
+    );
+    expect(draft.fieldConfidence.firstName).toBe("high");
+    expect(draft.fieldConfidence.memberId).toBe("high");
+    expect(draft.fieldConfidence.payerName).toBe("missing");
+  });
+
+  it("converts US DOB and clears invalid field values", () => {
+    const draft = normalizeOnboardDraft({
+      ...emptyish(),
+      firstName: "Angela",
+      lastName: "Morales-Guity",
+      dateOfBirth: "01/27/1985",
+      payerName: "F",
+      email: "not-an-email",
+      phone: "12",
+      state: "New Yrok",
+      postalCode: "1",
+      memberId: "N/A",
+    });
+    expect(draft.dateOfBirth).toBe("1985-01-27");
+    expect(draft.payerName).toBe("");
+    expect(draft.email).toBe("");
+    expect(draft.phone).toBe("");
+    expect(draft.state).toBe("");
+    expect(draft.postalCode).toBe("");
+    expect(draft.memberId).toBe("");
+    expect(draft.warnings.some((w) => /Invalid payer/i.test(w))).toBe(true);
   });
 
   it("seeds injuryCase from MVA keywords without inventing DOI", () => {

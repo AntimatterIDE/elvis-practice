@@ -1,6 +1,10 @@
 import type { OnboardDraft } from "@/lib/ocr/onboard-draft";
 import type { OnboardExtractOcrMeta } from "@/lib/ocr/extract-client";
-import { findOcrImportMatch, type OcrImportMatch } from "@/lib/ocr/dedupe";
+import {
+  findOcrImportMatch,
+  type OnboardMergeOverwriteKey,
+  type OcrImportMatch,
+} from "@/lib/ocr/dedupe";
 import { patientName } from "@/lib/rcm/format";
 import type { Patient } from "@/lib/rcm/types";
 
@@ -53,6 +57,11 @@ export type BulkImportCard = {
    * Fingerprint matches always stay updates (same files already on that chart).
    */
   forceCreate: boolean;
+  /**
+   * Update cards: fields staff chose to overwrite on the chart.
+   * When unset, Approve still uses every non-empty draft field (legacy).
+   */
+  acceptFields?: OnboardMergeOverwriteKey[];
 };
 
 /** PDF or common image — same surface as single-packet outside records. */
@@ -173,7 +182,7 @@ export function resolveBulkCardMatch(
   });
   if (!hit) return { intent: "create", match: null };
   const match = snapshotBulkMatch(hit);
-  if (forceCreate && hit.reason === "name_dob") {
+  if (forceCreate && (hit.reason === "name_dob" || hit.reason === "name_dob_fuzzy")) {
     return { intent: "create", match };
   }
   return { intent: "update", match };

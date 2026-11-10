@@ -17,11 +17,12 @@ export function normalizeHashes(hashes: string[] | undefined | null) {
 
 export type OcrImportMatch = {
   patient: Patient;
-  reason: "fingerprint" | "name_dob";
+  /** fingerprint = same files; name_dob = exact/swapped; name_dob_fuzzy = possible match (verify). */
+  reason: "fingerprint" | "name_dob" | "name_dob_fuzzy";
   matchedHashes: string[];
 };
 
-/** Prefer fingerprint match; else exact first+last+DOB. */
+/** Prefer fingerprint match; else exact first+last+DOB; else fuzzy same-DOB name tokens. */
 export function findOcrImportMatch(
   patients: Patient[],
   input: { firstName: string; lastName: string; dateOfBirth: string; fingerprints: string[] },
@@ -44,31 +45,33 @@ export function findOcrImportMatch(
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dob)) return null;
   const key = normalizePersonKey(input.firstName, input.lastName, dob);
   const swapped = normalizePersonKey(input.lastName, input.firstName, dob);
+  const exact =
+    patients.find((patient) => normalizePersonKey(patient.firstName, patient.lastName, patient.dateOfBirth) === key) ||
+    patients.find((patient) => normalizePersonKey(patient.firstName, patient.lastName, patient.dateOfBirth) === swapped);
+  if (exact) return { patient: exact, reason: "name_dob", matchedHashes: [] };
+
   const tokens = new Set(
     `${input.firstName} ${input.lastName}`
       .toLowerCase()
       .split(/[^a-z]+/)
       .filter((part) => part.length > 1),
   );
-  const person =
-    patients.find((patient) => normalizePersonKey(patient.firstName, patient.lastName, patient.dateOfBirth) === key) ||
-    patients.find((patient) => normalizePersonKey(patient.firstName, patient.lastName, patient.dateOfBirth) === swapped) ||
-    patients.find((patient) => {
-      if (patient.dateOfBirth.slice(0, 10) !== dob) return false;
-      const existing = new Set(
-        `${patient.firstName} ${patient.lastName}`
-          .toLowerCase()
-          .split(/[^a-z]+/)
-          .filter((part) => part.length > 1),
-      );
-      // Same DOB and at least two shared name tokens (handles Francisco/Fransisco + flipped order).
-      const overlap = [...tokens].filter((token) =>
-        [...existing].some((have) => have === token || have.startsWith(token.slice(0, 4)) || token.startsWith(have.slice(0, 4))),
-      );
-      return overlap.length >= 2;
-    });
-  if (!person) return null;
-  return { patient: person, reason: "name_dob", matchedHashes: [] };
+  const fuzzy = patients.find((patient) => {
+    if (patient.dateOfBirth.slice(0, 10) !== dob) return false;
+    const existing = new Set(
+      `${patient.firstName} ${patient.lastName}`
+        .toLowerCase()
+        .split(/[^a-z]+/)
+        .filter((part) => part.length > 1),
+    );
+    // Same DOB and at least two shared name tokens (handles Francisco/Fransisco + flipped order).
+    const overlap = [...tokens].filter((token) =>
+      [...existing].some((have) => have === token || have.startsWith(token.slice(0, 4)) || token.startsWith(have.slice(0, 4))),
+    );
+    return overlap.length >= 2;
+  });
+  if (!fuzzy) return null;
+  return { patient: fuzzy, reason: "name_dob_fuzzy", matchedHashes: [] };
 }
 
 function mergeUniqueByName<T extends { id: string; name?: string; substance?: string }>(

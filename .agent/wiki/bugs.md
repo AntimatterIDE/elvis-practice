@@ -1,5 +1,15 @@
 # Bugs — elvis-practice
 
+## [2026-11-09] OCR 502 from shared staging sidecar
+
+**Symptom:** Bulk/outside-records extract returned HTTP 502.  
+**Cause:** App still pointed at shared `clinix-ocr-staging` (Antimatter), which was
+down/unreachable; Alignment Clinic needs its own OCR.  
+**Fix:** Deploy `alignment-ocr` in `cs-project-chorn3hu` behind LB IP
+`136.69.85.193`; point Supabase `service_config` id=ocr at that URL + key.
+Org policy blocks Run `allUsers` and SA keys — use LB +
+`--no-invoker-iam-check` + LB-only ingress (not public `*.run.app`).
+
 ## [2026-11-09] Fidelis Angela claim “invalid member” — qualified RCA
 
 **Symptom:** Slack said Stedi rejected with “invalid member”; first claims looked “denied.”  

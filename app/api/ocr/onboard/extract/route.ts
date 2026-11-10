@@ -160,6 +160,7 @@ export async function POST(request: Request) {
         partial: merged.partial,
         processing_ms: merged.processing_ms,
         page_labels: merged.page_labels ?? [],
+        failed_pages: merged.failed_pages ?? [],
         form_field_count: merged.form_fields?.length ?? 0,
       },
     });

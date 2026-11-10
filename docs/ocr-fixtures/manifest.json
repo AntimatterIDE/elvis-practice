@@ -128,7 +128,15 @@
         "pages": 2,
         "text_chars": 1289,
         "sha256": "651e792cb052e2d99e2e8dfc4e834d6c1809f82d4d4f2507f1b71765342478bd",
-        "bytes": 3550
+        "bytes": 3550,
+        "expected": {
+          "firstName": "Alicia",
+          "lastName": "Mendel",
+          "dateOfBirth": "1986-07-14",
+          "payerName": "SilverShield Health Plan",
+          "memberId": "SS-983441221",
+          "sex": "female"
+        }
       }
     ],
     "packets": [

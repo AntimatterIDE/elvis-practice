@@ -22,7 +22,7 @@ function basePatient(extra: Partial<Patient> = {}): Patient {
       sex: "female",
       memberId: "",
       payerName: "Self-pay",
-      phone: "555-0100",
+      phone: "555-555-0100",
       email: "",
       address: "",
       city: "",
@@ -80,6 +80,14 @@ describe("ocr dedupe", () => {
       },
     );
     expect(flipped?.patient.id).toBe("p_agonaldo");
+    expect(flipped?.reason).toBe("name_dob_fuzzy");
+
+    const twin = findOcrImportMatch(
+      [basePatient({ id: "p_twin", firstName: "Daniel", lastName: "Hernandez", dateOfBirth: "2001-06-14", ocrImportHashes: [] })],
+      { firstName: "Daniela", lastName: "Hernandez", dateOfBirth: "2001-06-14", fingerprints: [] },
+    );
+    expect(twin?.reason).toBe("name_dob_fuzzy");
+    expect(twin?.patient.id).toBe("p_twin");
   });
 
   it("stores fingerprints on create and merges without duplicating problems", () => {
@@ -108,7 +116,7 @@ describe("ocr dedupe", () => {
     expect(merged.ocrImportHashes?.sort()).toEqual([hashA, hashB].sort());
     expect(merged.problems.filter((item) => item.name === "Radiculopathy")).toHaveLength(1);
     // Phone already filled — without overwrite it stays.
-    expect(merged.phone).toBe("555-0100");
+    expect(merged.phone).toBe("555-555-0100");
     expect(merged.documents.find((item) => item.id === "outside-records")?.status).toBe("received");
   });
 
@@ -118,7 +126,7 @@ describe("ocr dedupe", () => {
       firstName: "Janet",
       lastName: "Doe",
       dateOfBirth: "1980-05-01",
-      phone: "555-9999",
+      phone: "555-555-9999",
       email: "janet@example.com",
       problems: [{ name: "Cervical radiculopathy", icd: "M54.12", status: "active", onset: "" }],
     });
@@ -127,7 +135,7 @@ describe("ocr dedupe", () => {
       problems: [{ id: "prob1", name: "Lumbar strain", icd: "", status: "active", onset: "" }],
     });
     const ignored = mergeOnboardIntoPatient(existing, draft, [], { accept: [] });
-    expect(ignored.phone).toBe("555-0100");
+    expect(ignored.phone).toBe("555-555-0100");
     expect(ignored.email).toBe("old@example.com");
     expect(ignored.firstName).toBe("Jane");
     expect(ignored.problems).toHaveLength(1);
@@ -136,7 +144,7 @@ describe("ocr dedupe", () => {
     const filled = mergeOnboardIntoPatient(existing, draft, [], {
       accept: ["email", "problems"],
     });
-    expect(filled.phone).toBe("555-0100");
+    expect(filled.phone).toBe("555-555-0100");
     expect(filled.email).toBe("old@example.com");
     expect(filled.firstName).toBe("Jane");
     expect(filled.problems).toHaveLength(2);
@@ -145,7 +153,7 @@ describe("ocr dedupe", () => {
       accept: ["phone", "email", "firstName", "problems"],
       overwrite: ["phone", "email", "firstName", "problems"],
     });
-    expect(overwritten.phone).toBe("555-9999");
+    expect(overwritten.phone).toBe("555-555-9999");
     expect(overwritten.email).toBe("janet@example.com");
     expect(overwritten.firstName).toBe("Janet");
     expect(overwritten.problems).toHaveLength(1);

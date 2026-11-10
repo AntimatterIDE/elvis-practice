@@ -17,6 +17,7 @@ import {
   mergeOnboardIntoPatient,
   onboardDraftAcceptKeys,
   patientFromOnboardDraftWithHashes,
+  type OnboardMergeOverwriteKey,
 } from "@/lib/ocr/dedupe";
 import { extractOnboardFromFiles } from "@/lib/ocr/extract-client";
 import { fileOnboardPacketToChart } from "@/lib/ocr/file-onboard";
@@ -24,6 +25,40 @@ import { markSlotsFromUploads, type OnboardDraft } from "@/lib/ocr/onboard-draft
 import { patientName } from "@/lib/rcm/format";
 import type { Sex } from "@/lib/rcm/types";
 import { cn } from "@/lib/utils";
+
+const UPDATE_COMPARE_FIELDS: Array<{ key: OnboardMergeOverwriteKey; label: string }> = [
+  { key: "firstName", label: "First name" },
+  { key: "lastName", label: "Last name" },
+  { key: "dateOfBirth", label: "Date of birth" },
+  { key: "phone", label: "Phone" },
+  { key: "email", label: "Email" },
+  { key: "payerName", label: "Payer" },
+  { key: "memberId", label: "Member id" },
+];
+
+function draftFieldValue(draft: OnboardDraft, key: OnboardMergeOverwriteKey): string {
+  const value = draft[key as keyof OnboardDraft];
+  if (typeof value === "string") return value.trim();
+  if (key === "sex" && draft.sex !== "unknown") return draft.sex;
+  return "";
+}
+
+function matchFieldValue(
+  match: NonNullable<BulkImportCard["match"]>,
+  key: OnboardMergeOverwriteKey,
+): string {
+  if (key === "firstName" || key === "lastName") {
+    const parts = match.name.split(/\s+/);
+    if (key === "firstName") return parts[0] || "";
+    return parts.slice(1).join(" ");
+  }
+  if (key === "dateOfBirth") return match.dateOfBirth || "";
+  if (key === "phone") return match.phone || "";
+  if (key === "email") return match.email || "";
+  if (key === "payerName") return match.payerName || "";
+  if (key === "memberId") return match.memberId || "";
+  return "";
+}
 
 type Phase = "idle" | "extracting" | "review" | "creating" | "done";
 
@@ -139,6 +174,12 @@ export function BulkPatientImport() {
         continue;
       }
       const resolved = resolveBulkCardMatch(patients, result.draft, result.fingerprints, false);
+      const acceptFields =
+        resolved.intent === "update"
+          ? onboardDraftAcceptKeys(result.draft).filter((key) =>
+              UPDATE_COMPARE_FIELDS.some((field) => field.key === key),
+            )
+          : undefined;
       nextCards.push({
         id: packet.id,
         packet,
@@ -149,6 +190,7 @@ export function BulkPatientImport() {
         intent: resolved.intent,
         match: resolved.match,
         forceCreate: false,
+        acceptFields,
       });
     }
 
@@ -165,7 +207,29 @@ export function BulkPatientImport() {
         if (card.id !== cardId || !card.draft) return card;
         const draft = updateDraftField(card.draft, key, value);
         const resolved = resolveBulkCardMatch(patients, draft, card.fingerprints, card.forceCreate);
-        return { ...card, draft, intent: resolved.intent, match: resolved.match };
+        const acceptFields =
+          resolved.intent === "update"
+            ? (card.acceptFields ??
+                onboardDraftAcceptKeys(draft).filter((field) =>
+                  UPDATE_COMPARE_FIELDS.some((row) => row.key === field),
+                ))
+            : undefined;
+        return { ...card, draft, intent: resolved.intent, match: resolved.match, acceptFields };
+      }),
+    );
+  }
+
+  function toggleAcceptField(key: OnboardMergeOverwriteKey, checked: boolean) {
+    if (!activeCard) return;
+    const cardId = activeCard.id;
+    setCards((current) =>
+      current.map((card) => {
+        if (card.id !== cardId) return card;
+        const currentKeys = card.acceptFields ?? [];
+        const acceptFields = checked
+          ? [...new Set([...currentKeys, key])]
+          : currentKeys.filter((item) => item !== key);
+        return { ...card, acceptFields };
       }),
     );
   }
@@ -221,7 +285,10 @@ export function BulkPatientImport() {
       if (!card.draft) continue;
       const label =
         `${card.draft.firstName} ${card.draft.lastName}`.trim() || card.packet.label;
-      const accepted = onboardDraftAcceptKeys(card.draft);
+      const accepted =
+        card.intent === "update" && card.acceptFields
+          ? card.acceptFields
+          : onboardDraftAcceptKeys(card.draft);
       let patient =
         card.intent === "update" && card.match
           ? (() => {
@@ -390,6 +457,16 @@ export function BulkPatientImport() {
                         {activeCard.ocr ? (
                           <p className="text-xs text-muted">
                             {activeCard.ocr.method_used} · {activeCard.ocr.page_count} pages
+                            {activeCard.ocr.partial ? (
+                              <span className="text-amber-800"> · partial extraction</span>
+                            ) : null}
+                            {(activeCard.ocr.failed_pages?.length ?? 0) > 0 ? (
+                              <span className="text-amber-800">
+                                {" "}
+                                · {activeCard.ocr.failed_pages!.length} page
+                                {activeCard.ocr.failed_pages!.length === 1 ? "" : "s"} unread
+                              </span>
+                            ) : null}
                           </p>
                         ) : null}
                       </div>
@@ -406,7 +483,12 @@ export function BulkPatientImport() {
                         <p>
                           {activeCard.match.reason === "fingerprint"
                             ? `These exact files were already imported for ${activeCard.match.name}. Approve merges reviewed fields and files into that chart.`
-                            : `A chart already exists for ${activeCard.match.name} (same name and date of birth). Approve updates that chart instead of creating a duplicate.`}
+                            : activeCard.match.reason === "name_dob_fuzzy"
+                              ? `Possible match: a chart for ${activeCard.match.name} has the same date of birth and a similar name. Verify before approving an update.`
+                              : `A chart already exists for ${activeCard.match.name} (same name and date of birth). Approve updates that chart instead of creating a duplicate.`}
+                          {activeCard.match.reason === "name_dob_fuzzy" ? (
+                            <span className="ml-1 text-amber-800">(possible match — verify)</span>
+                          ) : null}
                         </p>
                         <dl className="grid gap-1 text-muted sm:grid-cols-2">
                           <div>
@@ -434,7 +516,8 @@ export function BulkPatientImport() {
                             <dd className="text-ink">{activeCard.match.email || "—"}</dd>
                           </div>
                         </dl>
-                        {activeCard.match.reason === "name_dob" ? (
+                        {activeCard.match.reason === "name_dob" ||
+                        activeCard.match.reason === "name_dob_fuzzy" ? (
                           <label className="mt-1 flex items-start gap-2 text-sm text-ink">
                             <input
                               type="checkbox"
@@ -445,6 +528,40 @@ export function BulkPatientImport() {
                             <span>Create a separate chart anyway (ignore this match)</span>
                           </label>
                         ) : null}
+                      </div>
+                    ) : null}
+
+                    {activeCard.intent === "update" && activeCard.match && activeCard.draft ? (
+                      <div className="grid gap-2 rounded-md border border-line bg-card/60 px-3 py-2">
+                        <p className="text-xs uppercase tracking-[0.12em] text-muted">
+                          Select fields to update
+                        </p>
+                        <div className="grid gap-1.5">
+                          {UPDATE_COMPARE_FIELDS.map(({ key, label }) => {
+                            const chartValue = matchFieldValue(activeCard.match!, key);
+                            const draftValue = draftFieldValue(activeCard.draft!, key);
+                            const isDifferent = Boolean(draftValue) && draftValue !== chartValue;
+                            if (!draftValue && !chartValue) return null;
+                            return (
+                              <label key={key} className="flex flex-wrap items-center gap-2 text-sm text-ink">
+                                <input
+                                  type="checkbox"
+                                  checked={activeCard.acceptFields?.includes(key) ?? false}
+                                  disabled={!draftValue}
+                                  onChange={(event) => toggleAcceptField(key, event.target.checked)}
+                                />
+                                <span className="min-w-[5.5rem] font-medium">{label}</span>
+                                <span className="text-muted">{chartValue || "—"}</span>
+                                {isDifferent ? (
+                                  <>
+                                    <span aria-hidden="true">→</span>
+                                    <span className="text-oxide-deep">{draftValue}</span>
+                                  </>
+                                ) : null}
+                              </label>
+                            );
+                          })}
+                        </div>
                       </div>
                     ) : null}
 

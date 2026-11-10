@@ -20,7 +20,7 @@ function existingPatient(extra: Partial<Patient> = {}): Patient {
       sex: "female",
       memberId: "74619306600",
       payerName: "Fidelis Care",
-      phone: "555-0100",
+      phone: "555-555-0100",
       email: "a@example.com",
       address: "",
       city: "",

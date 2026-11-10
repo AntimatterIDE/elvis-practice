@@ -43,6 +43,26 @@
 - Bucket `chart-files`; path `{patientId}/{slotId}/{objectKey}`.
 - Slots include `consultation-report` (this practice’s letter/report), `outside-records`, etc.
 
+## OCR sidecar (in-house)
+
+- Cloud Run `alignment-ocr` in GCP project `cs-project-chorn3hu` (admin@
+  thealignmentclinic.com), Document AI processor `22ebf398b71d35b1`.
+- Org policy blocks `allUsers` invoker and SA key creation, so the app does
+  **not** call `*.run.app` directly. Ingress is
+  `internal-and-cloud-load-balancing` with `--no-invoker-iam-check`; public
+  entry is the global HTTP(S) LB (`alignment-ocr-ip` → serverless NEG).
+- Credentials (`resolveOcrCreds`, `lib/ocr/clinix-ocr-client.ts`): env
+  `OCR_SERVICE_URL` + `OCR_SERVICE_KEY` win when both are set; otherwise the
+  `service_config` row `id=ocr` (`url` + `key`, cached 60 s).
+- `service_config` points at `https://alignment-ocr.136.69.85.193.sslip.io`
+  (cert ACTIVE; flipped 2026-11-09). Cloud Run revision `alignment-ocr-00003-4fr`
+  includes hybrid-page OCR fallback.
+- Accuracy fixes (2026-11-09): hybrid-page Tesseract fallback + `partial`/
+  `failed_pages`; miner validation/evidence/demographics-first merge; bulk
+  Update per-field accept. See
+  [decisions.md](decisions.md#ocr-engine-accuracy-fixes-2026-11-09).
+  Redeploy `alignment-ocr` image before hybrid-page OCR is live in prod.
+
 ## OCR → chart (review gate)
 
 - Extract APIs (`/api/ocr/onboard/*`) return drafts only; they never write charts.

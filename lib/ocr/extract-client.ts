@@ -6,6 +6,8 @@ export type OnboardExtractOcrMeta = {
   partial: boolean;
   processing_ms: number;
   page_labels: { page: number; label: string }[];
+  /** Pages that contributed little/no text after OCR (1-indexed). */
+  failed_pages?: number[];
 };
 
 export type OnboardExtractResult = {

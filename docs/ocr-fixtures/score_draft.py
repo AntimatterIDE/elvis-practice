@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Score an OCR onboard draft summary against simple expectations."""
+"""Score an OCR onboard draft summary against presence checks and exact ground truth."""
 from __future__ import annotations
 
 import json
-import re
 import sys
 
 
@@ -12,7 +11,11 @@ def has_any(text: str, needles: list[str]) -> bool:
     return any(n.lower() in low for n in needles)
 
 
-def score(doc_id: str, summary: dict) -> dict:
+def norm(value: object) -> str:
+    return str(value or "").strip().lower()
+
+
+def score(doc_id: str, summary: dict, expected: dict | None = None) -> dict:
     text_blob = " ".join(
         [
             summary.get("reasonForVisit") or "",
@@ -57,9 +60,39 @@ def score(doc_id: str, summary: dict) -> dict:
         )
 
     if "insurance" in doc_id or "encounter" in doc_id:
-        add("payer_or_member", bool(summary.get("payerName") or summary.get("memberId")), f"payer={summary.get('payerName')} member={summary.get('memberId')}")
+        add(
+            "payer_or_member",
+            bool(summary.get("payerName") or summary.get("memberId")),
+            f"payer={summary.get('payerName')} member={summary.get('memberId')}",
+        )
 
-    add("reason_or_history", bool(summary.get("reasonForVisit") or summary.get("medicalHistory")), (summary.get("reasonForVisit") or summary.get("medicalHistory") or "")[:120])
+    add(
+        "reason_or_history",
+        bool(summary.get("reasonForVisit") or summary.get("medicalHistory")),
+        (summary.get("reasonForVisit") or summary.get("medicalHistory") or "")[:120],
+    )
+
+    # Exact ground-truth comparisons when provided (presence-only checks still run above).
+    if expected:
+        for key, want in expected.items():
+            if key.endswith("_should_mention") or key in {
+                "documentHints",
+                "likely_gaps",
+                "likely_fields",
+                "injuryCase",
+                "reasonForVisit_or_history",
+                "problems_should_mention",
+                "imagingFindings_should_mention",
+            }:
+                continue
+            got = summary.get(key, "")
+            ok = norm(got) == norm(want)
+            add(f"exact_{key}", ok, f"want={want} got={got}")
+
+        if isinstance(expected.get("documentHints"), list):
+            hints = summary.get("documentHints") or []
+            for hint in expected["documentHints"]:
+                add(f"hint_{hint}", hint in hints, ",".join(hints))
 
     passed = sum(1 for _, ok, _ in checks if ok)
     total = len(checks) or 1
@@ -77,4 +110,4 @@ def score(doc_id: str, summary: dict) -> dict:
 
 if __name__ == "__main__":
     payload = json.load(sys.stdin)
-    print(json.dumps(score(payload["id"], payload["summary"]), indent=2))
+    print(json.dumps(score(payload["id"], payload["summary"], payload.get("expected")), indent=2))

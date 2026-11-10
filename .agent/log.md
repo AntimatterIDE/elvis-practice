@@ -1,5 +1,46 @@
 # elvis-practice — agent log
 
+## [2026-11-09] ingest | Deployed OCR accuracy fixes + HTTPS
+
+Redeployed `alignment-ocr` revision `00003-4fr` (hybrid-page OCR). Flipped
+`service_config` id=ocr to `https://alignment-ocr.136.69.85.193.sslip.io`.
+
+## [2026-11-09] bugfix | OCR engine accuracy fixes (items 1–8)
+
+Implemented sidecar hybrid-page OCR + partial flags; clinical routing to all
+non-noise pages with truncation warnings; regex/phone/member/name hardening;
+demographics-first merge with conflict warnings; field validation; evidence
+page/quote + verified confidence; bulk UI partial/unread + per-field Update
+accept + fuzzy “possible match”; fixture ground truth + `test:ocr-accuracy`.
+
+## [2026-11-09] lint | OCR engine vet (read-only) — open findings recorded
+
+Audited sidecar + miner + matcher; reproduced each gap with unit probes and the
+23 public fixtures through live `alignment-ocr` (all HTTP 200, longest 39 s).
+No code changed. Findings in `.agent/wiki/decisions.md` → "OCR engine vet".
+Correction to the retest entry below: that fixture's single 14 pt line ran off
+the 612 pt page, so "Payer: F" and the missing phone/email were the fixture's
+fault, not OCR's. The phone `7461930660` shown on that card was real engine
+behaviour (`scrapePhone` cut it from the member id). Cert now ACTIVE; HTTPS
+health 200; `service_config` not flipped yet.
+
+## [2026-11-09] ingest | Live OCR retest of update-queue smoke
+
+Retested intake OCR against in-house `alignment-ocr` (no fetch mock). Individual
+packet: Angela Morales-Guity → Document AI · Update existing chart · On chart now
+(DOB 1985-01-27 / Fidelis / member 74619306600). Bulk mix: NewPerson → New /
+Approve new; Angela → Update existing / Approve update. Denied both bulk cards
+(no chart writes). Fixtures cleaned.
+
+## [2026-11-09] ingest | In-house Alignment OCR on GCP + LB
+
+Deployed `clinix-ocr` as Cloud Run `alignment-ocr` in `cs-project-chorn3hu`
+(Document AI `22ebf398b71d35b1`). Org policy blocked public Run invoker and SA
+keys, so traffic goes through global LB IP `136.69.85.193` (serverless NEG,
+invoker IAM disabled, ingress LB-only). Seeded Supabase `service_config` id=ocr
+to that URL + service key. Health `document_ai:true`; smoke extract via Document
+AI OK. HTTPS cert for `alignment-ocr.136.69.85.193.sslip.io` still provisioning.
+
 ## [2026-11-09] decision | Bulk/OCR queue treats existing patients as updates
 
 After extract, `resolveBulkCardMatch` tags each bulk card New vs Update

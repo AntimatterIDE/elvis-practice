@@ -21,6 +21,34 @@
 - Chart-scoped OCR (`ChartExtractReview` on an open chart) already merges into
   that patient — no separate create path.
 
+## OCR engine accuracy fixes (2026-11-09)
+
+Implemented after the read-only vet. Still open: deploy sidecar image, flip
+`service_config` to HTTPS, and expand fixture ground truth beyond insurance.
+
+Sidecar (`clinix-ocr/src/clinical_ocr.py`) — done
+- `_structured_from_pymupdf` OCRs image-only pages via Tesseract; sets
+  `partial` + `failed_pages` when a page stays empty.
+
+Miner (`onboard-draft.ts`) — done
+- Clinical section corpus includes all non-noise labels (incl. `other`).
+- `buildSectionCorpus` returns `{ corpus, droppedPages }` and truncation
+  warnings surface on the draft.
+- Demographics wins identity on merge; conflicts + section warnings preserved.
+- Regex: phone digit boundaries, member id requires id/number/#, patient-only
+  name labels, no CamelCase surname split, third-party email filter.
+- `normalizeOnboardDraft` validates DOB/email/phone/member/payer/state/ZIP;
+  converts US dates to ISO.
+- Miner returns `evidence` page/quote; `verifyEvidence` /
+  `applyEvidenceConfidence` set real fieldConfidence.
+
+Matching / review — done
+- Fuzzy matches are `name_dob_fuzzy` (UI: “possible match — verify”).
+- Bulk cards show partial / unread pages; Update cards get per-field accept
+  checkboxes.
+- Fixture ground truth: `encounter-insurance-fictional` exact expected values;
+  `score_draft.py` exact checks; `npm run test:ocr-accuracy`.
+
 ## Claim autofill from clinic visit (2026-11-07)
 
 - Autofill a new insurance claim only from **Alignment Clinic** Visit Desk
