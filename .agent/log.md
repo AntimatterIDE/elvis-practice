@@ -7,9 +7,12 @@ offline tests. Sidecar `alignment-ocr-00005-gd9`: `OCR_HYBRID_DPI=300`,
 preprocess, Doc AI escalate on partial. Miner cite-or-clear + second-pass
 dropped pages; bulk confidence badges; unread Approve ack; DOB-scoped
 member_id/phone match + tighter fuzzy. Extraction still review-gated, not absolute.
-Shipped: clinix-ocr `8c2fa4a`, elvis-practice `66f9c8f` (Vercel success). Prod
-bundle contains unread-ack + soft-match copy; sidecar Angela extract PyMuPDF
-OK. Live miner packet test skipped (no local `OPENAI_API_KEY`).
+Shipped: clinix-ocr `8c2fa4a`, elvis-practice `66f9c8f`/`9808364` (Vercel
+success). Browser retest 2026-11-09 evening: individual Angela → Update
+existing (phone/email/payer/member all filled, PyMuPDF); bulk Angela → Update
+with HIGH confidence badges on Select fields; BulkSmoke New Person → New
+chart. Denied both bulk cards — no chart writes. Live miner packet CI skipped
+(no local `OPENAI_API_KEY`).
 
 ## [2026-11-09] ingest | Post-deploy live browser OCR retest (pass)
 
