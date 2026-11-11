@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { beginChartUpload, chartFiles, deleteChartFile } from "@/app/admin/chart-files/actions";
 import { pushPortalChartsAction } from "@/app/portal/actions";
 import { ChartExtractReview } from "@/components/ocr/chart-extract-review";
@@ -47,6 +47,7 @@ export function ChartFiles({
   const [busySlot, setBusySlot] = useState("");
   const [customName, setCustomName] = useState("");
   const [extractOffer, setExtractOffer] = useState<{ slotId: string; files: File[] } | null>(null);
+  const extractOfferRef = useRef<HTMLDivElement | null>(null);
 
   function reload() {
     void chartFiles(patient.id).then((result) => {
@@ -63,6 +64,32 @@ export function ChartFiles({
     // Reload when the chart changes. reload closes over the current patient id.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patient.id]);
+
+  useEffect(() => {
+    if (!extractOffer) return;
+    extractOfferRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [extractOffer]);
+
+  function renderExtractOffer(slotId: string) {
+    if (!extractOffer || extractOffer.slotId !== slotId) return null;
+    return (
+      <div ref={extractOfferRef} className="mt-4">
+        <ChartExtractReview
+          patient={patient}
+          files={extractOffer.files}
+          onDismiss={() => setExtractOffer(null)}
+          onApplied={async (merged) => {
+            const result = await pushPortalChartsAction({ patients: [merged], appointments: [] });
+            if (!result.ok) throw new Error(result.error || "Could not save extracted chart fields.");
+            const { id, ...patch } = merged;
+            onSave(id, patch);
+            setExtractOffer(null);
+            setMessage("Extracted fields were saved on this chart.");
+          }}
+        />
+      </div>
+    );
+  }
 
   async function upload(document: ChartDocument, files: File[]) {
     setBusySlot(document.id);
@@ -103,7 +130,8 @@ export function ChartFiles({
       (file) =>
         file.type === "application/pdf" ||
         /\.pdf$/i.test(file.name) ||
-        (file.type || "").startsWith("image/"),
+        (file.type || "").startsWith("image/") ||
+        /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(file.name),
     );
     if (extractable.length) setExtractOffer({ slotId: document.id, files: extractable });
   }
@@ -139,21 +167,6 @@ export function ChartFiles({
         Doctor records from another office are first. This practice’s consultation report and later follow-up reports are next. Signed agreements stay on the Documents tab.
       </p>
       {message ? <p className="text-sm text-muted">{message}</p> : null}
-      {extractOffer ? (
-        <ChartExtractReview
-          patient={patient}
-          files={extractOffer.files}
-          onDismiss={() => setExtractOffer(null)}
-          onApplied={async (merged) => {
-            const result = await pushPortalChartsAction({ patients: [merged], appointments: [] });
-            if (!result.ok) throw new Error(result.error || "Could not save extracted chart fields.");
-            const { id, ...patch } = merged;
-            onSave(id, patch);
-            setExtractOffer(null);
-            setMessage("Extracted fields were saved on this chart.");
-          }}
-        />
-      ) : null}
       {ordered.map((document) => {
         const stored = files.filter((file) => file.slotId === document.id);
         const featured = leadSlots.includes(document.id);
@@ -263,6 +276,7 @@ export function ChartFiles({
                 </select>
               </label>
             </div>
+            {renderExtractOffer(document.id)}
           </section>
         );
       })}
@@ -298,6 +312,7 @@ export function ChartFiles({
             onFiles={(files) => void upload({ id: labResultSlot, name: "Lab results", status: "received", note: "" }, files)}
           />
         </div>
+        {renderExtractOffer(labResultSlot)}
       </section>
       {files.some((file) => file.slotId !== labResultSlot && !patient.documents.some((document) => document.id === file.slotId) && !file.slotId.startsWith("claim-")) ? (
         <section className="rounded-2xl border border-line bg-card p-4">

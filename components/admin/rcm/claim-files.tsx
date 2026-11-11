@@ -102,7 +102,8 @@ export function ClaimPapers({
         (file) =>
           file.type === "application/pdf" ||
           /\.pdf$/i.test(file.name) ||
-          (file.type || "").startsWith("image/"),
+          (file.type || "").startsWith("image/") ||
+          /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(file.name),
       );
       if (extractable.length) setExtractFiles(extractable);
     }

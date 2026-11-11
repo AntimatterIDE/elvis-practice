@@ -1,5 +1,39 @@
 # Bugs — elvis-practice
 
+## [2026-11-11] Claim form file pick stored papers with no OCR offer
+
+**Symptom:** New claim “Upload a file” only queued attachments for save; no
+Extract into chart.  
+**Cause:** `claim-form.tsx` used FilePicker → `picked` without
+`ChartExtractReview` (unlike ClaimPapers on claim detail).  
+**Fix:** Offer extract on pick (pdf/image) and save accepted fields to the
+patient chart via `pushPortalChartsAction` + `patchPatient`.
+
+## [2026-11-11] Chart Files upload stores PDF but OCR never runs
+
+**Symptom:** PDFs sit on Files (Received) with empty clinical fields / no
+`ocrImportHashes` (e.g. Makiba Cameron MRI + progress note). Upload “never
+gives a chance” for extract on Imaging.  
+**Cause:** (1) Extract UI only offered in-session after `upload()` — leave /
+dismiss / next upload clears it; no re-extract on stored files. (2) Offer was
+rendered at the **top** of Files, so uploading Imaging (far down) left
+“Extract into chart” off-screen — confirmed live (`inViewport: false` while
+saved message showed).  
+**Fix:** Render `ChartExtractReview` under the slot just uploaded +
+`scrollIntoView`. Still need a re-extract action on stored files.  
+**Status:** Viewport bug fixed; re-extract still open.
+
+## [2026-11-11] Smoke charts resurrect after Tools purge
+
+**Symptom:** Purge QA smoke charts reported success, then charts reappeared on
+Patients within seconds.  
+**Cause:** `mergePortalRoster` kept local-only charts and re-pushed them when a
+stale roster load raced the purge; another open tab could also push the old
+set. Visit Desk ClaimPipe/LetterSmoke encounters were never in the purge.  
+**Fix:** Track `removedPatientIds`, drop known smoke names on merge/push
+(`lib/rcm/smoke-charts.ts`), and extend `purgeSmokeChartsAction` to
+`purgeSmokeEncounters` (hard-delete by visit label).
+
 ## [2026-11-09] OCR 502 from shared staging sidecar
 
 **Symptom:** Bulk/outside-records extract returned HTTP 502.  

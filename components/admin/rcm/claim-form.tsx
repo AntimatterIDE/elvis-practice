@@ -27,9 +27,11 @@ import { officeSurgeryPosWarning, placeOfServiceOptions } from "@/lib/rcm/place-
 import { AccountNoteDialog } from "@/components/admin/rcm/account-note";
 import { attachmentEvent, claimFileAccept, storeClaimFiles } from "@/components/admin/rcm/claim-files";
 import { FilePicker } from "@/components/admin/rcm/file-picker";
+import { ChartExtractReview } from "@/components/ocr/chart-extract-review";
 import { PayerSearch } from "@/components/admin/rcm/payer-search";
 import { Field, LoadingDesk, PageHeader, fieldClass, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
+import { pushPortalChartsAction } from "@/app/portal/actions";
 
 type ClaimDiagnosis = { code: string; description: string };
 
@@ -116,6 +118,7 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
   );
   const [clinicalNote, setClinicalNote] = useState(existing?.clinicalNote ?? openingDraft?.clinicalNote ?? "");
   const [picked, setPicked] = useState<File[]>([]);
+  const [extractFiles, setExtractFiles] = useState<File[] | null>(null);
   const [pending, setPending] = useState(false);
   const [sourceEncounterId, setSourceEncounterId] = useState(
     existing?.encounterId || openingDraft?.encounterId || params.get("encounter") || "",
@@ -892,7 +895,17 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
               busy={pending}
               variant="secondary"
               accept={claimFileAccept}
-              onFiles={(files) => setPicked((current) => [...current, ...files])}
+              onFiles={(files) => {
+                setPicked((current) => [...current, ...files]);
+                const extractable = files.filter(
+                  (file) =>
+                    file.type === "application/pdf" ||
+                    /\.pdf$/i.test(file.name) ||
+                    (file.type || "").startsWith("image/") ||
+                    /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(file.name),
+                );
+                if (extractable.length) setExtractFiles(extractable);
+              }}
             />
           </div>
           {picked.length ? (
@@ -913,6 +926,20 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
           ) : (
             <p className="text-sm text-muted">No files selected yet. A PDF, photo, or video can be added before you save.</p>
           )}
+          {extractFiles && patient ? (
+            <ChartExtractReview
+              patient={patient}
+              files={extractFiles}
+              onDismiss={() => setExtractFiles(null)}
+              onApplied={async (merged) => {
+                const result = await pushPortalChartsAction({ patients: [merged], appointments: [] });
+                if (!result.ok) throw new Error(result.error || "Could not save extracted chart fields.");
+                const { id, ...patch } = merged;
+                patchPatient(id, patch);
+                setExtractFiles(null);
+              }}
+            />
+          ) : null}
         </section>
         <section className="grid gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
           <h2 className="font-display text-2xl">Diagnoses</h2>

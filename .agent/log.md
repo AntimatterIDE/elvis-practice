@@ -1,5 +1,55 @@
 # elvis-practice — agent log
 
+## [2026-11-11] ingest | Document upload × OCR extract audit (live)
+
+Surfaces tested on prod 2026-11-11:
+- **Chart Files** (13 slots incl. Lab): PNG upload → Extract into chart **PASS** all;
+  DOCX saves with **no** extract offer (accept allows Word; filter is pdf/image only).
+  Prod still mounts extract at top → `inViewport:false` (local slot+scroll fix not deployed).
+- **ClaimPapers** (`/claims/[id]`): PNG → Extract **PASS**.
+- **Claim form** new claim FilePicker: file selected, **no** extract (GAP — store only on save).
+- **Intake One packet**: Extract draft → draft+Confirm **PASS**.
+- **Intake Folder** bulk: Extract drafts → Approve/Deny cards **PASS**.
+- **Public intake** `IntakeRecordsImport`: Extract from records → Apply **PASS**.
+- **Portal `/portal/documents`**: code has ChartExtractReview; live test blocked (login).
+- Visit Desk audio / journal cover: not clinical OCR.
+
+## [2026-11-11] bugfix | Files extract offer was off-screen on Imaging upload
+
+Repro: upload PNG to Makiba Imaging → “saved” + Extract mounts, but
+`inViewport: false` because review lived at top of Files. Moved offer under
+the uploaded slot + scrollIntoView; HEIC/image extension also counts as
+extractable.
+
+## [2026-11-11] bugfix | Why Makiba extract never completed
+
+Confirm was never clicked — hashes/notes only write on Confirm. Re-ran OCR
+on Makiba’s stored MRI in-session: success in ~23s with DOB/problems/etc.
+So the sidecar worked; staff did not finish Accept→Confirm. Pattern: upload
+MRI 14:04Z, then progress note (~24MB) 78s later — next upload clears
+`extractOffer` and abandons the prior review. Batch morning uploads: only
+3/16 file charts got Confirm (Lakhwinder/Jazemene/Leron). Product: no
+re-extract on stored files after leave/dismiss.
+
+## [2026-11-11] ingest | Christina OCR re-imports today (quality check)
+
+Three charts accepted OCR this morning (~9:18–9:21 ET): Lakhwinder Choudhry,
+Jazemene Milien Jaxy, Leron Breeden — each with one fingerprint + “OCR
+re-import (2026-11-11)” note. Clinical fields (problems/meds/MVA case) are
+rich but noisy (duplicate problems, no ICDs, history restated). Demographics:
+phones OK; state wrongly set to GA with blank street; insurance → Self-pay;
+email/member id missing (warned). **Files tab empty** on those charts —
+slots marked Received from OCR hints only; no PDFs / ocr-import `.txt`
+artifacts stored. Rosa / Makiba (created ~8:55–9:02) are walk-ins, not OCR.
+
+## [2026-11-11] bugfix | Purge smoke charts + visits for good
+
+Removed 7 QA charts (ClaimPipe/BulkSmoke/LetterSmoke/OCR ExtractTest/Alicia
+Mendel) and 6 matching Visit Desk encounters from prod. Fix: smoke names
+blocked on roster merge/push + `removedPatientIds`; Tools purge also
+hard-deletes smoke-labeled encounters (`9a481e6`). Verified patients=22 with
+zero smoke names after 15s sync; Visits list only Paul Wallace + Elvis Francois.
+
 ## [2026-11-11] bugfix | Start clearing delivery QA P0s
 
 Deleted off-brand cervical-cancer journal posts (public 404). Retargeted
