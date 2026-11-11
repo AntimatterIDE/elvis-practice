@@ -289,3 +289,9 @@ prefixes inconclusive AAA responses. Chart left on 746193066-00 pending DOB chec
 Elig retry: DOB mismatch on 746193066-00; discovery empty; CIN alone AAA.
 Chart: member 746193066-00, group/CIN XZ50434X. 276 on ACEEF now: Submitted charges.
 Shipped nested-status 276 parser fix (0dd024f) + CIN-via-group on 270 (4248c04).
+
+## [2026-11-11] bugfix | OM Chart Files extract cannot be missed
+
+Shared isOcrExtractableFile helper; Chart Files sticky jump-to-extract banner +
+center scroll; keep offer across uploads until replaced; claim papers / claim form
+/ portal desk use same filter + review messaging. Ready for Alignment OM uploads.

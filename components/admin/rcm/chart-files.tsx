@@ -6,6 +6,7 @@ import { pushPortalChartsAction } from "@/app/portal/actions";
 import { ChartExtractReview } from "@/components/ocr/chart-extract-review";
 import { chartFileType, putSignedChartFile } from "@/lib/chart-files/put";
 import type { ChartFile } from "@/lib/chart-files/types";
+import { isOcrExtractableFile, isWordFile, wordNeedsPdfMessage } from "@/lib/ocr/extractable-file";
 import { labResultSlot } from "@/lib/portal/uploads";
 import type { ChartDocument, DocumentStatus, Patient } from "@/lib/rcm/types";
 import { FilePicker } from "@/components/admin/rcm/file-picker";
@@ -33,26 +34,6 @@ function sizeLabel(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
-function isOcrExtractableFile(file: { name: string; type?: string; contentType?: string }) {
-  const type = (file.type || file.contentType || "").toLowerCase();
-  const name = file.name || "";
-  return (
-    type === "application/pdf" ||
-    /\.pdf$/i.test(name) ||
-    type.startsWith("image/") ||
-    /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(name)
-  );
-}
-
-function isWordFile(file: { name: string; type?: string }) {
-  const type = (file.type || "").toLowerCase();
-  return (
-    type.includes("word") ||
-    type.includes("officedocument.wordprocessingml") ||
-    /\.docx?$/i.test(file.name)
-  );
 }
 
 export function ChartFiles({
@@ -87,7 +68,8 @@ export function ChartFiles({
 
   useEffect(() => {
     if (!extractOffer) return;
-    extractOfferRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    // Center the review so Imaging / lower slots are not off-screen for OM uploads.
+    extractOfferRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   }, [extractOffer]);
 
   function renderExtractOffer(slotId: string) {
@@ -114,7 +96,6 @@ export function ChartFiles({
   async function upload(document: ChartDocument, files: File[]) {
     setBusySlot(document.id);
     setMessage("");
-    setExtractOffer(null);
     for (const file of files) {
       const contentType = chartFileType(file);
       const prepared = await beginChartUpload({
@@ -145,26 +126,34 @@ export function ChartFiles({
     }
     const extractable = files.filter((file) => isOcrExtractableFile(file));
     const wordOnly = files.length > 0 && extractable.length === 0 && files.some((file) => isWordFile(file));
+    setBusySlot("");
+    reload();
+    if (extractable.length) {
+      setExtractOffer({ slotId: document.id, files: extractable });
+      setMessage(
+        files.length === 1
+          ? `${files[0].name} is saved. Review Extract into chart below before leaving this page.`
+          : `${files.length} files are saved. Review Extract into chart below before leaving this page.`,
+      );
+      return;
+    }
+    setExtractOffer(null);
     setMessage(
       wordOnly
-        ? `${files.length === 1 ? files[0].name : `${files.length} files`} saved. Word files cannot be OCR’d here — upload a PDF or photo to extract into the chart.`
+        ? wordNeedsPdfMessage(files.length === 1 ? files[0].name : `${files.length} files`)
         : files.length === 1
           ? `${files[0].name} is saved on this chart.`
           : `${files.length} files are saved on this chart.`,
     );
-    setBusySlot("");
-    reload();
-    if (extractable.length) setExtractOffer({ slotId: document.id, files: extractable });
   }
 
   async function extractStored(document: ChartDocument, stored: ChartFile) {
-    if (!stored.url || !isOcrExtractableFile({ name: stored.label, contentType: stored.contentType })) {
+    if (!stored.url || !isOcrExtractableFile({ name: stored.label, label: stored.label, contentType: stored.contentType })) {
       setMessage("OCR needs a PDF or photo on this item.");
       return;
     }
     setBusySlot(document.id);
     setMessage("");
-    setExtractOffer(null);
     try {
       const res = await fetch(stored.url);
       if (!res.ok) throw new Error(`Could not open ${stored.label} (${res.status}).`);
@@ -173,6 +162,7 @@ export function ChartFiles({
         type: stored.contentType || blob.type || "application/pdf",
       });
       setExtractOffer({ slotId: document.id, files: [file] });
+      setMessage(`Reading ${stored.label}. Confirm accepted fields below before leaving.`);
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Could not open that file for OCR.");
     } finally {
@@ -209,8 +199,21 @@ export function ChartFiles({
     <div className="grid gap-6">
       <p className="max-w-2xl text-sm text-muted">
         Doctor records from another office are first. This practice’s consultation report and later follow-up reports are next. Signed agreements stay on the Documents tab.
+        PDF and photo uploads open Extract into chart on this page — confirm fields before leaving the chart.
       </p>
       {message ? <p className="text-sm text-muted">{message}</p> : null}
+      {extractOffer ? (
+        <div className="sticky top-2 z-20 rounded-xl border border-oxide/40 bg-mint px-4 py-3 text-sm shadow-sm">
+          <p className="font-medium text-ink">Extract into chart is open — finish Accept / Confirm below before you leave or upload another file.</p>
+          <button
+            type="button"
+            className="mt-1 underline"
+            onClick={() => extractOfferRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })}
+          >
+            Jump to extract review
+          </button>
+        </div>
+      ) : null}
       {ordered.map((document) => {
         const stored = files.filter((file) => file.slotId === document.id);
         const featured = leadSlots.includes(document.id);

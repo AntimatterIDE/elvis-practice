@@ -32,6 +32,7 @@ import { PayerSearch } from "@/components/admin/rcm/payer-search";
 import { Field, LoadingDesk, PageHeader, fieldClass, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 import { pushPortalChartsAction } from "@/app/portal/actions";
+import { isOcrExtractableFile } from "@/lib/ocr/extractable-file";
 
 type ClaimDiagnosis = { code: string; description: string };
 
@@ -897,13 +898,7 @@ export function ClaimForm({ initialEncounter = null }: { initialEncounter?: Enco
               accept={claimFileAccept}
               onFiles={(files) => {
                 setPicked((current) => [...current, ...files]);
-                const extractable = files.filter(
-                  (file) =>
-                    file.type === "application/pdf" ||
-                    /\.pdf$/i.test(file.name) ||
-                    (file.type || "").startsWith("image/") ||
-                    /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(file.name),
-                );
+                const extractable = files.filter((file) => isOcrExtractableFile(file));
                 if (extractable.length) setExtractFiles(extractable);
               }}
             />

@@ -27,8 +27,11 @@ rendered at the **top** of Files, so uploading Imaging (far down) left
 “Extract into chart” off-screen — confirmed live (`inViewport: false` while
 saved message showed).  
 **Fix:** Render `ChartExtractReview` under the slot just uploaded +
-`scrollIntoView`. Still need a re-extract action on stored files.  
-**Status:** Viewport bug fixed; re-extract still open.
+`scrollIntoView({ block: "center" })`; sticky “Jump to extract review” banner
+while an offer is open; do not clear the offer until a non-extractable upload
+or dismiss/confirm; shared `lib/ocr/extractable-file.ts` across chart/claim/
+portal; stored PDF/image rows have **Extract into chart**.  
+**Status:** Fixed for OM Chart Files + claim/portal upload paths.
 
 ## [2026-11-11] Smoke charts resurrect after Tools purge
 

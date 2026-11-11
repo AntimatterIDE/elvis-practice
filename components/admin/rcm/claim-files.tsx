@@ -6,6 +6,7 @@ import { pushPortalChartsAction } from "@/app/portal/actions";
 import { ChartExtractReview } from "@/components/ocr/chart-extract-review";
 import { useRcm } from "@/components/admin/rcm/store";
 import { chartFileType, putSignedChartFile } from "@/lib/chart-files/put";
+import { isOcrExtractableFile } from "@/lib/ocr/extractable-file";
 import { claimFileSlot } from "@/lib/rcm/claim-files";
 import type { ChartFile } from "@/lib/chart-files/types";
 import type { Claim, ClaimAttachment, ClaimEvent } from "@/lib/rcm/types";
@@ -86,7 +87,6 @@ export function ClaimPapers({
     if (!files.length) return;
     setPending(true);
     setMessage("");
-    setExtractFiles(null);
     const stored = await storeClaimFiles(patientId, claim.id, files);
     if (stored.files.length) {
       onChange({
@@ -94,19 +94,20 @@ export function ClaimPapers({
         events: [...claim.events, attachmentEvent(stored.files.map((file) => file.name))],
       });
     }
-    setMessage(stored.ok ? "Those files are on the claim." : stored.message);
     setPending(false);
     reload();
     if (stored.ok) {
-      const extractable = files.filter(
-        (file) =>
-          file.type === "application/pdf" ||
-          /\.pdf$/i.test(file.name) ||
-          (file.type || "").startsWith("image/") ||
-          /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(file.name),
-      );
-      if (extractable.length) setExtractFiles(extractable);
+      const extractable = files.filter((file) => isOcrExtractableFile(file));
+      if (extractable.length) {
+        setExtractFiles(extractable);
+        setMessage("Those files are on the claim. Review Extract into chart below before leaving.");
+        return;
+      }
+      setExtractFiles(null);
+      setMessage("Those files are on the claim.");
+      return;
     }
+    setMessage(stored.message);
   }
 
   async function remove(path: string, name: string) {
