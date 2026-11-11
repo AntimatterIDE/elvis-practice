@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
+import { purgeSmokeChartsAction } from "@/app/portal/actions";
 import { money } from "@/lib/rcm/format";
 import { LoadingDesk, PageHeader, fieldClass } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
@@ -17,13 +18,25 @@ const codes = [
 ] as const;
 
 export function ToolsDesk() {
-  const { ready } = useRcm();
+  const { ready, patients, removePatient } = useRcm();
   const [query, setQuery] = useState("");
+  const [purgeMessage, setPurgeMessage] = useState("");
+  const [pending, startTransition] = useTransition();
   const matches = useMemo(() => {
     const term = query.trim().toLowerCase();
     if (!term) return codes;
     return codes.filter((item) => `${item.code} ${item.label} ${item.kind}`.toLowerCase().includes(term));
   }, [query]);
+
+  const smokeLocal = useMemo(
+    () =>
+      patients.filter((patient) =>
+        /^(ClaimPipe Multi|BulkSmoke Alpha|LetterSmoke Alpha|LetterSmoke Beta|LetterSmoke Gamma|OCR ExtractTest|Alicia Mendel)$/i.test(
+          `${patient.firstName} ${patient.lastName}`.trim(),
+        ),
+      ),
+    [patients],
+  );
 
   if (!ready) return <LoadingDesk />;
 
@@ -58,6 +71,38 @@ export function ToolsDesk() {
         <p className="mt-3 text-muted">
           MRI lumbar spine (72148) often needs authorization. Confirm the payer rule before scheduling imaging.
         </p>
+      </section>
+      <section className="mt-8 max-w-2xl border border-line bg-card p-4 text-sm">
+        <h2 className="font-display text-2xl">Purge QA smoke charts</h2>
+        <p className="mt-3 text-muted">
+          Removes ClaimPipe / BulkSmoke / LetterSmoke / OCR ExtractTest / Alicia Mendel charts from the shared
+          roster. Local count now: {smokeLocal.length}.
+        </p>
+        <button
+          type="button"
+          className="mt-4 rounded-full bg-oxide px-4 py-2.5 text-sm font-semibold text-paper disabled:opacity-50"
+          disabled={pending}
+          onClick={() => {
+            if (!window.confirm("Purge QA smoke charts from the shared roster?")) return;
+            startTransition(async () => {
+              const result = await purgeSmokeChartsAction();
+              if (!result.ok) {
+                setPurgeMessage(result.error || "Purge failed.");
+                return;
+              }
+              for (const id of result.ids) removePatient(id);
+              for (const patient of smokeLocal) removePatient(patient.id);
+              setPurgeMessage(
+                result.removed
+                  ? `Removed ${result.removed} smoke chart${result.removed === 1 ? "" : "s"} from the practice roster.`
+                  : "No matching smoke charts were on the shared roster.",
+              );
+            });
+          }}
+        >
+          {pending ? "Purging…" : "Purge smoke charts"}
+        </button>
+        {purgeMessage ? <p className="mt-3 text-oxide">{purgeMessage}</p> : null}
       </section>
     </main>
   );

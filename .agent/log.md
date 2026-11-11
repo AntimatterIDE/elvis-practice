@@ -1,5 +1,25 @@
 # elvis-practice — agent log
 
+## [2026-11-11] bugfix | Start clearing delivery QA P0s
+
+Deleted off-brand cervical-cancer journal posts (public 404). Retargeted
+journal/search clinical deep links via `clinicalHref` to hub anchors while
+pages stay unpublished (CONTENT_SOURCE=file). Contact form no longer mounts at
+opacity 0. Added owner/admin Tools → Purge QA smoke charts
+(`purgeSmokeChartsAction`). Address/phone NYC+407 left pending practice confirm.
+Absurd DOBs (Margaret / Frances) still need chart fixes.
+
+## [2026-11-11] ingest | Delivery QA — not ready for Dr Elvis handoff
+
+Full live probe of thealignmentclinic.com (public + owner staff desk).
+**Verdict: FAIL delivery gate.** P0: all 23 condition/treatment detail pages
+unpublished (30 journal Read-next dead links); 2 live journal posts about
+cervical cancer; production roster still has QA/smoke charts + absurd DOBs
+(2025 yrs / 915 yrs). P1: NYC address vs 407 phone; contact form opacity:0
+until scroll. Passed: marketing pages/assets, contact submit, Ask widget,
+auth gates, intake RecordsImport card, ops desks HTTP 200. Canvas:
+`alignment-clinic-delivery-qa.canvas.tsx`.
+
 ## [2026-11-10] ingest | Intake records import card live on prod
 
 `2b055b0` (RecordsImportCard) + retrigger `7a2c094`. First Vercel attempt on

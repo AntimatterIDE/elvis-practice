@@ -73,15 +73,9 @@ export function ContactPanel() {
           >
             Contact us
           </motion.h1>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.12 }}
-            className="rounded-[var(--rb-r-3xl,18px)] border border-line bg-card/95 p-5 shadow-sm sm:p-7"
-          >
+          <div className="rounded-[var(--rb-r-3xl,18px)] border border-line bg-card/95 p-5 shadow-sm sm:p-7">
             <ContactForm />
-          </motion.div>
+          </div>
         </div>
       </div>
     </SiteDapple>

@@ -1,8 +1,7 @@
 import "server-only";
 import { conditions } from "@/lib/content/conditions";
-import { publicPath } from "@/lib/content";
+import { clinicalHref } from "@/lib/content";
 import { faqs } from "@/lib/content/faqs";
-import { isPubliclyVisible } from "@/lib/content/publish";
 import { treatments } from "@/lib/content/treatments";
 import { publishedJournalArticle, publishedJournalArticles } from "@/lib/journal/store";
 import { carePathways, clinicalFocus, physicianTraining, practice } from "@/lib/site";
@@ -24,9 +23,7 @@ export async function guideBrief(page?: string) {
   ];
 
   for (const document of [...conditions, ...treatments]) {
-    const path = isPubliclyVisible(document)
-      ? publicPath(document)
-      : `${document.kind === "condition" ? "/conditions" : "/treatments"}#${document.slug}`;
+    const path = clinicalHref(document);
     const body = document.sections.map((section) => section.body).join(" ");
     lines.push(`${document.title} (${path}): ${clip(document.summary, 240)} ${clip(body, 360)}`);
   }
