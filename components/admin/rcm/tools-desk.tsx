@@ -69,14 +69,14 @@ export function ToolsDesk() {
         <h2 className="font-display text-2xl">Purge QA smoke charts</h2>
         <p className="mt-3 text-muted">
           Removes ClaimPipe / BulkSmoke / LetterSmoke / OCR ExtractTest / Alicia Mendel charts from the shared
-          roster. Local count now: {smokeLocal.length}.
+          roster and matching Visit Desk recordings. Local chart count now: {smokeLocal.length}.
         </p>
         <button
           type="button"
           className="mt-4 rounded-full bg-oxide px-4 py-2.5 text-sm font-semibold text-paper disabled:opacity-50"
           disabled={pending}
           onClick={() => {
-            if (!window.confirm("Purge QA smoke charts from the shared roster?")) return;
+            if (!window.confirm("Purge QA smoke charts and visits from the shared practice?")) return;
             startTransition(async () => {
               const result = await purgeSmokeChartsAction();
               if (!result.ok) {
@@ -85,11 +85,14 @@ export function ToolsDesk() {
               }
               for (const id of result.ids) removePatient(id);
               for (const patient of smokeLocal) removePatient(patient.id);
-              setPurgeMessage(
-                result.removed
-                  ? `Removed ${result.removed} smoke chart${result.removed === 1 ? "" : "s"} from the practice roster.`
-                  : "No matching smoke charts were on the shared roster.",
-              );
+              const chartBit = result.removed
+                ? `${result.removed} smoke chart${result.removed === 1 ? "" : "s"}`
+                : "no smoke charts";
+              const visitBit =
+                result.visitsRemoved > 0
+                  ? `${result.visitsRemoved} smoke visit${result.visitsRemoved === 1 ? "" : "s"}`
+                  : "no smoke visits";
+              setPurgeMessage(`Removed ${chartBit} and ${visitBit}.`);
             });
           }}
         >

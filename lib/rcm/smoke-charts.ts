@@ -9,3 +9,8 @@ export function isSmokeChartName(firstName: string, lastName: string) {
 export function isSmokePatient(patient: { firstName?: string; lastName?: string }) {
   return isSmokeChartName(patient.firstName ?? "", patient.lastName ?? "");
 }
+
+/** Visit Desk labels use the same QA names. */
+export function isSmokeVisitLabel(label: string) {
+  return SMOKE_CHART_NAME.test(label.trim());
+}

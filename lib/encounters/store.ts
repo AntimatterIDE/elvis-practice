@@ -18,6 +18,7 @@ import {
   type VisitLine,
 } from "@/lib/encounters/types";
 import { isServiceRoleConfigured, isSupabaseConfigured } from "@/lib/env";
+import { isSmokeVisitLabel } from "@/lib/rcm/smoke-charts";
 import type { Json } from "@/lib/supabase/database";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { getStaffSession } from "@/lib/supabase/session";
@@ -292,6 +293,23 @@ export async function deleteDraftEncounter(id: string) {
   const removed = await supabase.from("encounters").delete().eq("id", id);
   if (removed.error) return { ok: false as const, status: 502, message: removed.error.message };
   return { ok: true as const };
+}
+
+/** Hard-delete known QA visit labels (ClaimPipe / LetterSmoke / …). Staff purge only. */
+export async function purgeSmokeEncounters() {
+  const encounters = await listEncounters(200);
+  const smoke = encounters.filter((encounter) => isSmokeVisitLabel(encounter.patientLabel));
+  if (!smoke.length) return { ok: true as const, removed: 0, ids: [] as string[] };
+  const supabase = client();
+  const ids: string[] = [];
+  for (const encounter of smoke) {
+    const paths = audioPaths(encounter.audioPath);
+    if (paths.length > 0) await supabase.storage.from(bucket).remove(paths);
+    const removed = await supabase.from("encounters").delete().eq("id", encounter.id);
+    if (removed.error) return { ok: false as const, error: removed.error.message, removed: ids.length, ids };
+    ids.push(encounter.id);
+  }
+  return { ok: true as const, removed: ids.length, ids };
 }
 
 

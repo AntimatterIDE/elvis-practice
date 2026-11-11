@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { listChartFiles, prepareChartUpload } from "@/lib/chart-files/store";
+import { purgeSmokeEncounters } from "@/lib/encounters/store";
 import type { Appointment, Patient } from "@/lib/rcm/types";
 import { isSmokePatient } from "@/lib/rcm/smoke-charts";
 import { clearPortalCookie, readPortalCookie, writePortalCookie } from "@/lib/portal/cookie";
@@ -167,10 +168,27 @@ export async function purgeSmokeChartsAction() {
   const roster = await getPortalStore().roster();
   if (!roster.ok) return { ok: false as const, error: roster.error };
   const ids = roster.value.patients.filter((patient) => isSmokePatient(patient)).map((patient) => patient.id);
-  if (!ids.length) return { ok: true as const, removed: 0, ids: [] as string[] };
-  const result = await getPortalStore().removePatients(ids);
-  if (!result.ok) return { ok: false as const, error: result.error };
-  return { ok: true as const, removed: result.value.removed, ids };
+  let removed = 0;
+  if (ids.length) {
+    const result = await getPortalStore().removePatients(ids);
+    if (!result.ok) return { ok: false as const, error: result.error };
+    removed = result.value.removed;
+  }
+  let visitsRemoved = 0;
+  try {
+    const visits = await purgeSmokeEncounters();
+    if (!visits.ok) return { ok: false as const, error: visits.error, removed, ids, visitsRemoved };
+    visitsRemoved = visits.removed;
+  } catch (error) {
+    return {
+      ok: false as const,
+      error: error instanceof Error ? error.message : "Smoke visits could not be purged.",
+      removed,
+      ids,
+      visitsRemoved,
+    };
+  }
+  return { ok: true as const, removed, ids, visitsRemoved };
 }
 
 export async function portalSignInAction(
