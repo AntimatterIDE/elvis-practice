@@ -89,7 +89,7 @@ export function Workbench() {
       <PageHeader
         kicker="Practice"
         title={focus === today ? "Today" : "Clinic day"}
-        lede={`${formatClinicDay(focus)}. The rooms are across the day. Calls and unfinished charts sit beside them.`}
+        lede={`${formatClinicDay(focus)}. Rooms run down the day. Calls and unfinished charts sit beside them.`}
         action={
           <div className="flex flex-wrap gap-3">
             <Button asChild variant="secondary">

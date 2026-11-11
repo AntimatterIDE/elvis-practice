@@ -4,9 +4,10 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { focusClinicDay, visitTypeLabel } from "@/lib/rcm/chart";
-import { formatClinicDay, patientName } from "@/lib/rcm/format";
+import { patientName } from "@/lib/rcm/format";
 import type { AppointmentStatus, ConfirmationStatus, VisitType } from "@/lib/rcm/types";
 import { DaySheet } from "@/components/admin/rcm/day-sheet";
+import { ScheduleDayNav } from "@/components/admin/rcm/schedule-day-nav";
 import { recordVisitHref } from "@/lib/rcm/record-visit";
 import { Field, LoadingDesk, PageHeader, fieldClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
@@ -56,58 +57,74 @@ export function ScheduleDesk() {
         title="Schedule"
         lede={`${practice.physicianName}. Confirm, check in, and room patients from the day sheet.`}
       />
-      <div className="mt-8 flex gap-2 overflow-x-auto pb-2">
-        {days.map((day) => (
-          <button
-            key={day}
-            type="button"
-            onClick={() => setPickedDay(day)}
-            className={`shrink-0 rounded-2xl border px-4 py-2.5 text-left text-sm ${day === focus ? "border-oxide bg-mint" : "border-line bg-card"}`}
-          >
-            <span className="block font-semibold">{formatClinicDay(day).split(",")[0]}</span>
-            <span className="text-muted">{day.slice(5)}</span>
-          </button>
-        ))}
-      </div>
       <div className="mt-6 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <section>
-          <DaySheet
-            visits={rows}
-            names={names}
-            title={formatClinicDay(focus)}
-            empty="No visits on this day."
-            recordHref={recordVisitHref}
-            renderExtra={(appointment) => (
-                <div className="grid min-w-0 gap-1.5">
-                  {appointment.confirmation !== "confirmed" && appointment.status !== "cancelled" ? (
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      className="min-h-8 w-full px-2 py-1 text-xs"
-                      onClick={() => updateAppointment(appointment.id, { confirmation: "confirmed" satisfies ConfirmationStatus })}
-                    >
-                      Confirm
-                    </Button>
-                  ) : null}
-                  <select
-                    className={`${fieldClass} w-full min-w-0 max-w-none py-1.5`}
-                    value={appointment.status}
-                    aria-label={`Status for ${names.get(appointment.patientId)}`}
-                    onChange={(event) => updateAppointment(appointment.id, { status: event.target.value as AppointmentStatus })}
-                  >
-                    {statuses.map((status) => (
-                      <option key={status} value={status}>
-                        {visitLabel(status)}
-                      </option>
-                    ))}
-                  </select>
-                  <button type="button" className="text-xs underline" onClick={() => removeAppointment(appointment.id)}>
-                    Remove
-                  </button>
-                </div>
-              )}
-          />
-        </section>
+        <DaySheet
+          visits={rows}
+          names={names}
+          title={focus}
+          empty="No visits on this day."
+          recordHref={recordVisitHref}
+          header={
+            <ScheduleDayNav
+              day={focus}
+              today={today}
+              markedDays={days}
+              visitCount={rows.length}
+              onChange={(next) => {
+                setPickedDay(next);
+                setDate(next);
+              }}
+            />
+          }
+          renderExtra={(appointment) => (
+            <div className="grid min-w-0 gap-1.5">
+              {appointment.status === "scheduled" ? (
+                <Button
+                  type="button"
+                  className="min-h-8 w-full px-2 py-1 text-xs"
+                  onClick={() => updateAppointment(appointment.id, { status: "arrived" satisfies AppointmentStatus })}
+                >
+                  Check in
+                </Button>
+              ) : null}
+              {appointment.status === "arrived" ? (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="min-h-8 w-full px-2 py-1 text-xs"
+                  onClick={() => updateAppointment(appointment.id, { status: "in_progress" satisfies AppointmentStatus })}
+                >
+                  Room patient
+                </Button>
+              ) : null}
+              {appointment.confirmation !== "confirmed" && appointment.status !== "cancelled" ? (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="min-h-8 w-full px-2 py-1 text-xs"
+                  onClick={() => updateAppointment(appointment.id, { confirmation: "confirmed" satisfies ConfirmationStatus })}
+                >
+                  Confirm
+                </Button>
+              ) : null}
+              <select
+                className={`${fieldClass} w-full min-w-0 max-w-none py-1.5`}
+                value={appointment.status}
+                aria-label={`Status for ${names.get(appointment.patientId)}`}
+                onChange={(event) => updateAppointment(appointment.id, { status: event.target.value as AppointmentStatus })}
+              >
+                {statuses.map((status) => (
+                  <option key={status} value={status}>
+                    {visitLabel(status)}
+                  </option>
+                ))}
+              </select>
+              <button type="button" className="text-xs underline" onClick={() => removeAppointment(appointment.id)}>
+                Remove
+              </button>
+            </div>
+          )}
+        />
         <form
           className="grid h-fit gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)] xl:sticky xl:top-6"
           onSubmit={(event) => {

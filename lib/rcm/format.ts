@@ -60,6 +60,23 @@ export function formatClinicDay(value: string) {
   return date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
 }
 
+export function formatClinicDayNav(value: string, today: string) {
+  const day = value.slice(0, 10);
+  const date = new Date(`${day}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  const full = date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  if (day === today) return `Today (${full})`;
+  const tomorrow = new Date(`${today}T12:00:00`);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const yesterday = new Date(`${today}T12:00:00`);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const toIso = (item: Date) =>
+    `${item.getFullYear()}-${String(item.getMonth() + 1).padStart(2, "0")}-${String(item.getDate()).padStart(2, "0")}`;
+  if (day === toIso(tomorrow)) return `Tomorrow (${full})`;
+  if (day === toIso(yesterday)) return `Yesterday (${full})`;
+  return full;
+}
+
 export function statusLabel(status: string) {
   return status.replaceAll("_", " ");
 }

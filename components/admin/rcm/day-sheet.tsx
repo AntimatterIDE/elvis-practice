@@ -7,6 +7,7 @@ import { visitLabel } from "@/components/admin/rcm/ui";
 import { cn } from "@/lib/utils";
 
 const practiceRooms = ["Room 1", "Room 2", "Procedure"];
+const pixelsPerMinute = 1.35;
 
 function clock(start: string) {
   const match = /T(\d{2}):(\d{2})/.exec(start);
@@ -21,17 +22,10 @@ function minutes(start: string) {
 
 function hourLabel(totalMinutes: number) {
   const hour = Math.floor(totalMinutes / 60);
+  const minute = totalMinutes % 60;
   const hour12 = hour % 12 || 12;
-  return `${hour12} ${hour < 12 ? "AM" : "PM"}`;
-}
-
-function initials(name: string) {
-  return name
-    .split(" ")
-    .slice(0, 2)
-    .map((part) => part.slice(0, 1))
-    .join("")
-    .toUpperCase();
+  if (minute === 0) return `${hour12} ${hour < 12 ? "AM" : "PM"}`;
+  return `${hour12}:${String(minute).padStart(2, "0")}`;
 }
 
 export function DaySheet({
@@ -39,6 +33,7 @@ export function DaySheet({
   names,
   empty,
   title = "Rooms",
+  header,
   renderExtra,
   recordHref,
 }: {
@@ -46,6 +41,7 @@ export function DaySheet({
   names: Map<string, string>;
   empty: string;
   title?: string;
+  header?: ReactNode;
   renderExtra?: (visit: Appointment) => ReactNode;
   recordHref?: (visit: Appointment, name: string) => string;
 }) {
@@ -59,139 +55,152 @@ export function DaySheet({
   const finishes = visits.map((visit) => minutes(visit.start) + (visit.durationMinutes || 30));
   const earliest = starts.length ? Math.min(...starts) : 8 * 60;
   const latest = finishes.length ? Math.max(...finishes) : 12 * 60;
-  const windowStart = starts.length ? Math.floor(Math.min(8 * 60, earliest - 60) / 60) * 60 : 8 * 60;
-  const windowEnd = starts.length ? Math.max(windowStart + 4 * 60, Math.ceil(latest / 60) * 60 + 60) : 12 * 60;
+  const windowStart = starts.length ? Math.floor(Math.min(8 * 60, earliest - 30) / 15) * 15 : 8 * 60;
+  const windowEnd = starts.length ? Math.max(windowStart + 4 * 60, Math.ceil((latest + 30) / 15) * 15) : 12 * 60;
   const span = windowEnd - windowStart;
-  const hours = Array.from({ length: span / 60 }, (_, index) => windowStart + index * 60);
-  const laneHeight = renderExtra ? (recordHref ? 13.6 : 12.25) : recordHref ? 7.6 : 6.35;
+  const ticks = Array.from({ length: span / 15 + 1 }, (_, index) => windowStart + index * 15);
+  const gridHeight = span * pixelsPerMinute;
 
-  const byRoom = new Map<string, { visit: Appointment; lane: number }[]>();
+  const byRoom = new Map<string, Appointment[]>();
   for (const room of rooms) {
-    const laneEnds: number[] = [];
-    const placed = visits
-      .filter((visit) => (visit.room || "Room 1") === room)
-      .sort((a, b) => a.start.localeCompare(b.start))
-      .map((visit) => {
-        const start = minutes(visit.start);
-        const end = start + (visit.durationMinutes || 30);
-        let lane = laneEnds.findIndex((endAt) => endAt <= start);
-        if (lane < 0) {
-          lane = laneEnds.length;
-          laneEnds.push(end);
-        } else {
-          laneEnds[lane] = end;
-        }
-        return { visit, lane };
-      });
-    byRoom.set(room, placed);
+    byRoom.set(
+      room,
+      visits
+        .filter((visit) => (visit.room || "Room 1") === room)
+        .sort((a, b) => a.start.localeCompare(b.start)),
+    );
   }
 
   return (
     <section className="overflow-hidden rounded-3xl border border-line bg-card shadow-[0_16px_36px_-28px_rgb(7_30_54_/_0.45)]">
-      <div className="flex items-end justify-between gap-3 border-b border-line px-5 py-4">
-        <div>
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Day sheet</p>
-          <h2 className="mt-1 font-display text-2xl tracking-tight">{title}</h2>
-        </div>
-        <p className="text-sm text-muted">{visits.length === 0 ? empty : `${visits.length} on the board`}</p>
-      </div>
-      <div className="overflow-x-auto">
-        <div style={{ minWidth: `${8.5 + hours.length * 9}rem` }}>
-          <div className="grid" style={{ gridTemplateColumns: `8.5rem repeat(${hours.length}, minmax(9rem, 1fr))` }}>
-            <div className="bg-mist/40" />
-            {hours.map((hour) => (
-              <div key={hour} className="border-l border-line bg-mist/40 px-2 py-2 text-[0.7rem] font-semibold text-muted">
-                {hourLabel(hour)}
-              </div>
-            ))}
+      {header ?? (
+        <div className="flex items-end justify-between gap-3 border-b border-line px-5 py-4">
+          <div>
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-oxide">Day sheet</p>
+            <h2 className="mt-1 font-display text-2xl tracking-tight">{title}</h2>
           </div>
-          {rooms.map((room) => {
-            const placed = byRoom.get(room) ?? [];
-            const lanes = Math.max(1, ...placed.map((item) => item.lane + 1), 1);
-            return (
-              <div key={room} className="grid border-t border-line" style={{ gridTemplateColumns: "8.5rem minmax(0, 1fr)" }}>
-                <div className="bg-card px-3 py-3">
-                  <p className="font-display text-xl leading-none">{room}</p>
-                  <p className="mt-1 text-xs text-muted">{placed.length === 0 ? "Open" : `${placed.length} ${placed.length === 1 ? "visit" : "visits"}`}</p>
-                </div>
-                <div className="relative border-l border-line" style={{ minHeight: `${placed.length === 0 ? 4.5 : lanes * laneHeight + 0.75}rem` }}>
-                  <div
-                    className="pointer-events-none absolute inset-0 grid"
-                    style={{ gridTemplateColumns: `repeat(${hours.length}, minmax(0, 1fr))` }}
-                  >
-                    {hours.map((hour) => (
-                      <div key={hour} className="border-l border-line/70 first:border-l-0" />
-                    ))}
+          <p className="text-sm text-muted">{visits.length === 0 ? empty : `${visits.length} on the board`}</p>
+        </div>
+      )}
+      <div className="overflow-auto">
+        <div className="min-w-[42rem]">
+          <div className="sticky top-0 z-20 grid border-b border-line bg-mist/90 backdrop-blur" style={{ gridTemplateColumns: `4.5rem repeat(${rooms.length}, minmax(11rem, 1fr))` }}>
+            <div className="border-r border-line" />
+            {rooms.map((room) => {
+              const count = byRoom.get(room)?.length ?? 0;
+              return (
+                <div key={room} className="flex items-center justify-between gap-2 border-r border-line px-3 py-3 last:border-r-0">
+                  <div>
+                    <p className="font-display text-xl leading-none">{room}</p>
+                    <p className="mt-1 text-xs text-muted">{count === 0 ? "Open" : `${count} ${count === 1 ? "visit" : "visits"}`}</p>
                   </div>
-                  {placed.map(({ visit, lane }) => {
+                  <span className="inline-flex min-w-7 items-center justify-center rounded-full bg-ink px-2 py-0.5 text-xs font-semibold text-paper">
+                    {count}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="relative grid" style={{ gridTemplateColumns: `4.5rem repeat(${rooms.length}, minmax(11rem, 1fr))`, height: gridHeight }}>
+            <div className="relative border-r border-line bg-mist/30">
+              {ticks.map((tick) =>
+                tick % 60 === 0 || tick % 30 === 0 ? (
+                  <div
+                    key={tick}
+                    className={cn(
+                      "absolute right-2 -translate-y-1/2 text-[0.65rem] font-semibold",
+                      tick % 60 === 0 ? "text-ink" : "text-muted",
+                    )}
+                    style={{ top: (tick - windowStart) * pixelsPerMinute }}
+                  >
+                    {hourLabel(tick)}
+                  </div>
+                ) : null,
+              )}
+            </div>
+
+            {rooms.map((room) => {
+              const placed = byRoom.get(room) ?? [];
+              return (
+                <div key={room} className="relative border-r border-line last:border-r-0">
+                  {ticks.map((tick) => (
+                    <div
+                      key={tick}
+                      className={cn(
+                        "pointer-events-none absolute inset-x-0 border-t",
+                        tick % 60 === 0 ? "border-line" : "border-line/50",
+                      )}
+                      style={{ top: (tick - windowStart) * pixelsPerMinute }}
+                    />
+                  ))}
+                  {placed.map((visit) => {
                     const name = names.get(visit.patientId) ?? "Unknown patient";
                     const start = minutes(visit.start);
                     const duration = visit.durationMinutes || 30;
-                    const left = ((start - windowStart) / span) * 100;
-                    const width = (duration / span) * 100;
+                    const top = (start - windowStart) * pixelsPerMinute;
+                    const height = Math.max(duration * pixelsPerMinute, 72);
                     const openVisit = recordHref?.(visit, name);
                     return (
                       <div
                         key={visit.id}
                         className={cn(
-                          "@container absolute flex min-w-0 flex-col overflow-hidden rounded-xl border px-2 py-1.5 shadow-[0_10px_24px_-18px_rgb(7_30_54_/_0.7)]",
+                          "absolute inset-x-1.5 z-10 flex min-w-0 flex-col overflow-hidden rounded-xl border px-2.5 py-2 shadow-[0_10px_24px_-18px_rgb(7_30_54_/_0.7)]",
                           visit.status === "in_progress" && "border-oxide bg-mint",
-                          visit.status === "arrived" && "border-oxide/40 bg-mint/80",
+                          visit.status === "arrived" && "border-oxide bg-mint/70",
                           visit.status === "completed" && "border-line bg-mist text-muted",
                           visit.status === "no_show" && "border-dashed border-line bg-card text-muted",
                           visit.status === "cancelled" && "border-dashed border-line bg-card text-muted",
-                          visit.status === "scheduled" && "border-line bg-card",
+                          visit.status === "scheduled" && "border-sky-200 bg-sky-50",
                         )}
-                        style={{
-                          left: `calc(${left}% + 0.3rem)`,
-                          width: `calc(${width}% - 0.6rem)`,
-                          top: `${0.4 + lane * laneHeight}rem`,
-                          height: `${laneHeight - 0.7}rem`,
-                        }}
+                        style={{ top: top + 2, height: height - 4 }}
                       >
                         {openVisit ? (
                           <Link href={openVisit} aria-label={`Record ${name}`} className="absolute inset-0 z-0 rounded-xl" />
                         ) : null}
-                        <div className={cn("relative z-10 flex min-w-0 items-start gap-2", openVisit && "pointer-events-none")}>
-                          <span className="mt-0.5 hidden size-7 shrink-0 items-center justify-center rounded-full bg-pine text-[0.65rem] font-semibold text-paper @[8rem]:flex" aria-hidden>
-                            {initials(name)}
-                          </span>
-                          <div className="min-w-0 flex-1">
-                            {openVisit ? (
-                              <>
-                                <span className="block truncate font-semibold">{name}</span>
-                                <span className="block truncate text-xs whitespace-nowrap text-muted">
-                                  {formatTime(visit.start)} · {duration} min
-                                </span>
-                                <span className="mt-1 inline-flex text-xs font-medium underline">Record</span>
-                              </>
-                            ) : (
-                              <>
-                                <Link href={`/admin/operations/patients/${visit.patientId}`} className="block truncate font-semibold hover:text-oxide">
-                                  {name}
-                                </Link>
-                                <p className="truncate text-xs whitespace-nowrap text-muted">
-                                  {formatTime(visit.start)} · {duration} min
-                                </p>
-                              </>
-                            )}
+                        <div className={cn("relative z-10 min-w-0", openVisit && "pointer-events-none")}>
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="truncate text-[0.7rem] font-semibold text-muted">{visit.providerName}</p>
+                            {visit.status === "arrived" || visit.status === "in_progress" ? (
+                              <span className="shrink-0 rounded-full bg-oxide px-1.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.08em] text-paper">
+                                {visit.status === "arrived" ? "Arrived" : "In room"}
+                              </span>
+                            ) : null}
                           </div>
+                          {openVisit ? (
+                            <span className="mt-0.5 block truncate font-semibold uppercase tracking-wide">{name}</span>
+                          ) : (
+                            <Link
+                              href={`/admin/operations/patients/${visit.patientId}`}
+                              className="mt-0.5 block truncate font-semibold uppercase tracking-wide hover:text-oxide"
+                            >
+                              {name}
+                            </Link>
+                          )}
+                          <p className="mt-0.5 truncate text-xs text-muted">
+                            {formatTime(visit.start)} · {duration} min
+                          </p>
+                          <p className="mt-1 line-clamp-2 text-sm leading-snug">{visit.reason}</p>
+                          <p className="mt-1 truncate text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted">
+                            {visitTypeLabel[visit.visitType] ?? visit.visitType}
+                            {" · "}
+                            {visitLabel(visit.status)}
+                            {visit.confirmation !== "confirmed" ? ` · ${visitLabel(visit.confirmation)}` : ""}
+                          </p>
+                          {openVisit ? <span className="mt-1 inline-flex text-xs font-medium underline">Record</span> : null}
                         </div>
-                        <p className={cn("relative z-10 mt-1 hidden truncate text-sm @[7rem]:block", openVisit && "pointer-events-none")}>{visit.reason}</p>
-                        <p className={cn("relative z-10 mt-auto hidden truncate text-[0.65rem] font-semibold uppercase tracking-[0.12em] whitespace-nowrap text-muted @[11rem]:block", openVisit && "pointer-events-none")}>
-                          {visitTypeLabel[visit.visitType] ?? visit.visitType}
-                          {" · "}
-                          {visitLabel(visit.status)}
-                          {visit.confirmation !== "confirmed" ? ` · ${visitLabel(visit.confirmation)}` : ""}
-                        </p>
-                        {renderExtra ? <div className="relative z-10 mt-1.5 min-w-0">{renderExtra(visit)}</div> : null}
+                        {renderExtra ? <div className="relative z-10 mt-auto pt-1.5">{renderExtra(visit)}</div> : null}
                       </div>
                     );
                   })}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+
+            {visits.length === 0 ? (
+              <p className="pointer-events-none absolute inset-x-0 top-1/3 z-10 px-5 text-center text-sm text-muted">{empty}</p>
+            ) : null}
+          </div>
         </div>
       </div>
     </section>

@@ -326,6 +326,13 @@ export function localIsoDay(date = new Date()) {
   return `${year}-${month}-${day}`;
 }
 
+export function shiftClinicDay(day: string, delta: number) {
+  const date = new Date(`${day.slice(0, 10)}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return day.slice(0, 10);
+  date.setDate(date.getDate() + delta);
+  return localIsoDay(date);
+}
+
 export function focusClinicDay(days: string[], today: string) {
   const unique = [...new Set(days)].sort();
   if (unique.includes(today)) return today;
