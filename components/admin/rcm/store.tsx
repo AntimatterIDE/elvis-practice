@@ -7,6 +7,7 @@ import type { PortalInvoice } from "@/lib/portal/types";
 import { mergeClaimsByUpdatedAt } from "@/lib/rcm/claims-merge";
 import { deskFromState, mergePracticeDesk, normalizePractice } from "@/lib/rcm/desk-merge";
 import { STORAGE_KEY, createSeedState } from "@/lib/rcm/seed";
+import { isSmokePatient } from "@/lib/rcm/smoke-charts";
 import type {
   Appointment,
   AppointmentInput,
@@ -50,6 +51,7 @@ const portalListeners = new Set<
   (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[]; invoices: PortalInvoice[] }) => void
 >();
 const removedAppointmentIds = new Set<string>();
+const removedPatientIds = new Set<string>();
 const removedEligibilityIds = new Set<string>();
 const removalListeners = new Set<(ids: string[]) => void>();
 const claimsListeners = new Set<(claims: Claim[]) => void>();
@@ -113,12 +115,16 @@ export function setPortalSyncError(message: string) {
 
 function notifyPortalPush() {
   if (!clientState || !portalReady) return;
-  for (const patient of clientState.patients) portalIds.add(patient.id);
+  const patients = clientState.patients.filter(
+    (patient) => !removedPatientIds.has(patient.id) && !isSmokePatient(patient),
+  );
+  for (const patient of patients) portalIds.add(patient.id);
+  const patientIds = new Set(patients.map((patient) => patient.id));
   const snap = {
-    patients: clientState.patients,
-    appointments: clientState.appointments,
+    patients,
+    appointments: clientState.appointments.filter((appointment) => patientIds.has(appointment.patientId)),
     removedAppointmentIds: [...removedAppointmentIds],
-    invoices: invoicesFromClaims(clientState.claims ?? []),
+    invoices: invoicesFromClaims(clientState.claims ?? []).filter((invoice) => patientIds.has(invoice.patientId)),
   };
   for (const listener of portalListeners) listener(snap);
 }
@@ -269,9 +275,15 @@ export function mergeRemoteDesk(remote: PracticeDeskSnapshot | null) {
 export function mergePortalRoster(patients: Patient[], appointments: Appointment[]) {
   ensureClient();
   const current = clientState!;
-  const ids = new Set(patients.map((patient) => patient.id));
-  const localPatients = current.patients.filter((patient) => !ids.has(patient.id)).map((patient) => normalizePatient(patient));
-  portalIds = new Set([...ids, ...localPatients.map((patient) => patient.id)]);
+  const serverPatients = patients.filter((patient) => !removedPatientIds.has(patient.id) && !isSmokePatient(patient));
+  const serverIds = new Set(serverPatients.map((patient) => patient.id));
+  for (const id of [...removedPatientIds]) {
+    if (!patients.some((patient) => patient.id === id)) removedPatientIds.delete(id);
+  }
+  const localPatients = current.patients
+    .filter((patient) => !serverIds.has(patient.id) && !removedPatientIds.has(patient.id) && !isSmokePatient(patient))
+    .map((patient) => normalizePatient(patient));
+  portalIds = new Set([...serverIds, ...localPatients.map((patient) => patient.id)]);
   portalReady = true;
   rosterReady = true;
   const serverAppointmentIds = new Set(appointments.map((appointment) => appointment.id));
@@ -280,18 +292,25 @@ export function mergePortalRoster(patients: Patient[], appointments: Appointment
   }
   const pending = current.appointments.filter(
     (appointment) =>
-      ids.has(appointment.patientId) && !serverAppointmentIds.has(appointment.id) && !removedAppointmentIds.has(appointment.id),
+      serverIds.has(appointment.patientId) &&
+      !serverAppointmentIds.has(appointment.id) &&
+      !removedAppointmentIds.has(appointment.id),
   );
-  const sharedAppointments = appointments.filter((appointment) => !removedAppointmentIds.has(appointment.id));
+  const sharedAppointments = appointments.filter(
+    (appointment) => !removedAppointmentIds.has(appointment.id) && serverIds.has(appointment.patientId),
+  );
   commit(
     {
       ...current,
-      patients: [...patients.map((patient) => normalizePatient(patient)), ...localPatients],
+      patients: [...serverPatients.map((patient) => normalizePatient(patient)), ...localPatients],
       appointments: [
         ...sharedAppointments.map((appointment) => normalizeAppointment(appointment)),
         ...pending,
         ...current.appointments.filter(
-          (appointment) => !ids.has(appointment.patientId) && !removedAppointmentIds.has(appointment.id),
+          (appointment) =>
+            !serverIds.has(appointment.patientId) &&
+            !removedAppointmentIds.has(appointment.id) &&
+            !removedPatientIds.has(appointment.patientId),
         ),
       ],
     },
@@ -363,6 +382,8 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
       },
       removePatient: (id) => {
         const current = getSnapshot();
+        removedPatientIds.add(id);
+        portalIds.delete(id);
         commit({
           ...current,
           patients: current.patients.filter((patient) => patient.id !== id),

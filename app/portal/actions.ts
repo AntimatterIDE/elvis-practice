@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { listChartFiles, prepareChartUpload } from "@/lib/chart-files/store";
 import type { Appointment, Patient } from "@/lib/rcm/types";
+import { isSmokePatient } from "@/lib/rcm/smoke-charts";
 import { clearPortalCookie, readPortalCookie, writePortalCookie } from "@/lib/portal/cookie";
 import { cleanPortalInvoices } from "@/lib/portal/mailbox";
 import { getPortalStore } from "@/lib/portal/repository";
@@ -157,9 +158,6 @@ export async function deletePortalPatientsAction(ids: string[]) {
 }
 
 /** Staff cleanup for delivery: remove known QA / smoke charts from the shared roster. */
-const SMOKE_CHART_NAME =
-  /^(ClaimPipe Multi|BulkSmoke Alpha|LetterSmoke Alpha|LetterSmoke Beta|LetterSmoke Gamma|OCR ExtractTest|Alicia Mendel)$/i;
-
 export async function purgeSmokeChartsAction() {
   const staff = await getStaffSession();
   if (!staff) return { ok: false as const, error: "Sign in required." };
@@ -168,9 +166,7 @@ export async function purgeSmokeChartsAction() {
   }
   const roster = await getPortalStore().roster();
   if (!roster.ok) return { ok: false as const, error: roster.error };
-  const ids = roster.value.patients
-    .filter((patient) => SMOKE_CHART_NAME.test(`${patient.firstName} ${patient.lastName}`.trim()))
-    .map((patient) => patient.id);
+  const ids = roster.value.patients.filter((patient) => isSmokePatient(patient)).map((patient) => patient.id);
   if (!ids.length) return { ok: true as const, removed: 0, ids: [] as string[] };
   const result = await getPortalStore().removePatients(ids);
   if (!result.ok) return { ok: false as const, error: result.error };

@@ -3,6 +3,7 @@
 import { useMemo, useState, useTransition } from "react";
 import { purgeSmokeChartsAction } from "@/app/portal/actions";
 import { money } from "@/lib/rcm/format";
+import { isSmokePatient } from "@/lib/rcm/smoke-charts";
 import { LoadingDesk, PageHeader, fieldClass } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -28,15 +29,7 @@ export function ToolsDesk() {
     return codes.filter((item) => `${item.code} ${item.label} ${item.kind}`.toLowerCase().includes(term));
   }, [query]);
 
-  const smokeLocal = useMemo(
-    () =>
-      patients.filter((patient) =>
-        /^(ClaimPipe Multi|BulkSmoke Alpha|LetterSmoke Alpha|LetterSmoke Beta|LetterSmoke Gamma|OCR ExtractTest|Alicia Mendel)$/i.test(
-          `${patient.firstName} ${patient.lastName}`.trim(),
-        ),
-      ),
-    [patients],
-  );
+  const smokeLocal = useMemo(() => patients.filter((patient) => isSmokePatient(patient)), [patients]);
 
   if (!ready) return <LoadingDesk />;
 
