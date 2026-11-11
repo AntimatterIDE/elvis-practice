@@ -68,12 +68,20 @@ export function DocumentDesk({ files, storageNote }: { files: ChartFile[]; stora
     }
     form.reset();
     router.refresh();
-    setMessage(`${file.name} is on your profile.`);
     const extractable =
       file.type === "application/pdf" ||
       /\.pdf$/i.test(file.name) ||
-      (file.type || "").startsWith("image/");
-    if (!extractable) return;
+      (file.type || "").startsWith("image/") ||
+      /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(file.name);
+    if (!extractable) {
+      setMessage(
+        /\.docx?$/i.test(file.name) || (file.type || "").includes("word")
+          ? `${file.name} is on your profile. Word files cannot be OCR’d here — upload a PDF or photo to fill the chart.`
+          : `${file.name} is on your profile.`,
+      );
+      return;
+    }
+    setMessage(`${file.name} is on your profile.`);
     const loaded = await loadOwnPortalPatientAction();
     if (!loaded.ok) {
       setError(loaded.message);

@@ -1,5 +1,12 @@
 # Bugs — elvis-practice
 
+## [2026-11-11] Word chart uploads save with no OCR path
+
+**Symptom:** `.doc`/`.docx` save on Files; no Extract into chart.  
+**Cause:** OCR pipeline is PDF/image only; accept still allowed Word.  
+**Fix:** After Word-only upload, message tells staff to use PDF/photo. Stored
+PDF/image rows now have **Extract into chart** (re-run from signed URL).
+
 ## [2026-11-11] Claim form file pick stored papers with no OCR offer
 
 **Symptom:** New claim “Upload a file” only queued attachments for save; no

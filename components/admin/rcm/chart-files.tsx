@@ -35,6 +35,26 @@ function sizeLabel(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function isOcrExtractableFile(file: { name: string; type?: string; contentType?: string }) {
+  const type = (file.type || file.contentType || "").toLowerCase();
+  const name = file.name || "";
+  return (
+    type === "application/pdf" ||
+    /\.pdf$/i.test(name) ||
+    type.startsWith("image/") ||
+    /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(name)
+  );
+}
+
+function isWordFile(file: { name: string; type?: string }) {
+  const type = (file.type || "").toLowerCase();
+  return (
+    type.includes("word") ||
+    type.includes("officedocument.wordprocessingml") ||
+    /\.docx?$/i.test(file.name)
+  );
+}
+
 export function ChartFiles({
   patient,
   onSave,
@@ -123,17 +143,41 @@ export function ChartFiles({
         ),
       });
     }
-    setMessage(files.length === 1 ? `${files[0].name} is saved on this chart.` : `${files.length} files are saved on this chart.`);
+    const extractable = files.filter((file) => isOcrExtractableFile(file));
+    const wordOnly = files.length > 0 && extractable.length === 0 && files.some((file) => isWordFile(file));
+    setMessage(
+      wordOnly
+        ? `${files.length === 1 ? files[0].name : `${files.length} files`} saved. Word files cannot be OCR’d here — upload a PDF or photo to extract into the chart.`
+        : files.length === 1
+          ? `${files[0].name} is saved on this chart.`
+          : `${files.length} files are saved on this chart.`,
+    );
     setBusySlot("");
     reload();
-    const extractable = files.filter(
-      (file) =>
-        file.type === "application/pdf" ||
-        /\.pdf$/i.test(file.name) ||
-        (file.type || "").startsWith("image/") ||
-        /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(file.name),
-    );
     if (extractable.length) setExtractOffer({ slotId: document.id, files: extractable });
+  }
+
+  async function extractStored(document: ChartDocument, stored: ChartFile) {
+    if (!stored.url || !isOcrExtractableFile({ name: stored.label, contentType: stored.contentType })) {
+      setMessage("OCR needs a PDF or photo on this item.");
+      return;
+    }
+    setBusySlot(document.id);
+    setMessage("");
+    setExtractOffer(null);
+    try {
+      const res = await fetch(stored.url);
+      if (!res.ok) throw new Error(`Could not open ${stored.label} (${res.status}).`);
+      const blob = await res.blob();
+      const file = new File([blob], stored.label || "chart-file.pdf", {
+        type: stored.contentType || blob.type || "application/pdf",
+      });
+      setExtractOffer({ slotId: document.id, files: [file] });
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "Could not open that file for OCR.");
+    } finally {
+      setBusySlot("");
+    }
   }
 
   function addItem() {
@@ -212,6 +256,16 @@ export function ChartFiles({
                     {file.url && !file.contentType.startsWith("image/") && !file.contentType.startsWith("video/") ? (
                       <Button variant="secondary" asChild>
                         <a href={file.url} target="_blank" rel="noreferrer">Open</a>
+                      </Button>
+                    ) : null}
+                    {file.url && isOcrExtractableFile({ name: file.label, contentType: file.contentType }) ? (
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        disabled={busySlot === document.id}
+                        onClick={() => void extractStored(document, file)}
+                      >
+                        Extract into chart
                       </Button>
                     ) : null}
                     <Button

@@ -1,5 +1,12 @@
 # elvis-practice — agent log
 
+## [2026-11-11] bugfix | Re-extract stored chart files + Word guidance
+
+Pushed `bf2b462` (slot-local extract + claim-form extract). Follow-up: Word-only
+uploads get an explicit “use PDF/photo” message; stored PDF/image files gain
+Extract into chart (fetch signed URL → ChartExtractReview). Portal DocumentDesk
+HEIC-by-extension + Word message aligned.
+
 ## [2026-11-11] ingest | Document upload × OCR extract audit (live)
 
 Surfaces tested on prod 2026-11-11:
