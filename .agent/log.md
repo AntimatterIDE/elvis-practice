@@ -31,6 +31,12 @@ whether or not staff downloads.
 everywhere) plus focus/visibility refresh, so when PM checks in the doctor’s
 open day-sheet card goes green within ~2s without a manual reload.
 
+## [2026-11-12] ingest | Live check-in verified on prod (2 tabs)
+
+Deployed `5d88095` to thealignmentclinic.com. Two schedule tabs: booked Jean
+Jacques Mackenson 12:00 “Live check-in sync test”, Check in on tab A → tab B
+showed **Room** + mint-green card within ~3s (no reload). Removed test visit.
+
 ## [2026-11-11] bugfix | Re-extract stored chart files + Word guidance
 
 Pushed `bf2b462` (slot-local extract + claim-form extract). Follow-up: Word-only
