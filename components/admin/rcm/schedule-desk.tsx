@@ -98,7 +98,7 @@ export function ScheduleDesk() {
             <VisitCardActions
               visit={appointment}
               patientName={names.get(appointment.patientId) ?? "patient"}
-              compact={meta.columnCount > 1}
+              compact={meta.columnCount > 1 && meta.colSpan === 1}
               onStatus={(status) => updateAppointment(appointment.id, { status })}
               onConfirm={() =>
                 updateAppointment(appointment.id, { confirmation: "confirmed" satisfies ConfirmationStatus })

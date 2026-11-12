@@ -72,6 +72,21 @@ describe("placeRoomVisits", () => {
     const [placed] = placeRoomVisits([{ id: "x", start: "2026-11-13T09:00:00" }]);
     expect(placed.heightMinutes).toBe(30);
   });
+
+  it("expands a later visit into empty lanes after an overlap cluster thins out", () => {
+    const placed = placeRoomVisits([
+      { id: "a", start: "2026-11-13T12:30:00", durationMinutes: 30 },
+      { id: "b", start: "2026-11-13T12:30:00", durationMinutes: 30 },
+      { id: "c", start: "2026-11-13T12:45:00", durationMinutes: 30 },
+      { id: "d", start: "2026-11-13T13:00:00", durationMinutes: 30 },
+    ]);
+    const byId = Object.fromEntries(placed.map((item) => [item.id, item]));
+    expect(byId.a).toMatchObject({ column: 0, colSpan: 1, columnCount: 3 });
+    expect(byId.b).toMatchObject({ column: 1, colSpan: 1, columnCount: 3 });
+    expect(byId.c).toMatchObject({ column: 2, colSpan: 1, columnCount: 3 });
+    // d overlaps only c (lane 2), so it keeps lane 0 and expands across lanes 0–1.
+    expect(byId.d).toMatchObject({ column: 0, colSpan: 2, columnCount: 3 });
+  });
 });
 
 describe("daySheetScrollTargetMinutes", () => {

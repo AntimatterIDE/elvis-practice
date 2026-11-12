@@ -40,6 +40,7 @@ function cardTitle(visit: Appointment, name: string, duration: number) {
 
 export type DaySheetCornerMeta = {
   columnCount: number;
+  colSpan: number;
   durationMinutes: number;
 };
 
@@ -105,10 +106,10 @@ export function DaySheet({
         </div>
       )}
       <div ref={scrollerRef} className="max-h-[70vh] overflow-auto">
-        <div className="min-w-[52rem]">
+        <div className="min-w-[64rem]">
           <div
             className="sticky top-0 z-20 grid border-b border-line bg-mist/95 backdrop-blur"
-            style={{ gridTemplateColumns: `4.5rem repeat(${rooms.length}, minmax(16rem, 1fr))` }}
+            style={{ gridTemplateColumns: `4.5rem repeat(${rooms.length}, minmax(20rem, 1fr))` }}
           >
             <div className="border-r border-line" />
             {rooms.map((room) => {
@@ -129,7 +130,7 @@ export function DaySheet({
 
           <div
             className="relative grid"
-            style={{ gridTemplateColumns: `4.5rem repeat(${rooms.length}, minmax(16rem, 1fr))`, height: gridHeight }}
+            style={{ gridTemplateColumns: `4.5rem repeat(${rooms.length}, minmax(20rem, 1fr))`, height: gridHeight }}
           >
             <div className="sticky left-0 z-10 relative border-r border-line bg-mist/40">
               {ticks.map((tick) =>
@@ -171,15 +172,17 @@ export function DaySheet({
                     const startMinutes = slot?.startMinutes ?? 0;
                     const duration = slot?.heightMinutes ?? 30;
                     const column = slot?.column ?? 0;
+                    const colSpan = slot?.colSpan ?? 1;
                     const columnCount = slot?.columnCount ?? 1;
                     const top = (startMinutes - windowStart) * pixelsPerMinute;
                     const height = duration * pixelsPerMinute;
                     const gap = 3;
-                    const widthPct = 100 / columnCount;
-                    const leftPct = column * widthPct;
+                    const widthPct = (100 / columnCount) * colSpan;
+                    const leftPct = (100 / columnCount) * column;
                     const openVisit = recordHref?.(visit, name);
                     const unconfirmed = visit.confirmation !== "confirmed" && visit.status !== "cancelled";
-                    const narrow = columnCount > 1;
+                    // Compact when this card is a single narrow lane (not expanded).
+                    const narrow = columnCount > 1 && colSpan === 1;
                     // 30-min cards are ~60px: name + one summary line only. Taller cards can add meta.
                     const showSummary = !narrow && duration >= 30;
                     const showMeta = !narrow && duration >= 45;
@@ -236,7 +239,7 @@ export function DaySheet({
                           </p>
                           {renderCorner ? (
                             <div className={cn("relative z-20 shrink-0", openVisit && "pointer-events-auto")}>
-                              {renderCorner(visit, { columnCount, durationMinutes: duration })}
+                              {renderCorner(visit, { columnCount, colSpan, durationMinutes: duration })}
                             </div>
                           ) : null}
                         </div>
