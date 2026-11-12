@@ -430,4 +430,93 @@ describe("submission proof", () => {
     expect(report.events[1].kind).toBe("submission");
     expect(report.events[1].detail).toContain("CLM1001");
   });
+
+  it("survives empty, malformed, and mixed timeline payloads", () => {
+    expect(buildSubmissionProofReport({ stediClaimId: "clm_x", patientControlNumber: "A", items: [] }).events).toEqual(
+      [],
+    );
+    expect(
+      buildSubmissionProofReport({
+        stediClaimId: "clm_x",
+        patientControlNumber: "A",
+        items: [null, "nope", 12, {}, { mysteryField: true }],
+      }).events,
+    ).toHaveLength(1);
+    expect(
+      buildSubmissionProofReport({
+        stediClaimId: "clm_x",
+        patientControlNumber: "A",
+        items: [{ mysteryField: true }],
+      }).events[0],
+    ).toMatchObject({ kind: "other", title: "Claim timeline entry" });
+
+    const mixed = buildSubmissionProofReport({
+      stediClaimId: "clm_x",
+      patientControlNumber: "A",
+      items: [
+        {
+          claimAcknowledgment: {
+            id: "ack_1",
+            processedAt: "2026-01-01T00:00:00Z",
+            reportedBy: "CLEARINGHOUSE",
+            sourceName: "STEDI INC",
+            status: "RECEIVED",
+          },
+        },
+        {
+          claimPaymentInformation: {
+            id: "clp_1",
+            processedAt: "2026-01-02T00:00:00Z",
+            statusCode: "PROCESSED_AS_PRIMARY",
+            claimPaymentAmount: "10.00",
+            totalClaimChargeAmount: "20.00",
+            checkOrEftTraceNumber: "TRN1",
+          },
+        },
+        {
+          institutionalClaimSubmission: {
+            id: "sbm_inst",
+            processedAt: "2026-01-01T12:00:00Z",
+            patientControlNumber: "PCN1",
+            totalClaimChargeAmount: "99.00",
+          },
+        },
+      ],
+    });
+    expect(mixed.events.map((event) => event.kind)).toEqual(["acknowledgment", "payment", "submission"]);
+    expect(mixed.events[0].sourceName).toBe("STEDI INC");
+    expect(mixed.events[1].detail).toContain("TRN1");
+  });
+
+  it("normalizes control numbers and rejects non-lifecycle ids", () => {
+    expect(stediPatientControlNumber("")).toBe("");
+    expect(stediPatientControlNumber("!!!")).toBe("");
+    expect(stediPatientControlNumber("ACFB61D4FAE0-EXTRA-CHARS-TOO-LONG")).toHaveLength(20);
+    expect(looksLikeStediLifecycleClaimId("")).toBe(false);
+    expect(looksLikeStediLifecycleClaimId("CLM_upper")).toBe(true);
+    expect(looksLikeStediLifecycleClaimId("01M70WF06ZV6ZKD0Y4KYHQ8QBV")).toBe(false);
+    expect(pickStediClaimId(null)).toBe("");
+    expect(pickStediClaimId({ claimReference: { correlationId: "corr_1" } })).toBe("corr_1");
+    expect(pickStediSubmissionId({ claimReference: { rhclaimNumber: "rh_1" } })).toBe("rh_1");
+  });
+
+  it("collapses duplicated Stedi acknowledgment statuses", () => {
+    const report = buildSubmissionProofReport({
+      stediClaimId: "clm_dup",
+      patientControlNumber: "DUP1",
+      items: [
+        {
+          claimAcknowledgment: {
+            id: "ack_dup",
+            processedAt: "2026-01-01T00:00:00Z",
+            reportedBy: "PAYER",
+            sourceName: "FIDELIS",
+            status: "RECEIVED (RECEIVED)",
+          },
+        },
+      ],
+    });
+    expect(report.events[0].status).toBe("RECEIVED");
+    expect(report.events[0].title).toBe("Status: RECEIVED");
+  });
 });

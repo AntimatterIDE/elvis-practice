@@ -27,6 +27,14 @@ function text(value: unknown) {
   return typeof value === "string" && value.trim() ? value.trim() : "";
 }
 
+/** Stedi sometimes returns "RECEIVED (RECEIVED)"; collapse exact duplicates for proof copy. */
+export function cleanAckStatus(value: unknown) {
+  const status = text(value);
+  if (!status) return "";
+  const match = status.match(/^(.+?)\s*\(\1\)$/i);
+  return match ? match[1].trim() : status;
+}
+
 /** Patient control number Stedi receives on the 837 (CLM01). */
 export function stediPatientControlNumber(controlNumber: string) {
   return controlNumber.replace(/[^A-Za-z0-9]/g, "").slice(0, 20);
@@ -68,7 +76,7 @@ export function summarizeTimelineItems(items: unknown[]): SubmissionProofEvent[]
 
     const acknowledgment = asRecord(row.claimAcknowledgment);
     if (acknowledgment) {
-      const status = text(acknowledgment.status);
+      const status = cleanAckStatus(acknowledgment.status);
       const reportedBy = text(acknowledgment.reportedBy);
       const sourceName = text(acknowledgment.sourceName);
       const at = text(acknowledgment.processedAt) || new Date().toISOString();
@@ -139,11 +147,15 @@ export function summarizeTimelineItems(items: unknown[]): SubmissionProofEvent[]
       continue;
     }
 
+    // Skip empty envelopes so junk/null-coerced rows never pollute official proof.
+    const keys = Object.keys(row);
+    if (keys.length === 0) continue;
+
     events.push({
       kind: "other",
       at: new Date().toISOString(),
       title: "Claim timeline entry",
-      detail: Object.keys(row).join(", ") || "Unrecognized timeline entry",
+      detail: keys.join(", ") || "Unrecognized timeline entry",
       raw: row,
     });
   }

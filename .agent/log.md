@@ -1,5 +1,15 @@
 # elvis-practice — agent log
 
+## [2026-11-12] bugfix | Aggressive QA of morning proof + check-in
+
+Broke morning features with edge payloads + live desk. Fixes: skip empty
+timeline `{}` rows; collapse duplicate ack statuses; single `updateClaim` after
+submit/proof; keep local visit status when portal syncError is set; proof page
+**File PDF to chart** for predating claims. Unit suite 23/23. Live: Angela proof
+refresh OK (6 timeline rows, payer 277CAs); missing claim id → “Claim not
+found”; check-in → Room, cancel → restore scheduled. Prod UI after hard reload
+matches stacked proof cards.
+
 ## [2026-11-12] ingest | Official Stedi submission proof per claim
 
 Added printable **Submission proof** at `/admin/operations/claims/[id]/proof`

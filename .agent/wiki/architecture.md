@@ -57,9 +57,11 @@
   the chart under `claim-{claimId}` via `storeChartBytes`. A popup offers
   download; if skipped, the PDF remains on patient **Files → Claim submission
   proofs** and claim **Note and papers**. Manual page:
-  `/admin/operations/claims/[id]/proof` (`fetchClaimSubmissionProof`). Resolves
-  lifecycle `clm_…` via List Claims by patient control number when only a
-  correlation id is stored. Helpers in `lib/stedi/submission-proof.ts`.
+  `/admin/operations/claims/[id]/proof` (`fetchClaimSubmissionProof`) also has
+  **File PDF to chart** for predating / re-file. Resolves lifecycle `clm_…` via
+  List Claims by patient control number when only a correlation id is stored.
+  Helpers in `lib/stedi/submission-proof.ts` (skips empty timeline rows; collapses
+  duplicate ack statuses like `RECEIVED (RECEIVED)`).
 
 ## Eligibility (Stedi 270/271)
 

@@ -299,12 +299,22 @@ export function mergePortalRoster(patients: Patient[], appointments: Appointment
   const sharedAppointments = appointments.filter(
     (appointment) => !removedAppointmentIds.has(appointment.id) && serverIds.has(appointment.patientId),
   );
+  // If the last portal push failed, keep local visit status so a stale roster poll
+  // cannot wipe a check-in / rooming change that never landed on the server.
+  const localById = new Map(current.appointments.map((appointment) => [appointment.id, appointment]));
+  const mergedShared = sharedAppointments.map((appointment) => {
+    const normalized = normalizeAppointment(appointment);
+    if (!syncError) return normalized;
+    const local = localById.get(appointment.id);
+    if (!local || local.status === normalized.status) return normalized;
+    return normalizeAppointment({ ...normalized, status: local.status });
+  });
   commit(
     {
       ...current,
       patients: [...serverPatients.map((patient) => normalizePatient(patient)), ...localPatients],
       appointments: [
-        ...sharedAppointments.map((appointment) => normalizeAppointment(appointment)),
+        ...mergedShared,
         ...pending,
         ...current.appointments.filter(
           (appointment) =>

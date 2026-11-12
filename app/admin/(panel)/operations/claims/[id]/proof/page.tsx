@@ -3,12 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { fetchClaimSubmissionProof } from "@/app/admin/stedi/actions";
+import { fetchClaimSubmissionProof, produceAndStoreClaimSubmissionProof } from "@/app/admin/stedi/actions";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/site/brand";
 import { claimTotal, formatDay, formatWhen, money, patientName } from "@/lib/rcm/format";
 import { practice as sitePractice } from "@/lib/site";
 import type { SubmissionProofReport } from "@/lib/stedi/submission-proof";
+import {
+  SubmissionProofDialog,
+  type SubmissionProofOffer,
+} from "@/components/admin/rcm/submission-proof-dialog";
 import { LoadingDesk } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -19,8 +23,10 @@ export default function ClaimSubmissionProofPage() {
   const claim = claims.find((item) => item.id === id);
   const patient = patients.find((item) => item.id === claim?.patientId);
   const [pending, setPending] = useState(false);
+  const [filing, setFiling] = useState(false);
   const [message, setMessage] = useState("");
   const [report, setReport] = useState<SubmissionProofReport | null>(null);
+  const [proofOffer, setProofOffer] = useState<SubmissionProofOffer | null>(null);
   const [generatedAt] = useState(() => new Date().toISOString());
 
   useEffect(() => {
@@ -62,6 +68,67 @@ export default function ClaimSubmissionProofPage() {
     setPending(false);
   }
 
+  async function filePdfToChart() {
+    if (!claim || !patient) return;
+    setFiling(true);
+    const proof = await produceAndStoreClaimSubmissionProof({
+      patientId: patient.id,
+      claimId: claim.id,
+      controlNumber: claim.controlNumber,
+      stediClaimId: claim.stediClaimId || report?.stediClaimId,
+      stediSubmissionId: claim.stediSubmissionId,
+      patientName: patientName(patient),
+      payerName: claim.payerName,
+      dateOfService: formatDay(claim.dateOfService),
+      billedAmount: money(claimTotal(claim)),
+      practice: {
+        legalName: practice.legalName,
+        physicianName: practice.physicianName,
+        npi: practice.npi,
+        phone: practice.phone,
+        address: practice.address,
+      },
+    });
+    setMessage(proof.message);
+    if (proof.report) setReport(proof.report);
+    const patch: {
+      stediClaimId?: string;
+      attachments?: typeof claim.attachments;
+      events?: typeof claim.events;
+    } = {};
+    if (proof.stediClaimId && proof.stediClaimId !== claim.stediClaimId) {
+      patch.stediClaimId = proof.stediClaimId;
+    }
+    if (proof.ok && proof.path && proof.fileName) {
+      patch.attachments = [
+        ...claim.attachments,
+        {
+          path: proof.path,
+          name: proof.fileName,
+          contentType: "application/pdf",
+          size: 0,
+        },
+      ];
+      patch.events = [
+        ...claim.events,
+        {
+          id: crypto.randomUUID(),
+          at: new Date().toISOString(),
+          kind: "277ca",
+          summary: proof.message,
+        },
+      ];
+      setProofOffer({
+        fileName: proof.fileName,
+        url: proof.url || "",
+        patientId: patient.id,
+        message: proof.message,
+      });
+    }
+    if (Object.keys(patch).length) updateClaim(claim.id, patch);
+    setFiling(false);
+  }
+
   if (!ready) return <LoadingDesk />;
   if (!claim || !patient) return <p>Claim not found.</p>;
 
@@ -80,6 +147,7 @@ export default function ClaimSubmissionProofPage() {
 
   return (
     <main className="mx-auto max-w-[7.5in] text-ink">
+      {proofOffer ? <SubmissionProofDialog offer={proofOffer} onClose={() => setProofOffer(null)} /> : null}
       <article className="rounded-none border border-line bg-white px-6 py-8 shadow-none sm:px-10 print:border-0 print:px-0 print:py-0">
         <header className="flex flex-wrap items-start justify-between gap-6 border-b-2 border-oxide pb-5">
           <div>
@@ -251,10 +319,18 @@ export default function ClaimSubmissionProofPage() {
       </article>
 
       <div className="mt-6 flex flex-wrap gap-3 print:hidden">
-        <Button type="button" disabled={pending || !report} onClick={() => window.print()}>
+        <Button type="button" disabled={pending || filing || !report} onClick={() => window.print()}>
           Print / save PDF
         </Button>
-        <Button type="button" variant="secondary" disabled={pending} onClick={() => void refresh()}>
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={pending || filing || (!report && !claim.stediClaimId)}
+          onClick={() => void filePdfToChart()}
+        >
+          {filing ? "Filing…" : "File PDF to chart"}
+        </Button>
+        <Button type="button" variant="secondary" disabled={pending || filing} onClick={() => void refresh()}>
           Refresh from Stedi
         </Button>
         <Link href={`/admin/operations/claims/${claim.id}`} className="self-center text-sm underline">

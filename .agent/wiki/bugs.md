@@ -1,5 +1,32 @@
 # Bugs — elvis-practice
 
+## [2026-11-12] Empty Stedi timeline rows became fake proof events
+
+**Symptom:** Malformed Claim Timeline payloads with `{}` could appear as
+“Claim timeline entry / Unrecognized timeline entry” on submission proof.
+**Cause:** `summarizeTimelineItems` fell through to `kind: "other"` for any
+object, including empty envelopes.
+**Fix:** Skip zero-key objects; keep non-empty unrecognized rows. Also collapse
+Stedi’s duplicated `RECEIVED (RECEIVED)` via `cleanAckStatus`.
+
+## [2026-11-12] Submit proof attach could stomp claim patch
+
+**Symptom:** After submit + proof file, `stediClaimId` / attachments / events
+could race when three `updateClaim` calls ran in sequence.
+**Cause:** Each `updateClaim` reads current snapshot independently; later
+patches can drop earlier fields if React state has not flushed.
+**Fix:** `submitAndFileProof` applies one merged patch. Proof page “File PDF to
+chart” also uses a single patch.
+
+## [2026-11-12] Failed portal push could wipe a local check-in
+
+**Symptom:** After a failed `pushPortalChartsAction`, the next 2s roster poll
+could replace local `arrived` / `in_progress` with stale server `scheduled`.
+**Cause:** `mergePortalRoster` always preferred server appointment status;
+appointments have no `updatedAt` LWW.
+**Fix:** While `syncError` is set, keep the local visit status for shared
+appointment ids.
+
 ## [2026-11-11] Word chart uploads save with no OCR path
 
 **Symptom:** `.doc`/`.docx` save on Files; no Extract into chart.  

@@ -74,7 +74,6 @@ export function ClaimDetail({ id }: { id: string }) {
     setMessage("");
     const result = await submitProfessionalClaim(claimSubmissionInput(claim, patient, practice));
     const next = applyClaimEvent(claim, result);
-    updateClaim(claim.id, next);
     setMessage(result.message);
 
     const alreadySent = "alreadySent" in result && Boolean(result.alreadySent);
@@ -97,30 +96,28 @@ export function ClaimDetail({ id }: { id: string }) {
           address: practice.address,
         },
       });
-      if (proof.stediClaimId && proof.stediClaimId !== (result.stediClaimId ?? next.stediClaimId)) {
-        updateClaim(claim.id, { stediClaimId: proof.stediClaimId });
-      }
+      // One patch only — sequential updateClaim calls can stomp each other.
+      const patch: Partial<Claim> = { ...next };
+      if (proof.stediClaimId) patch.stediClaimId = proof.stediClaimId;
       if (proof.ok && proof.path && proof.fileName) {
-        updateClaim(claim.id, {
-          attachments: [
-            ...claim.attachments,
-            {
-              path: proof.path,
-              name: proof.fileName,
-              contentType: "application/pdf",
-              size: 0,
-            },
-          ],
-          events: [
-            ...(next.events ?? claim.events),
-            {
-              id: crypto.randomUUID(),
-              at: new Date().toISOString(),
-              kind: "277ca",
-              summary: proof.message,
-            },
-          ],
-        });
+        patch.attachments = [
+          ...(next.attachments ?? claim.attachments),
+          {
+            path: proof.path,
+            name: proof.fileName,
+            contentType: "application/pdf",
+            size: 0,
+          },
+        ];
+        patch.events = [
+          ...(next.events ?? claim.events),
+          {
+            id: crypto.randomUUID(),
+            at: new Date().toISOString(),
+            kind: "277ca",
+            summary: proof.message,
+          },
+        ];
         setProofOffer({
           fileName: proof.fileName,
           url: proof.url || "",
@@ -130,6 +127,9 @@ export function ClaimDetail({ id }: { id: string }) {
       } else if (!proof.ok) {
         setMessage(`${result.message} Proof PDF: ${proof.message}`);
       }
+      updateClaim(claim.id, patch);
+    } else {
+      updateClaim(claim.id, next);
     }
 
     setPending(false);
