@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { buildProfessionalClaim, claimContentProblems, productionClaimProblems, type ClaimSubmissionInput } from "@/lib/stedi/payload";
 import { describeEligibilityPayload, summarizeClaimStatus, summarizeEligibility } from "@/lib/stedi/parse";
+import {
+  buildSubmissionProofReport,
+  looksLikeStediLifecycleClaimId,
+  pickStediClaimId,
+  pickStediSubmissionId,
+  stediPatientControlNumber,
+} from "@/lib/stedi/submission-proof";
 
 const ready: ClaimSubmissionInput = {
   claimId: "claim-1",
@@ -367,5 +374,59 @@ describe("claim status summary", () => {
     });
     expect(summary).not.toContain("[object Object]");
     expect(summary).toMatch(/A7|Acknowledgement|Invalid member/i);
+  });
+});
+
+describe("submission proof", () => {
+  it("prefers Stedi lifecycle claimId over correlation id", () => {
+    expect(
+      pickStediClaimId({
+        claimId: "clm_01K6XFP3TZ8RA9X84963NMW40M",
+        claimReference: { correlationId: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee" },
+      }),
+    ).toBe("clm_01K6XFP3TZ8RA9X84963NMW40M");
+    expect(pickStediSubmissionId({ submissionId: "sbm_01K6XFP3TZ8RA9X84963NMW40N" })).toBe(
+      "sbm_01K6XFP3TZ8RA9X84963NMW40N",
+    );
+    expect(looksLikeStediLifecycleClaimId("clm_01K6XFP3TZ8RA9X84963NMW40M")).toBe(true);
+    expect(looksLikeStediLifecycleClaimId("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")).toBe(false);
+    expect(stediPatientControlNumber("CLM-1001!")).toBe("CLM1001");
+  });
+
+  it("summarizes Stedi Claim Timeline submissions and payer 277CAs", () => {
+    const report = buildSubmissionProofReport({
+      stediClaimId: "clm_01K6XFP3TZ8RA9X84963NMW40M",
+      patientControlNumber: "CLM1001",
+      status: "ACCEPTED",
+      items: [
+        {
+          claimAcknowledgment: {
+            id: "ack_01K6XFP3TZ8RA9X84963NMW42Q",
+            processedAt: "2026-01-08T09:30:00Z",
+            reportedBy: "PAYER",
+            sourceName: "ACME INSURANCE",
+            status: "ACCEPTED",
+          },
+        },
+        {
+          professionalClaimSubmission: {
+            id: "sbm_01K6XFP3TZ8RA9X84963NMW41P",
+            processedAt: "2026-01-07T15:12:45Z",
+            patientControlNumber: "CLM1001",
+            totalClaimChargeAmount: "250.00",
+            stediPayerId: "ABCDE",
+          },
+        },
+      ],
+    });
+    expect(report.events).toHaveLength(2);
+    expect(report.events[0]).toMatchObject({
+      kind: "acknowledgment",
+      title: "277CA · ACCEPTED",
+      reportedBy: "PAYER",
+      sourceName: "ACME INSURANCE",
+    });
+    expect(report.events[1].kind).toBe("submission");
+    expect(report.events[1].detail).toContain("CLM1001");
   });
 });

@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { checkClaimStatus, requestPaperClaim, submitProfessionalClaim } from "@/app/admin/stedi/actions";
+import {
+  checkClaimStatus,
+  produceAndStoreClaimSubmissionProof,
+  requestPaperClaim,
+  submitProfessionalClaim,
+} from "@/app/admin/stedi/actions";
 import { Button } from "@/components/ui/button";
 import { filingCodes } from "@/lib/rcm/claim-rules";
 import { claimTotal, formatDay, formatWhen, money, patientName } from "@/lib/rcm/format";
@@ -11,6 +16,10 @@ import type { Claim, ClaimStatus } from "@/lib/rcm/types";
 import { AccountNoteDialog } from "@/components/admin/rcm/account-note";
 import { ClaimPapers } from "@/components/admin/rcm/claim-files";
 import { applyClaimEvent } from "@/components/admin/rcm/demo-billing";
+import {
+  SubmissionProofDialog,
+  type SubmissionProofOffer,
+} from "@/components/admin/rcm/submission-proof-dialog";
 import { LoadingDesk, PageHeader, StatusPill } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
@@ -38,6 +47,7 @@ export function ClaimDetail({ id }: { id: string }) {
   const [noteOpen, setNoteOpen] = useState(true);
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
+  const [proofOffer, setProofOffer] = useState<SubmissionProofOffer | null>(null);
 
   if (!ready) return <LoadingDesk />;
   if (!claim || !patient) {
@@ -58,12 +68,80 @@ export function ClaimDetail({ id }: { id: string }) {
     setPending(false);
   }
 
+  async function submitAndFileProof() {
+    if (!claim || !patient) return;
+    setPending(true);
+    setMessage("");
+    const result = await submitProfessionalClaim(claimSubmissionInput(claim, patient, practice));
+    const next = applyClaimEvent(claim, result);
+    updateClaim(claim.id, next);
+    setMessage(result.message);
+
+    const alreadySent = "alreadySent" in result && Boolean(result.alreadySent);
+    if (result.ok && !alreadySent && (result.stediClaimId || next.stediClaimId)) {
+      const proof = await produceAndStoreClaimSubmissionProof({
+        patientId: patient.id,
+        claimId: claim.id,
+        controlNumber: claim.controlNumber,
+        stediClaimId: result.stediClaimId ?? next.stediClaimId,
+        stediSubmissionId: result.stediSubmissionId ?? next.stediSubmissionId,
+        patientName: patientName(patient),
+        payerName: claim.payerName,
+        dateOfService: formatDay(claim.dateOfService),
+        billedAmount: money(claimTotal(claim)),
+        practice: {
+          legalName: practice.legalName,
+          physicianName: practice.physicianName,
+          npi: practice.npi,
+          phone: practice.phone,
+          address: practice.address,
+        },
+      });
+      if (proof.stediClaimId && proof.stediClaimId !== (result.stediClaimId ?? next.stediClaimId)) {
+        updateClaim(claim.id, { stediClaimId: proof.stediClaimId });
+      }
+      if (proof.ok && proof.path && proof.fileName) {
+        updateClaim(claim.id, {
+          attachments: [
+            ...claim.attachments,
+            {
+              path: proof.path,
+              name: proof.fileName,
+              contentType: "application/pdf",
+              size: 0,
+            },
+          ],
+          events: [
+            ...(next.events ?? claim.events),
+            {
+              id: crypto.randomUUID(),
+              at: new Date().toISOString(),
+              kind: "277ca",
+              summary: proof.message,
+            },
+          ],
+        });
+        setProofOffer({
+          fileName: proof.fileName,
+          url: proof.url || "",
+          patientId: patient.id,
+          message: proof.message,
+        });
+      } else if (!proof.ok) {
+        setMessage(`${result.message} Proof PDF: ${proof.message}`);
+      }
+    }
+
+    setPending(false);
+  }
+
   const balance = Math.max(0, claimTotal(claim) - (claim.paymentAmount ?? 0));
   const payerType = filingCodes.find((option) => option.code === claim.filingCode)?.label ?? "Payer type not chosen";
 
   return (
     <main>
       {noteOpen ? <AccountNoteDialog notes={patient.accountNotes} onClose={() => setNoteOpen(false)} /> : null}
+      {proofOffer ? <SubmissionProofDialog offer={proofOffer} onClose={() => setProofOffer(null)} /> : null}
       <PageHeader
         kicker={claim.controlNumber}
         title={patientName(patient)}
@@ -117,11 +195,14 @@ export function ClaimDetail({ id }: { id: string }) {
             <Link href={`/admin/operations/claims/new?patient=${patient.id}&claim=${claim.id}${claim.appointmentId ? `&visit=${claim.appointmentId}` : ""}`}>Edit charges</Link>
           </Button>
         ) : null}
-        <Button type="button" disabled={pending || claim.status !== "ready"} onClick={() => run(() => submitProfessionalClaim(claimSubmissionInput(claim, patient, practice)))}>
+        <Button type="button" disabled={pending || claim.status !== "ready"} onClick={() => void submitAndFileProof()}>
           Submit claim
         </Button>
         <Button type="button" variant="secondary" disabled={pending || !claim.stediClaimId} onClick={() => run(() => checkClaimStatus(claimSubmissionInput(claim, patient, practice)))}>
           Check status
+        </Button>
+        <Button asChild variant="secondary">
+          <Link href={`/admin/operations/claims/${claim.id}/proof`}>View / refresh proof</Link>
         </Button>
         <Button
           type="button"

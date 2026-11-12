@@ -3,7 +3,7 @@
 import { claimCodeProblems } from "@/lib/coding/codes";
 import { codeLibrary } from "@/lib/coding/library";
 import { getStaffSession } from "@/lib/supabase/session";
-import { CORE, ELIGIBILITY, ENROLLMENTS, HEALTHCARE, PAYERS, isStediConfigured, publicStediMessage, stediFetch } from "@/lib/stedi/client";
+import { CLAIMS, CORE, ELIGIBILITY, ENROLLMENTS, HEALTHCARE, PAYERS, isStediConfigured, publicStediMessage, stediFetch } from "@/lib/stedi/client";
 import { summarizeClaimStatus } from "@/lib/stedi/parse";
 import { readRemits, summarizeEligibility } from "@/lib/stedi/parse";
 import {
@@ -14,6 +14,17 @@ import {
   type ClaimSubmissionInput,
 } from "@/lib/stedi/payload";
 import { recordClearinghouse } from "@/lib/stedi/record";
+import { storeChartBytes } from "@/lib/chart-files/store";
+import { claimFileSlot } from "@/lib/rcm/claim-files";
+import {
+  buildSubmissionProofReport,
+  looksLikeStediLifecycleClaimId,
+  pickStediClaimId,
+  pickStediSubmissionId,
+  stediPatientControlNumber,
+  type SubmissionProofReport,
+} from "@/lib/stedi/submission-proof";
+import { renderSubmissionProofPdf } from "@/lib/stedi/submission-proof-pdf";
 
 export type StediEvent = { kind: "submit" | "277ca" | "276" | "835" | "attachment" | "paper" | "error"; summary: string };
 
@@ -194,12 +205,15 @@ export async function submitProfessionalClaim(input: ClaimSubmissionInput) {
   const record = asRecord(response.body);
   const errors = Array.isArray(record?.errors) ? record.errors : [];
   const rejected = errors.length > 0 || record?.status === "ERROR" || !response.ok;
-  const stediClaimId = typeof record?.claimReference === "object" && record.claimReference && typeof (record.claimReference as { correlationId?: string }).correlationId === "string"
-    ? (record.claimReference as { correlationId: string }).correlationId
-    : typeof record?.controlNumber === "string"
-      ? record.controlNumber
-      : undefined;
-  const message = rejected ? publicStediMessage(response.body, response.status) : "Stedi accepted the claim. That is not payer payment.";
+  // Prefer Stedi lifecycle claimId (needed for Claim Timeline / official proof). Fall back to correlation id.
+  const stediClaimId = pickStediClaimId(response.body) || undefined;
+  const stediSubmissionId = pickStediSubmissionId(response.body) || undefined;
+  const message = rejected
+    ? publicStediMessage(response.body, response.status)
+    : stediClaimId
+      ? `Stedi accepted the claim (claim ${stediClaimId}). That is clearinghouse acceptance, not payer payment — open Submission proof for the official 277CA timeline.`
+      : "Stedi accepted the claim. That is not payer payment.";
+  const x12 = typeof record?.x12 === "string" ? record.x12.slice(0, 8000) : "";
   await recordClearinghouse({
     controlNumber: input.controlNumber,
     idempotencyKey: `submit:${input.idempotencyKey}`,
@@ -211,6 +225,10 @@ export async function submitProfessionalClaim(input: ClaimSubmissionInput) {
       payerId: input.tradingPartnerId,
       charge: built.body.claimInformation.claimChargeAmount,
       cpts: built.body.claimInformation.serviceLines.map((line) => line.professionalService.procedureCode),
+      patientControlNumber: built.body.claimInformation.patientControlNumber,
+      stediClaimId: stediClaimId || "",
+      stediSubmissionId: stediSubmissionId || "",
+      initial277caX12: x12,
     },
   });
   return {
@@ -218,9 +236,273 @@ export async function submitProfessionalClaim(input: ClaimSubmissionInput) {
     message,
     status: rejected ? ("rejected" as const) : ("submitted" as const),
     stediClaimId,
-    stediSubmissionId: typeof record?.claimReference === "object" && record.claimReference ? (record.claimReference as { rhclaimNumber?: string }).rhclaimNumber : undefined,
+    stediSubmissionId,
     event: { kind: rejected ? "error" as const : "277ca" as const, summary: message },
     stored: true,
+  };
+}
+
+function textField(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : "";
+}
+
+async function listClaimIdByPatientControl(patientControlNumber: string) {
+  if (!patientControlNumber) return "";
+  const listed = await stediFetch(
+    `${CLAIMS}/claims?patientControlNumbers=${encodeURIComponent(patientControlNumber)}&pageSize=20`,
+  );
+  if (!listed.ok) return "";
+  const record = asRecord(listed.body);
+  const items = Array.isArray(record?.items) ? record.items : [];
+  for (const item of items) {
+    const row = asRecord(item);
+    const id = textField(row?.id);
+    if (looksLikeStediLifecycleClaimId(id) || id) return id;
+  }
+  return "";
+}
+
+async function resolveStediClaimId(input: { controlNumber: string; stediClaimId?: string }) {
+  if (looksLikeStediLifecycleClaimId(input.stediClaimId)) return input.stediClaimId as string;
+  const fromList = await listClaimIdByPatientControl(stediPatientControlNumber(input.controlNumber));
+  if (fromList) return fromList;
+  return input.stediClaimId || "";
+}
+
+async function tryFetch277Report(transactionId: string) {
+  if (!transactionId) return null;
+  const response = await stediFetch(
+    `${HEALTHCARE}/change/medicalnetwork/reports/v2/${encodeURIComponent(transactionId)}/277`,
+  );
+  if (!response.ok) return null;
+  return response.body;
+}
+
+/**
+ * Official submission proof from Stedi Claim Timeline (submissions + payer/clearinghouse 277CAs + ERA).
+ * This is the industry 277CA acknowledgment trail — not a home-grown receipt.
+ */
+export async function fetchClaimSubmissionProof(input: {
+  controlNumber: string;
+  stediClaimId?: string;
+}): Promise<{ ok: boolean; message: string; report: SubmissionProofReport | null; stediClaimId?: string }> {
+  const blocked = await staffGate();
+  if (blocked) return { ok: false, message: blocked, report: null };
+
+  const patientControlNumber = stediPatientControlNumber(input.controlNumber);
+  let stediClaimId = await resolveStediClaimId(input);
+  if (!stediClaimId) {
+    return {
+      ok: false,
+      message:
+        "No Stedi claim id is on file yet. Submit the claim first, or wait for Stedi to index it under this patient control number.",
+      report: null,
+    };
+  }
+
+  let timeline = await stediFetch(`${CLAIMS}/claims/${encodeURIComponent(stediClaimId)}/timeline?pageSize=100`);
+  if (!timeline.ok && timeline.status === 404 && !looksLikeStediLifecycleClaimId(stediClaimId)) {
+    const recovered = await listClaimIdByPatientControl(patientControlNumber);
+    if (recovered && recovered !== stediClaimId) {
+      stediClaimId = recovered;
+      timeline = await stediFetch(`${CLAIMS}/claims/${encodeURIComponent(stediClaimId)}/timeline?pageSize=100`);
+    }
+  }
+  if (!timeline.ok) {
+    return { ok: false, message: publicStediMessage(timeline.body, timeline.status), report: null, stediClaimId };
+  }
+  const record = asRecord(timeline.body);
+  const items = Array.isArray(record?.items) ? record.items : [];
+  const summary = await stediFetch(`${CLAIMS}/claims/${encodeURIComponent(stediClaimId)}`);
+  const status = textField(asRecord(summary.body)?.status);
+
+  const report = buildSubmissionProofReport({
+    stediClaimId,
+    patientControlNumber,
+    status: status || undefined,
+    items,
+  });
+
+  // Best-effort: attach full JSON 277CA report bodies when Stedi accepts the ack id as a transaction id.
+  for (const event of report.events) {
+    if (event.kind !== "acknowledgment") continue;
+    const ackId = textField(event.raw.id);
+    if (!ackId) continue;
+    const body = await tryFetch277Report(ackId);
+    if (body) event.raw = { ...event.raw, report277: body };
+  }
+
+  await recordClearinghouse({
+    controlNumber: input.controlNumber,
+    idempotencyKey: `proof:${stediClaimId}:${report.fetchedAt.slice(0, 16)}`,
+    stediClaimId,
+    kind: "277CA-PROOF",
+    status: status || "fetched",
+    snapshot: {
+      patientControlNumber,
+      eventCount: report.events.length,
+      status: status || "",
+      acknowledgments: report.events.filter((event) => event.kind === "acknowledgment").length,
+    },
+  });
+
+  const ackCount = report.events.filter((event) => event.kind === "acknowledgment").length;
+  const payerAck = report.events.some(
+    (event) => event.kind === "acknowledgment" && (event.reportedBy === "PAYER" || Boolean(event.sourceName)),
+  );
+  const message = ackCount
+    ? `Stedi Claim Timeline returned ${report.events.length} entr${report.events.length === 1 ? "y" : "ies"}, including ${ackCount} official 277CA acknowledgment${ackCount === 1 ? "" : "s"}${payerAck ? " (payer-reported included)." : "."}`
+    : report.events.length
+      ? `Stedi Claim Timeline returned ${report.events.length} entr${report.events.length === 1 ? "y" : "ies"}. A payer 277CA may still be in transit.`
+      : "Stedi returned an empty timeline for this claim id.";
+
+  return { ok: true, message, report, stediClaimId };
+}
+
+/**
+ * Fetch Stedi proof, render the branded PDF, and always file it on the patient chart
+ * under this claim's papers slot (Files tab → Claim submission proofs).
+ */
+export async function produceAndStoreClaimSubmissionProof(input: {
+  patientId: string;
+  claimId: string;
+  controlNumber: string;
+  stediClaimId?: string;
+  stediSubmissionId?: string;
+  patientName: string;
+  payerName: string;
+  dateOfService: string;
+  billedAmount: string;
+  practice: {
+    legalName: string;
+    physicianName: string;
+    npi: string;
+    phone: string;
+    address: string;
+  };
+}): Promise<{
+  ok: boolean;
+  message: string;
+  report: SubmissionProofReport | null;
+  stediClaimId?: string;
+  path?: string;
+  url?: string;
+  fileName?: string;
+}> {
+  const blocked = await staffGate();
+  if (blocked) return { ok: false, message: blocked, report: null };
+
+  const fetched = await fetchClaimSubmissionProof({
+    controlNumber: input.controlNumber,
+    stediClaimId: input.stediClaimId,
+  });
+
+  const patientControlNumber = stediPatientControlNumber(input.controlNumber);
+  const stediClaimId = fetched.stediClaimId || input.stediClaimId || "";
+  let report = fetched.report;
+
+  if (!report) {
+    if (!stediClaimId && !input.stediSubmissionId) {
+      return { ok: false, message: fetched.message || "Submission proof could not be built yet.", report: null };
+    }
+    report = buildSubmissionProofReport({
+      stediClaimId: stediClaimId || "pending",
+      patientControlNumber,
+      status: "SUBMITTED",
+      items: [],
+    });
+  }
+
+  if (report.events.length === 0) {
+    report = {
+      ...report,
+      events: [
+        {
+          kind: "submission",
+          at: report.fetchedAt,
+          title: "Professional claim submitted to Stedi",
+          detail: [
+            patientControlNumber ? `control ${patientControlNumber}` : "",
+            stediClaimId ? `claim ${stediClaimId}` : "",
+            input.stediSubmissionId ? `submission ${input.stediSubmissionId}` : "",
+            "Timeline may still be indexing; refresh proof later for payer 277CA.",
+          ]
+            .filter(Boolean)
+            .join(" · "),
+          raw: {
+            synthesized: true,
+            stediClaimId,
+            stediSubmissionId: input.stediSubmissionId || "",
+          },
+        },
+      ],
+    };
+  }
+
+  let pdf: Buffer;
+  try {
+    pdf = await renderSubmissionProofPdf({
+      report,
+      practiceName: input.practice.legalName,
+      practiceAddress: input.practice.address,
+      practicePhone: input.practice.phone,
+      practiceNpi: input.practice.npi,
+      physicianName: input.practice.physicianName,
+      patientName: input.patientName,
+      payerName: input.payerName,
+      dateOfService: input.dateOfService,
+      billedAmount: input.billedAmount,
+    });
+  } catch {
+    return {
+      ok: false,
+      message: "The proof PDF could not be rendered. Open Submission proof to print from the browser.",
+      report,
+      stediClaimId: stediClaimId || undefined,
+    };
+  }
+
+  const safeControl = patientControlNumber || "claim";
+  const fileName = `Claim-submission-proof-${safeControl}.pdf`;
+  const stored = await storeChartBytes({
+    patientId: input.patientId,
+    slotId: claimFileSlot(input.claimId),
+    fileName,
+    contentType: "application/pdf",
+    bytes: pdf,
+  });
+  if (!stored.ok) {
+    return {
+      ok: false,
+      message: stored.message,
+      report,
+      stediClaimId: stediClaimId || undefined,
+    };
+  }
+
+  await recordClearinghouse({
+    controlNumber: input.controlNumber,
+    idempotencyKey: `proof-pdf:${input.claimId}:${report.fetchedAt.slice(0, 16)}`,
+    stediClaimId: stediClaimId || undefined,
+    kind: "277CA-PROOF-PDF",
+    status: "stored",
+    snapshot: {
+      path: stored.path,
+      fileName,
+      eventCount: report.events.length,
+    },
+  });
+
+  return {
+    ok: true,
+    message: fetched.ok
+      ? `${fetched.message} The branded proof PDF was filed on this patient’s Files (claim papers).`
+      : `Proof PDF was filed from the submission record. ${fetched.message}`,
+    report,
+    stediClaimId: stediClaimId || undefined,
+    path: stored.path,
+    url: stored.url,
+    fileName,
   };
 }
 

@@ -39,6 +39,11 @@
   card body still opens Record via `recordVisitHref`.
 - Board waits on `useClinicDayReady` so `DEMO_CLINIC_DAY` never flashes as the
   calendar month; opening the popover sets `viewMonth` from the current day.
+- **Live check-in signal:** `arrived` / `in_progress` cards already render mint
+  green. `PortalBridge` polls the shared roster every **2s** on
+  `/admin/operations` and `/admin/operations/scheduling` (15s elsewhere) and
+  refreshes on tab focus, so PM check-in shows on the doctor’s open board
+  within a couple seconds (no websocket).
 
 ## Claims (Stedi 837P)
 
@@ -46,6 +51,15 @@
 - Frequency: original `1`, replacement `7`, void `8` on `Claim.claimFrequencyCode`.
   Replacements/voids carry the payer claim control number into
   `claimSupplementalInformation.claimControlNumber` (`lib/stedi/payload.ts`).
+- **Submission proof (official):** After **Submit claim**,
+  `produceAndStoreClaimSubmissionProof` fetches Stedi Claim Timeline, renders a
+  branded PDF (`lib/stedi/submission-proof-pdf.tsx`), and **always** files it on
+  the chart under `claim-{claimId}` via `storeChartBytes`. A popup offers
+  download; if skipped, the PDF remains on patient **Files → Claim submission
+  proofs** and claim **Note and papers**. Manual page:
+  `/admin/operations/claims/[id]/proof` (`fetchClaimSubmissionProof`). Resolves
+  lifecycle `clm_…` via List Claims by patient control number when only a
+  correlation id is stored. Helpers in `lib/stedi/submission-proof.ts`.
 
 ## Eligibility (Stedi 270/271)
 

@@ -338,6 +338,35 @@ export function ChartFiles({
         );
       })}
       <section className="rounded-2xl border border-line bg-card p-4">
+        <h2 className="font-display text-2xl">Claim submission proofs</h2>
+        <p className="mt-1 text-sm text-muted">
+          Official Stedi 277CA proof PDFs filed automatically when a claim is submitted. Download here anytime if you
+          skipped the post-submit popup. Copies also sit on each claim under Note and papers.
+        </p>
+        <ul className="mt-4 grid gap-3 text-sm">
+          {files.filter((file) => file.slotId.startsWith("claim-") && /submission-proof/i.test(file.path || file.label)).length === 0 ? (
+            <li className="text-muted">No submission proofs on this chart yet.</li>
+          ) : null}
+          {files
+            .filter((file) => file.slotId.startsWith("claim-") && /submission-proof/i.test(file.path || file.label))
+            .map((file) => (
+              <li key={file.path} className="flex flex-wrap items-center gap-3">
+                <span>
+                  {file.label}
+                  {file.size ? ` · ${sizeLabel(file.size)}` : ""}
+                </span>
+                {file.url ? (
+                  <Button variant="secondary" asChild>
+                    <a href={file.url} target="_blank" rel="noreferrer" download>
+                      Open / download
+                    </a>
+                  </Button>
+                ) : null}
+              </li>
+            ))}
+        </ul>
+      </section>
+      <section className="rounded-2xl border border-line bg-card p-4">
         <h2 className="font-display text-2xl">Lab results</h2>
         <p className="mt-1 text-sm text-muted">Files here show in the patient portal. The portal does not pull results from a lab.</p>
         <ul className="mt-4 grid gap-3 text-sm">

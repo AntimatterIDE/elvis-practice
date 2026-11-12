@@ -146,7 +146,8 @@ export function ClaimPapers({
     <section className="mt-8 grid max-w-3xl gap-3 rounded-2xl border border-line bg-card p-5">
       <h2 className="font-display text-2xl">Note and papers</h2>
       <p className="text-sm text-muted">
-        The visit note and any files added because this visit was not written in the scribe.
+        The visit note, claim papers, and the Stedi submission-proof PDF filed automatically after submit. The same proof
+        also appears on the patient Files tab under Claim submission proofs.
       </p>
       {claim.clinicalNote ? (
         <pre className="whitespace-pre-wrap rounded-xl border border-line bg-paper p-4 text-sm">{claim.clinicalNote}</pre>

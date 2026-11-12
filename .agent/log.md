@@ -1,5 +1,36 @@
 # elvis-practice — agent log
 
+## [2026-11-12] ingest | Official Stedi submission proof per claim
+
+Added printable **Submission proof** at `/admin/operations/claims/[id]/proof`
+backed by Stedi Claim Timeline + 277CA acknowledgments (`fetchClaimSubmissionProof`).
+Submit now prefers lifecycle `claimId`/`submissionId` and stores initial 277CA
+`x12` in the clearinghouse snapshot. List Claims by patient control number
+recovers `clm_…` when only a correlation id was stored. Claim detail links
+“Submission proof” for payer “we never received it” disputes. Letterhead
+branded with Alignment Clinic logo; certification keeps Stedi as the data
+source. Admin chrome hidden on print.
+
+## [2026-11-12] decision | Branded proof stays official
+
+Practice letterhead + logo on the submission-proof PDF is appropriate for payer
+mail. Officialness comes from reprinting Stedi 277CA / Claim Timeline IDs and
+timestamps, not from looking plain. Strongest when a payer-reported 277CA is
+present; Stedi-only accept still proves clearinghouse submission.
+
+## [2026-11-12] ingest | Auto-file submission proof on submit
+
+Submit claim now always produces the branded Stedi proof PDF and stores it on
+the patient chart (`produceAndStoreClaimSubmissionProof`). Popup offers
+download; copy remains under Files → Claim submission proofs and claim papers
+whether or not staff downloads.
+
+## [2026-11-12] bugfix | Near-live schedule check-in across open desks
+
+`PortalBridge` roster poll is 2s on practice desk / scheduling (was 15s
+everywhere) plus focus/visibility refresh, so when PM checks in the doctor’s
+open day-sheet card goes green within ~2s without a manual reload.
+
 ## [2026-11-11] bugfix | Re-extract stored chart files + Word guidance
 
 Pushed `bf2b462` (slot-local extract + claim-form extract). Follow-up: Word-only

@@ -39,6 +39,11 @@ export function PortalBridge() {
 
   useEffect(() => {
     let cancel = false;
+    // Schedule / practice desk needs near-live check-in: PM flips arrived → doctor card goes green.
+    // Elsewhere keep the slower poll to avoid hammering roster load.
+    const liveBoard = pathname === "/admin/operations" || pathname.startsWith("/admin/operations/scheduling");
+    const intervalMs = liveBoard ? 2000 : 15000;
+
     async function loadRoster() {
       await whenPortalIdle();
       if (cancel) return;
@@ -50,11 +55,19 @@ export function PortalBridge() {
       }
       mergePortalRoster(result.patients, result.appointments);
     }
+
     void loadRoster();
-    const timer = setInterval(() => void loadRoster(), 15000);
+    const timer = setInterval(() => void loadRoster(), intervalMs);
+    function onVisible() {
+      if (document.visibilityState === "visible") void loadRoster();
+    }
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onVisible);
     return () => {
       cancel = true;
       clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onVisible);
     };
   }, [pathname]);
 

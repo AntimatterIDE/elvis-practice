@@ -17,7 +17,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
 
   return (
     <div className="min-h-full bg-white lg:grid lg:grid-cols-[16rem_minmax(0,1fr)]">
-      <aside className="hidden border-r border-neutral-200 bg-neutral-50 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:overflow-y-auto">
+      <aside className="hidden border-r border-neutral-200 bg-neutral-50 print:hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:overflow-y-auto">
         <div className="flex h-14 shrink-0 items-center gap-2.5 px-3">
           <BrandMark className="size-8" />
           <div className="min-w-0">
@@ -45,12 +45,14 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
         </div>
       </aside>
       <div className="admin-canvas min-w-0">
-        <AdminMobileBar name={staff.displayName} role={staff.role} />
+        <div className="print:hidden">
+          <AdminMobileBar name={staff.displayName} role={staff.role} />
+        </div>
         <RcmProvider>
           <PortalBridge />
           <ClaimsBridge />
           <DeskBridge />
-          <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</div>
+          <div className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8 print:px-0 print:py-0">{children}</div>
         </RcmProvider>
       </div>
     </div>
