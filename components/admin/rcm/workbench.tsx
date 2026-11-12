@@ -7,20 +7,22 @@ import { chartGaps, focusClinicDay } from "@/lib/rcm/chart";
 import { formatClinicDay, formatTime, patientName } from "@/lib/rcm/format";
 import { recordVisitHref } from "@/lib/rcm/record-visit";
 import { MetricTile } from "@/components/admin/bits/surface";
-import { LoadingDesk, PageHeader, useClinicToday } from "@/components/admin/rcm/ui";
+import { LoadingDesk, PageHeader, useClinicDayReady, useClinicToday } from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 import { cn } from "@/lib/utils";
 
 export function Workbench() {
   const { ready, patients, appointments, tasks } = useRcm();
   const today = useClinicToday();
-  if (!ready) return <LoadingDesk />;
+  const dayReady = useClinicDayReady();
+  if (!ready || !dayReady) return <LoadingDesk />;
 
   const names = new Map(patients.map((patient) => [patient.id, patientName(patient)]));
   const focus = focusClinicDay(
     appointments.map((appointment) => appointment.start.slice(0, 10)),
     today,
   );
+  const scheduleHref = focus === today ? "/admin/operations/scheduling" : `/admin/operations/scheduling?day=${focus}`;
   const dayVisits = appointments
     .filter((appointment) => appointment.start.startsWith(focus) && appointment.status !== "cancelled")
     .sort((a, b) => a.start.localeCompare(b.start));
@@ -59,19 +61,19 @@ export function Workbench() {
 
   const pulse = [
     {
-      href: "/admin/operations/scheduling",
+      href: scheduleHref,
       label: "Next",
       value: nextVisit ? formatTime(nextVisit.start) : "Clear",
       detail: nextVisit ? (names.get(nextVisit.patientId) ?? "Unknown patient") : "Nothing else on the board",
     },
     {
-      href: "/admin/operations/scheduling",
+      href: scheduleHref,
       label: "In the office",
       value: String(inOffice.length),
       detail: inOffice.length ? inOffice.map((visit) => names.get(visit.patientId)).filter(Boolean).slice(0, 2).join(", ") : "No one has arrived",
     },
     {
-      href: "/admin/operations/scheduling",
+      href: scheduleHref,
       label: "Still to confirm",
       value: String(toConfirm.length),
       detail: toConfirm.length ? "Waiting on a confirmation call" : "Nothing left to confirm",
@@ -96,7 +98,7 @@ export function Workbench() {
               <Link href="/admin/operations/intake">Send an intake link</Link>
             </Button>
             <Button asChild>
-              <Link href="/admin/operations/scheduling">Schedule a visit</Link>
+              <Link href={scheduleHref}>Schedule a visit</Link>
             </Button>
           </div>
         }

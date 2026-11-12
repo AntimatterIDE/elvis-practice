@@ -1,18 +1,26 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { focusClinicDay, visitTypeLabel } from "@/lib/rcm/chart";
+import { visitTypeLabel } from "@/lib/rcm/chart";
 import { patientName } from "@/lib/rcm/format";
-import type { AppointmentStatus, ConfirmationStatus, VisitType } from "@/lib/rcm/types";
+import type { ConfirmationStatus, VisitType } from "@/lib/rcm/types";
 import { DaySheet } from "@/components/admin/rcm/day-sheet";
 import { ScheduleDayNav } from "@/components/admin/rcm/schedule-day-nav";
+import { VisitCardActions } from "@/components/admin/rcm/visit-card-actions";
 import { recordVisitHref } from "@/lib/rcm/record-visit";
-import { Field, LoadingDesk, PageHeader, fieldClass, useClinicToday, visitLabel } from "@/components/admin/rcm/ui";
+import {
+  Field,
+  LoadingDesk,
+  PageHeader,
+  fieldClass,
+  resolveClinicDayParam,
+  useClinicDayReady,
+  useClinicToday,
+} from "@/components/admin/rcm/ui";
 import { useRcm } from "@/components/admin/rcm/store";
 
-const statuses: AppointmentStatus[] = ["scheduled", "arrived", "in_progress", "completed", "cancelled", "no_show"];
 const visitTypes: VisitType[] = ["new", "follow_up", "procedure", "imaging_review", "post_op"];
 const rooms = ["Room 1", "Room 2", "Procedure"];
 const visitTimes = Array.from({ length: 12 * 4 + 1 }, (_, index) => {
@@ -26,16 +34,18 @@ const visitTimes = Array.from({ length: 12 * 4 + 1 }, (_, index) => {
 
 export function ScheduleDesk() {
   const params = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const today = useClinicToday();
+  const dayReady = useClinicDayReady();
   const { ready, appointments, patients, practice, addAppointment, updateAppointment, removeAppointment } = useRcm();
   const [patientId, setPatientId] = useState(params.get("patient") ?? "");
-  const [date, setDate] = useState("");
+  const [bookingDateOverride, setBookingDateOverride] = useState("");
   const [time, setTime] = useState("09:00");
   const [reason, setReason] = useState("");
   const [duration, setDuration] = useState("30");
   const [visitType, setVisitType] = useState<VisitType>("follow_up");
   const [room, setRoom] = useState("Room 1");
-  const [pickedDay, setPickedDay] = useState("");
 
   const names = useMemo(() => new Map(patients.map((patient) => [patient.id, patientName(patient)])), [patients]);
   const days = useMemo(
@@ -43,10 +53,21 @@ export function ScheduleDesk() {
     [appointments],
   );
 
-  if (!ready) return <LoadingDesk />;
+  function setDay(next: string) {
+    const query = new URLSearchParams(params.toString());
+    if (next === today) query.delete("day");
+    else query.set("day", next);
+    const patient = query.get("patient");
+    if (!patient) query.delete("patient");
+    const suffix = query.toString();
+    router.replace(suffix ? `${pathname}?${suffix}` : pathname, { scroll: false });
+    setBookingDateOverride(next);
+  }
 
-  const focus = pickedDay || focusClinicDay(days, today);
-  const bookingDate = date || focus;
+  if (!ready || !dayReady) return <LoadingDesk />;
+
+  const focus = resolveClinicDayParam(params.get("day"), today);
+  const bookingDate = bookingDateOverride || focus;
   const resolvedPatient = patientId || patients[0]?.id || "";
   const rows = appointments.filter((appointment) => appointment.start.startsWith(focus)).sort((a, b) => a.start.localeCompare(b.start));
 
@@ -70,59 +91,19 @@ export function ScheduleDesk() {
               today={today}
               markedDays={days}
               visitCount={rows.length}
-              onChange={(next) => {
-                setPickedDay(next);
-                setDate(next);
-              }}
+              onChange={setDay}
             />
           }
-          renderExtra={(appointment) => (
-            <div className="grid min-w-0 gap-1.5">
-              {appointment.status === "scheduled" ? (
-                <Button
-                  type="button"
-                  className="min-h-8 w-full px-2 py-1 text-xs"
-                  onClick={() => updateAppointment(appointment.id, { status: "arrived" satisfies AppointmentStatus })}
-                >
-                  Check in
-                </Button>
-              ) : null}
-              {appointment.status === "arrived" ? (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="min-h-8 w-full px-2 py-1 text-xs"
-                  onClick={() => updateAppointment(appointment.id, { status: "in_progress" satisfies AppointmentStatus })}
-                >
-                  Room patient
-                </Button>
-              ) : null}
-              {appointment.confirmation !== "confirmed" && appointment.status !== "cancelled" ? (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="min-h-8 w-full px-2 py-1 text-xs"
-                  onClick={() => updateAppointment(appointment.id, { confirmation: "confirmed" satisfies ConfirmationStatus })}
-                >
-                  Confirm
-                </Button>
-              ) : null}
-              <select
-                className={`${fieldClass} w-full min-w-0 max-w-none py-1.5`}
-                value={appointment.status}
-                aria-label={`Status for ${names.get(appointment.patientId)}`}
-                onChange={(event) => updateAppointment(appointment.id, { status: event.target.value as AppointmentStatus })}
-              >
-                {statuses.map((status) => (
-                  <option key={status} value={status}>
-                    {visitLabel(status)}
-                  </option>
-                ))}
-              </select>
-              <button type="button" className="text-xs underline" onClick={() => removeAppointment(appointment.id)}>
-                Remove
-              </button>
-            </div>
+          renderCorner={(appointment) => (
+            <VisitCardActions
+              visit={appointment}
+              patientName={names.get(appointment.patientId) ?? "patient"}
+              onStatus={(status) => updateAppointment(appointment.id, { status })}
+              onConfirm={() =>
+                updateAppointment(appointment.id, { confirmation: "confirmed" satisfies ConfirmationStatus })
+              }
+              onRemove={() => removeAppointment(appointment.id)}
+            />
           )}
         />
         <form
@@ -143,7 +124,7 @@ export function ScheduleDesk() {
               room,
               confirmation: "unconfirmed",
             });
-            setPickedDay(bookingDate);
+            setDay(bookingDate);
             setReason("");
           }}
         >
@@ -167,7 +148,13 @@ export function ScheduleDesk() {
             </select>
           </Field>
           <Field label="Date">
-            <input className={fieldClass} type="date" value={bookingDate} onChange={(event) => setDate(event.target.value)} required />
+            <input
+              className={fieldClass}
+              type="date"
+              value={bookingDate}
+              onChange={(event) => setBookingDateOverride(event.target.value)}
+              required
+            />
           </Field>
           <Field label="Time">
             <select className={fieldClass} value={time} onChange={(event) => setTime(event.target.value)} required>

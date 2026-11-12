@@ -295,3 +295,20 @@ Shipped nested-status 276 parser fix (0dd024f) + CIN-via-group on 270 (4248c04).
 Shared isOcrExtractableFile helper; Chart Files sticky jump-to-extract banner +
 center scroll; keep offer across uploads until replaced; claim papers / claim form
 / portal desk use same filter + review messaging. Ready for Alignment OM uploads.
+
+## [2026-11-12] ingest | Schedule day sheet vs SIS Schedule Grid
+
+Live audit of Paul 27587b1 against SIS screenshots. Matches: one day at a time,
+‹ › arrows, popup month calendar + Today, room columns with counts, total visits.
+Gaps: 30-min cards draw ~53 min tall (72px min) so back-to-back visits cover
+each other; Check in clipped on every card; same-room double-bookings stack;
+opens on next day with visits instead of today; grid window 8 AM to last visit
+(+30); date bar / room header scroll away. See wiki/architecture.md.
+
+## [2026-11-12] bugfix | Schedule day sheet SIS mechanism gaps
+
+Cards size to duration (2px/min), same-room overlaps lane side-by-side,
+Check in/Room + ⋯ menu in the corner (Record click kept), ?day= URL defaults
+to today, 7 AM–7 PM inner scroller with sticky room/time headers, board waits
+for client today so the calendar never flashes September. Helper +
+tests in lib/rcm/day-sheet-layout.ts.

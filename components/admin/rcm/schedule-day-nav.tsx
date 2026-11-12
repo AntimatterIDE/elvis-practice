@@ -40,10 +40,10 @@ export function ScheduleDayNav({
   const calendarId = useId();
   const marked = useMemo(() => new Set(markedDays ?? []), [markedDays]);
 
-  useEffect(() => {
-    if (!open) return;
+  function openCalendar() {
     setViewMonth(monthAnchor(day));
-  }, [day, open]);
+    setOpen(true);
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -94,7 +94,7 @@ export function ScheduleDayNav({
               "inline-flex size-8 shrink-0 items-center justify-center rounded-md border text-oxide",
               open ? "border-oxide bg-mint" : "border-line bg-card hover:bg-mist",
             )}
-            onClick={() => setOpen((value) => !value)}
+            onClick={() => (open ? setOpen(false) : openCalendar())}
           >
             <CalendarIcon />
           </button>

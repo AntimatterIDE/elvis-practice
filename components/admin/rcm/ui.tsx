@@ -104,6 +104,23 @@ export function useClinicToday() {
   );
 }
 
+/** False on the server / first paint (demo day); true once the browser clock is the source. */
+export function useClinicDayReady() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+}
+
+/** Accept YYYY-MM-DD only; otherwise fall back to today. */
+export function resolveClinicDayParam(raw: string | null | undefined, today: string) {
+  if (!raw || !/^\d{4}-\d{2}-\d{2}$/.test(raw)) return today;
+  const date = new Date(`${raw}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return today;
+  return raw;
+}
+
 export function Stat({ label, value, detail }: { label: string; value: string; detail: string }) {
   return (
     <div className="rounded-[var(--rb-r-2xl,14px)] border border-neutral-200/80 bg-white px-4 py-4">

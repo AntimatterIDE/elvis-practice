@@ -21,6 +21,25 @@
    - Stored on chart slot `consultation-report` via `storeChartBytes`; returns signed download URL.
    - Requires a matched `patientId` (scheduled visit or visit label matching a chart).
 
+## Schedule day sheet (`/admin/operations/scheduling`)
+
+- `ScheduleDesk` → `ScheduleDayNav` (‹ day ›, popup month calendar with
+  visit-day dots, Today) + `DaySheet` (room columns, time grid, cards).
+  Practice desk home reuses `DaySheet` without the corner actions.
+- Day from `?day=YYYY-MM-DD` (invalid/missing → today). Nav and booking
+  update the URL via `router.replace` (keeps `?patient=`). Workbench pulse
+  tiles and “Schedule a visit” carry `?day=` when not today.
+- Layout helpers in `lib/rcm/day-sheet-layout.ts`: default window **7 AM–7 PM**
+  (expands only for out-of-range visits); `placeRoomVisits` lanes true
+  time-overlaps side by side (back-to-back stay full width). Cards size to
+  `duration × 2px/min` (30 min = 60px). Inner `max-h-[70vh]` scroller; room
+  headers sticky; time column sticky left; scroll to 30 min before first visit
+  (or 8 AM empty).
+- Corner **Check in** / **Room** + Radix **⋯** menu (`VisitCardActions`);
+  card body still opens Record via `recordVisitHref`.
+- Board waits on `useClinicDayReady` so `DEMO_CLINIC_DAY` never flashes as the
+  calendar month; opening the popover sets `viewMonth` from the current day.
+
 ## Claims (Stedi 837P)
 
 - Place of service: claim form select (`lib/rcm/place-of-service.ts`) + surgery/office warning.
