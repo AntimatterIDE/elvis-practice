@@ -8,7 +8,9 @@ submit/proof; keep local visit status when portal syncError is set; proof page
 **File PDF to chart** for predating claims. Unit suite 23/23. Live: Angela proof
 refresh OK (6 timeline rows, payer 277CAs); missing claim id → “Claim not
 found”; check-in → Room, cancel → restore scheduled. Prod UI after hard reload
-matches stacked proof cards.
+matches stacked proof cards. Shipped `f30db7a` (after `31a36c0` build failed on
+`next.attachments` typing); Vercel success; **File PDF to chart** live on
+thealignmentclinic.com.
 
 ## [2026-11-12] ingest | Official Stedi submission proof per claim
 
