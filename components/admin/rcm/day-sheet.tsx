@@ -38,6 +38,11 @@ function cardTitle(visit: Appointment, name: string, duration: number) {
   return parts.filter(Boolean).join(" · ");
 }
 
+export type DaySheetCornerMeta = {
+  columnCount: number;
+  durationMinutes: number;
+};
+
 export function DaySheet({
   visits,
   names,
@@ -52,8 +57,8 @@ export function DaySheet({
   empty: string;
   title?: string;
   header?: ReactNode;
-  /** Primary Check in / Room button + overflow menu; rendered in the card corner (not clipped). */
-  renderCorner?: (visit: Appointment) => ReactNode;
+  /** Check in / Room + overflow menu; sits in the card header row (never overlays the name). */
+  renderCorner?: (visit: Appointment, meta: DaySheetCornerMeta) => ReactNode;
   recordHref?: (visit: Appointment, name: string) => string;
 }) {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
@@ -100,10 +105,10 @@ export function DaySheet({
         </div>
       )}
       <div ref={scrollerRef} className="max-h-[70vh] overflow-auto">
-        <div className="min-w-[42rem]">
+        <div className="min-w-[52rem]">
           <div
             className="sticky top-0 z-20 grid border-b border-line bg-mist/95 backdrop-blur"
-            style={{ gridTemplateColumns: `4.5rem repeat(${rooms.length}, minmax(11rem, 1fr))` }}
+            style={{ gridTemplateColumns: `4.5rem repeat(${rooms.length}, minmax(16rem, 1fr))` }}
           >
             <div className="border-r border-line" />
             {rooms.map((room) => {
@@ -124,7 +129,7 @@ export function DaySheet({
 
           <div
             className="relative grid"
-            style={{ gridTemplateColumns: `4.5rem repeat(${rooms.length}, minmax(11rem, 1fr))`, height: gridHeight }}
+            style={{ gridTemplateColumns: `4.5rem repeat(${rooms.length}, minmax(16rem, 1fr))`, height: gridHeight }}
           >
             <div className="sticky left-0 z-10 relative border-r border-line bg-mist/40">
               {ticks.map((tick) =>
@@ -174,14 +179,17 @@ export function DaySheet({
                     const leftPct = column * widthPct;
                     const openVisit = recordHref?.(visit, name);
                     const unconfirmed = visit.confirmation !== "confirmed" && visit.status !== "cancelled";
-                    const showReason = duration >= 30;
-                    const showMeta = duration >= 45;
+                    const narrow = columnCount > 1;
+                    // 30-min cards are ~60px: name + one summary line only. Taller cards can add meta.
+                    const showSummary = !narrow && duration >= 30;
+                    const showMeta = !narrow && duration >= 45;
+                    const summary = `${formatTime(visit.start)} · ${duration} min${visit.reason ? ` · ${visit.reason}` : ""}`;
                     return (
                       <div
                         key={visit.id}
                         title={cardTitle(visit, name, duration)}
                         className={cn(
-                          "absolute z-10 flex min-w-0 flex-col overflow-hidden rounded-lg border shadow-[0_10px_24px_-18px_rgb(7_30_54_/_0.7)]",
+                          "absolute z-10 flex min-w-0 flex-col overflow-hidden rounded-lg border px-1.5 py-1 pl-2 shadow-[0_10px_24px_-18px_rgb(7_30_54_/_0.7)]",
                           visit.status === "in_progress" && "border-oxide bg-mint",
                           visit.status === "arrived" && "border-oxide bg-mint/80",
                           visit.status === "completed" && "border-line bg-mist text-muted",
@@ -211,43 +219,37 @@ export function DaySheet({
                         {openVisit ? (
                           <Link href={openVisit} aria-label={`Record ${name}`} className="absolute inset-0 z-0 rounded-lg" />
                         ) : null}
-                        <div
-                          className={cn(
-                            "relative z-10 flex min-h-0 min-w-0 flex-1 flex-col gap-0.5 px-2 py-1 pl-2.5",
-                            renderCorner && "pr-[4.75rem]",
-                            openVisit && "pointer-events-none",
-                          )}
-                        >
-                          <div className="flex min-w-0 items-start justify-between gap-1">
-                            <p className="min-w-0 truncate text-[0.65rem] font-semibold uppercase tracking-wide">
-                              {name}
-                              {duration < 30 ? (
-                                <span className="font-normal normal-case tracking-normal text-muted"> · {formatTime(visit.start)}</span>
-                              ) : null}
-                            </p>
-                            {columnCount > 1 ? (
-                              <span className="shrink-0 rounded bg-ink/80 px-1 py-0.5 text-[0.55rem] font-semibold uppercase tracking-[0.06em] text-paper">
-                                Double
+                        <div className={cn("relative z-10 flex min-w-0 items-start gap-1", openVisit && "pointer-events-none")}>
+                          <p
+                            className={cn(
+                              "min-w-0 flex-1 truncate text-[0.7rem] font-semibold uppercase leading-tight tracking-wide",
+                              narrow && "text-[0.65rem]",
+                            )}
+                          >
+                            {name}
+                            {narrow || duration < 30 ? (
+                              <span className="font-normal normal-case tracking-normal text-muted">
+                                {" "}
+                                · {formatTime(visit.start)}
                               </span>
                             ) : null}
-                          </div>
-                          {duration >= 30 ? (
-                            <p className="truncate text-[0.65rem] text-muted">
-                              {formatTime(visit.start)} · {duration} min
-                            </p>
-                          ) : null}
-                          {showReason ? <p className="line-clamp-2 text-xs leading-snug">{visit.reason}</p> : null}
-                          {showMeta ? (
-                            <p className="truncate text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-muted">
-                              {visitTypeLabel[visit.visitType] ?? visit.visitType}
-                              {" · "}
-                              {visitLabel(visit.status)}
-                              {unconfirmed ? ` · ${visitLabel(visit.confirmation)}` : ""}
-                            </p>
+                          </p>
+                          {renderCorner ? (
+                            <div className={cn("relative z-20 shrink-0", openVisit && "pointer-events-auto")}>
+                              {renderCorner(visit, { columnCount, durationMinutes: duration })}
+                            </div>
                           ) : null}
                         </div>
-                        {renderCorner ? (
-                          <div className="pointer-events-auto absolute right-1 top-1 z-20 flex items-center gap-0.5">{renderCorner(visit)}</div>
+                        {showSummary ? (
+                          <p className="relative z-10 mt-0.5 truncate text-[0.65rem] leading-tight text-muted">{summary}</p>
+                        ) : null}
+                        {showMeta ? (
+                          <p className="relative z-10 mt-0.5 truncate text-[0.6rem] font-semibold uppercase leading-tight tracking-[0.1em] text-muted">
+                            {visitTypeLabel[visit.visitType] ?? visit.visitType}
+                            {" · "}
+                            {visitLabel(visit.status)}
+                            {unconfirmed ? ` · ${visitLabel(visit.confirmation)}` : ""}
+                          </p>
                         ) : null}
                       </div>
                     );

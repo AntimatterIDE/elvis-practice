@@ -94,10 +94,11 @@ export function ScheduleDesk() {
               onChange={setDay}
             />
           }
-          renderCorner={(appointment) => (
+          renderCorner={(appointment, meta) => (
             <VisitCardActions
               visit={appointment}
               patientName={names.get(appointment.patientId) ?? "patient"}
+              compact={meta.columnCount > 1}
               onStatus={(status) => updateAppointment(appointment.id, { status })}
               onConfirm={() =>
                 updateAppointment(appointment.id, { confirmation: "confirmed" satisfies ConfirmationStatus })
