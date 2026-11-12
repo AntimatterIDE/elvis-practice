@@ -51,15 +51,26 @@ const styles = StyleSheet.create({
   metaRow: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 8,
     backgroundColor: colors.mist,
     borderRadius: 4,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 6,
     marginBottom: 16,
   },
-  metaItem: { width: "48%", fontSize: 9, lineHeight: 1.4 },
-  metaLabel: { color: colors.oxideDeep, fontFamily: "Helvetica-Bold" },
+  metaItem: {
+    width: "50%",
+    paddingVertical: 5,
+    paddingHorizontal: 6,
+  },
+  metaLabel: {
+    fontSize: 8,
+    color: colors.oxideDeep,
+    fontFamily: "Helvetica-Bold",
+    textTransform: "uppercase",
+    letterSpacing: 0.4,
+    marginBottom: 2,
+  },
+  metaValue: { fontSize: 9, color: colors.ink, lineHeight: 1.35 },
   sectionTitle: {
     fontSize: 10,
     fontFamily: "Helvetica-Bold",
@@ -242,38 +253,21 @@ function ProofDocument({ input, logo }: { input: SubmissionProofPdfInput; logo: 
         </Text>
 
         <View style={styles.metaRow}>
-          <Text style={styles.metaItem}>
-            <Text style={styles.metaLabel}>To payer: </Text>
-            {input.payerName}
-          </Text>
-          <Text style={styles.metaItem}>
-            <Text style={styles.metaLabel}>Patient: </Text>
-            {input.patientName}
-          </Text>
-          <Text style={styles.metaItem}>
-            <Text style={styles.metaLabel}>Date of service: </Text>
-            {input.dateOfService}
-          </Text>
-          <Text style={styles.metaItem}>
-            <Text style={styles.metaLabel}>Billed amount: </Text>
-            {input.billedAmount}
-          </Text>
-          <Text style={styles.metaItem}>
-            <Text style={styles.metaLabel}>Patient control number: </Text>
-            {control}
-          </Text>
-          <Text style={styles.metaItem}>
-            <Text style={styles.metaLabel}>Stedi claim id: </Text>
-            {claimId || "—"}
-          </Text>
-          <Text style={styles.metaItem}>
-            <Text style={styles.metaLabel}>Stedi status: </Text>
-            {input.report.status || "—"}
-          </Text>
-          <Text style={styles.metaItem}>
-            <Text style={styles.metaLabel}>Retrieved: </Text>
-            {formatStamp(input.report.fetchedAt)}
-          </Text>
+          {[
+            ["To payer", input.payerName],
+            ["Patient", input.patientName],
+            ["Date of service", input.dateOfService],
+            ["Billed amount", input.billedAmount],
+            ["Patient control number", control],
+            ["Stedi claim id", claimId || "—"],
+            ["Stedi status", input.report.status || "—"],
+            ["Retrieved", formatStamp(input.report.fetchedAt)],
+          ].map(([label, value]) => (
+            <View key={label} style={styles.metaItem}>
+              <Text style={styles.metaLabel}>{label}</Text>
+              <Text style={styles.metaValue}>{value}</Text>
+            </View>
+          ))}
         </View>
 
         <Text style={styles.sectionTitle}>What this proof shows</Text>
