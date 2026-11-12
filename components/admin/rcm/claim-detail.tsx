@@ -101,7 +101,7 @@ export function ClaimDetail({ id }: { id: string }) {
       if (proof.stediClaimId) patch.stediClaimId = proof.stediClaimId;
       if (proof.ok && proof.path && proof.fileName) {
         patch.attachments = [
-          ...(next.attachments ?? claim.attachments),
+          ...claim.attachments,
           {
             path: proof.path,
             name: proof.fileName,
