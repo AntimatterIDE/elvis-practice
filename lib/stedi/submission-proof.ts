@@ -83,11 +83,11 @@ export function summarizeTimelineItems(items: unknown[]): SubmissionProofEvent[]
       events.push({
         kind: "acknowledgment",
         at,
-        title: status ? `277CA · ${status}` : "277CA claim acknowledgment",
-        detail: [who, text(acknowledgment.id) ? `ack ${acknowledgment.id}` : ""].filter(Boolean).join(" · "),
+        title: status ? `Status: ${status}` : "Claim acknowledgment received",
+        detail: text(acknowledgment.id) ? `Acknowledgment id: ${acknowledgment.id}` : who,
         reportedBy,
         status,
-        sourceName,
+        sourceName: sourceName || (reportedBy === "PAYER" ? "" : who),
         raw: acknowledgment,
       });
       continue;
@@ -107,10 +107,10 @@ export function summarizeTimelineItems(items: unknown[]): SubmissionProofEvent[]
         at,
         title: "Professional claim submitted to Stedi",
         detail: [
-          text(submission.patientControlNumber) ? `control ${submission.patientControlNumber}` : "",
-          charge ? `$${charge}` : "",
-          payer ? `payer ${payer}` : "",
-          text(submission.id) ? `submission ${submission.id}` : "",
+          text(submission.patientControlNumber) ? `Control ${submission.patientControlNumber}` : "",
+          charge ? `Billed $${charge}` : "",
+          payer ? `Payer id ${payer}` : "",
+          text(submission.id) ? `Submission id: ${submission.id}` : "",
         ]
           .filter(Boolean)
           .join(" · "),

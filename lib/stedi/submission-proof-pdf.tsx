@@ -66,24 +66,41 @@ const styles = StyleSheet.create({
     color: colors.oxideDeep,
     textTransform: "uppercase",
     letterSpacing: 0.6,
-    marginBottom: 6,
+    marginBottom: 8,
     borderBottomWidth: 0.75,
     borderBottomColor: colors.line,
     paddingBottom: 3,
   },
-  eventRow: {
-    flexDirection: "row",
-    gap: 10,
-    paddingVertical: 6,
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.line,
+  summaryBanner: {
+    backgroundColor: colors.mist,
+    borderRadius: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    marginBottom: 12,
+    fontSize: 9,
+    lineHeight: 1.45,
+    color: colors.ink,
   },
-  eventWhen: { width: 88, fontSize: 8, color: colors.muted, lineHeight: 1.35 },
-  eventBody: { flex: 1 },
-  eventTitle: { fontSize: 10, fontFamily: "Helvetica-Bold", color: colors.ink },
-  eventDetail: { marginTop: 2, fontSize: 9, color: colors.muted, lineHeight: 1.35 },
+  eventCard: {
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 4,
+    paddingVertical: 9,
+    paddingHorizontal: 10,
+    marginBottom: 8,
+  },
+  eventMeta: {
+    fontSize: 8,
+    color: colors.oxideDeep,
+    fontFamily: "Helvetica-Bold",
+    textTransform: "uppercase",
+    letterSpacing: 0.4,
+    marginBottom: 4,
+  },
+  eventTitle: { fontSize: 11, fontFamily: "Helvetica-Bold", color: colors.ink, lineHeight: 1.35, marginBottom: 4 },
+  eventDetail: { marginTop: 0, marginBottom: 3, fontSize: 9, color: colors.muted, lineHeight: 1.45 },
   certify: {
-    marginTop: 14,
+    marginTop: 10,
     borderWidth: 1,
     borderColor: colors.line,
     padding: 10,
@@ -147,6 +164,48 @@ function formatStamp(value: string) {
     hour: "numeric",
     minute: "2-digit",
   });
+}
+
+function eventKindLabel(event: SubmissionProofReport["events"][number]) {
+  if (event.kind === "acknowledgment") {
+    if (event.reportedBy === "PAYER") return "Payer 277CA";
+    if (event.reportedBy === "CLEARINGHOUSE" || event.reportedBy === "STEDI") return "Clearinghouse 277CA";
+    return "277CA acknowledgment";
+  }
+  if (event.kind === "submission") return "Claim submission";
+  if (event.kind === "payment") return "Payment / ERA";
+  return "Timeline entry";
+}
+
+function eventHeadline(event: SubmissionProofReport["events"][number]) {
+  if (event.kind === "acknowledgment") {
+    return event.status ? `Status: ${event.status}` : event.title || "Claim acknowledgment received";
+  }
+  if (event.kind === "submission") return event.title || "Professional claim submitted to Stedi";
+  return event.title;
+}
+
+function proofSummary(input: SubmissionProofPdfInput) {
+  const events = input.report.events;
+  const payerAcks = events.filter((event) => event.kind === "acknowledgment" && event.reportedBy === "PAYER");
+  const clearingAcks = events.filter(
+    (event) =>
+      event.kind === "acknowledgment" && (event.reportedBy === "CLEARINGHOUSE" || event.reportedBy === "STEDI"),
+  );
+  const submitted = events.some((event) => event.kind === "submission");
+  const parts: string[] = [];
+  if (submitted) parts.push("Stedi recorded the electronic submission.");
+  if (clearingAcks.length) {
+    parts.push(`Clearinghouse returned ${clearingAcks.length} 277CA acknowledgment${clearingAcks.length === 1 ? "" : "s"}.`);
+  }
+  if (payerAcks.length) {
+    const status = payerAcks[0]?.status ? ` (${payerAcks[0].status})` : "";
+    parts.push(
+      `${input.payerName || "The payer"} returned ${payerAcks.length} 277CA acknowledgment${payerAcks.length === 1 ? "" : "s"}${status}.`,
+    );
+  }
+  if (!parts.length) return "No timeline events were available when this proof was generated.";
+  return parts.join(" ");
 }
 
 function ProofDocument({ input, logo }: { input: SubmissionProofPdfInput; logo: string | null }) {
@@ -217,26 +276,35 @@ function ProofDocument({ input, logo }: { input: SubmissionProofPdfInput; logo: 
           </Text>
         </View>
 
+        <Text style={styles.sectionTitle}>What this proof shows</Text>
+        <Text style={styles.summaryBanner}>{proofSummary(input)}</Text>
+
         <Text style={styles.sectionTitle}>277CA / claim timeline</Text>
         {input.report.events.length === 0 ? (
-          <Text style={styles.eventDetail}>No timeline entries were returned yet. Clearinghouse indexing may still be in progress.</Text>
+          <Text style={styles.eventDetail}>
+            No timeline entries were returned yet. Clearinghouse indexing may still be in progress.
+          </Text>
         ) : (
           input.report.events.map((event, index) => (
-            <View key={`${event.kind}-${event.at}-${index}`} style={styles.eventRow} wrap={false}>
-              <Text style={styles.eventWhen}>
-                {formatStamp(event.at)}
-                {"\n"}
-                {event.kind}
-                {event.reportedBy ? ` · ${event.reportedBy}` : ""}
-              </Text>
-              <View style={styles.eventBody}>
-                <Text style={styles.eventTitle}>
-                  {event.title}
-                  {event.status ? ` (${event.status})` : ""}
+            <View key={`${event.kind}-${event.at}-${index}`} style={styles.eventCard} wrap={false}>
+              <View style={{ marginBottom: 4 }}>
+                <Text style={styles.eventMeta}>
+                  {formatStamp(event.at)} · {eventKindLabel(event)}
                 </Text>
-                {event.detail ? <Text style={styles.eventDetail}>{event.detail}</Text> : null}
-                {event.sourceName ? <Text style={styles.eventDetail}>Reported by: {event.sourceName}</Text> : null}
               </View>
+              <View style={{ marginBottom: 4 }}>
+                <Text style={styles.eventTitle}>{eventHeadline(event)}</Text>
+              </View>
+              {event.sourceName ? (
+                <View style={{ marginBottom: 2 }}>
+                  <Text style={styles.eventDetail}>{`From: ${event.sourceName}`}</Text>
+                </View>
+              ) : null}
+              {event.detail ? (
+                <View>
+                  <Text style={styles.eventDetail}>{event.detail}</Text>
+                </View>
+              ) : null}
             </View>
           ))
         )}
@@ -247,12 +315,13 @@ function ProofDocument({ input, logo }: { input: SubmissionProofPdfInput; logo: 
             {input.practiceName || practice.name} certifies that the claim identified by patient control number {control}
             {claimId ? ` (Stedi claim id ${claimId})` : ""} was submitted electronically through Stedi. The events above
             are a reprint of Stedi Claim Timeline records, including X12 277CA claim acknowledgments. A payer-reported
-            277CA is evidence the payer (or its intermediary) returned an acknowledgment for this claim. Clearinghouse
+            277CA means the payer (or its intermediary) returned an acknowledgment for this claim. Clearinghouse
             acceptance alone proves submission into the clearinghouse network and is not the same as payment.
           </Text>
           <Text style={{ marginTop: 8, fontSize: 9, color: colors.muted }}>
-            {input.physicianName || practice.physicianName} · {input.practiceName || practice.name} · Source: Stedi Claims
-            Lifecycle · Claim Timeline
+            Prepared by {input.physicianName || practice.physicianName} · {input.practiceName || practice.name}
+            {"\n"}
+            Source: Stedi Claims Lifecycle · Claim Timeline API
           </Text>
         </View>
 

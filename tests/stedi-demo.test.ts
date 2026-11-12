@@ -422,10 +422,11 @@ describe("submission proof", () => {
     expect(report.events).toHaveLength(2);
     expect(report.events[0]).toMatchObject({
       kind: "acknowledgment",
-      title: "277CA · ACCEPTED",
+      title: "Status: ACCEPTED",
       reportedBy: "PAYER",
       sourceName: "ACME INSURANCE",
     });
+    expect(report.events[0].detail).toContain("ack_01K6XFP3TZ8RA9X84963NMW42Q");
     expect(report.events[1].kind).toBe("submission");
     expect(report.events[1].detail).toContain("CLM1001");
   });

@@ -170,26 +170,39 @@ export default function ClaimSubmissionProofPage() {
           {pending && !report ? <p className="mt-4 text-sm text-muted">Fetching Stedi Claim Timeline…</p> : null}
 
           {report?.events.length ? (
-            <ol className="mt-4 divide-y divide-line border-y border-line">
-              {report.events.map((event, index) => (
-                <li key={`${event.kind}-${event.at}-${index}`} className="grid gap-1 py-3 text-sm sm:grid-cols-[7.5rem_1fr]">
-                  <div className="text-xs text-muted">
-                    <p>{formatWhen(event.at)}</p>
-                    <p className="mt-1 uppercase tracking-[0.12em]">
-                      {event.kind}
-                      {event.reportedBy ? ` · ${event.reportedBy}` : ""}
+            <ol className="mt-4 grid gap-3">
+              {report.events.map((event, index) => {
+                const kindLabel =
+                  event.kind === "acknowledgment"
+                    ? event.reportedBy === "PAYER"
+                      ? "Payer 277CA"
+                      : event.reportedBy === "CLEARINGHOUSE" || event.reportedBy === "STEDI"
+                        ? "Clearinghouse 277CA"
+                        : "277CA acknowledgment"
+                    : event.kind === "submission"
+                      ? "Claim submission"
+                      : event.kind === "payment"
+                        ? "Payment / ERA"
+                        : "Timeline entry";
+                const headline =
+                  event.kind === "acknowledgment"
+                    ? event.status
+                      ? `Status: ${event.status}`
+                      : "Claim acknowledgment received"
+                    : event.kind === "submission"
+                      ? "Professional claim submitted to Stedi"
+                      : event.title;
+                return (
+                  <li key={`${event.kind}-${event.at}-${index}`} className="rounded-xl border border-line bg-card px-4 py-3 text-sm">
+                    <p className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-oxide-deep">
+                      {formatWhen(event.at)} · {kindLabel}
                     </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-ink">
-                      {event.title}
-                      {event.status ? ` (${event.status})` : ""}
-                    </p>
+                    <p className="mt-1 font-semibold text-ink">{headline}</p>
+                    {event.sourceName ? <p className="mt-1 text-muted">From: {event.sourceName}</p> : null}
                     {event.detail ? <p className="mt-1 text-muted">{event.detail}</p> : null}
-                    {event.sourceName ? <p className="mt-1 text-muted">Reported by: {event.sourceName}</p> : null}
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ol>
           ) : !pending ? (
             <p className="mt-4 text-sm text-muted">No timeline entries returned for this claim yet.</p>
