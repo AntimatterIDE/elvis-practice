@@ -50,17 +50,15 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: 9, color: colors.muted, marginBottom: 14, lineHeight: 1.4 },
   metaRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
     backgroundColor: colors.mist,
     borderRadius: 4,
-    paddingVertical: 6,
-    paddingHorizontal: 6,
-    marginBottom: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    marginBottom: 8,
   },
   metaItem: {
     width: "50%",
-    paddingVertical: 5,
-    paddingHorizontal: 6,
+    paddingRight: 10,
   },
   metaLabel: {
     fontSize: 8,
@@ -252,23 +250,35 @@ function ProofDocument({ input, logo }: { input: SubmissionProofPdfInput; logo: 
           Clinic letterhead identifies the submitting practice and does not alter Stedi's recorded events.
         </Text>
 
-        <View style={styles.metaRow}>
-          {[
-            ["To payer", input.payerName],
-            ["Patient", input.patientName],
-            ["Date of service", input.dateOfService],
-            ["Billed amount", input.billedAmount],
-            ["Patient control number", control],
-            ["Stedi claim id", claimId || "—"],
-            ["Stedi status", input.report.status || "—"],
-            ["Retrieved", formatStamp(input.report.fetchedAt)],
-          ].map(([label, value]) => (
-            <View key={label} style={styles.metaItem}>
-              <Text style={styles.metaLabel}>{label}</Text>
-              <Text style={styles.metaValue}>{value}</Text>
-            </View>
-          ))}
-        </View>
+        {(
+          [
+            [
+              ["To payer", input.payerName],
+              ["Patient", input.patientName],
+            ],
+            [
+              ["Date of service", input.dateOfService],
+              ["Billed amount", input.billedAmount],
+            ],
+            [
+              ["Patient control number", control],
+              ["Stedi claim id", claimId || "—"],
+            ],
+            [
+              ["Stedi status", input.report.status || "—"],
+              ["Retrieved", formatStamp(input.report.fetchedAt)],
+            ],
+          ] as const
+        ).map((pair, rowIndex) => (
+          <View key={`meta-${rowIndex}`} style={styles.metaRow}>
+            {pair.map(([label, value]) => (
+              <View key={label} style={styles.metaItem}>
+                <Text style={styles.metaLabel}>{label}</Text>
+                <Text style={styles.metaValue}>{value}</Text>
+              </View>
+            ))}
+          </View>
+        ))}
 
         <Text style={styles.sectionTitle}>What this proof shows</Text>
         <Text style={styles.summaryBanner}>{proofSummary(input)}</Text>
