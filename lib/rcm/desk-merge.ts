@@ -10,6 +10,9 @@ export function normalizePractice(practice: PracticeProfile): PracticeProfile {
     phone: practice.phone ?? "",
     address: practice.address ?? "",
     posCode: practice.posCode || "11",
+    deaNumber: practice.deaNumber ?? "",
+    stateLicense: practice.stateLicense ?? "",
+    epcsReady: Boolean(practice.epcsReady),
     updatedAt: practice.updatedAt || "",
   };
 }

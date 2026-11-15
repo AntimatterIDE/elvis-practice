@@ -96,3 +96,22 @@ Matching / review — done
 - Practical launch path today: flip file draft
   `offeringStatus` / `reviewStatus` / `publishedAt` after clinical sign-off,
   *or* build the async Supabase loader (~half day to ~1.5 days).
+
+## E-prescribing: hybrid Prescribe + DoseSpot-shaped adapter (2026-11-15)
+
+- **Ruling (beta):** Own the prep UI in elvis-practice (`PrescribeDesk`); final
+  review/sign sits in a DoseSpot-shaped vendor slot (mock panel today, real
+  iframe/API when credentials land). Do **not** DIY fax/PDF as the primary path
+  and do **not** pursue direct Surescripts certification.
+- **Adapter:** `lib/erx` with `ERX_MODE=mock|live`. Mock is deterministic
+  (pharmacies/drugs, draft → pending_signature → sent, RxFill sim, inbox).
+  Live DoseSpot stub returns “credentials not configured” until env /
+  `service_config` keys exist (same pattern as OCR).
+- **Chart model:** `RcmState.prescriptions` + richer `Medication` / pharmacy
+  NCPDP / practice `deaNumber` + `epcsReady`. Send files a text proof on
+  `prescription-{id}` via `storeChartBytes`.
+- **NY I-STOP:** Manual checklist stamp + timestamp before Sign enables for
+  controlled schedules (no Bamboo; automated HCS later).
+- **Still external:** Real DoseSpot/ScriptSure credentials, EPCS IDP, BNE
+  registration, automated PMP query. Sales keeps parallel quotes
+  (DoseSpot / ScriptSure / DrFirst).

@@ -32,6 +32,7 @@ const practiceLinks = [
 
 const billingLinks = [
   ["/admin/operations/claims", "Claims"],
+  ["/admin/operations/prescribe", "Prescribe"],
   ["/admin/operations/eligibility", "Eligibility"],
   ["/admin/operations/denials", "Denials"],
   ["/admin/operations/payments", "Payments"],

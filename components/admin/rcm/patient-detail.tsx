@@ -39,6 +39,7 @@ const tabs = [
   ["case", "Case"],
   ["coverage", "Insurance"],
   ["clinical", "Clinical"],
+  ["medications", "Medications"],
   ["visits", "Visits"],
   ["documents", "Documents"],
   ["files", "Files"],
@@ -161,6 +162,7 @@ export function PatientDetail({ id }: { id: string }) {
           />
         ) : null}
         {tab === "clinical" ? <Clinical patient={patient} onSave={patchPatient} /> : null}
+        {tab === "medications" ? <MedicationsTab patient={patient} onSave={patchPatient} /> : null}
         {tab === "visits" ? <Visits visits={relatedVisits} onUpdate={updateAppointment} /> : null}
         {tab === "documents" ? <Documents patient={patient} /> : null}
         {tab === "files" ? <ChartFiles patient={patient} onSave={patchPatient} /> : null}
@@ -453,6 +455,20 @@ function Demographics({
       <Field label="Pharmacy phone">
         <input className={fieldClass} value={form.pharmacyPhone} onChange={(event) => update("pharmacyPhone", event.target.value)} />
       </Field>
+      <Field label="Pharmacy NCPDP id">
+        <input
+          className={fieldClass}
+          value={form.pharmacyNcpdpId ?? ""}
+          onChange={(event) => update("pharmacyNcpdpId", event.target.value)}
+        />
+      </Field>
+      <Field label="Pharmacy address">
+        <input
+          className={fieldClass}
+          value={form.pharmacyAddress ?? ""}
+          onChange={(event) => update("pharmacyAddress", event.target.value)}
+        />
+      </Field>
       <Field label="Chart flags" className="sm:col-span-2">
         <input
           className={fieldClass}
@@ -736,6 +752,206 @@ function CoverageDesk({
           </ul>
         </section>
       ) : null}
+    </div>
+  );
+}
+
+function MedicationsTab({ patient, onSave }: { patient: Patient; onSave: (id: string, patch: Partial<Patient>) => void }) {
+  const { prescriptions } = useRcm();
+  const [medication, setMedication] = useState("");
+  const [dose, setDose] = useState("");
+  const patientRx = (prescriptions ?? [])
+    .filter((rx) => rx.patientId === patient.id)
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+    .slice(0, 12);
+
+  function save(patch: Partial<Patient>) {
+    onSave(patient.id, patch);
+  }
+
+  return (
+    <div className="grid gap-6">
+      <section className={panelClass}>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="font-display text-2xl">Medications</h2>
+            <p className="mt-1 text-sm text-muted">
+              Chart list stays free-text compatible for OCR. Use Prescribe for the hybrid eRx flow.
+            </p>
+          </div>
+          <Button asChild>
+            <Link href={`/admin/operations/prescribe?patient=${encodeURIComponent(patient.id)}`}>Prescribe</Link>
+          </Button>
+        </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <Field label="Preferred pharmacy">
+            <input
+              className={fieldClass}
+              defaultValue={patient.pharmacyName}
+              onBlur={(event) => {
+                if (event.target.value === patient.pharmacyName) return;
+                save({ pharmacyName: event.target.value });
+              }}
+            />
+          </Field>
+          <Field label="Pharmacy phone">
+            <input
+              className={fieldClass}
+              defaultValue={patient.pharmacyPhone}
+              onBlur={(event) => {
+                if (event.target.value === patient.pharmacyPhone) return;
+                save({ pharmacyPhone: event.target.value });
+              }}
+            />
+          </Field>
+          <Field label="NCPDP id">
+            <input
+              className={fieldClass}
+              defaultValue={patient.pharmacyNcpdpId ?? ""}
+              onBlur={(event) => {
+                if (event.target.value === (patient.pharmacyNcpdpId ?? "")) return;
+                save({ pharmacyNcpdpId: event.target.value });
+              }}
+            />
+          </Field>
+          <Field label="Pharmacy address">
+            <input
+              className={fieldClass}
+              defaultValue={patient.pharmacyAddress ?? ""}
+              onBlur={(event) => {
+                if (event.target.value === (patient.pharmacyAddress ?? "")) return;
+                save({ pharmacyAddress: event.target.value });
+              }}
+            />
+          </Field>
+        </div>
+        {patient.medications.length === 0 ? <p className="mt-4 text-sm text-muted">No medications recorded.</p> : null}
+        <ul className="mt-4 grid gap-3">
+          {patient.medications.map((item) => (
+            <li key={item.id} className="grid gap-2 sm:grid-cols-[minmax(0,1.2fr)_7rem_8rem_8rem_auto] sm:items-end">
+              <Field label="Medication">
+                <input
+                  className={fieldClass}
+                  defaultValue={item.name}
+                  aria-label={`Medication ${item.name || "name"}`}
+                  onBlur={(event) => {
+                    const name = event.target.value;
+                    if (name === item.name) return;
+                    save({ medications: patient.medications.map((row) => (row.id === item.id ? { ...row, name } : row)) });
+                  }}
+                />
+              </Field>
+              <Field label="Dose">
+                <input
+                  className={fieldClass}
+                  defaultValue={item.dose}
+                  aria-label={`Dose for ${item.name || "medication"}`}
+                  onBlur={(event) => {
+                    const nextDose = event.target.value;
+                    if (nextDose === item.dose) return;
+                    save({
+                      medications: patient.medications.map((row) => (row.id === item.id ? { ...row, dose: nextDose } : row)),
+                    });
+                  }}
+                />
+              </Field>
+              <Field label="Frequency">
+                <input
+                  className={fieldClass}
+                  defaultValue={item.frequency}
+                  aria-label={`Frequency for ${item.name || "medication"}`}
+                  onBlur={(event) => {
+                    const frequency = event.target.value;
+                    if (frequency === item.frequency) return;
+                    save({
+                      medications: patient.medications.map((row) => (row.id === item.id ? { ...row, frequency } : row)),
+                    });
+                  }}
+                />
+              </Field>
+              <Field label="Status">
+                <select
+                  className={fieldClass}
+                  defaultValue={item.status}
+                  aria-label={`Status for ${item.name || "medication"}`}
+                  onChange={(event) =>
+                    save({
+                      medications: patient.medications.map((row) =>
+                        row.id === item.id ? { ...row, status: event.target.value as Medication["status"] } : row,
+                      ),
+                    })
+                  }
+                >
+                  <option value="active">Active</option>
+                  <option value="stopped">Stopped</option>
+                </select>
+              </Field>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => save({ medications: patient.medications.filter((row) => row.id !== item.id) })}
+              >
+                Remove
+              </Button>
+            </li>
+          ))}
+        </ul>
+        <form
+          className="mt-4 flex flex-wrap gap-2"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (!medication.trim()) return;
+            const next: Medication = {
+              id: nid("med"),
+              name: medication.trim(),
+              dose: dose.trim(),
+              frequency: "",
+              status: "active",
+            };
+            save({ medications: [...patient.medications, next] });
+            setMedication("");
+            setDose("");
+          }}
+        >
+          <input
+            className={`${fieldClass} max-w-48`}
+            value={medication}
+            onChange={(event) => setMedication(event.target.value)}
+            placeholder="Medication"
+            aria-label="Medication"
+          />
+          <input
+            className={`${fieldClass} max-w-40`}
+            value={dose}
+            onChange={(event) => setDose(event.target.value)}
+            placeholder="Dose"
+            aria-label="Dose"
+          />
+          <Button type="submit" variant="secondary">
+            Add medication
+          </Button>
+        </form>
+      </section>
+      <section className={panelClass}>
+        <h2 className="font-display text-2xl">eRx history</h2>
+        {patientRx.length === 0 ? (
+          <p className="mt-3 text-sm text-muted">No e-prescriptions yet. Use Prescribe to create a draft.</p>
+        ) : (
+          <ul className="mt-4 grid gap-2 text-sm">
+            {patientRx.map((rx) => (
+              <li key={rx.id} className="rounded-lg border border-line px-3 py-2">
+                <span className="font-semibold">
+                  {rx.drugName} {rx.dose}
+                </span>
+                <span className="text-muted">
+                  {" "}
+                  · {rx.status.replaceAll("_", " ")} · {formatWhen(rx.updatedAt)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

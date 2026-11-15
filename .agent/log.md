@@ -1,5 +1,21 @@
 # elvis-practice — agent log
 
+## [2026-11-15] ingest | eRx beta UI (hybrid + mock DoseSpot adapter)
+
+Shipped vendor-ready Prescribe beta: chart `Prescription` / enriched meds +
+pharmacy NCPDP + practice DEA/EPCS fields; `lib/erx` adapter (mock default,
+DoseSpot stub when `ERX_MODE=live`); staff actions; `PrescribeDesk` + sign
+panel + I-STOP gate; Medications tab / Visit Prescribe / Operations nav; send
+proofs on `prescription-{id}`; `tests/erx-mock.test.ts`. Decision updated from
+JumpStart-first to hybrid prep UI + vendor sign slot.
+
+## [2026-11-12] decision | E-prescribing via middleware API (not DIY)
+
+Deep research: no public Surescripts send API. Path is DoseSpot / ScriptSure /
+DrFirst (Surescripts partners) or Weno (own switch). NY mandates eRx + EPCS +
+I-STOP for controlled substances. Recommended: DoseSpot JumpStart first, then
+EPCS/PMP. Canvas: workspace `canvases/erx-api-research.canvas.tsx`.
+
 ## [2026-11-12] bugfix | Aggressive QA of morning proof + check-in
 
 Broke morning features with edge payloads + live desk. Fixes: skip empty

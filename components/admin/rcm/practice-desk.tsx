@@ -65,6 +65,30 @@ export function PracticeDesk() {
         <Field label="Address" className="sm:col-span-2">
           <input className={fieldClass} value={value.address} placeholder="Street, city, ST ZIP" onChange={(event) => update("address", event.target.value)} />
         </Field>
+        <Field label="DEA number">
+          <input
+            className={fieldClass}
+            value={value.deaNumber ?? ""}
+            placeholder="For e-prescribing"
+            onChange={(event) => update("deaNumber", event.target.value)}
+          />
+        </Field>
+        <Field label="State license">
+          <input
+            className={fieldClass}
+            value={value.stateLicense ?? ""}
+            placeholder="NY license #"
+            onChange={(event) => update("stateLicense", event.target.value)}
+          />
+        </Field>
+        <label className="flex items-center gap-2 text-sm sm:col-span-2">
+          <input
+            type="checkbox"
+            checked={Boolean(value.epcsReady)}
+            onChange={(event) => update("epcsReady", event.target.checked)}
+          />
+          EPCS ready (controlled substances via vendor)
+        </label>
         <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
           <Button type="submit" disabled={pending}>
             Save profile

@@ -4,8 +4,13 @@ import type {
   Claim,
   Coverage,
   InjuryCase,
+  Medication,
   Patient,
   PatientInput,
+  Prescription,
+  PrescriptionEvent,
+  PrescriptionSchedule,
+  PrescriptionStatus,
   RcmState,
   ServiceLine,
   Vitals,
@@ -106,6 +111,8 @@ export function withChart(input: PatientInput, extra: Partial<Patient> = {}): Pa
     referringPhone: "",
     pharmacyName: "",
     pharmacyPhone: "",
+    pharmacyNcpdpId: "",
+    pharmacyAddress: "",
     portalStatus: "none",
     allergiesReviewed: false,
     medicalHistory: "",
@@ -151,15 +158,39 @@ function normalizeCase(item: Partial<InjuryCase> | null | undefined, index: numb
   return next;
 }
 
+function normalizeMedication(item: Partial<Medication> | null | undefined, index: number): Medication | null {
+  if (!item || typeof item !== "object") return null;
+  const id = typeof item.id === "string" && item.id.trim() ? item.id : `med_${index}`;
+  const status = item.status === "stopped" ? "stopped" : "active";
+  return {
+    id,
+    name: typeof item.name === "string" ? item.name : "",
+    dose: typeof item.dose === "string" ? item.dose : "",
+    frequency: typeof item.frequency === "string" ? item.frequency : "",
+    status,
+    rxNorm: typeof item.rxNorm === "string" ? item.rxNorm : undefined,
+    ndc: typeof item.ndc === "string" ? item.ndc : undefined,
+    quantity: typeof item.quantity === "string" ? item.quantity : undefined,
+    daysSupply: typeof item.daysSupply === "string" ? item.daysSupply : undefined,
+    refills: typeof item.refills === "number" && Number.isFinite(item.refills) ? item.refills : undefined,
+    sig: typeof item.sig === "string" ? item.sig : undefined,
+    pharmacyId: typeof item.pharmacyId === "string" ? item.pharmacyId : undefined,
+  };
+}
+
 export function normalizePatient(patient: Patient): Patient {
   const next = withChart(patient, patient);
   return {
     ...next,
+    pharmacyNcpdpId: typeof next.pharmacyNcpdpId === "string" ? next.pharmacyNcpdpId : "",
+    pharmacyAddress: typeof next.pharmacyAddress === "string" ? next.pharmacyAddress : "",
     flags: next.flags ?? [],
     coverages: next.coverages ?? [],
     problems: next.problems ?? [],
     allergies: next.allergies ?? [],
-    medications: next.medications ?? [],
+    medications: (Array.isArray(next.medications) ? next.medications : [])
+      .map(normalizeMedication)
+      .filter((item): item is Medication => item !== null),
     documents: withDocumentSlots(next.documents),
     cases: (Array.isArray(next.cases) ? next.cases : []).map(normalizeCase).filter((item): item is InjuryCase => item !== null),
     intakeAnswers: next.intakeAnswers ?? [],
@@ -237,6 +268,73 @@ export function normalizeClaim(claim: Claim): Claim {
   };
 }
 
+const prescriptionStatuses: PrescriptionStatus[] = [
+  "draft",
+  "pending_signature",
+  "sent",
+  "cancelled",
+  "error",
+  "filled",
+];
+const prescriptionSchedules: PrescriptionSchedule[] = ["non_controlled", "II", "III", "IV", "V"];
+
+function normalizePrescriptionEvent(item: Partial<PrescriptionEvent> | null | undefined, index: number): PrescriptionEvent | null {
+  if (!item || typeof item !== "object") return null;
+  const kind = item.kind;
+  const allowed = ["draft", "prepared", "istop", "signed", "sent", "cancelled", "error", "fill", "renewal", "change"] as const;
+  if (!kind || !allowed.includes(kind as (typeof allowed)[number])) return null;
+  return {
+    id: typeof item.id === "string" && item.id.trim() ? item.id : `rxe_${index}`,
+    at: typeof item.at === "string" ? item.at : new Date(0).toISOString(),
+    kind: kind as PrescriptionEvent["kind"],
+    summary: typeof item.summary === "string" ? item.summary : "",
+  };
+}
+
+export function normalizePrescription(item: Partial<Prescription> | null | undefined, index = 0): Prescription | null {
+  if (!item || typeof item !== "object") return null;
+  const status = prescriptionStatuses.includes(item.status as PrescriptionStatus)
+    ? (item.status as PrescriptionStatus)
+    : "draft";
+  const schedule = prescriptionSchedules.includes(item.schedule as PrescriptionSchedule)
+    ? (item.schedule as PrescriptionSchedule)
+    : "non_controlled";
+  const patientId = typeof item.patientId === "string" ? item.patientId : "";
+  if (!patientId) return null;
+  const now = new Date().toISOString();
+  return {
+    id: typeof item.id === "string" && item.id.trim() ? item.id : `rx_${index}`,
+    patientId,
+    appointmentId: typeof item.appointmentId === "string" ? item.appointmentId : undefined,
+    status,
+    drugName: typeof item.drugName === "string" ? item.drugName : "",
+    rxNorm: typeof item.rxNorm === "string" ? item.rxNorm : undefined,
+    ndc: typeof item.ndc === "string" ? item.ndc : undefined,
+    dose: typeof item.dose === "string" ? item.dose : "",
+    sig: typeof item.sig === "string" ? item.sig : "",
+    quantity: typeof item.quantity === "string" ? item.quantity : "",
+    daysSupply: typeof item.daysSupply === "string" ? item.daysSupply : "",
+    refills: typeof item.refills === "number" && Number.isFinite(item.refills) ? Math.max(0, Math.floor(item.refills)) : 0,
+    schedule,
+    pharmacyName: typeof item.pharmacyName === "string" ? item.pharmacyName : "",
+    pharmacyPhone: typeof item.pharmacyPhone === "string" ? item.pharmacyPhone : "",
+    pharmacyNcpdpId: typeof item.pharmacyNcpdpId === "string" ? item.pharmacyNcpdpId : "",
+    pharmacyAddress: typeof item.pharmacyAddress === "string" ? item.pharmacyAddress : undefined,
+    diagnosisNote: typeof item.diagnosisNote === "string" ? item.diagnosisNote : undefined,
+    pharmacyNote: typeof item.pharmacyNote === "string" ? item.pharmacyNote : undefined,
+    istopCheckedAt: typeof item.istopCheckedAt === "string" ? item.istopCheckedAt : undefined,
+    istopCheckedBy: typeof item.istopCheckedBy === "string" ? item.istopCheckedBy : undefined,
+    vendorPrescriptionId: typeof item.vendorPrescriptionId === "string" ? item.vendorPrescriptionId : undefined,
+    events: (Array.isArray(item.events) ? item.events : [])
+      .map(normalizePrescriptionEvent)
+      .filter((event): event is PrescriptionEvent => event !== null),
+    createdAt: typeof item.createdAt === "string" ? item.createdAt : now,
+    updatedAt: typeof item.updatedAt === "string" ? item.updatedAt : now,
+    sentAt: typeof item.sentAt === "string" ? item.sentAt : undefined,
+    errorMessage: typeof item.errorMessage === "string" ? item.errorMessage : undefined,
+  };
+}
+
 export function normalizeState(state: RcmState): RcmState {
   const practice = state.practice ?? {
     legalName: "",
@@ -260,6 +358,9 @@ export function normalizeState(state: RcmState): RcmState {
       phone: practice.phone ?? "",
       address: practice.address ?? "",
       posCode: practice.posCode || "11",
+      deaNumber: practice.deaNumber ?? "",
+      stateLicense: practice.stateLicense ?? "",
+      epcsReady: Boolean(practice.epcsReady),
       updatedAt: practice.updatedAt ?? "",
     },
     patients: state.patients.map((patient) => normalizePatient(patient)),
@@ -267,6 +368,9 @@ export function normalizeState(state: RcmState): RcmState {
     appointments: state.appointments.map((appointment) => normalizeAppointment(appointment)),
     tasks: state.tasks ?? [],
     eligibility: state.eligibility ?? [],
+    prescriptions: (Array.isArray(state.prescriptions) ? state.prescriptions : [])
+      .map((item, index) => normalizePrescription(item, index))
+      .filter((item): item is Prescription => item !== null),
   };
 }
 

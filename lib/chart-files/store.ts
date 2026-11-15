@@ -16,6 +16,7 @@ const allowedTypes = new Set([
   "image/heic",
   "image/heif",
   "application/pdf",
+  "text/plain",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "video/mp4",

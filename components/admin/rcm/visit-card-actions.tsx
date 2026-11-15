@@ -128,6 +128,14 @@ export function VisitCardActions({
                 Open chart
               </Link>
             </DropdownMenu.Item>
+            <DropdownMenu.Item asChild>
+              <Link
+                href={`/admin/operations/prescribe?patient=${encodeURIComponent(visit.patientId)}`}
+                className="block cursor-pointer rounded-lg px-3 py-2 text-sm outline-none hover:bg-mist"
+              >
+                Prescribe
+              </Link>
+            </DropdownMenu.Item>
             <DropdownMenu.Item
               className="cursor-pointer rounded-lg px-3 py-2 text-sm text-emergency outline-none hover:bg-mist"
               onSelect={() => onRemove()}

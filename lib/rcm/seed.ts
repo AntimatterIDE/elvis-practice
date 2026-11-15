@@ -20,5 +20,6 @@ export function createSeedState(): RcmState {
     tasks: [],
     claims: [],
     eligibility: [],
+    prescriptions: [],
   };
 }

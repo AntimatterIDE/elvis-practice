@@ -73,10 +73,28 @@
   status wins for Active/Inactive; Medical Care STC `1` preferred for copay/coins;
   deductible uses individual `REMAINING` on STC `30`.
 
+## E-prescribing (hybrid beta)
+
+- **UI:** `/admin/operations/prescribe?patient=` → `PrescribeDesk` (Operations
+  nav + chart Medications tab + Visit ⋯ Prescribe). Staff prepares draft
+  (drug/pharmacy search, sig/qty/days/refills); Prepare → `pending_signature`;
+  Sign panel is the vendor host (`PrescribeSignPanel` mock DoseSpot review /
+  2FA; live will load vendor URL in the same slot). Controlled schedules require
+  NY I-STOP checkbox stamp before Sign.
+- **Adapter boundary:** `lib/erx` (`adapter` interface, `mock-adapter`,
+  `dosespot-adapter` stub, factory via `ERX_MODE`). Staff-gated server actions
+  in `app/admin/erx/actions.ts`. Client helpers in `lib/erx/client.ts` (no
+  server-only).
+- **Persistence:** `RcmState.prescriptions` in the practice desk store; after
+  send, `fileErxSendProof` writes `text/plain` to slot `prescription-{id}`
+  (Files → Prescription proofs).
+
 ## Chart files
 
 - Bucket `chart-files`; path `{patientId}/{slotId}/{objectKey}`.
-- Slots include `consultation-report` (this practice’s letter/report), `outside-records`, etc.
+- Slots include `consultation-report` (this practice’s letter/report),
+  `outside-records`, `claim-{id}` submission proofs, `prescription-{id}` eRx
+  send proofs (`text/plain` allowed), etc.
 
 ## OCR sidecar (in-house)
 

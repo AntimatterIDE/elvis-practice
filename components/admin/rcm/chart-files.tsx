@@ -367,6 +367,34 @@ export function ChartFiles({
         </ul>
       </section>
       <section className="rounded-2xl border border-line bg-card p-4">
+        <h2 className="font-display text-2xl">Prescription proofs</h2>
+        <p className="mt-1 text-sm text-muted">
+          Transmission records filed when a prescription is sent from Prescribe (mock or live). Slot per Rx so Files keeps a send history.
+        </p>
+        <ul className="mt-4 grid gap-3 text-sm">
+          {files.filter((file) => file.slotId.startsWith("prescription-")).length === 0 ? (
+            <li className="text-muted">No prescription proofs on this chart yet.</li>
+          ) : null}
+          {files
+            .filter((file) => file.slotId.startsWith("prescription-"))
+            .map((file) => (
+              <li key={file.path} className="flex flex-wrap items-center gap-3">
+                <span>
+                  {file.label}
+                  {file.size ? ` · ${sizeLabel(file.size)}` : ""}
+                </span>
+                {file.url ? (
+                  <Button variant="secondary" asChild>
+                    <a href={file.url} target="_blank" rel="noreferrer" download>
+                      Open / download
+                    </a>
+                  </Button>
+                ) : null}
+              </li>
+            ))}
+        </ul>
+      </section>
+      <section className="rounded-2xl border border-line bg-card p-4">
         <h2 className="font-display text-2xl">Lab results</h2>
         <p className="mt-1 text-sm text-muted">Files here show in the patient portal. The portal does not pull results from a lab.</p>
         <ul className="mt-4 grid gap-3 text-sm">

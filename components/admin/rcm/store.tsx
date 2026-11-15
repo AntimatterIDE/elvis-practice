@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
-import { applyPrimaryCoverage, emptyVitals, normalizeAppointment, normalizeClaim, normalizeLine, normalizePatient, normalizeState, withChart } from "@/lib/rcm/chart";
+import { applyPrimaryCoverage, emptyVitals, normalizeAppointment, normalizeClaim, normalizeLine, normalizePatient, normalizePrescription, normalizeState, withChart } from "@/lib/rcm/chart";
 import { invoicesFromClaims } from "@/lib/portal/invoices";
 import type { PortalInvoice } from "@/lib/portal/types";
 import { mergeClaimsByUpdatedAt } from "@/lib/rcm/claims-merge";
@@ -19,6 +19,8 @@ import type {
   PracticeDeskSnapshot,
   PracticeProfile,
   PracticeTask,
+  Prescription,
+  PrescriptionInput,
   RcmState,
 } from "@/lib/rcm/types";
 
@@ -41,6 +43,8 @@ type RcmContextValue = DeskSnapshot & {
   addEligibility: (result: Omit<EligibilityResult, "id" | "createdAt">) => EligibilityResult;
   clearPatientEligibility: (patientId: string) => void;
   updatePractice: (patch: Partial<PracticeProfile>) => void;
+  addPrescription: (input: PrescriptionInput) => Prescription;
+  updatePrescription: (id: string, patch: Partial<Prescription>) => void;
 };
 
 const RcmContext = createContext<RcmContextValue | null>(null);
@@ -401,6 +405,7 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
           appointments: current.appointments.filter((appointment) => appointment.patientId !== id),
           eligibility: current.eligibility.filter((check) => check.patientId !== id),
           tasks: current.tasks.filter((task) => task.patientId !== id),
+          prescriptions: (current.prescriptions ?? []).filter((rx) => rx.patientId !== id),
         });
       },
       addTask: (input) => {
@@ -533,6 +538,62 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
             ...current.practice,
             ...patch,
             updatedAt: new Date().toISOString(),
+          }),
+        });
+      },
+      addPrescription: (input) => {
+        const now = new Date().toISOString();
+        const id = nid("rx");
+        const draft: Prescription = {
+          id,
+          patientId: input.patientId,
+          appointmentId: input.appointmentId,
+          status: "draft",
+          drugName: input.drugName.trim(),
+          rxNorm: input.rxNorm?.trim() || undefined,
+          ndc: input.ndc?.trim() || undefined,
+          dose: input.dose.trim(),
+          sig: input.sig.trim(),
+          quantity: input.quantity.trim(),
+          daysSupply: input.daysSupply.trim(),
+          refills: Math.max(0, Math.floor(input.refills)),
+          schedule: input.schedule,
+          pharmacyName: input.pharmacyName.trim(),
+          pharmacyPhone: input.pharmacyPhone.trim(),
+          pharmacyNcpdpId: input.pharmacyNcpdpId.trim(),
+          pharmacyAddress: input.pharmacyAddress?.trim() || undefined,
+          diagnosisNote: input.diagnosisNote?.trim() || undefined,
+          pharmacyNote: input.pharmacyNote?.trim() || undefined,
+          events: [
+            {
+              id: crypto.randomUUID(),
+              at: now,
+              kind: "draft",
+              summary: `Draft ${input.drugName.trim()}`,
+            },
+          ],
+          createdAt: now,
+          updatedAt: now,
+        };
+        const normalized = normalizePrescription(draft) ?? draft;
+        const current = getSnapshot();
+        commit({
+          ...current,
+          prescriptions: [normalized, ...(current.prescriptions ?? [])],
+        });
+        return normalized;
+      },
+      updatePrescription: (id, patch) => {
+        const current = getSnapshot();
+        commit({
+          ...current,
+          prescriptions: (current.prescriptions ?? []).map((rx) => {
+            if (rx.id !== id) return rx;
+            return normalizePrescription({ ...rx, ...patch, updatedAt: new Date().toISOString() }) ?? {
+              ...rx,
+              ...patch,
+              updatedAt: new Date().toISOString(),
+            };
           }),
         });
       },

@@ -89,6 +89,14 @@ export type Medication = {
   dose: string;
   frequency: string;
   status: "active" | "stopped";
+  /** Optional structured fields for eRx (free-text name/dose remain OCR-compatible). */
+  rxNorm?: string;
+  ndc?: string;
+  quantity?: string;
+  daysSupply?: string;
+  refills?: number;
+  sig?: string;
+  pharmacyId?: string;
 };
 
 export type ChartDocument = {
@@ -133,6 +141,9 @@ export type Patient = PatientRegistration & {
   referringPhone: string;
   pharmacyName: string;
   pharmacyPhone: string;
+  /** NCPDP pharmacy id for eRx routing when known. */
+  pharmacyNcpdpId?: string;
+  pharmacyAddress?: string;
   portalStatus: PortalStatus;
   allergiesReviewed: boolean;
   medicalHistory: string;
@@ -354,7 +365,73 @@ export type PracticeProfile = {
   phone: string;
   address: string;
   posCode: string;
+  /** Prescriber DEA (single-practice beta; multi-prescriber later). */
+  deaNumber?: string;
+  stateLicense?: string;
+  epcsReady?: boolean;
   updatedAt?: string;
+};
+
+export type PrescriptionStatus = "draft" | "pending_signature" | "sent" | "cancelled" | "error" | "filled";
+export type PrescriptionSchedule = "non_controlled" | "II" | "III" | "IV" | "V";
+
+export type PrescriptionEvent = {
+  id: string;
+  at: string;
+  kind: "draft" | "prepared" | "istop" | "signed" | "sent" | "cancelled" | "error" | "fill" | "renewal" | "change";
+  summary: string;
+};
+
+/** Local desk prescription (mock or vendor-backed). */
+export type Prescription = {
+  id: string;
+  patientId: string;
+  appointmentId?: string;
+  status: PrescriptionStatus;
+  drugName: string;
+  rxNorm?: string;
+  ndc?: string;
+  dose: string;
+  sig: string;
+  quantity: string;
+  daysSupply: string;
+  refills: number;
+  schedule: PrescriptionSchedule;
+  pharmacyName: string;
+  pharmacyPhone: string;
+  pharmacyNcpdpId: string;
+  pharmacyAddress?: string;
+  diagnosisNote?: string;
+  pharmacyNote?: string;
+  /** Manual NY I-STOP consult stamp before controlled-substance sign. */
+  istopCheckedAt?: string;
+  istopCheckedBy?: string;
+  vendorPrescriptionId?: string;
+  events: PrescriptionEvent[];
+  createdAt: string;
+  updatedAt: string;
+  sentAt?: string;
+  errorMessage?: string;
+};
+
+export type PrescriptionInput = {
+  patientId: string;
+  appointmentId?: string;
+  drugName: string;
+  rxNorm?: string;
+  ndc?: string;
+  dose: string;
+  sig: string;
+  quantity: string;
+  daysSupply: string;
+  refills: number;
+  schedule: PrescriptionSchedule;
+  pharmacyName: string;
+  pharmacyPhone: string;
+  pharmacyNcpdpId: string;
+  pharmacyAddress?: string;
+  diagnosisNote?: string;
+  pharmacyNote?: string;
 };
 
 /** Shared cloud snapshot for practice profile, tasks, and eligibility history. */
@@ -372,4 +449,5 @@ export type RcmState = {
   eligibility: EligibilityResult[];
   tasks: PracticeTask[];
   practice: PracticeProfile;
+  prescriptions: Prescription[];
 };
