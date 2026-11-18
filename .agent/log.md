@@ -1,5 +1,12 @@
 # elvis-practice — agent log
 
+## [2026-11-18] bugfix | Deleted schedule visits reappearing
+
+Christina: duplicate visit for Mon 11/23 would not stay deleted. Root cause was
+in-memory-only appointment tombstones plus stale-tab “pending” re-push.
+Persisted removed ids, cross-tab sync, and `mergeAppointmentRoster` /
+`pushCharts` fixes. Tests in `tests/appointment-sync.test.ts`.
+
 ## [2026-11-15] ingest | eRx beta UI (hybrid + mock DoseSpot adapter)
 
 Shipped vendor-ready Prescribe beta: chart `Prescription` / enriched meds +

@@ -1,5 +1,18 @@
 # Bugs — elvis-practice
 
+## [2026-11-18] Deleted schedule visits reappeared
+
+**Symptom:** Christina deleted a duplicate Monday visit; it kept coming back on
+the day sheet.
+**Cause:** `removedAppointmentIds` lived only in memory (lost on refresh). A
+stale tab / next roster merge treated the missing server visit as optimistic
+`pending` and re-pushed it. `pushCharts` also required the patient to be in the
+same payload before honoring a delete id.
+**Fix:** Persist tombstones (`alignment-practice-v2:removed-appointments`),
+cross-tab `storage` sync, never re-pending visits previously seen on the
+server (`lib/rcm/appointment-sync.ts`), and drop removed visits unconditionally
+in `pushCharts`.
+
 ## [2026-11-12] Empty Stedi timeline rows became fake proof events
 
 **Symptom:** Malformed Claim Timeline payloads with `{}` could appear as

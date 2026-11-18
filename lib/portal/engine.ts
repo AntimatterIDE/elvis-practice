@@ -482,7 +482,8 @@ export function pushCharts(
   const incomingIds = new Set(incoming.map((visit) => visit.id));
   const kept = db.visits.filter((visit) => {
     if (incomingIds.has(visit.id)) return false;
-    if (drop.has(visit.id) && acceptedIds.has(visit.patientId)) return false;
+    // Honor desk deletes even when this push only carries a subset of charts.
+    if (drop.has(visit.id)) return false;
     return true;
   });
   return { ...db, nextMrn, patients: [...created, ...nextPatients], visits: [...incoming, ...kept] };

@@ -10,8 +10,10 @@ import {
   setPortalSyncError,
   subscribePortalPush,
   subscribePortalRemoval,
+  syncRemovedAppointmentsFromOtherTabs,
   whenPortalIdle,
 } from "@/components/admin/rcm/store";
+import { REMOVED_APPOINTMENTS_KEY } from "@/lib/rcm/appointment-sync";
 
 export function PortalBridge() {
   const pathname = usePathname();
@@ -47,6 +49,7 @@ export function PortalBridge() {
     async function loadRoster() {
       await whenPortalIdle();
       if (cancel) return;
+      syncRemovedAppointmentsFromOtherTabs();
       const result = await loadPortalRosterAction();
       if (cancel) return;
       if (!result.ok) {
@@ -61,13 +64,19 @@ export function PortalBridge() {
     function onVisible() {
       if (document.visibilityState === "visible") void loadRoster();
     }
+    function onStorage(event: StorageEvent) {
+      if (event.key !== REMOVED_APPOINTMENTS_KEY) return;
+      syncRemovedAppointmentsFromOtherTabs();
+    }
     document.addEventListener("visibilitychange", onVisible);
     window.addEventListener("focus", onVisible);
+    window.addEventListener("storage", onStorage);
     return () => {
       cancel = true;
       clearInterval(timer);
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("focus", onVisible);
+      window.removeEventListener("storage", onStorage);
     };
   }, [pathname]);
 

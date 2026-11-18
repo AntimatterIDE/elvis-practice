@@ -4,6 +4,11 @@ import { createContext, useContext, useMemo, useSyncExternalStore } from "react"
 import { applyPrimaryCoverage, emptyVitals, normalizeAppointment, normalizeClaim, normalizeLine, normalizePatient, normalizePrescription, normalizeState, withChart } from "@/lib/rcm/chart";
 import { invoicesFromClaims } from "@/lib/portal/invoices";
 import type { PortalInvoice } from "@/lib/portal/types";
+import {
+  mergeAppointmentRoster,
+  readRemovedAppointmentIds,
+  writeRemovedAppointmentIds,
+} from "@/lib/rcm/appointment-sync";
 import { mergeClaimsByUpdatedAt } from "@/lib/rcm/claims-merge";
 import { deskFromState, mergePracticeDesk, normalizePractice } from "@/lib/rcm/desk-merge";
 import { STORAGE_KEY, createSeedState } from "@/lib/rcm/seed";
@@ -55,6 +60,7 @@ const portalListeners = new Set<
   (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[]; invoices: PortalInvoice[] }) => void
 >();
 const removedAppointmentIds = new Set<string>();
+const seenServerAppointmentIds = new Set<string>();
 const removedPatientIds = new Set<string>();
 const removedEligibilityIds = new Set<string>();
 const removalListeners = new Set<(ids: string[]) => void>();
@@ -69,6 +75,28 @@ let claimsReady = false;
 let deskReady = false;
 let portalIds = new Set<string>();
 let pushChain: Promise<void> = Promise.resolve();
+let removedAppointmentsHydrated = false;
+
+function hydrateRemovedAppointments() {
+  if (removedAppointmentsHydrated || typeof localStorage === "undefined") return;
+  removedAppointmentsHydrated = true;
+  for (const id of readRemovedAppointmentIds()) removedAppointmentIds.add(id);
+}
+
+function persistRemovedAppointments() {
+  writeRemovedAppointmentIds(removedAppointmentIds);
+}
+
+function adoptRemovedAppointmentsFromStorage() {
+  if (typeof localStorage === "undefined") return false;
+  let changed = false;
+  for (const id of readRemovedAppointmentIds()) {
+    if (removedAppointmentIds.has(id)) continue;
+    removedAppointmentIds.add(id);
+    changed = true;
+  }
+  return changed;
+}
 
 function isState(value: unknown): value is RcmState {
   if (!value || typeof value !== "object") return false;
@@ -88,9 +116,16 @@ function readStored() {
 }
 
 function ensureClient() {
+  hydrateRemovedAppointments();
   if (clientState) return;
   const stored = readStored();
   clientState = stored ? normalizeState(stored) : serverState;
+  if (removedAppointmentIds.size) {
+    clientState = {
+      ...clientState,
+      appointments: clientState.appointments.filter((appointment) => !removedAppointmentIds.has(appointment.id)),
+    };
+  }
   published = { ...clientState, rosterReady, syncError };
 }
 
@@ -119,6 +154,7 @@ export function setPortalSyncError(message: string) {
 
 function notifyPortalPush() {
   if (!clientState || !portalReady) return;
+  adoptRemovedAppointmentsFromStorage();
   const patients = clientState.patients.filter(
     (patient) => !removedPatientIds.has(patient.id) && !isSmokePatient(patient),
   );
@@ -126,7 +162,9 @@ function notifyPortalPush() {
   const patientIds = new Set(patients.map((patient) => patient.id));
   const snap = {
     patients,
-    appointments: clientState.appointments.filter((appointment) => patientIds.has(appointment.patientId)),
+    appointments: clientState.appointments.filter(
+      (appointment) => patientIds.has(appointment.patientId) && !removedAppointmentIds.has(appointment.id),
+    ),
     removedAppointmentIds: [...removedAppointmentIds],
     invoices: invoicesFromClaims(clientState.claims ?? []).filter((invoice) => patientIds.has(invoice.patientId)),
   };
@@ -278,6 +316,7 @@ export function mergeRemoteDesk(remote: PracticeDeskSnapshot | null) {
 
 export function mergePortalRoster(patients: Patient[], appointments: Appointment[]) {
   ensureClient();
+  adoptRemovedAppointmentsFromStorage();
   const current = clientState!;
   const serverPatients = patients.filter((patient) => !removedPatientIds.has(patient.id) && !isSmokePatient(patient));
   const serverIds = new Set(serverPatients.map((patient) => patient.id));
@@ -290,23 +329,24 @@ export function mergePortalRoster(patients: Patient[], appointments: Appointment
   portalIds = new Set([...serverIds, ...localPatients.map((patient) => patient.id)]);
   portalReady = true;
   rosterReady = true;
-  const serverAppointmentIds = new Set(appointments.map((appointment) => appointment.id));
-  for (const id of removedAppointmentIds) {
-    if (!serverAppointmentIds.has(id)) removedAppointmentIds.delete(id);
-  }
-  const pending = current.appointments.filter(
-    (appointment) =>
-      serverIds.has(appointment.patientId) &&
-      !serverAppointmentIds.has(appointment.id) &&
-      !removedAppointmentIds.has(appointment.id),
-  );
-  const sharedAppointments = appointments.filter(
-    (appointment) => !removedAppointmentIds.has(appointment.id) && serverIds.has(appointment.patientId),
-  );
+
+  const merged = mergeAppointmentRoster({
+    local: current.appointments.filter((appointment) => !removedPatientIds.has(appointment.patientId)),
+    server: appointments,
+    serverPatientIds: serverIds,
+    removedIds: removedAppointmentIds,
+    seenServerIds: seenServerAppointmentIds,
+  });
+  removedAppointmentIds.clear();
+  for (const id of merged.removedIds) removedAppointmentIds.add(id);
+  seenServerAppointmentIds.clear();
+  for (const id of merged.seenServerIds) seenServerAppointmentIds.add(id);
+  persistRemovedAppointments();
+
   // If the last portal push failed, keep local visit status so a stale roster poll
   // cannot wipe a check-in / rooming change that never landed on the server.
   const localById = new Map(current.appointments.map((appointment) => [appointment.id, appointment]));
-  const mergedShared = sharedAppointments.map((appointment) => {
+  const mergedAppointments = merged.appointments.map((appointment) => {
     const normalized = normalizeAppointment(appointment);
     if (!syncError) return normalized;
     const local = localById.get(appointment.id);
@@ -317,19 +357,20 @@ export function mergePortalRoster(patients: Patient[], appointments: Appointment
     {
       ...current,
       patients: [...serverPatients.map((patient) => normalizePatient(patient)), ...localPatients],
-      appointments: [
-        ...mergedShared,
-        ...pending,
-        ...current.appointments.filter(
-          (appointment) =>
-            !serverIds.has(appointment.patientId) &&
-            !removedAppointmentIds.has(appointment.id) &&
-            !removedPatientIds.has(appointment.patientId),
-        ),
-      ],
+      appointments: mergedAppointments,
     },
-    localPatients.length || pending.length ? "local" : "merge",
+    localPatients.length || merged.hasLocalOnly ? "local" : "merge",
   );
+}
+
+/** Apply deletes written by another admin tab so a stale push cannot resurrect them. */
+export function syncRemovedAppointmentsFromOtherTabs() {
+  ensureClient();
+  if (!adoptRemovedAppointmentsFromStorage()) return;
+  const current = clientState!;
+  const next = current.appointments.filter((appointment) => !removedAppointmentIds.has(appointment.id));
+  if (next.length === current.appointments.length) return;
+  commit({ ...current, appointments: next });
 }
 
 function nid(prefix: string) {
@@ -509,6 +550,7 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
       removeAppointment: (id) => {
         const current = getSnapshot();
         removedAppointmentIds.add(id);
+        persistRemovedAppointments();
         commit({
           ...current,
           appointments: current.appointments.filter((appointment) => appointment.id !== id),
