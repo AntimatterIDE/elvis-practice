@@ -69,6 +69,39 @@ describe("appointment delete sync", () => {
     expect(merged.removedIds).toEqual(["a_dup"]);
   });
 
+  it("does not clear a tombstone on the first poll that omits the visit", () => {
+    const first = mergeAppointmentRoster({
+      local: [],
+      server: [],
+      serverPatientIds: new Set(["p_1"]),
+      removedIds: ["a_dup"],
+      seenServerIds: ["a_dup"],
+      removedAbsentPolls: {},
+    });
+    expect(first.removedIds).toEqual(["a_dup"]);
+    expect(first.removedAbsentPolls.a_dup).toBe(1);
+
+    const second = mergeAppointmentRoster({
+      local: [],
+      server: [],
+      serverPatientIds: new Set(["p_1"]),
+      removedIds: first.removedIds,
+      seenServerIds: first.seenServerIds,
+      removedAbsentPolls: first.removedAbsentPolls,
+    });
+    expect(second.removedIds).toEqual(["a_dup"]);
+
+    const third = mergeAppointmentRoster({
+      local: [],
+      server: [],
+      serverPatientIds: new Set(["p_1"]),
+      removedIds: second.removedIds,
+      seenServerIds: second.seenServerIds,
+      removedAbsentPolls: second.removedAbsentPolls,
+    });
+    expect(third.removedIds).toEqual([]);
+  });
+
   it("persists removed appointment ids", () => {
     const store = new Map<string, string>();
     writeRemovedAppointmentIds(["a_1", "a_2"], (key, value) => store.set(key, value));

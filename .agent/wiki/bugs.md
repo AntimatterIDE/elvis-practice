@@ -4,14 +4,16 @@
 
 **Symptom:** Christina deleted a duplicate Monday visit; it kept coming back on
 the day sheet.
-**Cause:** `removedAppointmentIds` lived only in memory (lost on refresh). A
-stale tab / next roster merge treated the missing server visit as optimistic
-`pending` and re-pushed it. `pushCharts` also required the patient to be in the
-same payload before honoring a delete id.
-**Fix:** Persist tombstones (`alignment-practice-v2:removed-appointments`),
-cross-tab `storage` sync, never re-pending visits previously seen on the
-server (`lib/rcm/appointment-sync.ts`), and drop removed visits unconditionally
-in `pushCharts`.
+**Cause:** (1) `removedAppointmentIds` lived only in memory (lost on refresh).
+(2) Stale tab / roster merge re-pushed vanished visits as optimistic `pending`.
+(3) Live UI repro 2026-11-18: Remove dropped the card locally (2→1) but
+`portal_visits` still held both ids — `pushCharts` kept the row via `kept` when
+`removedAppointmentIds` did not land, and the tombstone cleared too eagerly so
+reload restored both. True double-book also existed (Noor Ahmad 11/23 15:30:
+`a_84705f42` + `a_d7d65366`).
+**Fix:** Persist tombstones + cross-tab sync; never re-pending server-seen
+visits; sticky tombstones for 3 absent polls; **hard** `deletePortalVisitsAction`
+/ `removeVisits` on desk Remove (does not rely on pushCharts diff).
 
 ## [2026-11-12] Empty Stedi timeline rows became fake proof events
 

@@ -419,6 +419,15 @@ export const supabaseStore: PortalStore = {
       value: { saved: input.patients.length },
     }));
   },
+  async removeVisits(ids) {
+    const unique = [...new Set(ids)].filter((id) => typeof id === "string" && id.length > 0 && id.length < 80).slice(0, 100);
+    if (!unique.length) return { ok: true as const, value: { removed: 0 } };
+    const supabase = createSupabaseAdminClient();
+    const removed = await supabase.from("portal_visits").delete().in("id", unique);
+    const error = failed(removed.error);
+    if (error) return { ok: false as const, error };
+    return { ok: true as const, value: { removed: unique.length } };
+  },
   async removePatients(ids) {
     const unique = [...new Set(ids)].slice(0, 50);
     if (!unique.length) return { ok: true, value: { removed: 0 } };

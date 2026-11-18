@@ -236,6 +236,8 @@ export type PortalStore = {
     removedAppointmentIds?: string[];
     invoices?: PortalInvoice[];
   }) => Promise<PortalResult<{ saved: number }>>;
+  /** Hard-delete visits by id (desk Remove). Does not depend on pushCharts diff. */
+  removeVisits: (ids: string[]) => Promise<PortalResult<{ removed: number }>>;
   removePatients: (ids: string[]) => Promise<PortalResult<{ removed: number }>>;
   messagesFor: (patientId: string) => Promise<PortalMessage[]>;
   sendMessage: (input: {

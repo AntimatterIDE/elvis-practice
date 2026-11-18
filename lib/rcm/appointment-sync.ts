@@ -28,16 +28,22 @@ export function writeRemovedAppointmentIds(
  * - Visits previously seen on the server that vanish are treated as deleted (not
  *   re-pushed as optimistic "pending"), which stops multi-tab resurrection.
  */
+/** How many consecutive roster polls must omit a tombstoned id before we forget it. */
+export const REMOVED_APPOINTMENT_CLEAR_POLLS = 3;
+
 export function mergeAppointmentRoster(input: {
   local: Appointment[];
   server: Appointment[];
   serverPatientIds: Set<string>;
   removedIds: Iterable<string>;
   seenServerIds: Iterable<string>;
+  /** Prior consecutive-absent counts for tombstoned ids. */
+  removedAbsentPolls?: Record<string, number>;
 }): {
   appointments: Appointment[];
   removedIds: string[];
   seenServerIds: string[];
+  removedAbsentPolls: Record<string, number>;
   hasLocalOnly: boolean;
 } {
   const removed = new Set(
@@ -47,10 +53,25 @@ export function mergeAppointmentRoster(input: {
     [...input.seenServerIds].filter((id) => typeof id === "string" && id.length > 0 && id.length < 80),
   );
   const serverIds = new Set(input.server.map((visit) => visit.id));
+  const absent: Record<string, number> = { ...(input.removedAbsentPolls ?? {}) };
 
-  // Drop tombstones only after the server no longer has them.
+  // Keep tombstones until the server has omitted them for several polls so a
+  // failed/lagging delete cannot clear the shield and let the visit rebound.
   for (const id of [...removed]) {
-    if (!serverIds.has(id)) removed.delete(id);
+    if (serverIds.has(id)) {
+      absent[id] = 0;
+      continue;
+    }
+    const next = (absent[id] ?? 0) + 1;
+    if (next >= REMOVED_APPOINTMENT_CLEAR_POLLS) {
+      removed.delete(id);
+      delete absent[id];
+    } else {
+      absent[id] = next;
+    }
+  }
+  for (const id of Object.keys(absent)) {
+    if (!removed.has(id)) delete absent[id];
   }
 
   const shared = input.server.filter(
@@ -78,6 +99,7 @@ export function mergeAppointmentRoster(input: {
     appointments: [...shared, ...pending, ...localOnlyPatients],
     removedIds: [...removed],
     seenServerIds: [...seen],
+    removedAbsentPolls: absent,
     hasLocalOnly: pending.length > 0 || localOnlyPatients.length > 0,
   };
 }

@@ -2,7 +2,12 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { deletePortalPatientsAction, loadPortalRosterAction, pushPortalChartsAction } from "@/app/portal/actions";
+import {
+  deletePortalPatientsAction,
+  deletePortalVisitsAction,
+  loadPortalRosterAction,
+  pushPortalChartsAction,
+} from "@/app/portal/actions";
 import {
   enqueuePortalPush,
   markRosterReady,
@@ -10,6 +15,7 @@ import {
   setPortalSyncError,
   subscribePortalPush,
   subscribePortalRemoval,
+  subscribePortalVisitRemoval,
   syncRemovedAppointmentsFromOtherTabs,
   whenPortalIdle,
 } from "@/components/admin/rcm/store";
@@ -34,6 +40,19 @@ export function PortalBridge() {
       subscribePortalRemoval((ids) => {
         enqueuePortalPush(async () => {
           await deletePortalPatientsAction(ids);
+        });
+      }),
+    [],
+  );
+
+  useEffect(
+    () =>
+      subscribePortalVisitRemoval((ids) => {
+        enqueuePortalPush(async () => {
+          const result = await deletePortalVisitsAction(ids);
+          if (!result.ok) {
+            setPortalSyncError(result.error || "That visit could not be removed from the shared schedule.");
+          }
         });
       }),
     [],

@@ -64,6 +64,7 @@ const seenServerAppointmentIds = new Set<string>();
 const removedPatientIds = new Set<string>();
 const removedEligibilityIds = new Set<string>();
 const removalListeners = new Set<(ids: string[]) => void>();
+const visitRemovalListeners = new Set<(ids: string[]) => void>();
 const claimsListeners = new Set<(claims: Claim[]) => void>();
 const deskListeners = new Set<(desk: PracticeDeskSnapshot) => void>();
 let clientState: RcmState | null = null;
@@ -76,6 +77,7 @@ let deskReady = false;
 let portalIds = new Set<string>();
 let pushChain: Promise<void> = Promise.resolve();
 let removedAppointmentsHydrated = false;
+let removedAbsentPolls: Record<string, number> = {};
 
 function hydrateRemovedAppointments() {
   if (removedAppointmentsHydrated || typeof localStorage === "undefined") return;
@@ -218,6 +220,13 @@ export function subscribePortalRemoval(listener: (ids: string[]) => void) {
   };
 }
 
+export function subscribePortalVisitRemoval(listener: (ids: string[]) => void) {
+  visitRemovalListeners.add(listener);
+  return () => {
+    visitRemovalListeners.delete(listener);
+  };
+}
+
 export function subscribePortalPush(
   listener: (snap: { patients: Patient[]; appointments: Appointment[]; removedAppointmentIds: string[]; invoices: PortalInvoice[] }) => void,
 ) {
@@ -336,11 +345,13 @@ export function mergePortalRoster(patients: Patient[], appointments: Appointment
     serverPatientIds: serverIds,
     removedIds: removedAppointmentIds,
     seenServerIds: seenServerAppointmentIds,
+    removedAbsentPolls,
   });
   removedAppointmentIds.clear();
   for (const id of merged.removedIds) removedAppointmentIds.add(id);
   seenServerAppointmentIds.clear();
   for (const id of merged.seenServerIds) seenServerAppointmentIds.add(id);
+  removedAbsentPolls = merged.removedAbsentPolls;
   persistRemovedAppointments();
 
   // If the last portal push failed, keep local visit status so a stale roster poll
@@ -550,7 +561,9 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
       removeAppointment: (id) => {
         const current = getSnapshot();
         removedAppointmentIds.add(id);
+        removedAbsentPolls[id] = 0;
         persistRemovedAppointments();
+        for (const listener of visitRemovalListeners) listener([id]);
         commit({
           ...current,
           appointments: current.appointments.filter((appointment) => appointment.id !== id),

@@ -158,6 +158,16 @@ export async function deletePortalPatientsAction(ids: string[]) {
   return { ok: result.ok };
 }
 
+/** Desk Remove: delete visits by id directly so they cannot be kept via pushCharts merge. */
+export async function deletePortalVisitsAction(ids: string[]) {
+  if (!(await getStaffSession())) return { ok: false as const, error: "Sign in required.", removed: 0 };
+  const cleaned = (Array.isArray(ids) ? ids : []).filter((id) => typeof id === "string" && id.length > 0 && id.length < 80).slice(0, 100);
+  if (!cleaned.length) return { ok: true as const, removed: 0 };
+  const result = await getPortalStore().removeVisits(cleaned);
+  if (!result.ok) return { ok: false as const, error: result.error, removed: 0 };
+  return { ok: true as const, removed: result.value.removed };
+}
+
 /** Staff cleanup for delivery: remove known QA / smoke charts from the shared roster. */
 export async function purgeSmokeChartsAction() {
   const staff = await getStaffSession();

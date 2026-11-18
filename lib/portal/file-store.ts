@@ -180,6 +180,14 @@ export const fileStore: PortalStore = {
       value: { saved: input.patients.length },
     }));
   },
+  removeVisits(ids) {
+    const drop = new Set(ids.filter((id) => typeof id === "string" && id.length > 0 && id.length < 80));
+    return update((db) => ({
+      ok: true,
+      db: { ...db, visits: db.visits.filter((visit) => !drop.has(visit.id)) },
+      value: { removed: drop.size },
+    }));
+  },
   removePatients(ids) {
     return update((db) => ({
       ok: true,
