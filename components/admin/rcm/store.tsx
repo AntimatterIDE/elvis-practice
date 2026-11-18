@@ -155,15 +155,17 @@ export function setPortalSyncError(message: string) {
   emit();
 }
 
-function notifyPortalPush() {
-  if (!clientState || !portalReady) return;
+/** Fresh portal push payload — always read live tombstones so a queued snap cannot resurrect a Remove. */
+export function takePortalPushSnapshot() {
+  ensureClient();
+  if (!clientState || !portalReady) return null;
   adoptRemovedAppointmentsFromStorage();
   const patients = clientState.patients.filter(
     (patient) => !removedPatientIds.has(patient.id) && !isSmokePatient(patient),
   );
   for (const patient of patients) portalIds.add(patient.id);
   const patientIds = new Set(patients.map((patient) => patient.id));
-  const snap = {
+  return {
     patients,
     appointments: clientState.appointments.filter(
       (appointment) => patientIds.has(appointment.patientId) && !removedAppointmentIds.has(appointment.id),
@@ -171,6 +173,11 @@ function notifyPortalPush() {
     removedAppointmentIds: [...removedAppointmentIds],
     invoices: invoicesFromClaims(clientState.claims ?? []).filter((invoice) => patientIds.has(invoice.patientId)),
   };
+}
+
+function notifyPortalPush() {
+  const snap = takePortalPushSnapshot();
+  if (!snap) return;
   for (const listener of portalListeners) listener(snap);
 }
 
@@ -354,6 +361,12 @@ export function mergePortalRoster(patients: Patient[], appointments: Appointment
   for (const id of merged.seenServerIds) seenServerAppointmentIds.add(id);
   removedAbsentPolls = merged.removedAbsentPolls;
   persistRemovedAppointments();
+
+  // Server still listing a tombstoned id (stale push race) — delete again.
+  const resurrected = appointments.filter((visit) => removedAppointmentIds.has(visit.id)).map((visit) => visit.id);
+  if (resurrected.length) {
+    for (const listener of visitRemovalListeners) listener(resurrected);
+  }
 
   // If the last portal push failed, keep local visit status so a stale roster poll
   // cannot wipe a check-in / rooming change that never landed on the server.

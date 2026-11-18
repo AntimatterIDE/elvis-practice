@@ -1,5 +1,13 @@
 # elvis-practice — agent log
 
+## [2026-11-18] bugfix | Schedule Remove race re-upserted deleted visit
+
+Live retest after hard-delete: UI went 2→1 and Supabase briefly had one row,
+then ~6s later the deleted id returned. `removeVisits` skipped `mutationChain`
+so concurrent `pushCharts` persistDiff re-upserted; portal push used a stale
+snap. Fix: serialize delete via `mutate`, `takePortalPushSnapshot` at execute
+time, re-delete on tombstone/server collision, sticky clear 30 polls.
+
 ## [2026-11-18] bugfix | Deleted schedule visits reappearing
 
 Christina: duplicate visit for Mon 11/23 would not stay deleted. Root cause was

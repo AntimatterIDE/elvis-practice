@@ -17,6 +17,7 @@ import {
   subscribePortalRemoval,
   subscribePortalVisitRemoval,
   syncRemovedAppointmentsFromOtherTabs,
+  takePortalPushSnapshot,
   whenPortalIdle,
 } from "@/components/admin/rcm/store";
 import { REMOVED_APPOINTMENTS_KEY } from "@/lib/rcm/appointment-sync";
@@ -26,8 +27,12 @@ export function PortalBridge() {
 
   useEffect(
     () =>
-      subscribePortalPush((snap) => {
+      subscribePortalPush(() => {
         enqueuePortalPush(async () => {
+          // Rebuild at execute time so a Remove that landed while this task was queued
+          // is honored (stale snap would re-upsert the deleted visit).
+          const snap = takePortalPushSnapshot();
+          if (!snap) return;
           const result = await pushPortalChartsAction(snap);
           setPortalSyncError(result.ok ? "" : result.error || "Those charts could not be shared with the practice.");
         });

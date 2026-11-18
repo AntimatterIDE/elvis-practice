@@ -69,37 +69,34 @@ describe("appointment delete sync", () => {
     expect(merged.removedIds).toEqual(["a_dup"]);
   });
 
-  it("does not clear a tombstone on the first poll that omits the visit", () => {
-    const first = mergeAppointmentRoster({
+  it("does not clear a tombstone until many consecutive absent polls", () => {
+    let removedIds = ["a_dup"];
+    let absent: Record<string, number> = {};
+    let seenServerIds = ["a_dup"];
+    for (let i = 1; i <= 29; i += 1) {
+      const step = mergeAppointmentRoster({
+        local: [],
+        server: [],
+        serverPatientIds: new Set(["p_1"]),
+        removedIds,
+        seenServerIds,
+        removedAbsentPolls: absent,
+      });
+      expect(step.removedIds).toEqual(["a_dup"]);
+      expect(step.removedAbsentPolls.a_dup).toBe(i);
+      removedIds = step.removedIds;
+      absent = step.removedAbsentPolls;
+      seenServerIds = step.seenServerIds;
+    }
+    const cleared = mergeAppointmentRoster({
       local: [],
       server: [],
       serverPatientIds: new Set(["p_1"]),
-      removedIds: ["a_dup"],
-      seenServerIds: ["a_dup"],
-      removedAbsentPolls: {},
+      removedIds,
+      seenServerIds,
+      removedAbsentPolls: absent,
     });
-    expect(first.removedIds).toEqual(["a_dup"]);
-    expect(first.removedAbsentPolls.a_dup).toBe(1);
-
-    const second = mergeAppointmentRoster({
-      local: [],
-      server: [],
-      serverPatientIds: new Set(["p_1"]),
-      removedIds: first.removedIds,
-      seenServerIds: first.seenServerIds,
-      removedAbsentPolls: first.removedAbsentPolls,
-    });
-    expect(second.removedIds).toEqual(["a_dup"]);
-
-    const third = mergeAppointmentRoster({
-      local: [],
-      server: [],
-      serverPatientIds: new Set(["p_1"]),
-      removedIds: second.removedIds,
-      seenServerIds: second.seenServerIds,
-      removedAbsentPolls: second.removedAbsentPolls,
-    });
-    expect(third.removedIds).toEqual([]);
+    expect(cleared.removedIds).toEqual([]);
   });
 
   it("persists removed appointment ids", () => {

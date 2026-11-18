@@ -12,8 +12,15 @@ the day sheet.
 reload restored both. True double-book also existed (Noor Ahmad 11/23 15:30:
 `a_84705f42` + `a_d7d65366`).
 **Fix:** Persist tombstones + cross-tab sync; never re-pending server-seen
-visits; sticky tombstones for 3 absent polls; **hard** `deletePortalVisitsAction`
+visits; sticky tombstones for 30 absent polls; **hard** `deletePortalVisitsAction`
 / `removeVisits` on desk Remove (does not rely on pushCharts diff).
+**Follow-up (same day):** Live retest showed delete landing, then the row
+returning ~6s later. Root cause: `supabase-store.removeVisits` bypassed
+`mutationChain`, so an in-flight `pushCharts` `persistDiff` re-upserted the
+row; portal push also executed a **stale** snap queued before Remove.
+**Fix:** Serialize `removeVisits` through `mutate`; rebuild push snap at
+execute time via `takePortalPushSnapshot`; re-delete if a tombstoned id
+reappears on the roster poll.
 
 ## [2026-11-12] Empty Stedi timeline rows became fake proof events
 

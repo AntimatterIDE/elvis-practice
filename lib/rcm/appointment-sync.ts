@@ -29,7 +29,7 @@ export function writeRemovedAppointmentIds(
  *   re-pushed as optimistic "pending"), which stops multi-tab resurrection.
  */
 /** How many consecutive roster polls must omit a tombstoned id before we forget it. */
-export const REMOVED_APPOINTMENT_CLEAR_POLLS = 3;
+export const REMOVED_APPOINTMENT_CLEAR_POLLS = 30;
 
 export function mergeAppointmentRoster(input: {
   local: Appointment[];
