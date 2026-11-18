@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
+import { deletePortalVisitsAction } from "@/app/portal/actions";
 import { applyPrimaryCoverage, emptyVitals, normalizeAppointment, normalizeClaim, normalizeLine, normalizePatient, normalizePrescription, normalizeState, withChart } from "@/lib/rcm/chart";
 import { invoicesFromClaims } from "@/lib/portal/invoices";
 import type { PortalInvoice } from "@/lib/portal/types";
@@ -563,6 +564,14 @@ export function RcmProvider({ children }: { children: React.ReactNode }) {
         removedAppointmentIds.add(id);
         removedAbsentPolls[id] = 0;
         persistRemovedAppointments();
+        // Delete on the server immediately — do not rely only on PortalBridge listeners
+        // (a missed subscription left portal_visits rows in place and reloads restored them).
+        enqueuePortalPush(async () => {
+          const result = await deletePortalVisitsAction([id]);
+          if (!result.ok) {
+            setPortalSyncError(result.error || "That visit could not be removed from the shared schedule.");
+          }
+        });
         for (const listener of visitRemovalListeners) listener([id]);
         commit({
           ...current,
